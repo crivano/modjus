@@ -5,7 +5,6 @@ import { FormHelper } from "@/libs/form-support"
 import Endereco from "./Endereco"
 import { Suspense, useState } from "react"
 import SelectUnidade from "../../components/sei/SelectUnidade"
-import TextAreaTest from "../../components/sei/"
 import PessoaMany from "@/components/sei/Pessoa"
 
 export default function Modelo1Campo() {
@@ -38,15 +37,7 @@ function interview(Frm: FormHelper) {
 
     <Frm.TextArea label="Qual é o texto1?" name="texto1" />
 
-    <TextAreaTest value={texto} onChange={handleChange}  rows={10} cols={50}/>
-
     {JSON.stringify(Frm.data)}
-
-    <input 
-
-    <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
-
-    
   </>
 }
 

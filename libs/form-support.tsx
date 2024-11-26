@@ -3,8 +3,6 @@ import ReactTextareaAutosize from 'react-textarea-autosize'
 import { z, ZodTypeAny, ZodError } from 'zod'
 import ReactSelect from 'react-select'
 import _ from 'lodash'
-import { Dispatch } from 'react';
-import { decode } from 'he'
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -133,7 +131,7 @@ export class FormHelper {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
-                <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, decode(e.target.value))} placeholder="" key={name} />
+                <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group>
         ) : (
@@ -148,7 +146,7 @@ export class FormHelper {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <ReactTextareaAutosize className="form-control" name={name} value={this.get(decode(name))} onChange={e => this.set(name, decode(e.target.value))} placeholder="" key={name} />
+                <ReactTextareaAutosize className="form-control" name={name} value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group>
         ) : (
@@ -180,7 +178,7 @@ export class FormHelper {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <ReactSelect name={name} value={this.get(name)} onChange={e => this.set(name, e.value)} options={options.map(i => ({ value: i.id, label: i.name }))} />
+                <ReactSelect name={name} defaultValue={this.get(name)} onChange={e => this.set(name, e.value)} options={options.map(i => ({ value: i.id, label: i.name }))} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group >
         ) : (
