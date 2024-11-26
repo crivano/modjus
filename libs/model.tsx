@@ -2,7 +2,7 @@
 
 import { useSearchParams, usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { handleSave } from '@/libs/extension'
+import { decodeHtmlEntities, handleSave } from '@/libs/extension'
 import { EMPTY_FORM_STATE, FormHelper } from '@/libs/form-support'
 import Print from '@/components/print'
 
@@ -22,7 +22,8 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
             fetch(`/api/data-store?key=${dataKey}`)
                 .then(response => response.json())
                 .then(fetchedData => {
-                    setData(fetchedData);
+                    fetchedData = decodeHtmlEntities(fetchedData)
+                    setData(fetchedData)
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error)

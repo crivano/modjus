@@ -1,5 +1,6 @@
 import { decode } from 'html-entities'
-const decodeHtmlEntities = (obj: any): any => {
+
+export const decodeHtmlEntities = (obj: any): any => {
     if (typeof obj === 'string') {
         return decode(obj);
     } else if (Array.isArray(obj)) {
