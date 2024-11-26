@@ -3,8 +3,9 @@
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import Endereco from "./Endereco"
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import SelectUnidade from "../../components/sei/SelectUnidade"
+import TextAreaTest from "../../components/sei/"
 import PessoaMany from "@/components/sei/Pessoa"
 
 export default function Modelo1Campo() {
@@ -22,6 +23,9 @@ function interview(Frm: FormHelper) {
     { label: 'Execução Fiscal', name: 'execucaoFiscal' }
   ]
 
+  const textoCodificado = "Esta unidade manteve sua compet&ecirc;ncia material para processar e julgar execu&ccedil;&atilde;o fiscal, bem como, as a&ccedil;&otilde;es de impugna&ccedil;&atilde;o dela decorrentes (art. 38 da Lei n&ordm; 6.830/80), nos termos do art. 24 da Resolu&ccedil;&atilde;o n&ordm; 21, de 08/07/2016, do TRF da 2&ordf; Regi&atilde;o.";
+
+ 
   return <>
     <Frm.Input label="Qual é o texto?" name="texto" width={6} />
     <Frm.SelectAutocomplete label="UF" name="uf" options={options} width={6} />
@@ -34,7 +38,11 @@ function interview(Frm: FormHelper) {
 
     <Frm.TextArea label="Qual é o texto1?" name="texto1" />
 
+    <TextAreaTest value={texto} onChange={handleChange}  rows={10} cols={50}/>
+
     {JSON.stringify(Frm.data)}
+
+    <input 
 
     <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
 
@@ -53,5 +61,9 @@ function document(data: any) {
       </div>
       : null}
   </>
+}
+
+function decode(textoCodificado: string) {
+  throw new Error("Function not implemented.")
 }
 

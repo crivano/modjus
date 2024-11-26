@@ -22,7 +22,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
             fetch(`/api/data-store?key=${dataKey}`)
                 .then(response => response.json())
                 .then(fetchedData => {
-                    setData(fetchedData)
+                    setData(fetchedData);
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error)

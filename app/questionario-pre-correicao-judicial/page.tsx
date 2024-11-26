@@ -4,6 +4,7 @@ import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import SelectUnidade from "@/components/sei/SelectUnidade"
 import Pessoa from "@/components/sei/Pessoa"
+import Head from 'next/head';
 
 function interview(Frm: FormHelper) {
   const oCaracteristicas = [
@@ -15,6 +16,9 @@ function interview(Frm: FormHelper) {
   const oDe1a20  = Array.from({ length: 21 }, (_, i) => ({ id: `${i}`, name: `${i}` }))
    
   return <>
+    <Head>
+        <meta charSet="ISO-8859-1" />
+      </Head>
     <Frm.Input label="Número do Processo" name="numproc" width={4} />
     <Frm.Input label="Data de Abertura" name="dataAbertura" width={4} />
     <Frm.Input label="Data de Encerramento" name="dataEncerramento" width={4} />
