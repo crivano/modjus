@@ -141,6 +141,39 @@ export class FormHelper {
             </div>
         )
     }
+    public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const formatDate = (date: string) => {
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
+
+        const parseDate = (date: string) => {
+            const [day, month, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        const value = this.get(name) || '';
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="date"
+                    value={value ? parseDate(value) : ''}
+                    onChange={e => this.set(name, formatDate(e.target.value))}
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{value}</strong></p>
+            </div>
+        );
+    }
 
     public TextArea = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         return this.setData ? (
