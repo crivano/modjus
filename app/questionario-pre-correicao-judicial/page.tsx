@@ -16,7 +16,6 @@ function interview(Frm: FormHelper) {
     { label: 'Criminal', name: 'criminal' },
     { label: 'Execução Fiscal', name: 'execucaoFiscal' }
   ]
-  const oDe1a20 = Array.from({ length: 21 }, (_, i) => ({ id: `${i}`, name: `${i}` }))
 
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const handleDateChange = (date: Date | null) => {
