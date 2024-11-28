@@ -53,35 +53,42 @@ const checkAuth = (req: NextApiRequest): boolean => {
 // Função principal da API
 export  async function GET (req: NextApiRequest)  {
   try {
-    // Verificação de IP
-    if (!checkIP(req)) {
-        console.log("checkIP")
-        return new Response('Autenticação Inválida', {
-            status: 403
-        })
-    }
+    // // Verificação de IP
+    // if (!checkIP(req)) {
+    //     console.log("checkIP")
+    //     return new Response('Autenticação Inválida', {
+    //         status: 403
+    //     })
+    // }
 
-    // Verificação de autenticação básica
-    if (!checkAuth(req)) {
-        console.log("checkAut")
-        return new Response('Autenticação Inválida', {
-            status: 401
-        })
-    }
+    // // Verificação de autenticação básica
+    // if (!checkAuth(req)) {
+    //     console.log("checkAut")
+    //     return new Response('Autenticação Inválida', {
+    //         status: 401
+    //     })
+    // }
 
     // Conectar ao banco de dados
     const connection = getDatabaseConnection();
 
+    console.log("Conectou no Banco")
+
     // Realizar a consulta SQL para pegar todos os registros
-    const [rows] = await new Promise<any[]>((resolve, reject) => {
+    const [rows] = await new Promise<[DocumentoConteudo[]][]>((resolve, reject) => {
       connection.query(
         'SELECT dc.id_documento, id_serie, conteudo FROM sei.documento_conteudo dc inner join sei.documento d on d.id_documento = dc.id_documento where id_serie = 1336', // Removendo o filtro para pegar todos os registros
         (err, results) => {
-          if (err) reject(err);
+    //      if (err) reject(err);
+          console.log(err)
+          console.log(results)
+          if (err) console.log(err)
           resolve(results);
         }
       );
     });
+
+    console.log("Realizou a query")
 
     // Fechar a conexão com o banco
     connection.end();
@@ -110,7 +117,7 @@ export  async function GET (req: NextApiRequest)  {
 
       // Verificar se algum dado foi encontrado
       if (modjusDataList.length > 0) {
-        return new Response( modjusData: modjusDataList, {
+        return new Response( 'daodo encontrado', {
             status: 200
         })
        } else {
@@ -119,11 +126,15 @@ export  async function GET (req: NextApiRequest)  {
         })
       }
     } else {
-      res.status(404).json({ message: 'Nenhum conteúdo encontrado no banco de dados.' });
+      return new Response('Nenhum conteudo encontrado no banco de dados.', {
+        status: 404
+    })
     }
   } catch (error) {
     console.error('Erro ao processar a solicitação:', error);
-    res.status(500).json({ message: 'Erro ao processar a solicitação.' });
-  }
+    return new Response('Erro ao processar solicitação.', {
+      status: 404
+  })
+}
 };
 
