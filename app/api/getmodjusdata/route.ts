@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2';
 import { JSDOM } from 'jsdom';
+import { headers } from "next/headers"
 
 
 interface DocumentoConteudo {
@@ -23,7 +24,9 @@ const checkIP = (req: NextApiRequest): boolean => {
   const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
 
   // Acessar o cabeçalho 'x-forwarded-for'
-  const forwardedFor = req.headers['x-forwarded-for'] as string | undefined;
+   
+  const headersList = headers()
+  const forwardedFor = headersList.get('x-forwarded-for');
 
   console.log("Cabeçalho x-forwarded-for:", forwardedFor);  // Adicione esse log para verificar o valor do cabeçalho
 
@@ -41,11 +44,14 @@ const checkIP = (req: NextApiRequest): boolean => {
 
 // Função para verificar a autenticação básica
 const checkAuth = (req: NextApiRequest): boolean => {
-  const auth = req.headers['authorization'];
-   console.log(auth);
+  
+  const headersList = headers()
+  const auth = headersList.get("authorization")
+  
   if (!auth) {
     return false;  // Nenhuma autenticação fornecida
   }
+
 
   const [, encodedCredentials] = auth.split(' ');  // Extrai o valor após "Basic "
   const credentials = Buffer.from(encodedCredentials, 'base64').toString('utf8');
@@ -57,13 +63,13 @@ const checkAuth = (req: NextApiRequest): boolean => {
 // Função principal da API
 export  async function GET (req: NextApiRequest)  {
   try {
-/* 
-    // if (!checkIP(req)) {
-    //     console.log("checkIP")
-    //     return new Response('Autenticação Inválida', {
-    //         status: 403
-    //     })
-    // } */
+
+     if (!checkIP(req)) {
+         console.log("checkIP")
+         return new Response('Autenticação Inválida', {
+             status: 403
+         })
+     } 
 
     // Verificação de autenticação básica
     if (!checkAuth(req)) {

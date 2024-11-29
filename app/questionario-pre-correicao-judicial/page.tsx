@@ -131,7 +131,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
     <Frm.TextArea label="Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral"  name="t9ProvidenciasAdotadasParaAcautelamento" width={12} />
     <Frm.TextArea label="Detalhar as providências adotadas para alienação antecipada de bens, quando necessário"  name="t9ProvidenciasDeAlienacaoAntecipada" width={12} />
-    <ul class="ml-0 mt-3 mb-3">
+    <ul>
       <li>
         <p>
           Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:
@@ -210,5 +210,5 @@ function document(data: any) {
 }
 
 export default function BpcLoasPdcMais17() {
-  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'bpc-loas-pcd-mais-17' })
+  return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17' })
 }
