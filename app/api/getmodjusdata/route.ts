@@ -19,26 +19,30 @@ const getDatabaseConnection = () => {
   });
 };
 
-// Função para verificar se o IP da requisição está na lista de IPs permitidos
 const checkIP = (req: NextApiRequest): boolean => {
-    const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
-  
-    // A obtenção do IP agora deve verificar o cabeçalho 'x-forwarded-for'
-    const forwardedFor = req.headers['x-forwarded-for'] as string | undefined;
-  
-    // Se o 'x-forwarded-for' não estiver presente, usamos o IP da requisição diretamente
-    const requestIP = forwardedFor
-      ? forwardedFor.split(',')[0].trim() // Pega o primeiro IP no cabeçalho
-      : req.socket?.remoteAddress; // Fallback para req.socket.remoteAddress, se disponível
-  
-    // Verifica se o IP da requisição está na lista de IPs permitidos
-    return allowedIPs.includes(requestIP as string);
-  };
+  const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
+
+  // Acessar o cabeçalho 'x-forwarded-for'
+  const forwardedFor = req.headers['x-forwarded-for'] as string | undefined;
+
+  console.log("Cabeçalho x-forwarded-for:", forwardedFor);  // Adicione esse log para verificar o valor do cabeçalho
+
+  // Se 'x-forwarded-for' não existir, utilizar 'req.socket?.remoteAddress'
+  const requestIP = forwardedFor 
+    ? forwardedFor.split(',')[0].trim() // Pega o primeiro IP se houver mais de um
+    : req.socket?.remoteAddress;  // Fallback para o IP da conexão direta
+
+  console.log("IP da requisição:", requestIP);  // Log para depuração
+
+  // Verifica se o IP da requisição está na lista de IPs permitidos
+  return allowedIPs.includes(requestIP as string);
+};
+
 
 // Função para verificar a autenticação básica
 const checkAuth = (req: NextApiRequest): boolean => {
-  const auth = req.headers.authorization;
-
+  const auth = req.headers['authorization'];
+   console.log(auth);
   if (!auth) {
     return false;  // Nenhuma autenticação fornecida
   }
@@ -53,21 +57,21 @@ const checkAuth = (req: NextApiRequest): boolean => {
 // Função principal da API
 export  async function GET (req: NextApiRequest)  {
   try {
-    // // Verificação de IP
+/* 
     // if (!checkIP(req)) {
     //     console.log("checkIP")
     //     return new Response('Autenticação Inválida', {
     //         status: 403
     //     })
-    // }
+    // } */
 
-    // // Verificação de autenticação básica
-    // if (!checkAuth(req)) {
-    //     console.log("checkAut")
-    //     return new Response('Autenticação Inválida', {
-    //         status: 401
-    //     })
-    // }
+    // Verificação de autenticação básica
+    if (!checkAuth(req)) {
+           // // Verificação de IP console.log("checkAut")
+        return new Response('Autenticação Inválida', {
+            status: 401
+        })
+    }
 
     // Conectar ao banco de dados
     const connection = getDatabaseConnection();
@@ -75,15 +79,15 @@ export  async function GET (req: NextApiRequest)  {
     console.log("Conectou no Banco")
 
     // Realizar a consulta SQL para pegar todos os registros
-    const [rows] = await new Promise<[DocumentoConteudo[]][]>((resolve, reject) => {
+    const [rows] = await new Promise<[DocumentoConteudo[]]>((resolve, reject) => {
       connection.query(
         'SELECT dc.id_documento, id_serie, conteudo FROM sei.documento_conteudo dc inner join sei.documento d on d.id_documento = dc.id_documento where id_serie = 1336', // Removendo o filtro para pegar todos os registros
         (err, results) => {
-    //      if (err) reject(err);
+          if (err) reject(err);
           console.log(err)
           console.log(results)
           if (err) console.log(err)
-          resolve(results);
+            resolve([results as DocumentoConteudo[]])
         }
       );
     });
@@ -96,7 +100,7 @@ export  async function GET (req: NextApiRequest)  {
     // Verificar se o resultado foi encontrado
     if (rows.length > 0) {
       // Array para armazenar os dados extraídos
-      const modjusDataList: string[] = [];
+      const modjusDataList: DocumentoConteudo[] = [];
 
       // Iterar sobre todos os registros e extrair o valor de 'modjus-data'
       rows.forEach((row) => {
@@ -117,9 +121,7 @@ export  async function GET (req: NextApiRequest)  {
 
       // Verificar se algum dado foi encontrado
       if (modjusDataList.length > 0) {
-        return new Response( 'daodo encontrado', {
-            status: 200
-        })
+        return new Response(JSON.stringify(modjusDataList), { status: 200 });
        } else {
         return new Response('Nenhum atributo modjus-data encontrado.', {
             status: 404

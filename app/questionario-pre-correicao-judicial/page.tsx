@@ -49,7 +49,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2TitularModalidadeTrabalho" width={12} />
     <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2TitularAtendimento" width={12} />
 
-          <Frm.Input label="Substituto" name="t2Substituto" width={4} />
+          <Pessoa Frm={Frm}  name="t2Substituto" />
           <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
           <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
           <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
@@ -117,6 +117,83 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?"  name="t8PrazosDeSuspensao" width={12} />
     <Frm.TextArea label="A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?"  name="t8RespeitoAPadronizacaoDoCNJ" width={12} />
     <Frm.TextArea label="A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?"  name="t8ProcessoSemAssuntoCorrespondente" width={12} />
+
+    <h2>9. Materiais Acautelados na Unidade</h2>
+    <Frm.TextArea label="Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)"  name="t9QuantidadeDeMateriaisAcautelados" width={12} />
+    <Frm.TextArea label="Indicar a quantidade de processos com bens acautelados/apreendidos na unidade"  name="t9QuantidadeDeProcessosComBensAcautelados" width={12} />
+    <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
+    <Frm.TextArea label="Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos"  name="t9DinheiroEmEspecieTitulosOuJoias" width={12} />
+    <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
+    <Frm.TextArea label="A unidade tem tido alguma dificuldade na utilização do SNGB?"  name="t9DificuldadeNoUsoDoSNGB" width={12} />
+    <Frm.TextArea label="A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?"  name="t9RegistrosAtivosNoSNBA" width={12} />
+    <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
+    <Frm.TextArea label="A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?"  name="t9CofreOuSalaDeAcautelados" width={12} />
+    <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
+    <Frm.TextArea label="Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral"  name="t9ProvidenciasAdotadasParaAcautelamento" width={12} />
+    <Frm.TextArea label="Detalhar as providências adotadas para alienação antecipada de bens, quando necessário"  name="t9ProvidenciasDeAlienacaoAntecipada" width={12} />
+    <ul class="ml-0 mt-3 mb-3">
+      <li>
+        <p>
+          Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:
+        </p>
+        <ul>
+          <li>
+            1 (uma) foto por bem acautelado, onde se visualize, apenas externamente, o termo de acautelamento que nele se encontre afixado; 
+          </li>
+          <li>
+            No termo de acautelamento deve constar a descrição do bem acautelado e a identificação precisa do local em que se encontra;
+          </li>
+          <li>
+            Caso o bem se encontre em local diverso da Secretaria por designação do Juízo, indicar o expediente no Siga criado para tal registro, na forma do art. 2º, §3º, da Portaria TRF2-PTC-2022/00071.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          Os bens acautelados devem estar registrados como “Anexo Físico” no E-Proc, em "Informações adicionais", de forma a possibilitar o seu controle por meio da extração de Relatório Geral no Sistema Processual.
+        </p>
+        <p>
+          No conteúdo da informação do “Anexo Físico”, deve constar a descrição do bem acautelado, a localização precisa em que se encontra e a indicação da existência de termo de acautelamento e do evento/folha correspondente no processo eletrônico (art. 2º, § 1º, da Portaria TRF2-PTC-2022/00071);
+        </p>
+        <p>
+          Devem ser excluídos/desativados os “Anexos Físicos” nas “Informações Adicionais” dos processos eletrônicos que não possuam bens acautelados (art. 2º, § 2º, da Portaria TRF2-PTC-2022/00071).
+        </p>
+      </li>
+    </ul>
+
+    <h2>10. Processos Físicos em carga ou retirados</h2>
+    <Frm.Select label="Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?" name="t10ProcessosFisicosComCarga" options={oDe1a20} width={3} />
+    <Frm.TextArea label="Identificar os processos extraviados, as datas da ocorrência e as providências"  name="t10ProcessosExtraviados" width={12} />
+    <Frm.TextArea label="Identificar as ações de restauração de autos, no período do levantamento"  name="t10AcoesDeRestauracao" width={12} />
+ 
+    
+    <h2>11. Audiências</h2>
+    <Frm.TextArea label="Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)"  name="t11NumeroDeAudienciasAgendadasERealizadas" width={12} />
+    <Frm.TextArea label="Como é feito o controle das audiências canceladas/remarcadas?"  name="t11ControleDeAudienciasCanceladas" width={12} />
+    <Frm.TextArea label="É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?"  name="t11AudienciaDeConciliacao" width={12} />
+    <Frm.TextArea label="É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?"  name="t11AcompanhamentoDaMeta3DoCNJ" width={12} />
+    <Frm.TextArea label="Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?"  name="t11TempoMedioEntreDespachoDeDesignacaoEAudiencia" width={12} />
+    <Frm.TextArea label="A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?"  name="t11RegistroVisualDeAudiencias" width={12} />
+    <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeAudiencias" width={12} />
+    <Frm.TextArea label="Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades"  name="t11AudienciaDeCustodia" width={12} />
+    <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
+ 
+    <h2>11. Sessão de Julgamento/Audiências</h2>
+    <Frm.TextArea label="Número de sessões de julgamento agendadas e realizadas" var="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas"  name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+    <Frm.TextArea label="Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?"  name="t11ControleDePauta" width={12} />
+    <Frm.TextArea label="Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?"  name="t11IntervaloDeTempo" width={12} />
+    <Frm.TextArea label="A unidade utiliza o registro audiovisual de sessões de julgamento?"  name="t11RegistroVisualDeSessoesDeJulgamento" width={12} />
+    <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo?  Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento" width={12} />
+    <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
+     
+    <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
+    <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" var="t12CumprimentoDasMetasDaInspecaoAnterior"  name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+    <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
+    <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
+
+    <h2>13. Boas práticas e dificuldades</h2>
+    <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t12JustificativaDoNaoCumprimento" width={12} />
+
 </>
 }
 
@@ -129,7 +206,6 @@ function document(data: any) {
       
     }
     {interview(Frm)}
-    <div className="assinatura text-center">__________________________________<br />Assinatura do Perito(a)</div>
   </div>
 }
 
