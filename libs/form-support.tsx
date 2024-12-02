@@ -208,10 +208,13 @@ export class FormHelper {
     }
 
     public SelectAutocomplete = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+        
+        
+        const selectedOption = options.find(option => option.id === this.get(name));
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <ReactSelect name={name} defaultValue={this.get(name)} onChange={e => this.set(name, e.value)} options={options.map(i => ({ value: i.id, label: i.name }))} />
+                <ReactSelect name={name} value={selectedOption ? { value: selectedOption.id, label: selectedOption.name } : 'Selecione'} defaultValue={this.get(name)} onChange={e => this.set(name, e.value)} options={options.map(i => ({ value: i.id, label: i.name }))} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group >
         ) : (
