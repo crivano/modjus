@@ -41,6 +41,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Houve redistribuição de processos?" name="t1RedistribuicaoDeProcessos" width={12} />
 
     <h2>2. Magistrados</h2>
+    <h5>Titular</h5>
      {/* Trocar abaixo para algum componente pessoa */}
      <Pessoa Frm={Frm}  name="t2Titular" />
     <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
@@ -48,14 +49,19 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2TitularSubstituicoes" width={12} />
     <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2TitularModalidadeTrabalho" width={12} />
     <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2TitularAtendimento" width={12} />
-
-          <Pessoa Frm={Frm}  name="t2Substituto" />
-          <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
-          <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
-          <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
-          <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2SubstitutoModalidadeTrabalho" width={12} />
-          <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2SubstitutoAtendimento" width={12} />
-
+    {!Frm.data.turmaRecursal &&  (Frm.data.jef || Frm.data.criminal || Frm.data.execucaoFiscal) && (
+ 
+ <div>
+ <h5>Substituto</h5> 
+<Pessoa Frm={Frm} name="t2Substituto" />
+<Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
+<Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
+<Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
+<Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2SubstitutoModalidadeTrabalho" width={12} />
+<Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2SubstitutoAtendimento" width={12} />
+</div>
+    
+)}
     <h2>3. Auxílios</h2>
     <Frm.TextArea label="Auxílios prestados e recebidos nos últimos 12 meses" name="t3Auxilios" width={12} />
   
@@ -109,9 +115,9 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Critérios de julgamento para os demais feitos"  name="t8CriteriosDeJulgamentoParaOsDemaisFeitos" width={12} />
     <Frm.TextArea label="Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças"  name="t8FluxoDeInformacoes" width={12} />
    
-    {oCaracteristicas[0].name === 'turmaRecursal' ? (
+    {!Frm.data.turmaRecursal && ( 
          <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
-    ) : ('')}
+    )}
  
     <Frm.TextArea label="Há utilização de automação de localizadores (e-Proc) na unidade?"  name="t8UtilizacaoDeAutomacaoDosLocalizadores" width={12} />
     <Frm.TextArea label="Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?"  name="t8PrazosDeSuspensao" width={12} />
