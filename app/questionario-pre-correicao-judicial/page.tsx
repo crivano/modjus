@@ -40,6 +40,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Houve redistribuição de processos?" name="t1RedistribuicaoDeProcessos" width={12} />
 
     <h2>2. Magistrados</h2>
+    <h5>Titular</h5>
      {/* Trocar abaixo para algum componente pessoa */}
      <Pessoa Frm={Frm}  name="t2Titular" />
     <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
@@ -47,14 +48,19 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2TitularSubstituicoes" width={12} />
     <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2TitularModalidadeTrabalho" width={12} />
     <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2TitularAtendimento" width={12} />
-
-          <Pessoa Frm={Frm}  name="t2Substituto" />
-          <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
-          <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
-          <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
-          <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2SubstitutoModalidadeTrabalho" width={12} />
-          <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2SubstitutoAtendimento" width={12} />
-
+    {!Frm.data.turmaRecursal &&  (Frm.data.jef || Frm.data.criminal || Frm.data.execucaoFiscal) && (
+ 
+ <div>
+ <h5>Substituto</h5> 
+<Pessoa Frm={Frm} name="t2Substituto" />
+<Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
+<Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
+<Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
+<Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2SubstitutoModalidadeTrabalho" width={12} />
+<Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2SubstitutoAtendimento" width={12} />
+</div>
+    
+)}
     <h2>3. Auxílios</h2>
     <Frm.TextArea label="Auxílios prestados e recebidos nos últimos 12 meses" name="t3Auxilios" width={12} />
   
@@ -86,6 +92,14 @@ function interview(Frm: FormHelper) {
       </div>
     ))}
 
+    <Frm.TextArea label="Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento" name="t4NomeDosServidoresLotadosCargosEChefias" width={12} />
+    <Frm.TextArea label="Nome e número de servidores sem vínculo com o serviço público" name="t4NomeENumeroDeServidoresSemVinculo" width={12} />
+    <Frm.TextArea label="Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):" name="t4NomeENumeroDeServidoresEmAuxilioOuRequisitados" width={12} />
+   
+    {!Frm.data.turmaRecursal && ( 
+    <Frm.TextArea label="Quantos e quais servidores exercem função de assessoria ao Juiz Federal Substituto? Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?" name="t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular" width={12} />
+    )}
+   
     <h2>5. Estagiários</h2>
     <Frm.Select label="Número de estagiários de nível superior previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
     <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
@@ -116,6 +130,47 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?"  name="t8PrazosDeSuspensao" width={12} />
     <Frm.TextArea label="A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?"  name="t8RespeitoAPadronizacaoDoCNJ" width={12} />
     <Frm.TextArea label="A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?"  name="t8ProcessoSemAssuntoCorrespondente" width={12} />
+
+    {Frm.data.jef && ( 
+     <div>
+          <h5>Juizado Especial Federal</h5>
+         <Frm.TextArea label="O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?"  name="t8AplicativoDeMensagens" width={12} />
+    </div>
+  )}
+
+  {Frm.data.criminal && ( 
+     <div>
+          <h5>Criminal</h5>
+          <Frm.Input label="Há quantos processos com réus presos? Apresente a listagem" name="t8NumeroDeProcessosComReusPresos" width={12} />
+          <Frm.TextArea label="Há anotação na autuação de réus presos?"  name="t8AnotacaoNaAutuacaoDeReusPresos" width={12} />
+          <Frm.TextArea label="É dada prioridade de tramitação nos processos com réus presos?"  name="t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos" width={12} />
+          <Frm.TextArea label="Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?"  name="t8AtualizacaoImediataSituacaoDaParte" width={12} />
+          <Frm.TextArea label="Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)"  name="t8ControleDaIncidenciaDaPrescricaoPenal" width={12} />
+          <Frm.TextArea label="São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?"  name="t8AnexosFisicosNoEproc" width={12} />
+          <Frm.TextArea label="O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?"  name="t8SistemaDeAudienciaDeCustodia" width={12} />
+          <Frm.TextArea label="O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?"  name="t8SaneamentoBNMP2" width={12} />
+          <Frm.TextArea label="Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?"  name="t8MedidasSaneamentoBNMP2" width={12} />
+          <Frm.TextArea label="Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ"  name="t8ProcessosComAlvarasDeSoltura" width={12} />
+          <Frm.TextArea label="Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?"  name="t8ProcedimentoParaArmasEMunicoes" width={12} />
+          <Frm.TextArea label="Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades"  name="t8EntidadesParaServicosOuPrestacaoPecuniaria" width={12} />
+          <Frm.TextArea label="Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?"  name="t8LocalVirtualCESP" width={12} />
+ 
+
+    </div>
+  )}
+
+
+{Frm.data.execucaoFiscal && ( 
+     <div>
+          <h5>Execução Fiscal</h5>
+        <Frm.TextArea label="Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?"  name="t8ProcessosComGrandesDevedores" width={12} />
+          <Frm.TextArea label="Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR."  name="t8TratamentoDadoAosValoresExpressivos" width={12} />
+          <Frm.TextArea label="Detalhar a forma de controle da incidência da prescrição intercorrente"  name="t8ControleDaPrescricaoIntercorrente" width={12} />
+          <Frm.TextArea label="Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?"  name="t8CriterioDeSelecaoDosLeiloeiros" width={12} />
+          <Frm.Input label="Quantos leilões ocorreram nos últimos 12 meses?" name="t8QuantidadeDeLeiloes" width={12} />
+          <Frm.TextArea label="Há leilões designados?"  name="t8LeiloesDesignados" width={12} />
+    </div>
+  )}
 
     <h2>9. Materiais Acautelados na Unidade</h2>
     <Frm.TextArea label="Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)"  name="t9QuantidadeDeMateriaisAcautelados" width={12} />
@@ -166,6 +221,8 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Identificar as ações de restauração de autos, no período do levantamento"  name="t10AcoesDeRestauracao" width={12} />
  
     
+    {!Frm.data.turmaRecursal && ( 
+     <div>
     <h2>11. Audiências</h2>
     <Frm.TextArea label="Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)"  name="t11NumeroDeAudienciasAgendadasERealizadas" width={12} />
     <Frm.TextArea label="Como é feito o controle das audiências canceladas/remarcadas?"  name="t11ControleDeAudienciasCanceladas" width={12} />
@@ -176,7 +233,11 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeAudiencias" width={12} />
     <Frm.TextArea label="Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades"  name="t11AudienciaDeCustodia" width={12} />
     <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
- 
+    </div>
+  )} 
+
+  {Frm.data.turmaRecursal && ( 
+     <div>
     <h2>11. Sessão de Julgamento/Audiências</h2>
     <Frm.TextArea label="Número de sessões de julgamento agendadas e realizadas" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
     <Frm.TextArea label="Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?"  name="t11ControleDePauta" width={12} />
@@ -184,7 +245,8 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="A unidade utiliza o registro audiovisual de sessões de julgamento?"  name="t11RegistroVisualDeSessoesDeJulgamento" width={12} />
     <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo?  Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento" width={12} />
     <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
-     
+    </div>
+  )}      
     <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
     <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
     <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />

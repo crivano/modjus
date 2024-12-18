@@ -2,7 +2,7 @@ import { FormHelper } from "@/libs/form-support"
 import { useEffect, useState } from "react";
 
 async function loadUnidades() {
-    const retorno = await fetch(`http://localhost:3000/api/sei-soap`)
+    const retorno = await fetch(process.env.NEXT_PUBLIC_URL_SEISOAP as string)
     const json = await retorno.json()
     return json
 }
