@@ -11,13 +11,12 @@ export default function SelectUnidade({ Frm, name, width }: { Frm: FormHelper, n
     const [listaDeUnidades, setListaDeUnidades] = useState([] as { id: string, name: string }[])
     const [loading, setLoading] = useState(true)
 
-   useEffect(() => { 
+    useEffect(() => { 
         async function fetchData() {
             const unidades = await loadUnidades()
             console.log('unidades', unidades)
-            const unidadesMapeadas: { id: string, name: string }[] = unidades.map((u: any) => ({ id: u.id, name: `${u.sigla}: ${u.descricao}` }))
+            const unidadesMapeadas: { id: string, name: string }[] = unidades.map((u: any) => ({ id: `${u.sigla}: ${u.descricao}`, name: `${u.sigla}: ${u.descricao}` }))
             setListaDeUnidades([{ id: '', name: '' }, ...unidadesMapeadas])
-        //    setListaDeUnidades(unidadesMapeadas)
             setLoading(false)
         }
         if (loading) fetchData()
@@ -29,4 +28,3 @@ export default function SelectUnidade({ Frm, name, width }: { Frm: FormHelper, n
         <Frm.SelectAutocomplete label="Unidade" name={name} options={listaDeUnidades} width={12} />
     </>
 }
-

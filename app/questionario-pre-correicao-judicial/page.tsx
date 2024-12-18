@@ -34,7 +34,6 @@ function interview(Frm: FormHelper) {
 
     <h2>1. Informações da Unidade</h2>
     <SelectUnidade Frm={Frm} name="t1Unidade" width={4} />
-    {/* <Frm.Input label="Unidade" name="t1Unidade" width={4} /> */}
     <Frm.dateInput label="Data da Instalação" name="t1DataDaInstalacao" width={4} />
     <Frm.TextArea label="Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)" name="t1Competencias" width={12} />
     <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
@@ -108,11 +107,11 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF"  name="t8ProcessosIncluidosNasMetasDoCNJ" width={12} />
     <Frm.TextArea label="Critérios de julgamento para os demais feitos"  name="t8CriteriosDeJulgamentoParaOsDemaisFeitos" width={12} />
     <Frm.TextArea label="Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças"  name="t8FluxoDeInformacoes" width={12} />
+     
+    {!Frm.data.turmaRecursal && (
+      <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
+    )}
    
-    {oCaracteristicas[0].name === 'turmaRecursal' ? (
-         <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
-    ) : ('')}
- 
     <Frm.TextArea label="Há utilização de automação de localizadores (e-Proc) na unidade?"  name="t8UtilizacaoDeAutomacaoDosLocalizadores" width={12} />
     <Frm.TextArea label="Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?"  name="t8PrazosDeSuspensao" width={12} />
     <Frm.TextArea label="A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?"  name="t8RespeitoAPadronizacaoDoCNJ" width={12} />
@@ -179,7 +178,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
  
     <h2>11. Sessão de Julgamento/Audiências</h2>
-    <Frm.TextArea label="Número de sessões de julgamento agendadas e realizadas" var="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas"  name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+    <Frm.TextArea label="Número de sessões de julgamento agendadas e realizadas" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
     <Frm.TextArea label="Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?"  name="t11ControleDePauta" width={12} />
     <Frm.TextArea label="Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?"  name="t11IntervaloDeTempo" width={12} />
     <Frm.TextArea label="A unidade utiliza o registro audiovisual de sessões de julgamento?"  name="t11RegistroVisualDeSessoesDeJulgamento" width={12} />
@@ -187,7 +186,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
      
     <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-    <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" var="t12CumprimentoDasMetasDaInspecaoAnterior"  name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+    <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
     <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
     <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
 
@@ -200,11 +199,369 @@ function interview(Frm: FormHelper) {
 function document(data: any) {
   const Frm = new FormHelper()
   Frm.update(data)
+  const {
+    numproc,
+    dataAbertura,
+    dataEncerramento,
+    turmaRecursal,
+    jef,
+    criminal,
+    execucaoFiscal,
+    t1Unidade,
+    t1DataDaInstalacao,
+    t1Competencias,
+    t1RedistribuicaoDeProcessos,
+    t2Titular,
+    t2TitularTempoDeAtuacaoNaUnidade,
+    t2TitularAfastamentos,
+    t2TitularSubstituicoes,
+    t2TitularModalidadeTrabalho,
+    t2TitularAtendimento,
+    t2Substituto,
+    t2SubstitutoTempoDeAtuacaoNaUnidade,
+    t2SubstitutoAfastamentos,
+    t2SubstitutoSubstituicoes,
+    t2SubstitutoModalidadeTrabalho,
+    t2SubstitutoAtendimento,
+    t3Auxilios,
+    t4UltimaCorreicaoAnalistasJudiciarios,
+    t4UltimaCorreicaoTecnicosJudiciarios,
+    t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca,
+    t4UltimaCorreicaoRequisitadosOuOutros,
+    t4UltimaCorreicaoTotalDeServidores,
+    t4UltimaCorreicaoQuadroPrevisto,
+    t4AtualmenteAnalistasJudiciarios,
+    t4AtualmenteTecnicosJudiciarios,
+    t4AtualmenteAnalistasJudiciariosDeSeguranca,
+    t4AtualmenteRequisitadosOuOutros,
+    t4AtualmenteTotalDeServidores,
+    t4AtualmenteQuadroPrevisto,
+    t4QuantidadeDeServidoresEmTeletrabalho,
+    t4NomeDoServidorEmTeletrabalho,
+    t4PeriodoDoServidorEmTeletrabalho,
+    t4DataDeEnvioDoUltimoRelatorioDoServidorEmTeletrabalho,
+    t4CodigoDoUltimoRelatorioDoServidorEmTeletrabalho
+  } = Frm.data;
   return <div className="row">
     <h1 className="text-center">Relatório de Pré-correição Judicial</h1>
+    <div className="mt-3 col col-12 col-md-4">
+      <label className="report-label form-label">
+        <div>Número do Processo</div>
+      </label>
+      <p className="report-field bold">{numproc || "Não informado"}</p>
+    </div>
+    <div className="mt-3 col col-12 col-md-4">
+      <label className="report-label form-label">
+        <div>Data de Abertura</div>
+      </label>
+      <p className="report-field bold">{dataAbertura || "Não informado"}</p>
+    </div>
+    <div className="mt-3 col col-12 col-md-4">
+      <label className="report-label form-label">
+        <div>Data de Encerramento</div>
+      </label>
+      <p className="report-field bold">{dataEncerramento || "Não informado"}</p>
+    </div>
+
+    <h2>1. Informações da Unidade</h2>
+
+    <div className="mt-3 col col-12 col-md-4">
+      <label className="report-label form-label">
+        <div>Unidade</div>
+      </label>
+      <p className="report-field bold">{t1Unidade || "Não informado"}</p>
+    </div>
+    <div className="mt-3 col col-12 col-md-4">
+      <label className="report-label form-label">
+        <div>Data da Instalação</div>
+      </label>
+      <p className="report-field bold">{t1DataDaInstalacao || "Não informado"}</p>
+    </div>
+
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="form-label">
+        Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)
+      </label>
+      <p><strong>{t1Competencias || "Não informado"}</strong></p>
+    </div>
+
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="form-label">
+        Assinale as Características da Unidade
+      </label>
+      <table className="table table-bordered">
+        <tbody>
+          <tr >
+            <td>Turma Recursal</td>
+            <td><strong>{turmaRecursal ? 'Sim' : 'Não'}</strong></td>
+          </tr>
+          <tr >
+            <td>Juizado Especial Federal</td>
+            <td><strong>{jef ? 'Sim' : 'Não'}</strong></td>
+          </tr>
+          <tr >
+            <td>Criminal</td>
+            <td><strong>{criminal ? 'Sim' : 'Não'}</strong></td>
+          </tr>
+          <tr >
+            <td>Execução Fiscal</td>
+            <td><strong>{execucaoFiscal ? 'Sim' : 'Não'}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="form-label">Houve redistribuição de processos?</label>
+      <p><strong>{t1RedistribuicaoDeProcessos || "Não informado"}</strong></p>
+    </div>
+
+
+    <h2>3. Magistrados</h2>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Titular</div>
+      </label>
+      <p className="report-field"><strong>{t2Titular || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Tempo de atuação na unidade</div>
+      </label>
+      <p className="report-field"><strong>{t2TitularTempoDeAtuacaoNaUnidade || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
+      </label>
+      <p className="report-field"><strong>{t2TitularAfastamentos || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Períodos de substituição, em férias, de outro magistrado</div>
+      </label>
+      <p className="report-field"><strong>{t2TitularSubstituicoes || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)
+        </div>
+      </label>
+      <p className="report-field"><strong>{t2TitularModalidadeTrabalho || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
+      </label>
+      <p className="report-field"><strong>{t2TitularAtendimento || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Substituto</div>
+      </label>
+      <p className="report-field"><strong>{t2Substituto || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Tempo de atuação na unidade</div>
+      </label>
+      <p className="report-field"><strong>{t2SubstitutoTempoDeAtuacaoNaUnidade || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
+      </label>
+      <p className="report-field"><strong>{t2SubstitutoAfastamentos || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Períodos de substituição, em férias, de outro magistrado</div>
+      </label>
+      <p className="report-field"><strong>{t2SubstitutoSubstituicoes || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
+      </label>
+      <p className="report-field"><strong>{t2SubstitutoModalidadeTrabalho || "Não informado"}</strong></p>
+    </div>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
+      </label>
+      <p className="report-field"><strong>{t2SubstitutoAtendimento || "Não informado"}</strong></p>
+    </div>
+
+    <h2>4. Auxílios</h2>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>Auxílios prestados e recebidos nos últimos 12 meses</div>
+      </label>
+      <p className="report-field"><strong>{t3Auxilios || "Não informado"}</strong></p>
+    </div>
+
+    <h2>5. Servidores</h2>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>
+          Discriminar a quantidade de cargos prevista na lotação e a quantidade efetivamente existente no tocante aos analistas judiciários, técnicos judiciários (área administrativa e segurança e transportes), requisitados ou outros:
+        </div>
+      </label>
+    </div>
+    <h4>Última Correição</h4>
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>
+          ### calcular automaticamente o total de servidores
+        </div>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Analistas Judiciários
+        </div>
+        <p className="report-field"><strong>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Técnicos Judiciários
+        </div>
+        <p className="report-field"><strong>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Técnicos Jud. de Segurança
+        </div>
+        <p className="report-field"><strong>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Requisitados ou outros
+        </div>
+        <p className="report-field"><strong>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Total de servidores
+        </div>
+        <p className="report-field"><strong>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Quadro Previsto
+        </div>
+        <p className="report-field"><strong>{t4UltimaCorreicaoQuadroPrevisto || "Não informado"}</strong></p>
+      </label>
+    </div>
+
+    <h2>Atualmente</h2>
+
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Analistas Judiciários
+        </div>
+        <p className="report-field"><strong>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Técnicos Judiciários
+        </div>
+        <p className="report-field"><strong>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Técnicos Jud. de Segurança
+        </div>
+        <p className="report-field"><strong>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Requisitados ou outros
+        </div>
+        <p className="report-field"><strong>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Total de servidores
+        </div>
+        <p className="report-field"><strong>{t4AtualmenteTotalDeServidores || "Não informado"}</strong></p>
+      </label>
+    </div>
+    <div className="mt-3 col col-12 col-md-2">
+      <label className="report-label form-label">
+        <div>
+          Quadro Previsto
+        </div>
+        <p className="report-field"><strong>{t4AtualmenteQuadroPrevisto || "Não informado"}</strong></p>
+      </label>
+    </div>
+
+
+    <div className="mt-3 col col-12 col-md-12">
+      <label className="report-label form-label">
+        <div>
+          Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução
+        </div>
+        <p className="report-field"><strong>{t4QuantidadeDeServidoresEmTeletrabalho || "Não informado"}</strong></p>
+      </label>
+    </div>
     {
-      
-    }
+    Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; codigo: any }, i: number) => (
+      <div key={i} className="d-flex flex-wrap">
+        <div className="mt-3 col col-12 col-md-3">
+          <label className="report-label form-label">
+            <div>
+              Servidor {i + 1}
+            </div>
+            <p className="report-field"><strong>{servidor.nome || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-3">
+          <label className="report-label form-label">
+            <div>
+              Período
+            </div>
+            <p className="report-field"><strong>{servidor.periodo || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-3">
+          <label className="report-label form-label">
+            <div>
+              Data de Envio do Relatório
+            </div>
+            <p className="report-field"><strong>{servidor.dataEnvio || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-3">
+          <label className="report-label form-label">
+            <div>
+              Código do Relatório
+            </div>
+            <p className="report-field"><strong>{servidor.codigo || "Não informado"}</strong></p>
+          </label>
+        </div>
+      </div>
+    ))}
     {interview(Frm)}
   </div>
 }
