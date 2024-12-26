@@ -314,6 +314,43 @@ export class FormHelper {
         )
     }
 
+    public MoneyInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const formatCurrency = (value: string) => {
+            const numericValue = value.replace(/\D/g, '');
+            const formattedValue = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(parseFloat(numericValue) / 100);
+            return formattedValue.replace('R$', '').trim();
+        };
+
+        const parseCurrency = (value: string) => {
+            return value.replace(/\D/g, '');
+        };
+
+        const value = this.get(name) || '0';
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="text"
+                    value={formatCurrency(value)}
+                    onChange={e => this.set(name, parseCurrency(e.target.value))}
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{formatCurrency(value)}</strong></p>
+            </div>
+        );
+    }
+
     public Button = ({ onClick, variant, children }: { onClick: () => void, variant?: string, children: any }) => {
         return this.setData ? (
             <div className="col col-auto mt-3">
