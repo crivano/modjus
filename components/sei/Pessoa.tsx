@@ -3,6 +3,7 @@ import { FormHelper } from "@/libs/form-support";
 import styles from '@/PessoaMany.module.css';
 import { Modal } from 'react-bootstrap';
 import TableRecords from '../table-records';
+import ErrorPopup from "@/app/components/ErrorPopup";
 
 interface Orgao {
     idOrgao: string; // ID do órgão
@@ -12,14 +13,17 @@ interface Orgao {
 
 // Carregar dados de pessoa do Siga-Doc
 async function loadPessoa(texto: string) {
-
+    try {
     const retorno = await fetch(`/api/siga-rest/pessoas?texto=${encodeURI(texto)}`);
     const json = await retorno.json();
-    return json;
-
-    // Retorna apenas os itens que atendem ao critério
-
-}
+    if (json.erro) {
+        throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+      }
+      return json;
+    } catch (error: any) {
+        throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+ } 
+ }
 
 
 
@@ -35,14 +39,17 @@ type Pessoa = {
 }
 
 export default function PessoaMany({ Frm, name }: PessoaProps) {
+    const [error, setError] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [popupData, setPopupData] = useState<any[]>([]);
     const [selectedValue, setSelectedValue] = useState<string>('');
 
 
-    async function handleClick(Frm: FormHelper, name: string, setPopupData: (data: any[]) => void, setIsOpen: (data: boolean) => void) {
+    async function handleClick(Frm: FormHelper, name: string, setPopupData: (data: any[]) => void, setIsOpen: (data: boolean) => void, setError: (message: string) => void) {
+        try {
         const sigla = Frm.data[name].sigla
         const json = await loadPessoa(sigla)
+        
         if (!json.list) return
 
         const lista: Pessoa[] =
@@ -58,6 +65,10 @@ export default function PessoaMany({ Frm, name }: PessoaProps) {
             setPopupData(lista)
             setIsOpen(true);
         }
+           setError(""); // Clear any previous error
+         } catch (error: any) {
+           setError(error.message);
+      }
     }
 
     const handleSelecionado = (s: string) => {
@@ -76,10 +87,13 @@ export default function PessoaMany({ Frm, name }: PessoaProps) {
             <div className="col col-12">
                 <div className="row">
                     <Frm.Input label="Sigla " name={`${name}.sigla`} width={3} />
-                    <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen)} >...</Frm.Button>
+                    <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen, setError)} >...</Frm.Button>
                     <Frm.Input label="Nome" name={`${name}.descricao`} width={""} />
                 </div>
+                <div classname="row">  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
+
             </div>
+          
 
             <Modal size="lg" show={isOpen} onHide={() => setIsOpen(false)} aria-labelledby="escolha-de-pessoa">
                 <Modal.Header closeButton>
