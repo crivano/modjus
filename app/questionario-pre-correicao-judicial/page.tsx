@@ -42,7 +42,7 @@ function interview(Frm: FormHelper) {
     <h2>2. Magistrados</h2>
     <h5>Titular</h5>
      {/* Trocar abaixo para algum componente pessoa */}
-     <Pessoa Frm={Frm}  name="t2Titular" />
+     <Pessoa Frm={Frm}  name="t2Titular" label1="Sigla do Titular" label2="Nome do Titular" />
     <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
     <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2TitularAfastamentos" width={12} />
     <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2TitularSubstituicoes" width={12} />
@@ -52,7 +52,7 @@ function interview(Frm: FormHelper) {
 
  <div>
  <h5>Substituto</h5>
-<Pessoa Frm={Frm} name="t2Substituto" />
+<Pessoa Frm={Frm} name="t2Substituto" label1="Sigla do Substituto" label2="Nome do Substituto" />
 <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
 <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
 <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />

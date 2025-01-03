@@ -30,6 +30,8 @@ async function loadPessoa(texto: string) {
 interface PessoaProps {
     Frm: FormHelper;
     name: string;
+    label1: string;
+    label2: string;
 }
 
 type Pessoa = {
@@ -38,7 +40,7 @@ type Pessoa = {
     idOrgao: string
 }
 
-export default function PessoaMany({ Frm, name }: PessoaProps) {
+export default function PessoaMany({ Frm, name, label1, label2 }: PessoaProps) {
     const [error, setError] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [popupData, setPopupData] = useState<any[]>([]);
@@ -86,11 +88,11 @@ export default function PessoaMany({ Frm, name }: PessoaProps) {
         <>
             <div className="col col-12">
                 <div className="row">
-                    <Frm.Input label="Sigla " name={`${name}.sigla`} width={3} />
+                    <Frm.Input label={`${label1}`}   name={`${name}.sigla`} width={3} />
                     <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen, setError)} >...</Frm.Button>
-                    <Frm.Input label="Nome" name={`${name}.descricao`} width={""} />
+                    <Frm.Input label={`${label2}`} name={`${name}.descricao`} width={""} />
                 </div>
-                <div classname="row">  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
+                <div>  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
 
             </div>
           
