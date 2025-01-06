@@ -4,6 +4,7 @@ import { z, ZodTypeAny, ZodError } from 'zod'
 import ReactSelect from 'react-select'
 import _ from 'lodash'
 import Pessoa from "@/components/sei/Pessoa"
+import TextareaComponent from './../components/sei/TextAreaTest';
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -422,6 +423,157 @@ export class FormHelper {
                             <Pessoa Frm={this} name={`${name}[${index}]`} />
                         </div>
                         <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+    public DynamicListParticipantesExtras = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { nome: '', email: '', funcao: '', unidade: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1">
+                            <Form.Group className="mb-2">
+                                <Form.Label>Nome</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].nome`)}
+                                    onChange={e => this.set(`${name}[${index}].nome`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={this.get(`${name}[${index}].email`)}
+                                    onChange={e => this.set(`${name}[${index}].email`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Função</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].funcao`)}
+                                    onChange={e => this.set(`${name}[${index}].funcao`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Unidade</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].unidade`)}
+                                    onChange={e => this.set(`${name}[${index}].unidade`, e.target.value)}
+                                />
+                            </Form.Group>
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+    public DynamicListItensDePauta = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { item: '', comentarios: '', acoes: [] }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const addAcao = (itemIndex: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData[itemIndex].acoes.push({ acao: '', responsavel: '', dataPrevista: '' });
+            this.set(name, newData);
+        };
+
+        const removeAcao = (itemIndex: number, acaoIndex: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData[itemIndex].acoes.splice(acaoIndex, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                {items.map((item: any, index: number) => (
+                    <div key={index} className="mb-2">
+                        <div className="d-flex align-items-center">
+                            <div className="flex-grow-1">
+                                <Form.Group className="mb-2">
+                                    <Form.Label>Item {index + 1}</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={this.get(`${name}[${index}].item`)}
+                                        onChange={e => this.set(`${name}[${index}].item`, e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-2">
+                                    <Form.Label>Comentários</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        value={this.get(`${name}[${index}].comentarios`)}
+                                        onChange={e => this.set(`${name}[${index}].comentarios`, e.target.value)}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 align-self-start">-</Button>
+                        </div>
+                        <Form.Label>Ações</Form.Label>
+                        <Button variant="success" onClick={() => addAcao(index)} className="ms-2">+</Button>
+                        {item.acoes.map((acao: any, acaoIndex: number) => (
+                            <div key={acaoIndex} className="d-flex align-items-center mb-2">
+                                <div className="flex-grow-1">
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Ação {acaoIndex + 1}</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={this.get(`${name}[${index}].acoes[${acaoIndex}].acao`)}
+                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].acao`, e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Responsável</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={this.get(`${name}[${index}].acoes[${acaoIndex}].responsavel`)}
+                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].responsavel`, e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Data Prevista</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            value={this.get(`${name}[${index}].acoes[${acaoIndex}].dataPrevista`)}
+                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].dataPrevista`, e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </div>
+                                <Button variant="danger" onClick={() => removeAcao(index, acaoIndex)} className="ms-2 align-self-start">-</Button>
+                            </div>
+                        ))}
                     </div>
                 ))}
             </div>

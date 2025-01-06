@@ -34,6 +34,8 @@ type Pessoa = {
     sigla: string
     nome: string
     idOrgao: string
+    cargo: string
+    siglaUnidade: string
 }
 
 export default function PessoaMany({ Frm, name }: PessoaProps) {
@@ -53,12 +55,14 @@ export default function PessoaMany({ Frm, name }: PessoaProps) {
             if (!json.list) return;
 
             const lista: Pessoa[] =
-                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao } as Pessoa))
+                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao, cargo: u.funcaoConfianca.nome, siglaUnidade: u.lotacao.sigla} as Pessoa))
                     .filter((item: Pessoa) => ['1', '2', '3'].includes(item.idOrgao));
 
             if (lista.length === 1) {
                 Frm.set(`${name}.sigla`, lista[0].sigla);
                 Frm.set(`${name}.descricao`, lista[0].nome);
+                Frm.set(`${name}.cargo`, lista[0].cargo);
+                Frm.set(`${name}.siglaUnidade`, lista[0].cargo);
             } else if (lista.length > 1) {
                 setPopupData(lista);
                 setIsOpen(true);
