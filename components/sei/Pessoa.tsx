@@ -14,18 +14,16 @@ interface Orgao {
 // Carregar dados de pessoa do Siga-Doc
 async function loadPessoa(texto: string) {
     try {
-    const retorno = await fetch(`/api/siga-rest/pessoas?texto=${encodeURI(texto)}`);
-    const json = await retorno.json();
-    if (json.erro) {
-        throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
-      }
-      return json;
+        const retorno = await fetch(`/api/siga-rest/pessoas?texto=${encodeURI(texto)}`);
+        const json = await retorno.json();
+        if (json.erro) {
+            throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+        }
+        return json;
     } catch (error: any) {
         throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
- } 
- }
-
-
+    }
+}
 
 interface PessoaProps {
     Frm: FormHelper;
@@ -44,40 +42,38 @@ export default function PessoaMany({ Frm, name }: PessoaProps) {
     const [popupData, setPopupData] = useState<any[]>([]);
     const [selectedValue, setSelectedValue] = useState<string>('');
 
-
     async function handleClick(Frm: FormHelper, name: string, setPopupData: (data: any[]) => void, setIsOpen: (data: boolean) => void, setError: (message: string) => void) {
         try {
-        const sigla = Frm.data[name].sigla
-        const json = await loadPessoa(sigla)
-        
-        if (!json.list) return
+            const sigla = Frm.get(name)?.sigla;
+            if (!sigla) {
+                throw new Error("Sigla não informada");
+            }
+            const json = await loadPessoa(sigla);
 
-        const lista: Pessoa[] =
-            json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao } as Pessoa))
-                .filter((item: Pessoa) => ['1', '2', '3'].includes(item.idOrgao))
+            if (!json.list) return;
 
-        if (lista.length === 1) {
-            const newData = { ...Frm.data };
-            newData[name].sigla = lista[0].sigla;
-            newData[name].descricao = lista[0].nome;
-            if (Frm.setData) Frm.setData(newData);
-        } else if (lista.length > 1) {
-            setPopupData(lista)
-            setIsOpen(true);
+            const lista: Pessoa[] =
+                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao } as Pessoa))
+                    .filter((item: Pessoa) => ['1', '2', '3'].includes(item.idOrgao));
+
+            if (lista.length === 1) {
+                Frm.set(`${name}.sigla`, lista[0].sigla);
+                Frm.set(`${name}.descricao`, lista[0].nome);
+            } else if (lista.length > 1) {
+                setPopupData(lista);
+                setIsOpen(true);
+            }
+            setError(""); // Clear any previous error
+        } catch (error: any) {
+            setError(error.message);
         }
-           setError(""); // Clear any previous error
-         } catch (error: any) {
-           setError(error.message);
-      }
     }
 
     const handleSelecionado = (s: string) => {
         const selectedItem = popupData.find(item => item.sigla === s);
         if (selectedItem) {
-            const newData = { ...Frm.data };
-            newData[name].sigla = selectedItem.sigla;
-            newData[name].descricao = selectedItem.nome;
-            if (Frm.setData) Frm.setData(newData);
+            Frm.set(`${name}.sigla`, selectedItem.sigla);
+            Frm.set(`${name}.descricao`, selectedItem.nome);
         }
         setIsOpen(false);
     }
@@ -90,17 +86,15 @@ export default function PessoaMany({ Frm, name }: PessoaProps) {
                     <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen, setError)} >...</Frm.Button>
                     <Frm.Input label="Nome" name={`${name}.descricao`} width={""} />
                 </div>
-                <div classname="row">  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
-
+                {error && <ErrorPopup message={error} onClose={() => setError("")} />}
             </div>
-          
 
             <Modal size="lg" show={isOpen} onHide={() => setIsOpen(false)} aria-labelledby="escolha-de-pessoa">
                 <Modal.Header closeButton>
                     <Modal.Title>Escolha uma Pessoa</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <TableRecords records={popupData} onSelecionado={handleSelecionado} spec="Pessoas" pageSize={10}/>
+                    <TableRecords records={popupData} onSelecionado={handleSelecionado} spec="Pessoas" pageSize={10} />
                 </Modal.Body>
             </Modal>
         </>

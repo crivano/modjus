@@ -3,6 +3,7 @@ import ReactTextareaAutosize from 'react-textarea-autosize'
 import { z, ZodTypeAny, ZodError } from 'zod'
 import ReactSelect from 'react-select'
 import _ from 'lodash'
+import Pessoa from "@/components/sei/Pessoa"
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -162,6 +163,39 @@ export class FormHelper {
                     type="date"
                     value={value ? parseDate(value) : ''}
                     onChange={e => this.set(name, formatDate(e.target.value))}
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{value}</strong></p>
+            </div>
+        );
+    }
+    public timeInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const formatTime = (time: string) => {
+            const [hours, minutes] = time.split(':');
+            return `${hours}:${minutes}`;
+        };
+
+        const parseTime = (time: string) => {
+            const [hours, minutes] = time.split(':');
+            return `${hours}:${minutes}`;
+        };
+
+        const value = this.get(name) || '';
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="time"
+                    value={value ? parseTime(value) : ''}
+                    onChange={e => this.set(name, formatTime(e.target.value))}
                     placeholder=""
                     key={name}
                 />
@@ -363,6 +397,35 @@ export class FormHelper {
                 <p>{children}</p>
             </div>
         )
+    }
+    public DynamicListPessoa = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { sigla: '', descricao: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1">
+                            <Pessoa Frm={this} name={`${name}[${index}]`} />
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
     }
 }
 
