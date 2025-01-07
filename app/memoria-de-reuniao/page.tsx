@@ -15,8 +15,10 @@ function meetingForm(Frm: FormHelper) {
         <div className={styles.scrollableContainer}>
             <h1>Memória de Reunião</h1>
             <Frm.TextArea label="Objetivo da Reunião" name="objetivo" width={12} />
-            <Frm.timeInput label="Horário" name="horario" width={4} />
-            <Frm.Input label="Local" name="local" width={4} />
+            <div className="row">
+                <Frm.timeInput label="Horário" name="horario" width={6} />
+                <Frm.Input label="Local" name="local" width={6} />
+            </div>
             <Frm.DynamicListPessoa label="Participantes" name="participantes" width={12} />
             <Frm.DynamicListParticipantesExtras label="Participantes Extras" name="participantesExtras" width={12} />
             <Frm.DynamicListItensDePauta label="Itens de Pauta" name="itensDePauta" width={12} />
@@ -41,15 +43,17 @@ function document(data: any) {
             <h1 className="text-center">Memória de Reunião</h1>
             <div className="mt-3 col col-12 col-md-12">
                 <label className="report-label form-label">Objetivo da Reunião</label>
-                <p className="report-field">{objetivo}</p>
+                <p className="report-field"><strong>{objetivo || "Não informado"}</strong></p>
             </div>
-            <div className="mt-3 col col-12 col-md-4">
-                <label className="report-label form-label">Horário</label>
-                <p className="report-field">{horario}</p>
-            </div>
-            <div className="mt-3 col col-12 col-md-4">
-                <label className="report-label form-label">Local</label>
-                <p className="report-field">{local}</p>
+            <div className="row">
+                <div className="mt-3 col col-12 col-md-6">
+                    <label className="report-label form-label">Horário</label>
+                    <p className="report-field"><strong>{horario || "Não informado"}</strong></p>
+                </div>
+                <div className="mt-3 col col-12 col-md-6">
+                    <label className="report-label form-label">Local</label>
+                    <p className="report-field"><strong>{local || "Não informado"}</strong></p>
+                </div>
             </div>
             <div className="mt-3 col col-12 col-md-12">
                 <table className="table table-bordered">
@@ -79,7 +83,7 @@ function document(data: any) {
                 </table>
             </div>
             <div className="mt-3 col col-12 col-md-12">
-                <label className="report-label form-label">Itens de Pauta</label>
+                <label className="report-label form-label" >Itens de Pauta</label>
                 <table className="table table-bordered">
                     <thead>
                         <tr>
@@ -91,7 +95,7 @@ function document(data: any) {
                             <tr key={index}>
                                 <td>
                                     <strong>{index + 1}: {item.item || "Não informado"}</strong>
-                                    <p>{item.comentarios || "Não informado"}</p>
+                                    <p dangerouslySetInnerHTML={{ __html: item.comentarios || "Não informado" }}></p>
                                     {item.acoes && item.acoes.length > 0 && (
                                         <table className="table table-bordered">
                                             <thead>

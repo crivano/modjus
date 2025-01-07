@@ -4,7 +4,7 @@ import { z, ZodTypeAny, ZodError } from 'zod'
 import ReactSelect from 'react-select'
 import _ from 'lodash'
 import Pessoa from "@/components/sei/Pessoa"
-import TextareaComponent from './../components/sei/TextAreaTest';
+import { Editor } from '@tinymce/tinymce-react';
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -143,6 +143,7 @@ export class FormHelper {
             </div>
         )
     }
+
     public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         const formatDate = (date: string) => {
             const [year, month, day] = date.split('-');
@@ -236,8 +237,8 @@ export class FormHelper {
             </Form.Group >
         ) : (
             <div className={this.colClass(width)}>
-                <Form.Label>{label}</Form.Label>
-                <p><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
         )
     }
@@ -532,10 +533,25 @@ export class FormHelper {
                                 </Form.Group>
                                 <Form.Group className="mb-2">
                                     <Form.Label>Comentários</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        value={this.get(`${name}[${index}].comentarios`)}
-                                        onChange={e => this.set(`${name}[${index}].comentarios`, e.target.value)}
+                                    <Editor
+                                        apiKey="okl0dnjy21cv4l4ea6r0ealf62lttmbjpsbqtevspcitokf4"
+                                        value={this.get(`${name}[${index}].comentarios`) || ''}
+                                        init={{
+                                            height: 300,
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount'
+                                            ],
+                                            toolbar:
+                                                'undo redo | formatselect | bold italic backcolor | \
+                                                alignleft aligncenter alignright alignjustify | \
+                                                bullist numlist outdent indent | removeformat | help'
+                                        }}
+                                        onEditorChange={(content) => {
+                                            this.set(`${name}[${index}].comentarios`, content);
+                                        }}
                                     />
                                 </Form.Group>
                             </div>
@@ -559,7 +575,7 @@ export class FormHelper {
                                         <Form.Control
                                             type="text"
                                             value={this.get(`${name}[${index}].acoes[${acaoIndex}].responsavel`)}
-                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].responsavel`, e.target.value)}
+                                            onChange={e => this.set(`${name}[${acaoIndex}].responsavel`, e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group className="mb-2">
@@ -567,7 +583,7 @@ export class FormHelper {
                                         <Form.Control
                                             type="date"
                                             value={this.get(`${name}[${index}].acoes[${acaoIndex}].dataPrevista`)}
-                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].dataPrevista`, e.target.value)}
+                                            onChange={e => this.set(`${name}[${acaoIndex}].dataPrevista`, e.target.value)}
                                         />
                                     </Form.Group>
                                 </div>
