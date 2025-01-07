@@ -39,7 +39,7 @@ function document(data: any) {
     } = Frm.data;
 
     return (
-        <div style={{ maxHeight: '80vh', overflowY: 'auto', padding: '10px' }}>
+        <div className='scrollableContainer'>
             <h1 style={{ textAlign: 'center' }}>Memória de Reunião</h1>
             <div style={{ marginTop: '1rem', width: '100%' }}>
                 <label style={{ fontWeight: 'bold' }}>Objetivo da Reunião</label>
@@ -112,7 +112,7 @@ function document(data: any) {
                                                         <td style={{ border: '1px solid black' }}>{index + 1}.{acaoIndex + 1}</td>
                                                         <td style={{ border: '1px solid black' }}>{acao.acao || "Não informado"}</td>
                                                         <td style={{ border: '1px solid black' }}>{acao.responsavel || "Não informado"}</td>
-                                                        <td style={{ border: '1px solid black' }}>{acao.dataPrevista ? new Date(acao.dataPrevista).toLocaleDateString('pt-BR') : "Não informado"}</td>
+                                                        <td style={{ border: '1px solid black' }}>{acao.dataPrevista || "Não informado"}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>

@@ -503,6 +503,9 @@ export class FormHelper {
 
         const addAcao = (itemIndex: number) => {
             const newData = [...(this.get(name) || [])];
+            if (!newData[itemIndex].acoes) {
+                newData[itemIndex].acoes = [];
+            }
             newData[itemIndex].acoes.push({ acao: '', responsavel: '', dataPrevista: '' });
             this.set(name, newData);
         };
@@ -559,7 +562,7 @@ export class FormHelper {
                         </div>
                         <Form.Label>Ações</Form.Label>
                         <Button variant="success" onClick={() => addAcao(index)} className="ms-2">+</Button>
-                        {item.acoes.map((acao: any, acaoIndex: number) => (
+                        {item.acoes?.map((acao: any, acaoIndex: number) => (
                             <div key={acaoIndex} className="d-flex align-items-center mb-2">
                                 <div className="flex-grow-1">
                                     <Form.Group className="mb-2">
@@ -575,15 +578,15 @@ export class FormHelper {
                                         <Form.Control
                                             type="text"
                                             value={this.get(`${name}[${index}].acoes[${acaoIndex}].responsavel`)}
-                                            onChange={e => this.set(`${name}[${acaoIndex}].responsavel`, e.target.value)}
+                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].responsavel`, e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group className="mb-2">
                                         <Form.Label>Data Prevista</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            value={this.get(`${name}[${index}].acoes[${acaoIndex}].dataPrevista`)}
-                                            onChange={e => this.set(`${name}[${acaoIndex}].dataPrevista`, e.target.value)}
+                                        <this.dateInput
+                                            label=""
+                                            name={`${name}[${index}].acoes[${acaoIndex}].dataPrevista`}
+                                            width={12}
                                         />
                                     </Form.Group>
                                 </div>
@@ -595,6 +598,7 @@ export class FormHelper {
             </div>
         );
     }
+
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase
