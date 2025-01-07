@@ -24,238 +24,242 @@ function interview(Frm: FormHelper) {
 
   const oDe1a20  = Array.from({ length: 21 }, (_, i) => ({ id: `${i}`, name: `${i}` }))
 
-  return <>
-    <Head>
+  return (
+    <div className="scrollableContainer">
+      <Head>
         <meta charSet="ISO-8859-1" />
       </Head>
-    <Frm.Input label="Número do Processo" name="numproc" width={4} />
-    <Frm.dateInput label="Data de Abertura" name="dataAbertura" width={4} />
-    <Frm.dateInput label="Data de Encerramento" name="dataEncerramento" width={4} />
-
-    <h2>1. Informações da Unidade</h2>
-    <SelectUnidade Frm={Frm} name="t1Unidade" width={4} />
-    <Frm.dateInput label="Data da Instalação" name="t1DataDaInstalacao" width={4} />
-    <Frm.TextArea label="Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)" name="t1Competencias" width={12} />
-    <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
-    <Frm.TextArea label="Houve redistribuição de processos?" name="t1RedistribuicaoDeProcessos" width={12} />
-
-    <h2>2. Magistrados</h2>
-    <h5>Titular</h5>
-     {/* Trocar abaixo para algum componente pessoa */}
-     <Pessoa Frm={Frm}  name="t2Titular" label1="Sigla do Titular" label2="Nome do Titular" />
-    <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
-    <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2TitularAfastamentos" width={12} />
-    <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2TitularSubstituicoes" width={12} />
-    <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2TitularModalidadeTrabalho" width={12} />
-    <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2TitularAtendimento" width={12} />
-    {!Frm.data.turmaRecursal &&  (Frm.data.jef || Frm.data.criminal || Frm.data.execucaoFiscal) && (
-
- <div>
- <h5>Substituto</h5>
-<Pessoa Frm={Frm} name="t2Substituto" label1="Sigla do Substituto" label2="Nome do Substituto" />
-<Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
-<Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
-<Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
-<Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2SubstitutoModalidadeTrabalho" width={12} />
-<Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2SubstitutoAtendimento" width={12} />
-</div>
-
-)}
-    <h2>3. Auxílios</h2>
-    <Frm.TextArea label="Auxílios prestados e recebidos nos últimos 12 meses" name="t3Auxilios" width={12} />
-
-    <h2>4. Servidores</h2>
-    <p>Discriminar a quantidade de cargos prevista na lotação e a quantidade efetivamente existente no tocante aos analistas judiciários, técnicos judiciários (área administrativa e segurança e transportes), requisitados ou outros:</p>
-    <h4>Última Correição</h4>
-    <p>### calcular automaticamente o total de servidores</p>
-    <Frm.Select label="Analistas Judiciários" name="t4UltimaCorreicaoAnalistasJudiciarios" options={oDe1a20} width={2} />
-    <Frm.Select label="Técnicos Judiciários" name="t4UltimaCorreicaoTecnicosJudiciarios" options={oDe1a20} width={2} />
-    <Frm.Select label="Técnicos Jud. de Segurança" name="t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
-    <Frm.Select label="Requisitados ou outros" name="t4UltimaCorreicaoRequisitadosOuOutros" options={oDe1a20} width={2} />
-    <Frm.Select label="Total de servidores" name="t4UltimaCorreicaoTotalDeServidores" options={oDe1a20} width={2} />
-    <Frm.Select label="Quadro Previsto de servidores" name="t4UltimaCorreicaoQuadroPrevisto" options={oDe1a20} width={2} />
-    <h4>Atualmente</h4>
-    <Frm.Select label="Analistas Judiciários" name="t4AtualmenteAnalistasJudiciarios" options={oDe1a20} width={2} />
-    <Frm.Select label="Técnicos Judiciários" name="t4AtualmenteTecnicosJudiciarios" options={oDe1a20} width={2} />
-    <Frm.Select label="Técnicos Jud. de Segurança" name="t4AtualmenteAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
-    <Frm.Select label="Requisitados ou outros" name="t4AtualmenteRequisitadosOuOutros" options={oDe1a20} width={2} />
-    <Frm.Select label="Total de servidores" name="t4AtualmenteTotalDeServidores" options={oDe1a20} width={2} />
-    <Frm.Select label="Quadro Previsto de servidores" name="t4AtualmenteQuadroPrevisto" options={oDe1a20} width={2} />
-
-    <Frm.Select label="Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução" name="t4QuantidadeDeServidoresEmTeletrabalho" options={oDe1a20} width={12} />
-    {Array.from({ length: Frm.data.t4QuantidadeDeServidoresEmTeletrabalho }).map((_, i) => (
-      <div className="row" key={i}>
-        <Frm.Input label={i == 0 ? 'Servidor em teletrabalho' : ''} name={`t4NomeDoServidorEmTeletrabalho${i}`} width={3} />
-        <Frm.Input label={i == 0 ? 'Período' : ''} name={`t4PeriodoDoServidorEmTeletrabalho${i}`} width={3} />
-        <Frm.Input label={i == 0 ? 'Data de envio' : ''} name={`t4DataDeEnvioDoUltimoRelatorioDoServidorEmTeletrabalho${i}`} width={3} />
-        <Frm.Input label={i == 0 ? 'Número' : ''} name={`t4CodigoDoUltimoRelatorioDoServidorEmTeletrabalho${i}`} width={3} />
+      <div className="row mb-3">
+          <Frm.Input label="Número do Processo" name="numproc" width={4} />
+          <Frm.dateInput label="Data de Abertura" name="dataAbertura" width={4} />
+          <Frm.dateInput label="Data de Encerramento" name="dataEncerramento" width={4} />
       </div>
-    ))}
 
-    <Frm.TextArea label="Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento" name="t4NomeDosServidoresLotadosCargosEChefias" width={12} />
-    <Frm.TextArea label="Nome e número de servidores sem vínculo com o serviço público" name="t4NomeENumeroDeServidoresSemVinculo" width={12} />
-    <Frm.TextArea label="Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):" name="t4NomeENumeroDeServidoresEmAuxilioOuRequisitados" width={12} />
+      <h2>1. Informações da Unidade</h2>
+      <SelectUnidade Frm={Frm} name="t1Unidade" width={4} />
+      <Frm.dateInput label="Data da Instalação" name="t1DataDaInstalacao" width={4} />
+      <Frm.TextArea label="Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)" name="t1Competencias" width={12} />
+      <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
+      <Frm.TextArea label="Houve redistribuição de processos?" name="t1RedistribuicaoDeProcessos" width={12} />
 
-    {!Frm.data.turmaRecursal && (
-    <Frm.TextArea label="Quantos e quais servidores exercem função de assessoria ao Juiz Federal Substituto? Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?" name="t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular" width={12} />
+      <h2>2. Magistrados</h2>
+      <h5>Titular</h5>
+       {/* Trocar abaixo para algum componente pessoa */}
+       <Pessoa Frm={Frm}  name="t2Titular" label1="Sigla do Titular" label2="Nome do Titular" />
+      <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
+      <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2TitularAfastamentos" width={12} />
+      <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2TitularSubstituicoes" width={12} />
+      <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2TitularModalidadeTrabalho" width={12} />
+      <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2TitularAtendimento" width={12} />
+      {!Frm.data.turmaRecursal &&  (Frm.data.jef || Frm.data.criminal || Frm.data.execucaoFiscal) && (
+
+   <div>
+   <h5>Substituto</h5>
+  <Pessoa Frm={Frm} name="t2Substituto" label1="Sigla do Substituto" label2="Nome do Substituto" />
+  <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
+  <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
+  <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
+  <Frm.TextArea label="Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)" name="t2SubstitutoModalidadeTrabalho" width={12} />
+  <Frm.TextArea label="Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)" name="t2SubstitutoAtendimento" width={12} />
+  </div>
+
+  )}
+      <h2>3. Auxílios</h2>
+      <Frm.TextArea label="Auxílios prestados e recebidos nos últimos 12 meses" name="t3Auxilios" width={12} />
+
+      <h2>4. Servidores</h2>
+      <p>Discriminar a quantidade de cargos prevista na lotação e a quantidade efetivamente existente no tocante aos analistas judiciários, técnicos judiciários (área administrativa e segurança e transportes), requisitados ou outros:</p>
+      <h4>Última Correição</h4>
+      <p>### calcular automaticamente o total de servidores</p>
+      <Frm.Select label="Analistas Judiciários" name="t4UltimaCorreicaoAnalistasJudiciarios" options={oDe1a20} width={2} />
+      <Frm.Select label="Técnicos Judiciários" name="t4UltimaCorreicaoTecnicosJudiciarios" options={oDe1a20} width={2} />
+      <Frm.Select label="Técnicos Jud. de Segurança" name="t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
+      <Frm.Select label="Requisitados ou outros" name="t4UltimaCorreicaoRequisitadosOuOutros" options={oDe1a20} width={2} />
+      <Frm.Select label="Total de servidores" name="t4UltimaCorreicaoTotalDeServidores" options={oDe1a20} width={2} />
+      <Frm.Select label="Quadro Previsto de servidores" name="t4UltimaCorreicaoQuadroPrevisto" options={oDe1a20} width={2} />
+      <h4>Atualmente</h4>
+      <Frm.Select label="Analistas Judiciários" name="t4AtualmenteAnalistasJudiciarios" options={oDe1a20} width={2} />
+      <Frm.Select label="Técnicos Judiciários" name="t4AtualmenteTecnicosJudiciarios" options={oDe1a20} width={2} />
+      <Frm.Select label="Técnicos Jud. de Segurança" name="t4AtualmenteAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
+      <Frm.Select label="Requisitados ou outros" name="t4AtualmenteRequisitadosOuOutros" options={oDe1a20} width={2} />
+      <Frm.Select label="Total de servidores" name="t4AtualmenteTotalDeServidores" options={oDe1a20} width={2} />
+      <Frm.Select label="Quadro Previsto de servidores" name="t4AtualmenteQuadroPrevisto" options={oDe1a20} width={2} />
+
+      <Frm.Select label="Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução" name="t4QuantidadeDeServidoresEmTeletrabalho" options={oDe1a20} width={12} />
+      {Array.from({ length: Frm.data.t4QuantidadeDeServidoresEmTeletrabalho }).map((_, i) => (
+        <div className="row" key={i}>
+          <Frm.Input label={i == 0 ? 'Servidor em teletrabalho' : ''} name={`t4NomeDoServidorEmTeletrabalho${i}`} width={3} />
+          <Frm.Input label={i == 0 ? 'Período' : ''} name={`t4PeriodoDoServidorEmTeletrabalho${i}`} width={3} />
+          <Frm.Input label={i == 0 ? 'Data de envio' : ''} name={`t4DataDeEnvioDoUltimoRelatorioDoServidorEmTeletrabalho${i}`} width={3} />
+          <Frm.Input label={i == 0 ? 'Número' : ''} name={`t4CodigoDoUltimoRelatorioDoServidorEmTeletrabalho${i}`} width={3} />
+        </div>
+      ))}
+
+      <Frm.TextArea label="Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento" name="t4NomeDosServidoresLotadosCargosEChefias" width={12} />
+      <Frm.TextArea label="Nome e número de servidores sem vínculo com o serviço público" name="t4NomeENumeroDeServidoresSemVinculo" width={12} />
+      <Frm.TextArea label="Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):" name="t4NomeENumeroDeServidoresEmAuxilioOuRequisitados" width={12} />
+
+      {!Frm.data.turmaRecursal && (
+      <Frm.TextArea label="Quantos e quais servidores exercem função de assessoria ao Juiz Federal Substituto? Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?" name="t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular" width={12} />
+      )}
+
+      <h2>5. Estagiários</h2>
+      <Frm.Select label="Número de estagiários de nível superior previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
+      <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+      <Frm.Select label="Número de estagiários de nível superior lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
+      <Frm.Select label="Número de estagiários de nível médio lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+
+      <h2>6. Instalações Físicas e Infraestrutura</h2>
+      <Frm.TextArea label="Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO"  name="t6InstalacoesFisicasEInfraestrutura" width={12} />
+
+      <h2>7. Livros e Pastas</h2>
+      <Frm.TextArea label="Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?"  name="t7LivrosEPastasUtilizados" width={12} />
+      <Frm.TextArea label="Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?"  name="t7LivrosEPastasSubstituidos" width={12} />
+      <Frm.TextArea label="Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda"  name="t7LivrosEPastasExistentesNoSiga" width={12} />
+
+      <h2>8. Organização da Unidade e Setorização (todas as unidades)</h2>
+      <Frm.TextArea label="Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores"  name="t8FormaDeOrganizacao" width={12} />
+      <Frm.TextArea label="Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso"  name="t8SistematicaDePlanejamento" width={12} />
+      <Frm.TextArea label="Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade"  name="t8SistematicaDeAvaliacao" width={12} />
+      <Frm.TextArea label="Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF"  name="t8ProcessosIncluidosNasMetasDoCNJ" width={12} />
+      <Frm.TextArea label="Critérios de julgamento para os demais feitos"  name="t8CriteriosDeJulgamentoParaOsDemaisFeitos" width={12} />
+      <Frm.TextArea label="Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças"  name="t8FluxoDeInformacoes" width={12} />
+
+      {!Frm.data.turmaRecursal && (
+        <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
+      )}
+
+      <Frm.TextArea label="Há utilização de automação de localizadores (e-Proc) na unidade?"  name="t8UtilizacaoDeAutomacaoDosLocalizadores" width={12} />
+      <Frm.TextArea label="Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?"  name="t8PrazosDeSuspensao" width={12} />
+      <Frm.TextArea label="A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?"  name="t8RespeitoAPadronizacaoDoCNJ" width={12} />
+      <Frm.TextArea label="A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?"  name="t8ProcessoSemAssuntoCorrespondente" width={12} />
+
+      {Frm.data.jef && (
+       <div>
+            <h5>Juizado Especial Federal</h5>
+           <Frm.TextArea label="O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?"  name="t8AplicativoDeMensagens" width={12} />
+      </div>
     )}
 
-    <h2>5. Estagiários</h2>
-    <Frm.Select label="Número de estagiários de nível superior previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
-    <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
-    <Frm.Select label="Número de estagiários de nível superior lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
-    <Frm.Select label="Número de estagiários de nível médio lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+    {Frm.data.criminal && (
+       <div>
+            <h5>Criminal</h5>
+            <Frm.Input label="Há quantos processos com réus presos? Apresente a listagem" name="t8NumeroDeProcessosComReusPresos" width={12} />
+            <Frm.TextArea label="Há anotação na autuação de réus presos?"  name="t8AnotacaoNaAutuacaoDeReusPresos" width={12} />
+            <Frm.TextArea label="É dada prioridade de tramitação nos processos com réus presos?"  name="t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos" width={12} />
+            <Frm.TextArea label="Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?"  name="t8AtualizacaoImediataSituacaoDaParte" width={12} />
+            <Frm.TextArea label="Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)"  name="t8ControleDaIncidenciaDaPrescricaoPenal" width={12} />
+            <Frm.TextArea label="São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?"  name="t8AnexosFisicosNoEproc" width={12} />
+            <Frm.TextArea label="O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?"  name="t8SistemaDeAudienciaDeCustodia" width={12} />
+            <Frm.TextArea label="O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?"  name="t8SaneamentoBNMP2" width={12} />
+            <Frm.TextArea label="Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?"  name="t8MedidasSaneamentoBNMP2" width={12} />
+            <Frm.TextArea label="Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ"  name="t8ProcessosComAlvarasDeSoltura" width={12} />
+            <Frm.TextArea label="Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?"  name="t8ProcedimentoParaArmasEMunicoes" width={12} />
+            <Frm.TextArea label="Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades"  name="t8EntidadesParaServicosOuPrestacaoPecuniaria" width={12} />
+            <Frm.TextArea label="Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?"  name="t8LocalVirtualCESP" width={12} />
 
-    <h2>6. Instalações Físicas e Infraestrutura</h2>
-    <Frm.TextArea label="Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO"  name="t6InstalacoesFisicasEInfraestrutura" width={12} />
 
-    <h2>7. Livros e Pastas</h2>
-    <Frm.TextArea label="Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?"  name="t7LivrosEPastasUtilizados" width={12} />
-    <Frm.TextArea label="Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?"  name="t7LivrosEPastasSubstituidos" width={12} />
-    <Frm.TextArea label="Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda"  name="t7LivrosEPastasExistentesNoSiga" width={12} />
-
-    <h2>8. Organização da Unidade e Setorização (todas as unidades)</h2>
-    <Frm.TextArea label="Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores"  name="t8FormaDeOrganizacao" width={12} />
-    <Frm.TextArea label="Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso"  name="t8SistematicaDePlanejamento" width={12} />
-    <Frm.TextArea label="Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade"  name="t8SistematicaDeAvaliacao" width={12} />
-    <Frm.TextArea label="Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF"  name="t8ProcessosIncluidosNasMetasDoCNJ" width={12} />
-    <Frm.TextArea label="Critérios de julgamento para os demais feitos"  name="t8CriteriosDeJulgamentoParaOsDemaisFeitos" width={12} />
-    <Frm.TextArea label="Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças"  name="t8FluxoDeInformacoes" width={12} />
-
-    {!Frm.data.turmaRecursal && (
-      <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
+      </div>
     )}
 
-    <Frm.TextArea label="Há utilização de automação de localizadores (e-Proc) na unidade?"  name="t8UtilizacaoDeAutomacaoDosLocalizadores" width={12} />
-    <Frm.TextArea label="Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?"  name="t8PrazosDeSuspensao" width={12} />
-    <Frm.TextArea label="A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?"  name="t8RespeitoAPadronizacaoDoCNJ" width={12} />
-    <Frm.TextArea label="A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?"  name="t8ProcessoSemAssuntoCorrespondente" width={12} />
 
-    {Frm.data.jef && (
-     <div>
-          <h5>Juizado Especial Federal</h5>
-         <Frm.TextArea label="O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?"  name="t8AplicativoDeMensagens" width={12} />
-    </div>
-  )}
+  {Frm.data.execucaoFiscal && (
+       <div>
+            <h5>Execução Fiscal</h5>
+          <Frm.TextArea label="Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?"  name="t8ProcessosComGrandesDevedores" width={12} />
+            <Frm.TextArea label="Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR."  name="t8TratamentoDadoAosValoresExpressivos" width={12} />
+            <Frm.TextArea label="Detalhar a forma de controle da incidência da prescrição intercorrente"  name="t8ControleDaPrescricaoIntercorrente" width={12} />
+            <Frm.TextArea label="Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?"  name="t8CriterioDeSelecaoDosLeiloeiros" width={12} />
+            <Frm.Input label="Quantos leilões ocorreram nos últimos 12 meses?" name="t8QuantidadeDeLeiloes" width={12} />
+            <Frm.TextArea label="Há leilões designados?"  name="t8LeiloesDesignados" width={12} />
+      </div>
+    )}
 
-  {Frm.data.criminal && (
-     <div>
-          <h5>Criminal</h5>
-          <Frm.Input label="Há quantos processos com réus presos? Apresente a listagem" name="t8NumeroDeProcessosComReusPresos" width={12} />
-          <Frm.TextArea label="Há anotação na autuação de réus presos?"  name="t8AnotacaoNaAutuacaoDeReusPresos" width={12} />
-          <Frm.TextArea label="É dada prioridade de tramitação nos processos com réus presos?"  name="t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos" width={12} />
-          <Frm.TextArea label="Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?"  name="t8AtualizacaoImediataSituacaoDaParte" width={12} />
-          <Frm.TextArea label="Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)"  name="t8ControleDaIncidenciaDaPrescricaoPenal" width={12} />
-          <Frm.TextArea label="São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?"  name="t8AnexosFisicosNoEproc" width={12} />
-          <Frm.TextArea label="O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?"  name="t8SistemaDeAudienciaDeCustodia" width={12} />
-          <Frm.TextArea label="O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?"  name="t8SaneamentoBNMP2" width={12} />
-          <Frm.TextArea label="Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?"  name="t8MedidasSaneamentoBNMP2" width={12} />
-          <Frm.TextArea label="Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ"  name="t8ProcessosComAlvarasDeSoltura" width={12} />
-          <Frm.TextArea label="Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?"  name="t8ProcedimentoParaArmasEMunicoes" width={12} />
-          <Frm.TextArea label="Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades"  name="t8EntidadesParaServicosOuPrestacaoPecuniaria" width={12} />
-          <Frm.TextArea label="Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?"  name="t8LocalVirtualCESP" width={12} />
+      <h2>9. Materiais Acautelados na Unidade</h2>
+      <Frm.TextArea label="Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)"  name="t9QuantidadeDeMateriaisAcautelados" width={12} />
+      <Frm.TextArea label="Indicar a quantidade de processos com bens acautelados/apreendidos na unidade"  name="t9QuantidadeDeProcessosComBensAcautelados" width={12} />
+      <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
+      <Frm.TextArea label="Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos"  name="t9DinheiroEmEspecieTitulosOuJoias" width={12} />
+      <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
+      <Frm.TextArea label="A unidade tem tido alguma dificuldade na utilização do SNGB?"  name="t9DificuldadeNoUsoDoSNGB" width={12} />
+      <Frm.TextArea label="A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?"  name="t9RegistrosAtivosNoSNBA" width={12} />
+      <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
+      <Frm.TextArea label="A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?"  name="t9CofreOuSalaDeAcautelados" width={12} />
+      <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
+      <Frm.TextArea label="Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral"  name="t9ProvidenciasAdotadasParaAcautelamento" width={12} />
+      <Frm.TextArea label="Detalhar as providências adotadas para alienação antecipada de bens, quando necessário"  name="t9ProvidenciasDeAlienacaoAntecipada" width={12} />
+      <ul>
+        <li>
+          <p>
+            Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:
+          </p>
+          <ul>
+            <li>
+              1 (uma) foto por bem acautelado, onde se visualize, apenas externamente, o termo de acautelamento que nele se encontre afixado;
+            </li>
+            <li>
+              No termo de acautelamento deve constar a descrição do bem acautelado e a identificação precisa do local em que se encontra;
+            </li>
+            <li>
+              Caso o bem se encontre em local diverso da Secretaria por designação do Juízo, indicar o expediente no Siga criado para tal registro, na forma do art. 2º, §3º, da Portaria TRF2-PTC-2022/00071.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p>
+            Os bens acautelados devem estar registrados como “Anexo Físico” no E-Proc, em "Informações adicionais", de forma a possibilitar o seu controle por meio da extração de Relatório Geral no Sistema Processual.
+          </p>
+          <p>
+            No conteúdo da informação do “Anexo Físico”, deve constar a descrição do bem acautelado, a localização precisa em que se encontra e a indicação da existência de termo de acautelamento e do evento/folha correspondente no processo eletrônico (art. 2º, § 1º, da Portaria TRF2-PTC-2022/00071);
+          </p>
+          <p>
+            Devem ser excluídos/desativados os “Anexos Físicos” nas “Informações Adicionais” dos processos eletrônicos que não possuam bens acautelados (art. 2º, § 2º, da Portaria TRF2-PTC-2022/00071).
+          </p>
+        </li>
+      </ul>
 
-
-    </div>
-  )}
-
-
-{Frm.data.execucaoFiscal && (
-     <div>
-          <h5>Execução Fiscal</h5>
-        <Frm.TextArea label="Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?"  name="t8ProcessosComGrandesDevedores" width={12} />
-          <Frm.TextArea label="Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR."  name="t8TratamentoDadoAosValoresExpressivos" width={12} />
-          <Frm.TextArea label="Detalhar a forma de controle da incidência da prescrição intercorrente"  name="t8ControleDaPrescricaoIntercorrente" width={12} />
-          <Frm.TextArea label="Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?"  name="t8CriterioDeSelecaoDosLeiloeiros" width={12} />
-          <Frm.Input label="Quantos leilões ocorreram nos últimos 12 meses?" name="t8QuantidadeDeLeiloes" width={12} />
-          <Frm.TextArea label="Há leilões designados?"  name="t8LeiloesDesignados" width={12} />
-    </div>
-  )}
-
-    <h2>9. Materiais Acautelados na Unidade</h2>
-    <Frm.TextArea label="Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)"  name="t9QuantidadeDeMateriaisAcautelados" width={12} />
-    <Frm.TextArea label="Indicar a quantidade de processos com bens acautelados/apreendidos na unidade"  name="t9QuantidadeDeProcessosComBensAcautelados" width={12} />
-    <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
-    <Frm.TextArea label="Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos"  name="t9DinheiroEmEspecieTitulosOuJoias" width={12} />
-    <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
-    <Frm.TextArea label="A unidade tem tido alguma dificuldade na utilização do SNGB?"  name="t9DificuldadeNoUsoDoSNGB" width={12} />
-    <Frm.TextArea label="A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?"  name="t9RegistrosAtivosNoSNBA" width={12} />
-    <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
-    <Frm.TextArea label="A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?"  name="t9CofreOuSalaDeAcautelados" width={12} />
-    <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
-    <Frm.TextArea label="Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral"  name="t9ProvidenciasAdotadasParaAcautelamento" width={12} />
-    <Frm.TextArea label="Detalhar as providências adotadas para alienação antecipada de bens, quando necessário"  name="t9ProvidenciasDeAlienacaoAntecipada" width={12} />
-    <ul>
-      <li>
-        <p>
-          Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:
-        </p>
-        <ul>
-          <li>
-            1 (uma) foto por bem acautelado, onde se visualize, apenas externamente, o termo de acautelamento que nele se encontre afixado;
-          </li>
-          <li>
-            No termo de acautelamento deve constar a descrição do bem acautelado e a identificação precisa do local em que se encontra;
-          </li>
-          <li>
-            Caso o bem se encontre em local diverso da Secretaria por designação do Juízo, indicar o expediente no Siga criado para tal registro, na forma do art. 2º, §3º, da Portaria TRF2-PTC-2022/00071.
-          </li>
-        </ul>
-      </li>
-      <li>
-        <p>
-          Os bens acautelados devem estar registrados como “Anexo Físico” no E-Proc, em "Informações adicionais", de forma a possibilitar o seu controle por meio da extração de Relatório Geral no Sistema Processual.
-        </p>
-        <p>
-          No conteúdo da informação do “Anexo Físico”, deve constar a descrição do bem acautelado, a localização precisa em que se encontra e a indicação da existência de termo de acautelamento e do evento/folha correspondente no processo eletrônico (art. 2º, § 1º, da Portaria TRF2-PTC-2022/00071);
-        </p>
-        <p>
-          Devem ser excluídos/desativados os “Anexos Físicos” nas “Informações Adicionais” dos processos eletrônicos que não possuam bens acautelados (art. 2º, § 2º, da Portaria TRF2-PTC-2022/00071).
-        </p>
-      </li>
-    </ul>
-
-    <h2>10. Processos Físicos em carga ou retirados</h2>
-    <Frm.Select label="Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?" name="t10ProcessosFisicosComCarga" options={oDe1a20} width={3} />
-    <Frm.TextArea label="Identificar os processos extraviados, as datas da ocorrência e as providências"  name="t10ProcessosExtraviados" width={12} />
-    <Frm.TextArea label="Identificar as ações de restauração de autos, no período do levantamento"  name="t10AcoesDeRestauracao" width={12} />
+      <h2>10. Processos Físicos em carga ou retirados</h2>
+      <Frm.Select label="Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?" name="t10ProcessosFisicosComCarga" options={oDe1a20} width={3} />
+      <Frm.TextArea label="Identificar os processos extraviados, as datas da ocorrência e as providências"  name="t10ProcessosExtraviados" width={12} />
+      <Frm.TextArea label="Identificar as ações de restauração de autos, no período do levantamento"  name="t10AcoesDeRestauracao" width={12} />
 
 
-    {!Frm.data.turmaRecursal && (
-     <div>
-    <h2>11. Audiências</h2>
-    <Frm.TextArea label="Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)"  name="t11NumeroDeAudienciasAgendadasERealizadas" width={12} />
-    <Frm.TextArea label="Como é feito o controle das audiências canceladas/remarcadas?"  name="t11ControleDeAudienciasCanceladas" width={12} />
-    <Frm.TextArea label="É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?"  name="t11AudienciaDeConciliacao" width={12} />
-    <Frm.TextArea label="É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?"  name="t11AcompanhamentoDaMeta3DoCNJ" width={12} />
-    <Frm.TextArea label="Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?"  name="t11TempoMedioEntreDespachoDeDesignacaoEAudiencia" width={12} />
-    <Frm.TextArea label="A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?"  name="t11RegistroVisualDeAudiencias" width={12} />
-    <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeAudiencias" width={12} />
-    <Frm.TextArea label="Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades"  name="t11AudienciaDeCustodia" width={12} />
-    <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
-    </div>
-  )}
+      {!Frm.data.turmaRecursal && (
+       <div>
+      <h2>11. Audiências</h2>
+      <Frm.TextArea label="Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)"  name="t11NumeroDeAudienciasAgendadasERealizadas" width={12} />
+      <Frm.TextArea label="Como é feito o controle das audiências canceladas/remarcadas?"  name="t11ControleDeAudienciasCanceladas" width={12} />
+      <Frm.TextArea label="É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?"  name="t11AudienciaDeConciliacao" width={12} />
+      <Frm.TextArea label="É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?"  name="t11AcompanhamentoDaMeta3DoCNJ" width={12} />
+      <Frm.TextArea label="Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?"  name="t11TempoMedioEntreDespachoDeDesignacaoEAudiencia" width={12} />
+      <Frm.TextArea label="A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?"  name="t11RegistroVisualDeAudiencias" width={12} />
+      <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeAudiencias" width={12} />
+      <Frm.TextArea label="Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades"  name="t11AudienciaDeCustodia" width={12} />
+      <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
+      </div>
+    )}
 
-  {Frm.data.turmaRecursal && (
-     <div>
-    <h2>11. Sessão de Julgamento/Audiências</h2>
-    <Frm.TextArea label="Número de sessões de julgamento agendadas e realizadas" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
-    <Frm.TextArea label="Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?"  name="t11ControleDePauta" width={12} />
-    <Frm.TextArea label="Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?"  name="t11IntervaloDeTempo" width={12} />
-    <Frm.TextArea label="A unidade utiliza o registro audiovisual de sessões de julgamento?"  name="t11RegistroVisualDeSessoesDeJulgamento" width={12} />
-    <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo?  Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento" width={12} />
-    <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
-    </div>
-  )}
-    <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-    <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
-    <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
-    <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
+    {Frm.data.turmaRecursal && (
+       <div>
+      <h2>11. Sessão de Julgamento/Audiências</h2>
+      <Frm.TextArea label="Número de sessões de julgamento agendadas e realizadas" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+      <Frm.TextArea label="Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?"  name="t11ControleDePauta" width={12} />
+      <Frm.TextArea label="Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?"  name="t11IntervaloDeTempo" width={12} />
+      <Frm.TextArea label="A unidade utiliza o registro audiovisual de sessões de julgamento?"  name="t11RegistroVisualDeSessoesDeJulgamento" width={12} />
+      <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo?  Quais as falhas e quais as soluções adotadas para saná-las?"  name="t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento" width={12} />
+      <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
+      </div>
+    )}
+      <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
+      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+      <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
+      <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
 
-    <h2>13. Boas práticas e dificuldades</h2>
-    <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t12JustificativaDoNaoCumprimento" width={12} />
+      <h2>13. Boas práticas e dificuldades</h2>
+      <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t12JustificativaDoNaoCumprimento" width={12} />
 
-</>
+  </div>
+  )
 }
 
 function document(data: any) {
@@ -373,898 +377,900 @@ function document(data: any) {
     t12RegularizacaoDasPendenciasDaUltimaCorreicao,
     t12JustificativaDoNaoCumprimento,
   } = Frm.data;
-  return <div className="row">
-    <h1 className="text-center">Relatório de Pré-correição Judicial</h1>
-    <div className="mt-3 col col-12 col-md-4">
-      <label className="report-label form-label">
-        <div>Número do Processo</div>
-      </label>
-      <p className="report-field bold">{numproc || "Não informado"}</p>
-    </div>
-    <div className="mt-3 col col-12 col-md-4">
-      <label className="report-label form-label">
-        <div>Data de Abertura</div>
-      </label>
-      <p className="report-field bold">{dataAbertura || "Não informado"}</p>
-    </div>
-    <div className="mt-3 col col-12 col-md-4">
-      <label className="report-label form-label">
-        <div>Data de Encerramento</div>
-      </label>
-      <p className="report-field bold">{dataEncerramento || "Não informado"}</p>
-    </div>
+  return <div className="scrollableContainer">
+    <div className="row">
+      <h1 className="text-center">Relatório de Pré-correição Judicial</h1>
+      <div className="mt-3 col col-12 col-md-4">
+        <label className="report-label form-label">
+          <div>Número do Processo</div>
+        </label>
+        <p className="report-field bold">{numproc || "Não informado"}</p>
+      </div>
+      <div className="mt-3 col col-12 col-md-4">
+        <label className="report-label form-label">
+          <div>Data de Abertura</div>
+        </label>
+        <p className="report-field bold">{dataAbertura || "Não informado"}</p>
+      </div>
+      <div className="mt-3 col col-12 col-md-4">
+        <label className="report-label form-label">
+          <div>Data de Encerramento</div>
+        </label>
+        <p className="report-field bold">{dataEncerramento || "Não informado"}</p>
+      </div>
 
-    <h2>1. Informações da Unidade</h2>
+      <h2>1. Informações da Unidade</h2>
 
-    <div className="mt-3 col col-12 col-md-4">
-      <label className="report-label form-label">
-        <div>Unidade</div>
-      </label>
-      <p className="report-field bold">{t1Unidade || "Não informado"}</p>
-    </div>
-    <div className="mt-3 col col-12 col-md-4">
-      <label className="report-label form-label">
-        <div>Data da Instalação</div>
-      </label>
-      <p className="report-field bold">{t1DataDaInstalacao || "Não informado"}</p>
-    </div>
+      <div className="mt-3 col col-12 col-md-4">
+        <label className="report-label form-label">
+          <div>Unidade</div>
+        </label>
+        <p className="report-field bold">{t1Unidade || "Não informado"}</p>
+      </div>
+      <div className="mt-3 col col-12 col-md-4">
+        <label className="report-label form-label">
+          <div>Data da Instalação</div>
+        </label>
+        <p className="report-field bold">{t1DataDaInstalacao || "Não informado"}</p>
+      </div>
 
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="form-label">
-        Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)
-      </label>
-      <p><strong>{t1Competencias || "Não informado"}</strong></p>
-    </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="form-label">
+          Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)
+        </label>
+        <p><strong>{t1Competencias || "Não informado"}</strong></p>
+      </div>
 
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="form-label">
-        Assinale as Características da Unidade
-      </label>
-      <table className="table table-bordered">
-        <tbody>
-          <tr >
-            <td>Turma Recursal</td>
-            <td><strong>{turmaRecursal ? 'Sim' : 'Não'}</strong></td>
-          </tr>
-          <tr >
-            <td>Juizado Especial Federal</td>
-            <td><strong>{jef ? 'Sim' : 'Não'}</strong></td>
-          </tr>
-          <tr >
-            <td>Criminal</td>
-            <td><strong>{criminal ? 'Sim' : 'Não'}</strong></td>
-          </tr>
-          <tr >
-            <td>Execução Fiscal</td>
-            <td><strong>{execucaoFiscal ? 'Sim' : 'Não'}</strong></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="form-label">
+          Assinale as Características da Unidade
+        </label>
+        <table className="table table-bordered">
+          <tbody>
+            <tr >
+              <td>Turma Recursal</td>
+              <td><strong>{turmaRecursal ? 'Sim' : 'Não'}</strong></td>
+            </tr>
+            <tr >
+              <td>Juizado Especial Federal</td>
+              <td><strong>{jef ? 'Sim' : 'Não'}</strong></td>
+            </tr>
+            <tr >
+              <td>Criminal</td>
+              <td><strong>{criminal ? 'Sim' : 'Não'}</strong></td>
+            </tr>
+            <tr >
+              <td>Execução Fiscal</td>
+              <td><strong>{execucaoFiscal ? 'Sim' : 'Não'}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="form-label">Houve redistribuição de processos?</label>
-      <p><strong>{t1RedistribuicaoDeProcessos || "Não informado"}</strong></p>
-    </div>
-
-
-    <h2>3. Magistrados</h2>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Titular</div>
-      </label>
-      
-      <p className="report-field"><strong>{t2Titular?.descricao || "Não informado"}</strong></p>
-      
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Tempo de atuação na unidade</div>
-      </label>
-      <p className="report-field"><strong>{t2TitularTempoDeAtuacaoNaUnidade || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
-      </label>
-      <p className="report-field"><strong>{t2TitularAfastamentos || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Períodos de substituição, em férias, de outro magistrado</div>
-      </label>
-      <p className="report-field"><strong>{t2TitularSubstituicoes || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)
-        </div>
-      </label>
-      <p className="report-field"><strong>{t2TitularModalidadeTrabalho || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
-      </label>
-      <p className="report-field"><strong>{t2TitularAtendimento || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Substituto</div>
-      </label>
-      <p className="report-field"><strong>{t2Substituto || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Tempo de atuação na unidade</div>
-      </label>
-      <p className="report-field"><strong>{t2SubstitutoTempoDeAtuacaoNaUnidade || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
-      </label>
-      <p className="report-field"><strong>{t2SubstitutoAfastamentos || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Períodos de substituição, em férias, de outro magistrado</div>
-      </label>
-      <p className="report-field"><strong>{t2SubstitutoSubstituicoes || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
-      </label>
-      <p className="report-field"><strong>{t2SubstitutoModalidadeTrabalho || "Não informado"}</strong></p>
-    </div>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
-      </label>
-      <p className="report-field"><strong>{t2SubstitutoAtendimento || "Não informado"}</strong></p>
-    </div>
-
-    <h2>4. Auxílios</h2>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>Auxílios prestados e recebidos nos últimos 12 meses</div>
-      </label>
-      <p className="report-field"><strong>{t3Auxilios || "Não informado"}</strong></p>
-    </div>
-
-    <h2>5. Servidores</h2>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>
-          Discriminar a quantidade de cargos prevista na lotação e a quantidade efetivamente existente no tocante aos analistas judiciários, técnicos judiciários (área administrativa e segurança e transportes), requisitados ou outros:
-        </div>
-      </label>
-    </div>
-    <h4>Última Correição</h4>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>
-          ### calcular automaticamente o total de servidores
-        </div>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Analistas Judiciários
-        </div>
-        <p className="report-field"><strong>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Técnicos Judiciários
-        </div>
-        <p className="report-field"><strong>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Técnicos Jud. de Segurança
-        </div>
-        <p className="report-field"><strong>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Requisitados ou outros
-        </div>
-        <p className="report-field"><strong>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Total de servidores
-        </div>
-        <p className="report-field"><strong>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Quadro Previsto
-        </div>
-        <p className="report-field"><strong>{t4UltimaCorreicaoQuadroPrevisto || "Não informado"}</strong></p>
-      </label>
-    </div>
-
-    <h2>Atualmente</h2>
-
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Analistas Judiciários
-        </div>
-        <p className="report-field"><strong>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Técnicos Judiciários
-        </div>
-        <p className="report-field"><strong>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Técnicos Jud. de Segurança
-        </div>
-        <p className="report-field"><strong>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Requisitados ou outros
-        </div>
-        <p className="report-field"><strong>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Total de servidores
-        </div>
-        <p className="report-field"><strong>{t4AtualmenteTotalDeServidores || "Não informado"}</strong></p>
-      </label>
-    </div>
-    <div className="mt-3 col col-12 col-md-2">
-      <label className="report-label form-label">
-        <div>
-          Quadro Previsto
-        </div>
-        <p className="report-field"><strong>{t4AtualmenteQuadroPrevisto || "Não informado"}</strong></p>
-      </label>
-    </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="form-label">Houve redistribuição de processos?</label>
+        <p><strong>{t1RedistribuicaoDeProcessos || "Não informado"}</strong></p>
+      </div>
 
 
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>
-          Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução
+      <h2>3. Magistrados</h2>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Titular</div>
+        </label>
+        
+        <p className="report-field"><strong>{t2Titular?.descricao || "Não informado"}</strong></p>
+        
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Tempo de atuação na unidade</div>
+        </label>
+        <p className="report-field"><strong>{t2TitularTempoDeAtuacaoNaUnidade || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
+        </label>
+        <p className="report-field"><strong>{t2TitularAfastamentos || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Períodos de substituição, em férias, de outro magistrado</div>
+        </label>
+        <p className="report-field"><strong>{t2TitularSubstituicoes || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)
+          </div>
+        </label>
+        <p className="report-field"><strong>{t2TitularModalidadeTrabalho || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
+        </label>
+        <p className="report-field"><strong>{t2TitularAtendimento || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Substituto</div>
+        </label>
+        <p className="report-field"><strong>{t2Substituto || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Tempo de atuação na unidade</div>
+        </label>
+        <p className="report-field"><strong>{t2SubstitutoTempoDeAtuacaoNaUnidade || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
+        </label>
+        <p className="report-field"><strong>{t2SubstitutoAfastamentos || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Períodos de substituição, em férias, de outro magistrado</div>
+        </label>
+        <p className="report-field"><strong>{t2SubstitutoSubstituicoes || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
+        </label>
+        <p className="report-field"><strong>{t2SubstitutoModalidadeTrabalho || "Não informado"}</strong></p>
+      </div>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
+        </label>
+        <p className="report-field"><strong>{t2SubstitutoAtendimento || "Não informado"}</strong></p>
+      </div>
+
+      <h2>4. Auxílios</h2>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>Auxílios prestados e recebidos nos últimos 12 meses</div>
+        </label>
+        <p className="report-field"><strong>{t3Auxilios || "Não informado"}</strong></p>
+      </div>
+
+      <h2>5. Servidores</h2>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>
+            Discriminar a quantidade de cargos prevista na lotação e a quantidade efetivamente existente no tocante aos analistas judiciários, técnicos judiciários (área administrativa e segurança e transportes), requisitados ou outros:
+          </div>
+        </label>
+      </div>
+      <h4>Última Correição</h4>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>
+            ### calcular automaticamente o total de servidores
+          </div>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Analistas Judiciários
+          </div>
+          <p className="report-field"><strong>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Técnicos Judiciários
+          </div>
+          <p className="report-field"><strong>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Técnicos Jud. de Segurança
+          </div>
+          <p className="report-field"><strong>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Requisitados ou outros
+          </div>
+          <p className="report-field"><strong>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Total de servidores
+          </div>
+          <p className="report-field"><strong>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Quadro Previsto
+          </div>
+          <p className="report-field"><strong>{t4UltimaCorreicaoQuadroPrevisto || "Não informado"}</strong></p>
+        </label>
+      </div>
+
+      <h2>Atualmente</h2>
+
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Analistas Judiciários
+          </div>
+          <p className="report-field"><strong>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Técnicos Judiciários
+          </div>
+          <p className="report-field"><strong>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Técnicos Jud. de Segurança
+          </div>
+          <p className="report-field"><strong>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Requisitados ou outros
+          </div>
+          <p className="report-field"><strong>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Total de servidores
+          </div>
+          <p className="report-field"><strong>{t4AtualmenteTotalDeServidores || "Não informado"}</strong></p>
+        </label>
+      </div>
+      <div className="mt-3 col col-12 col-md-2">
+        <label className="report-label form-label">
+          <div>
+            Quadro Previsto
+          </div>
+          <p className="report-field"><strong>{t4AtualmenteQuadroPrevisto || "Não informado"}</strong></p>
+        </label>
+      </div>
+
+
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>
+            Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução
+          </div>
+          <p className="report-field"><strong>{t4QuantidadeDeServidoresEmTeletrabalho || "Não informado"}</strong></p>
+        </label>
+      </div>
+      {
+      Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; codigo: any }, i: number) => (
+        <div key={i} className="d-flex flex-wrap">
+          <div className="mt-3 col col-12 col-md-3">
+            <label className="report-label form-label">
+              <div>
+                Servidor {i + 1}
+              </div>
+              <p className="report-field"><strong>{servidor.nome || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-3">
+            <label className="report-label form-label">
+              <div>
+                Período
+              </div>
+              <p className="report-field"><strong>{servidor.periodo || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-3">
+            <label className="report-label form-label">
+              <div>
+                Data de Envio do Relatório
+              </div>
+              <p className="report-field"><strong>{servidor.dataEnvio || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-3">
+            <label className="report-label form-label">
+              <div>
+                Código do Relatório
+              </div>
+              <p className="report-field"><strong>{servidor.codigo || "Não informado"}</strong></p>
+            </label>
+          </div>
         </div>
-        <p className="report-field"><strong>{t4QuantidadeDeServidoresEmTeletrabalho || "Não informado"}</strong></p>
-      </label>
-    </div>
-    {
-    Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; codigo: any }, i: number) => (
-      <div key={i} className="d-flex flex-wrap">
-        <div className="mt-3 col col-12 col-md-3">
+      ))}
+      <h2>6. Instalações Físicas e Infraestrutura</h2>
+      <div className="mt-3 col col-12 col-md-12">
+        <label className="report-label form-label">
+          <div>
+            Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO
+          </div>
+          <p className="report-field"><strong>{t6InstalacoesFisicasEInfraestrutura || "Não informado"}</strong></p>
+        </label>
+      </div>
+
+        <h2>7. Livros e Pastas</h2>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?
+          </div>
+          <p className="report-field"><strong>{t7LivrosEPastasUtilizados || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?
+          </div>
+          <p className="report-field"><strong>{t7LivrosEPastasSubstituidos || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda
+          </div>
+          <p className="report-field"><strong>{t7LivrosEPastasExistentesNoSiga || "Não informado"}</strong></p>
+          </label>
+        </div>
+
+        <h2>8. Organização da Unidade e Setorização (todas as unidades)</h2>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores
+          </div>
+          <p className="report-field"><strong>{t8FormaDeOrganizacao || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso
+          </div>
+          <p className="report-field"><strong>{t8SistematicaDePlanejamento || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade
+          </div>
+          <p className="report-field"><strong>{t8SistematicaDeAvaliacao || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF
+          </div>
+          <p className="report-field"><strong>{t8ProcessosIncluidosNasMetasDoCNJ || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Critérios de julgamento para os demais feitos
+          </div>
+          <p className="report-field"><strong>{t8CriteriosDeJulgamentoParaOsDemaisFeitos || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças
+          </div>
+          <p className="report-field"><strong>{t8FluxoDeInformacoes || "Não informado"}</strong></p>
+          </label>
+        </div>
+        {!turmaRecursal && (
+          <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+            Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise
+          </div>
+          <p className="report-field"><strong>{t8NumeroDeProcessosComPedidosUrgentes || "Não informado"}</strong></p>
+          </label>
+          </div>
+        )}
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Há utilização de automação de localizadores (e-Proc) na unidade?
+          </div>
+          <p className="report-field"><strong>{t8UtilizacaoDeAutomacaoDosLocalizadores || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?
+          </div>
+          <p className="report-field"><strong>{t8PrazosDeSuspensao || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?
+          </div>
+          <p className="report-field"><strong>{t8RespeitoAPadronizacaoDoCNJ || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+          A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?
+          </div>
+          <p className="report-field"><strong>{t8ProcessoSemAssuntoCorrespondente || "Não informado"}</strong></p>
+          </label>
+        </div>
+        {jef && (
+          <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+          <div>
+            O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?
+          </div>
+          <p className="report-field"><strong>{t8AplicativoDeMensagens || "Não informado"}</strong></p>
+          </label>
+          </div>
+        )}
+        {criminal && (
+          <>
+          <h5>Criminal</h5>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Há quantos processos com réus presos? Apresente a listagem
+            </div>
+            <p className="report-field"><strong>{t8NumeroDeProcessosComReusPresos || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Há anotação na autuação de réus presos?
+            </div>
+            <p className="report-field"><strong>{t8AnotacaoNaAutuacaoDeReusPresos || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            É dada prioridade de tramitação nos processos com réus presos?
+            </div>
+            <p className="report-field"><strong>{t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?
+            </div>
+            <p className="report-field"><strong>{t8AtualizacaoImediataSituacaoDaParte || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)
+            </div>
+            <p className="report-field"><strong>{t8ControleDaIncidenciaDaPrescricaoPenal || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?
+            </div>
+            <p className="report-field"><strong>{t8AnexosFisicosNoEproc || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?
+            </div>
+            <p className="report-field"><strong>{t8SistemaDeAudienciaDeCustodia || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?
+            </div>
+            <p className="report-field"><strong>{t8SaneamentoBNMP2 || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?
+            </div>
+            <p className="report-field"><strong>{t8MedidasSaneamentoBNMP2 || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ
+            </div>
+            <p className="report-field"><strong>{t8ProcessosComAlvarasDeSoltura || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?
+            </div>
+            <p className="report-field"><strong>{t8ProcedimentoParaArmasEMunicoes || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades
+            </div>
+            <p className="report-field"><strong>{t8EntidadesParaServicosOuPrestacaoPecuniaria || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?
+            </div>
+            <p className="report-field"><strong>{t8LocalVirtualCESP || "Não informado"}</strong></p>
+            </label>
+          </div>
+          </>
+        )}
+        {execucaoFiscal && (
+          <>
+          <h5>Execução Fiscal</h5>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?
+            </div>
+            <p className="report-field"><strong>{t8ProcessosComGrandesDevedores || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR.
+            </div>
+            <p className="report-field"><strong>{t8TratamentoDadoAosValoresExpressivos || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Detalhar a forma de controle da incidência da prescrição intercorrente
+            </div>
+            <p className="report-field"><strong>{t8ControleDaPrescricaoIntercorrente || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?
+            </div>
+            <p className="report-field"><strong>{t8CriterioDeSelecaoDosLeiloeiros || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Quantos leilões ocorreram nos últimos 12 meses?
+            </div>
+            <p className="report-field"><strong>{t8QuantidadeDeLeiloes || "Não informado"}</strong></p>
+            </label>
+          </div>
+          <div className="mt-3 col col-12 col-md-12">
+            <label className="report-label form-label">
+            <div>
+            Há leilões designados?
+            </div>
+            <p className="report-field"><strong>{t8LeiloesDesignados || "Não informado"}</strong></p>
+            </label>
+          </div>
+          </>
+        )}
+        <h2>9. Materiais Acautelados na Unidade</h2>
+        <div className="mt-3 col col-12 col-md-12">
           <label className="report-label form-label">
             <div>
-              Servidor {i + 1}
+              Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)
             </div>
-            <p className="report-field"><strong>{servidor.nome || "Não informado"}</strong></p>
+            <p className="report-field"><strong>{t9QuantidadeDeMateriaisAcautelados || "Não informado"}</strong></p>
           </label>
         </div>
-        <div className="mt-3 col col-12 col-md-3">
+        <div className="mt-3 col col-12 col-md-12">
           <label className="report-label form-label">
             <div>
-              Período
+              Indicar a quantidade de processos com bens acautelados/apreendidos na unidade
             </div>
-            <p className="report-field"><strong>{servidor.periodo || "Não informado"}</strong></p>
+            <p className="report-field"><strong>{t9QuantidadeDeProcessosComBensAcautelados || "Não informado"}</strong></p>
           </label>
         </div>
-        <div className="mt-3 col col-12 col-md-3">
+        <div className="mt-3 col col-12 col-md-12">
           <label className="report-label form-label">
             <div>
-              Data de Envio do Relatório
+              Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?
             </div>
-            <p className="report-field"><strong>{servidor.dataEnvio || "Não informado"}</strong></p>
+            <p className="report-field"><strong>{t9BensAcauteladosCorrespondemComTermos || "Não informado"}</strong></p>
           </label>
         </div>
-        <div className="mt-3 col col-12 col-md-3">
+        <div className="mt-3 col col-12 col-md-12">
           <label className="report-label form-label">
             <div>
-              Código do Relatório
+              Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos
             </div>
-            <p className="report-field"><strong>{servidor.codigo || "Não informado"}</strong></p>
+            <p className="report-field"><strong>{t9DinheiroEmEspecieTitulosOuJoias || "Não informado"}</strong></p>
           </label>
         </div>
-      </div>
-    ))}
-    <h2>6. Instalações Físicas e Infraestrutura</h2>
-    <div className="mt-3 col col-12 col-md-12">
-      <label className="report-label form-label">
-        <div>
-          Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              A unidade tem tido alguma dificuldade na utilização do SNGB?
+            </div>
+            <p className="report-field"><strong>{t9DificuldadeNoUsoDoSNGB || "Não informado"}</strong></p>
+          </label>
         </div>
-        <p className="report-field"><strong>{t6InstalacoesFisicasEInfraestrutura || "Não informado"}</strong></p>
-      </label>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?
+            </div>
+            <p className="report-field"><strong>{t9RegistrosAtivosNoSNBA || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?
+            </div>
+            <p className="report-field"><strong>{t9MigracaoDoSNBAParaSNGB || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?
+            </div>
+            <p className="report-field"><strong>{t9CofreOuSalaDeAcautelados || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral
+            </div>
+            <p className="report-field"><strong>{t9ProvidenciasAdotadasParaAcautelamento || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Detalhar as providências adotadas para alienação antecipada de bens, quando necessário
+            </div>
+            <p className="report-field"><strong>{t9ProvidenciasDeAlienacaoAntecipada || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <h2>10. Processos Físicos em carga ou retirados</h2>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?
+            </div>
+            <p className="report-field"><strong>{t10ProcessosFisicosComCarga || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Identificar os processos extraviados, as datas da ocorrência e as providências
+            </div>
+            <p className="report-field"><strong>{t10ProcessosExtraviados || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Identificar as ações de restauração de autos, no período do levantamento
+            </div>
+            <p className="report-field"><strong>{t10AcoesDeRestauracao || "Não informado"}</strong></p>
+          </label>
+        </div>
+        {!turmaRecursal && (
+          <>
+            <h2>11. Audiências</h2>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)
+                </div>
+                <p className="report-field"><strong>{t11NumeroDeAudienciasAgendadasERealizadas || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Como é feito o controle das audiências canceladas/remarcadas?
+                </div>
+                <p className="report-field"><strong>{t11ControleDeAudienciasCanceladas || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?
+                </div>
+                <p className="report-field"><strong>{t11AudienciaDeConciliacao || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?
+                </div>
+                <p className="report-field"><strong>{t11AcompanhamentoDaMeta3DoCNJ || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?
+                </div>
+                <p className="report-field"><strong>{t11TempoMedioEntreDespachoDeDesignacaoEAudiencia || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?
+                </div>
+                <p className="report-field"><strong>{t11RegistroVisualDeAudiencias || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?
+                </div>
+                <p className="report-field"><strong>{t11FalhasNoRegistroAudiovisualDeAudiencias || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades
+                </div>
+                <p className="report-field"><strong>{t11AudienciaDeCustodia || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)
+                </div>
+                <p className="report-field"><strong>{t11AudienciaRemota || "Não informado"}</strong></p>
+              </label>
+            </div>
+          </>
+        )}
+        {turmaRecursal && (
+          <>
+            <h2>11. Sessão de Julgamento/Audiências</h2>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Número de sessões de julgamento agendadas e realizadas
+                </div>
+                <p className="report-field"><strong>{t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?
+                </div>
+                <p className="report-field"><strong>{t11ControleDePauta || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?
+                </div>
+                <p className="report-field"><strong>{t11IntervaloDeTempo || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  A unidade utiliza o registro audiovisual de sessões de julgamento?
+                </div>
+                <p className="report-field"><strong>{t11RegistroVisualDeSessoesDeJulgamento || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?
+                </div>
+                <p className="report-field"><strong>{t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento || "Não informado"}</strong></p>
+              </label>
+            </div>
+            <div className="mt-3 col col-12 col-md-12">
+              <label className="report-label form-label">
+                <div>
+                  Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)
+                </div>
+                <p className="report-field"><strong>{t11AudienciaRemota || "Não informado"}</strong></p>
+              </label>
+            </div>
+          </>
+        )}
+        <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              A unidade cumpriu todas as metas estabelecidas na inspeção anterior?
+            </div>
+            <p className="report-field"><strong>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?
+            </div>
+            <p className="report-field"><strong>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento
+            </div>
+            <p className="report-field"><strong>{t12JustificativaDoNaoCumprimento || "Não informado"}</strong></p>
+          </label>
+        </div>
+        <h2>13. Boas práticas e dificuldades</h2>
+        <div className="mt-3 col col-12 col-md-12">
+          <label className="report-label form-label">
+            <div>
+              Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos
+            </div>
+            <p className="report-field"><strong>{t12JustificativaDoNaoCumprimento || "Não informado"}</strong></p>
+          </label>
+        </div>
+
     </div>
-
-      <h2>7. Livros e Pastas</h2>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?
-        </div>
-        <p className="report-field"><strong>{t7LivrosEPastasUtilizados || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?
-        </div>
-        <p className="report-field"><strong>{t7LivrosEPastasSubstituidos || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda
-        </div>
-        <p className="report-field"><strong>{t7LivrosEPastasExistentesNoSiga || "Não informado"}</strong></p>
-        </label>
-      </div>
-
-      <h2>8. Organização da Unidade e Setorização (todas as unidades)</h2>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores
-        </div>
-        <p className="report-field"><strong>{t8FormaDeOrganizacao || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso
-        </div>
-        <p className="report-field"><strong>{t8SistematicaDePlanejamento || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade
-        </div>
-        <p className="report-field"><strong>{t8SistematicaDeAvaliacao || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF
-        </div>
-        <p className="report-field"><strong>{t8ProcessosIncluidosNasMetasDoCNJ || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Critérios de julgamento para os demais feitos
-        </div>
-        <p className="report-field"><strong>{t8CriteriosDeJulgamentoParaOsDemaisFeitos || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças
-        </div>
-        <p className="report-field"><strong>{t8FluxoDeInformacoes || "Não informado"}</strong></p>
-        </label>
-      </div>
-      {!turmaRecursal && (
-        <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-          Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise
-        </div>
-        <p className="report-field"><strong>{t8NumeroDeProcessosComPedidosUrgentes || "Não informado"}</strong></p>
-        </label>
-        </div>
-      )}
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Há utilização de automação de localizadores (e-Proc) na unidade?
-        </div>
-        <p className="report-field"><strong>{t8UtilizacaoDeAutomacaoDosLocalizadores || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?
-        </div>
-        <p className="report-field"><strong>{t8PrazosDeSuspensao || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?
-        </div>
-        <p className="report-field"><strong>{t8RespeitoAPadronizacaoDoCNJ || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-        A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?
-        </div>
-        <p className="report-field"><strong>{t8ProcessoSemAssuntoCorrespondente || "Não informado"}</strong></p>
-        </label>
-      </div>
-      {jef && (
-        <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-        <div>
-          O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?
-        </div>
-        <p className="report-field"><strong>{t8AplicativoDeMensagens || "Não informado"}</strong></p>
-        </label>
-        </div>
-      )}
-      {criminal && (
-        <>
-        <h5>Criminal</h5>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Há quantos processos com réus presos? Apresente a listagem
-          </div>
-          <p className="report-field"><strong>{t8NumeroDeProcessosComReusPresos || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Há anotação na autuação de réus presos?
-          </div>
-          <p className="report-field"><strong>{t8AnotacaoNaAutuacaoDeReusPresos || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          É dada prioridade de tramitação nos processos com réus presos?
-          </div>
-          <p className="report-field"><strong>{t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?
-          </div>
-          <p className="report-field"><strong>{t8AtualizacaoImediataSituacaoDaParte || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)
-          </div>
-          <p className="report-field"><strong>{t8ControleDaIncidenciaDaPrescricaoPenal || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?
-          </div>
-          <p className="report-field"><strong>{t8AnexosFisicosNoEproc || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?
-          </div>
-          <p className="report-field"><strong>{t8SistemaDeAudienciaDeCustodia || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?
-          </div>
-          <p className="report-field"><strong>{t8SaneamentoBNMP2 || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?
-          </div>
-          <p className="report-field"><strong>{t8MedidasSaneamentoBNMP2 || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ
-          </div>
-          <p className="report-field"><strong>{t8ProcessosComAlvarasDeSoltura || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?
-          </div>
-          <p className="report-field"><strong>{t8ProcedimentoParaArmasEMunicoes || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades
-          </div>
-          <p className="report-field"><strong>{t8EntidadesParaServicosOuPrestacaoPecuniaria || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?
-          </div>
-          <p className="report-field"><strong>{t8LocalVirtualCESP || "Não informado"}</strong></p>
-          </label>
-        </div>
-        </>
-      )}
-      {execucaoFiscal && (
-        <>
-        <h5>Execução Fiscal</h5>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?
-          </div>
-          <p className="report-field"><strong>{t8ProcessosComGrandesDevedores || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR.
-          </div>
-          <p className="report-field"><strong>{t8TratamentoDadoAosValoresExpressivos || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Detalhar a forma de controle da incidência da prescrição intercorrente
-          </div>
-          <p className="report-field"><strong>{t8ControleDaPrescricaoIntercorrente || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?
-          </div>
-          <p className="report-field"><strong>{t8CriterioDeSelecaoDosLeiloeiros || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Quantos leilões ocorreram nos últimos 12 meses?
-          </div>
-          <p className="report-field"><strong>{t8QuantidadeDeLeiloes || "Não informado"}</strong></p>
-          </label>
-        </div>
-        <div className="mt-3 col col-12 col-md-12">
-          <label className="report-label form-label">
-          <div>
-          Há leilões designados?
-          </div>
-          <p className="report-field"><strong>{t8LeiloesDesignados || "Não informado"}</strong></p>
-          </label>
-        </div>
-        </>
-      )}
-      <h2>9. Materiais Acautelados na Unidade</h2>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)
-          </div>
-          <p className="report-field"><strong>{t9QuantidadeDeMateriaisAcautelados || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Indicar a quantidade de processos com bens acautelados/apreendidos na unidade
-          </div>
-          <p className="report-field"><strong>{t9QuantidadeDeProcessosComBensAcautelados || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?
-          </div>
-          <p className="report-field"><strong>{t9BensAcauteladosCorrespondemComTermos || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos
-          </div>
-          <p className="report-field"><strong>{t9DinheiroEmEspecieTitulosOuJoias || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            A unidade tem tido alguma dificuldade na utilização do SNGB?
-          </div>
-          <p className="report-field"><strong>{t9DificuldadeNoUsoDoSNGB || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?
-          </div>
-          <p className="report-field"><strong>{t9RegistrosAtivosNoSNBA || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?
-          </div>
-          <p className="report-field"><strong>{t9MigracaoDoSNBAParaSNGB || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?
-          </div>
-          <p className="report-field"><strong>{t9CofreOuSalaDeAcautelados || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral
-          </div>
-          <p className="report-field"><strong>{t9ProvidenciasAdotadasParaAcautelamento || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Detalhar as providências adotadas para alienação antecipada de bens, quando necessário
-          </div>
-          <p className="report-field"><strong>{t9ProvidenciasDeAlienacaoAntecipada || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <h2>10. Processos Físicos em carga ou retirados</h2>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?
-          </div>
-          <p className="report-field"><strong>{t10ProcessosFisicosComCarga || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Identificar os processos extraviados, as datas da ocorrência e as providências
-          </div>
-          <p className="report-field"><strong>{t10ProcessosExtraviados || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Identificar as ações de restauração de autos, no período do levantamento
-          </div>
-          <p className="report-field"><strong>{t10AcoesDeRestauracao || "Não informado"}</strong></p>
-        </label>
-      </div>
-      {!turmaRecursal && (
-        <>
-          <h2>11. Audiências</h2>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)
-              </div>
-              <p className="report-field"><strong>{t11NumeroDeAudienciasAgendadasERealizadas || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Como é feito o controle das audiências canceladas/remarcadas?
-              </div>
-              <p className="report-field"><strong>{t11ControleDeAudienciasCanceladas || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?
-              </div>
-              <p className="report-field"><strong>{t11AudienciaDeConciliacao || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?
-              </div>
-              <p className="report-field"><strong>{t11AcompanhamentoDaMeta3DoCNJ || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?
-              </div>
-              <p className="report-field"><strong>{t11TempoMedioEntreDespachoDeDesignacaoEAudiencia || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?
-              </div>
-              <p className="report-field"><strong>{t11RegistroVisualDeAudiencias || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?
-              </div>
-              <p className="report-field"><strong>{t11FalhasNoRegistroAudiovisualDeAudiencias || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades
-              </div>
-              <p className="report-field"><strong>{t11AudienciaDeCustodia || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)
-              </div>
-              <p className="report-field"><strong>{t11AudienciaRemota || "Não informado"}</strong></p>
-            </label>
-          </div>
-        </>
-      )}
-      {turmaRecursal && (
-        <>
-          <h2>11. Sessão de Julgamento/Audiências</h2>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Número de sessões de julgamento agendadas e realizadas
-              </div>
-              <p className="report-field"><strong>{t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?
-              </div>
-              <p className="report-field"><strong>{t11ControleDePauta || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?
-              </div>
-              <p className="report-field"><strong>{t11IntervaloDeTempo || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                A unidade utiliza o registro audiovisual de sessões de julgamento?
-              </div>
-              <p className="report-field"><strong>{t11RegistroVisualDeSessoesDeJulgamento || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?
-              </div>
-              <p className="report-field"><strong>{t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento || "Não informado"}</strong></p>
-            </label>
-          </div>
-          <div className="mt-3 col col-12 col-md-12">
-            <label className="report-label form-label">
-              <div>
-                Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)
-              </div>
-              <p className="report-field"><strong>{t11AudienciaRemota || "Não informado"}</strong></p>
-            </label>
-          </div>
-        </>
-      )}
-      <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            A unidade cumpriu todas as metas estabelecidas na inspeção anterior?
-          </div>
-          <p className="report-field"><strong>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?
-          </div>
-          <p className="report-field"><strong>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento
-          </div>
-          <p className="report-field"><strong>{t12JustificativaDoNaoCumprimento || "Não informado"}</strong></p>
-        </label>
-      </div>
-      <h2>13. Boas práticas e dificuldades</h2>
-      <div className="mt-3 col col-12 col-md-12">
-        <label className="report-label form-label">
-          <div>
-            Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos
-          </div>
-          <p className="report-field"><strong>{t12JustificativaDoNaoCumprimento || "Não informado"}</strong></p>
-        </label>
-      </div>
-
   </div>
 }
 
