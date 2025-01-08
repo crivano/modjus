@@ -24,6 +24,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     })
     const json = await retorno.json()
 
-    console.log(json.list[0].lotacao);
+    // console.log(json.list[0].lotacao);
     return new Response(JSON.stringify(json), { status: 200, headers: { 'Content-Type': 'application/json' }, })
 }

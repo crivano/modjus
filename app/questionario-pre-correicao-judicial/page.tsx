@@ -1270,6 +1270,6 @@ function document(data: any) {
   </div>
 }
 
-export default function BpcLoasPdcMais17() {
+export default function FormPreCorreicao() {
   return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17' })
 }

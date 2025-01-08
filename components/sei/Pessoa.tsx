@@ -54,7 +54,10 @@ export default function PessoaMany({ Frm, name, label1, label2 }: PessoaProps) {
             }
             const json = await loadPessoa(sigla);
 
-            if (!json.list) return;
+            if (!json.list) {
+                throw new Error("Nenhuma pessoa listada para a sigla informada");
+            }
+    
 
             const lista: Pessoa[] =
                 json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao, cargo: u.funcaoConfianca.nome, siglaUnidade: u.lotacao.sigla} as Pessoa))

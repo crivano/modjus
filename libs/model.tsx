@@ -43,7 +43,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                             </div>
                         </div>
                         <div className="d-flex justify-content-end mt-2">
-                            {(!options || options.saveButton !== false) && <button className="btn btn-primary" onClick={handleSave}>Salvar</button>}
+                            {(!options || options.saveButton !== false) && <button className="btn btn-primary" onClick={handleSave}>Transportar</button>}
                         </div>
                     </div>
                     <div className="col col-12 col-md-6">
