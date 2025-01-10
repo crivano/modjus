@@ -452,7 +452,7 @@ function document(data: any) {
         <p style={{ fontWeight: 'bold' }}>{t1RedistribuicaoDeProcessos || "Não informado"}</p>
       </div>
 
-      <h2 style={{ width: '100%' }}>3. Magistrados</h2>
+      <h2 style={{ width: '100%' }}>2. Magistrados</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           <div>Titular</div>
@@ -489,44 +489,48 @@ function document(data: any) {
         </label>
         <p style={{ fontWeight: 'bold' }}>{t2TitularAtendimento || "Não informado"}</p>
       </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Substituto</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2Substituto || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Tempo de atuação na unidade</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2SubstitutoTempoDeAtuacaoNaUnidade || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2SubstitutoAfastamentos || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Períodos de substituição, em férias, de outro magistrado</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2SubstitutoSubstituicoes || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2SubstitutoModalidadeTrabalho || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2SubstitutoAtendimento || "Não informado"}</p>
-      </div>
+      {(!turmaRecursal && (jef || criminal || execucaoFiscal)) && (
+        <>
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Substituto</div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t2Substituto?.descricao || "Não informado"}</p>
+          </div>
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Tempo de atuação na unidade</div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoTempoDeAtuacaoNaUnidade || "Não informado"}</p>
+          </div>
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoAfastamentos || "Não informado"}</p>
+          </div>
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Períodos de substituição, em férias, de outro magistrado</div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoSubstituicoes || "Não informado"}</p>
+          </div>
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoModalidadeTrabalho || "Não informado"}</p>
+          </div>
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoAtendimento || "Não informado"}</p>
+          </div>
+        </>
+      )}
 
-      <h2 style={{ width: '100%' }}>4. Auxílios</h2>
+      <h2 style={{ width: '100%' }}>3. Auxílios</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           <div>Auxílios prestados e recebidos nos últimos 12 meses</div>
@@ -534,7 +538,7 @@ function document(data: any) {
         <p style={{ fontWeight: 'bold' }}>{t3Auxilios || "Não informado"}</p>
       </div>
 
-      <h2 style={{ width: '100%' }}>5. Servidores</h2>
+      <h2 style={{ width: '100%' }}>4. Servidores</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           <div>
@@ -696,6 +700,32 @@ function document(data: any) {
           </div>
         </div>
       ))}
+      <h2 style={{ width: '100%' }}>5. Estagiários</h2>
+      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+        <label style={{ display: 'block', fontWeight: 'bold' }}>
+          <div>Número de estagiários de nível superior previstos para unidade</div>
+          <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
+        </label>
+      </div>
+      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+        <label style={{ display: 'block', fontWeight: 'bold' }}>
+          <div>Número de estagiários de nível médio previstos para unidade</div>
+          <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelMédio || "Não informado"}</p>
+        </label>
+      </div>
+      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+        <label style={{ display: 'block', fontWeight: 'bold' }}>
+          <div>Número de estagiários de nível superior lotados na unidade</div>
+          <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
+        </label>
+      </div>
+      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+        <label style={{ display: 'block', fontWeight: 'bold' }}>
+          <div>Número de estagiários de nível médio lotados na unidade</div>
+          <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelMédio || "Não informado"}</p>
+        </label>
+      </div>
+
       <h2 style={{ width: '100%' }}>6. Instalações Físicas e Infraestrutura</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
