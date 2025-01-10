@@ -71,19 +71,23 @@ function interview(Frm: FormHelper) {
       <p>Discriminar a quantidade de cargos prevista na lotação e a quantidade efetivamente existente no tocante aos analistas judiciários, técnicos judiciários (área administrativa e segurança e transportes), requisitados ou outros:</p>
       <h4>Última Correição</h4>
       <p>### calcular automaticamente o total de servidores</p>
-      <Frm.Select label="Analistas Judiciários" name="t4UltimaCorreicaoAnalistasJudiciarios" options={oDe1a20} width={2} />
-      <Frm.Select label="Técnicos Judiciários" name="t4UltimaCorreicaoTecnicosJudiciarios" options={oDe1a20} width={2} />
-      <Frm.Select label="Técnicos Jud. de Segurança" name="t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
-      <Frm.Select label="Requisitados ou outros" name="t4UltimaCorreicaoRequisitadosOuOutros" options={oDe1a20} width={2} />
-      <Frm.Select label="Total de servidores" name="t4UltimaCorreicaoTotalDeServidores" options={oDe1a20} width={2} />
-      <Frm.Select label="Quadro Previsto de servidores" name="t4UltimaCorreicaoQuadroPrevisto" options={oDe1a20} width={2} />
+      <div className="row">
+        <Frm.Select label="Analistas Judiciários" name="t4UltimaCorreicaoAnalistasJudiciarios" options={oDe1a20} width={2} />
+        <Frm.Select label="Técnicos Judiciários" name="t4UltimaCorreicaoTecnicosJudiciarios" options={oDe1a20} width={2} />
+        <Frm.Select label="Técnicos Jud. de Segurança" name="t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
+        <Frm.Select label="Requisitados ou outros" name="t4UltimaCorreicaoRequisitadosOuOutros" options={oDe1a20} width={2} />
+        <Frm.Select label="Total de servidores" name="t4UltimaCorreicaoTotalDeServidores" options={oDe1a20} width={2} />
+        <Frm.Select label="Quadro Previsto de servidores" name="t4UltimaCorreicaoQuadroPrevisto" options={oDe1a20} width={2} />
+      </div>
       <h4>Atualmente</h4>
-      <Frm.Select label="Analistas Judiciários" name="t4AtualmenteAnalistasJudiciarios" options={oDe1a20} width={2} />
-      <Frm.Select label="Técnicos Judiciários" name="t4AtualmenteTecnicosJudiciarios" options={oDe1a20} width={2} />
-      <Frm.Select label="Técnicos Jud. de Segurança" name="t4AtualmenteAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
-      <Frm.Select label="Requisitados ou outros" name="t4AtualmenteRequisitadosOuOutros" options={oDe1a20} width={2} />
-      <Frm.Select label="Total de servidores" name="t4AtualmenteTotalDeServidores" options={oDe1a20} width={2} />
-      <Frm.Select label="Quadro Previsto de servidores" name="t4AtualmenteQuadroPrevisto" options={oDe1a20} width={2} />
+      <div className="row">
+        <Frm.Select label="Analistas Judiciários" name="t4AtualmenteAnalistasJudiciarios" options={oDe1a20} width={2} />
+        <Frm.Select label="Técnicos Judiciários" name="t4AtualmenteTecnicosJudiciarios" options={oDe1a20} width={2} />
+        <Frm.Select label="Técnicos Jud. de Segurança" name="t4AtualmenteAnalistasJudiciariosDeSeguranca" options={oDe1a20} width={2} />
+        <Frm.Select label="Requisitados ou outros" name="t4AtualmenteRequisitadosOuOutros" options={oDe1a20} width={2} />
+        <Frm.Select label="Total de servidores" name="t4AtualmenteTotalDeServidores" options={oDe1a20} width={2} />
+        <Frm.Select label="Quadro Previsto de servidores" name="t4AtualmenteQuadroPrevisto" options={oDe1a20} width={2} />
+      </div>
 
       <Frm.Select label="Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução" name="t4QuantidadeDeServidoresEmTeletrabalho" options={oDe1a20} width={12} />
       {Array.from({ length: Frm.data.t4QuantidadeDeServidoresEmTeletrabalho }).map((_, i) => (
@@ -104,10 +108,12 @@ function interview(Frm: FormHelper) {
       )}
 
       <h2>5. Estagiários</h2>
-      <Frm.Select label="Número de estagiários de nível superior previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
-      <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
-      <Frm.Select label="Número de estagiários de nível superior lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
-      <Frm.Select label="Número de estagiários de nível médio lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+      <div className="row">
+        <Frm.Select label="Número de estagiários de nível superior previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
+        <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+        <Frm.Select label="Número de estagiários de nível superior lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
+        <Frm.Select label="Número de estagiários de nível médio lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+      </div>
 
       <h2>6. Instalações Físicas e Infraestrutura</h2>
       <Frm.TextArea label="Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO"  name="t6InstalacoesFisicasEInfraestrutura" width={12} />
@@ -554,104 +560,108 @@ function document(data: any) {
           </div>
         </label>
       </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Analistas Judiciários
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Técnicos Judiciários
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Técnicos Jud. de Segurança
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Requisitados ou outros
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Total de servidores
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Quadro Previsto
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoQuadroPrevisto || "Não informado"}</p>
-        </label>
+      <div className="row">
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Analistas Judiciários
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Técnicos Judiciários
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Técnicos Jud. de Segurança
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Requisitados ou outros
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Total de servidores
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Quadro Previsto
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoQuadroPrevisto || "Não informado"}</p>
+          </label>
+        </div>
       </div>
 
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Analistas Judiciários
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Técnicos Judiciários
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Técnicos Jud. de Segurança
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Requisitados ou outros
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Total de servidores
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTotalDeServidores || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Quadro Previsto
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4AtualmenteQuadroPrevisto || "Não informado"}</p>
-        </label>
+      <div className="row">
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Analistas Judiciários
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Técnicos Judiciários
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Técnicos Jud. de Segurança
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Requisitados ou outros
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Total de servidores
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTotalDeServidores || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+              Quadro Previsto
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteQuadroPrevisto || "Não informado"}</p>
+          </label>
+        </div>
       </div>
 
 
@@ -701,29 +711,31 @@ function document(data: any) {
         </div>
       ))}
       <h2 style={{ width: '100%' }}>5. Estagiários</h2>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Número de estagiários de nível superior previstos para unidade</div>
-          <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Número de estagiários de nível médio previstos para unidade</div>
-          <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelMédio || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Número de estagiários de nível superior lotados na unidade</div>
-          <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Número de estagiários de nível médio lotados na unidade</div>
-          <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelMédio || "Não informado"}</p>
-        </label>
+      <div className="row">
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>Número de estagiários de nível superior previstos para unidade</div>
+            <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>Número de estagiários de nível médio previstos para unidade</div>
+            <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelMédio || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>Número de estagiários de nível superior lotados na unidade</div>
+            <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
+          </label>
+        </div>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>Número de estagiários de nível médio lotados na unidade</div>
+            <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelMédio || "Não informado"}</p>
+          </label>
+        </div>
       </div>
 
       <h2 style={{ width: '100%' }}>6. Instalações Físicas e Infraestrutura</h2>
