@@ -554,7 +554,7 @@ function document(data: any) {
           </div>
         </label>
       </div>
-      <div className="row">
+      <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
@@ -607,7 +607,7 @@ function document(data: any) {
 
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
-      <div className="row">
+      <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
@@ -707,7 +707,7 @@ function document(data: any) {
         ))}
       </div>
       <h2 style={{ width: '100%' }}>5. Estagiários</h2>
-      <div className="row">
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>Número de estagiários de nível superior previstos para unidade</div>
