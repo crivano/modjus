@@ -8,6 +8,7 @@ import Head from 'next/head';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
+import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 
 function interview(Frm: FormHelper) {
   const oCaracteristicas = [
@@ -90,14 +91,7 @@ function interview(Frm: FormHelper) {
       </div>
 
       <Frm.Select label="Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução" name="t4QuantidadeDeServidoresEmTeletrabalho" options={oDe1a20} width={12} />
-      {Array.from({ length: Frm.data.t4QuantidadeDeServidoresEmTeletrabalho }).map((_, i) => (
-        <div className="row" key={i}>
-          <Frm.Input label={i == 0 ? 'Servidor em teletrabalho' : ''} name={`t4NomeDoServidorEmTeletrabalho${i}`} width={3} />
-          <Frm.Input label={i == 0 ? 'Período' : ''} name={`t4PeriodoDoServidorEmTeletrabalho${i}`} width={3} />
-          <Frm.Input label={i == 0 ? 'Data de envio' : ''} name={`t4DataDeEnvioDoUltimoRelatorioDoServidorEmTeletrabalho${i}`} width={3} />
-          <Frm.Input label={i == 0 ? 'Número' : ''} name={`t4CodigoDoUltimoRelatorioDoServidorEmTeletrabalho${i}`} width={3} />
-        </div>
-      ))}
+      <QuantidadeServidoresTeletrabalho Frm={Frm} name="t4ServidoresEmTeletrabalho" />
 
       <Frm.TextArea label="Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento" name="t4NomeDosServidoresLotadosCargosEChefias" width={12} />
       <Frm.TextArea label="Nome e número de servidores sem vínculo com o serviço público" name="t4NomeENumeroDeServidoresSemVinculo" width={12} />
@@ -673,43 +667,45 @@ function document(data: any) {
           <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresEmTeletrabalho || "Não informado"}</p>
         </label>
       </div>
-      {
-      Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; codigo: any }, i: number) => (
-        <div key={i} style={{ display: 'flex', flexWrap: 'wrap' }}>
-          <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Servidor {i + 1}
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{servidor.nome || "Não informado"}</p>
-            </label>
+      <div style={{ marginTop: '1rem', width: '100%' }}>
+        {
+        Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; numero: any }, i: number) => (
+          <div key={i} style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+              <label style={{ display: 'block', fontWeight: 'bold' }}>
+                <div>
+                  Servidor {i + 1}
+                </div>
+                <p style={{ fontWeight: 'bold' }}>{servidor.nome || "Não informado"}</p>
+              </label>
+            </div>
+            <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+              <label style={{ display: 'block', fontWeight: 'bold' }}>
+                <div>
+                  Período
+                </div>
+                <p style={{ fontWeight: 'bold' }}>{servidor.periodo || "Não informado"}</p>
+              </label>
+            </div>
+            <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+              <label style={{ display: 'block', fontWeight: 'bold' }}>
+                <div>
+                  Data de Envio do Relatório
+                </div>
+                <p style={{ fontWeight: 'bold' }}>{servidor.dataEnvio || "Não informado"}</p>
+              </label>
+            </div>
+            <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
+              <label style={{ display: 'block', fontWeight: 'bold' }}>
+                <div>
+                  Número
+                </div>
+                <p style={{ fontWeight: 'bold' }}>{servidor.numero || "Não informado"}</p>
+              </label>
+            </div>
           </div>
-          <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Período
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{servidor.periodo || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Data de Envio do Relatório
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{servidor.dataEnvio || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Código do Relatório
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{servidor.codigo || "Não informado"}</p>
-            </label>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
       <h2 style={{ width: '100%' }}>5. Estagiários</h2>
       <div className="row">
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>

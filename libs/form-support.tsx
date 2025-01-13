@@ -5,6 +5,7 @@ import ReactSelect from 'react-select'
 import _ from 'lodash'
 import Pessoa from "@/components/sei/Pessoa"
 import { Editor } from '@tinymce/tinymce-react';
+import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -129,7 +130,7 @@ export class FormHelper {
 
     public colClass = (width?: string | number) => `mt-3 col ${typeof width === 'string' ? width : `col-12 col-md-${width || 12}`}`
 
-    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void}) => {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
@@ -144,7 +145,7 @@ export class FormHelper {
         )
     }
 
-    public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+    public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         const formatDate = (date: string) => {
             const [year, month, day] = date.split('-');
             return `${day}/${month}/${year}`;
@@ -598,6 +599,36 @@ export class FormHelper {
             </div>
         );
     }
+
+    public QuantidadeServidoresTeletrabalho = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        return this.setData ? (
+            <QuantidadeServidoresTeletrabalho Frm={this} name={name} />
+        ) : (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                {this.get(name)?.map((servidor: any, i: number) => (
+                    <div key={i} className="row">
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Nome do Servidor' : ''}</Form.Label>
+                            <p><strong>{servidor.nome}</strong></p>
+                        </div>
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Período' : ''}</Form.Label>
+                            <p><strong>{servidor.periodo}</strong></p>
+                        </div>
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Data de Envio' : ''}</Form.Label>
+                            <p><strong>{servidor.dataEnvio}</strong></p>
+                        </div>
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Número' : ''}</Form.Label>
+                            <p><strong>{servidor.numero}</strong></p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
 
 }
 
