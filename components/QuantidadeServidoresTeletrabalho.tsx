@@ -2,7 +2,13 @@ import { FormHelper } from "@/libs/form-support";
 
 const QuantidadeServidoresTeletrabalho = ({ Frm, name }: { Frm: FormHelper, name: string }) => {
   const quantidade = Frm.get("t4QuantidadeDeServidoresEmTeletrabalho") || 0;
-  const servidores = Frm.get(name) || [];
+  let servidores = Frm.get(name) || [];
+
+  // Remove excess servidores if quantidade is reduced
+  if (servidores.length > quantidade) {
+    servidores = servidores.slice(0, quantidade);
+    Frm.set(name, servidores);
+  }
 
   const handleChange = (index: number, field: string, value: any) => {
     const newServidores = [...servidores];
