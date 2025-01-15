@@ -180,12 +180,11 @@ function interview(Frm: FormHelper) {
       <Frm.TextArea label="Indicar a quantidade de processos com bens acautelados/apreendidos na unidade"  name="t9QuantidadeDeProcessosComBensAcautelados" width={12} />
       <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
       <Frm.TextArea label="Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos"  name="t9DinheiroEmEspecieTitulosOuJoias" width={12} />
-      <Frm.TextArea label="Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?"  name="t9BensAcauteladosCorrespondemComTermos" width={12} />
+      <Frm.TextArea label="Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)"  name="t9BensCadastradosNoSNGB" width={12} />
       <Frm.TextArea label="A unidade tem tido alguma dificuldade na utilização do SNGB?"  name="t9DificuldadeNoUsoDoSNGB" width={12} />
       <Frm.TextArea label="A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?"  name="t9RegistrosAtivosNoSNBA" width={12} />
       <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
       <Frm.TextArea label="A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?"  name="t9CofreOuSalaDeAcautelados" width={12} />
-      <Frm.TextArea label="Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?"  name="t9MigracaoDoSNBAParaSNGB" width={12} />
       <Frm.TextArea label="Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral"  name="t9ProvidenciasAdotadasParaAcautelamento" width={12} />
       <Frm.TextArea label="Detalhar as providências adotadas para alienação antecipada de bens, quando necessário"  name="t9ProvidenciasDeAlienacaoAntecipada" width={12} />
       <ul>
@@ -351,6 +350,7 @@ function document(data: any) {
     t9QuantidadeDeProcessosComBensAcautelados,
     t9BensAcauteladosCorrespondemComTermos,
     t9DinheiroEmEspecieTitulosOuJoias,
+    t9BensCadastradosNoSNGB,
     t9DificuldadeNoUsoDoSNGB,
     t9RegistrosAtivosNoSNBA,
     t9MigracaoDoSNBAParaSNGB,
@@ -1066,6 +1066,15 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t9DinheiroEmEspecieTitulosOuJoias || "Não informado"}</p>
           </label>
         </div>
+        <div style={{ marginTop: '1rem', width: '100%' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>
+            <div>
+            Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)
+            </div>
+            <p style={{ fontWeight: 'bold' }}>{t9BensCadastradosNoSNGB || "Não informado"}</p>
+          </label>
+        </div>
+      
         <div style={{ marginTop: '1rem', width: '100%' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
