@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormHelper } from "@/libs/form-support";
-import ErrorPopup from "@/app/components/ErrorPopup";
+import ErrorPopup from "@/components/ErrorPopup";
 
 // Carregar dados de CEP pelo viacep
 async function loadCEP(cep: string) {

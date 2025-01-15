@@ -1,6 +1,6 @@
 import { FormHelper } from "@/libs/form-support"
 import { useEffect, useState } from "react";
-import ErrorPopup from "@/app/components/ErrorPopup";
+import ErrorPopup from "@/components/ErrorPopup";
 
 async function loadUnidades() {
     try {

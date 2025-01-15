@@ -3,7 +3,7 @@ import { FormHelper } from "@/libs/form-support";
 import styles from '@/PessoaMany.module.css';
 import { Modal } from 'react-bootstrap';
 import TableRecords from '../table-records';
-import ErrorPopup from "@/app/components/ErrorPopup";
+import ErrorPopup from "@/components/ErrorPopup";
 
 interface Orgao {
     idOrgao: string; // ID do órgão
@@ -30,6 +30,7 @@ interface PessoaProps {
     name: string;
     label1: string;
     label2: string;
+    onChange?: (pessoa: any) => void;
 }
 
 type Pessoa = {
@@ -38,9 +39,10 @@ type Pessoa = {
     idOrgao: string
     cargo: string
     siglaUnidade: string
+    idCargo: string
 }
 
-export default function PessoaMany({ Frm, name, label1, label2 }: PessoaProps) {
+export default function PessoaMany({ Frm, name, label1, label2, onChange}: PessoaProps) {
     const [error, setError] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [popupData, setPopupData] = useState<any[]>([]);
@@ -60,14 +62,18 @@ export default function PessoaMany({ Frm, name, label1, label2 }: PessoaProps) {
     
 
             const lista: Pessoa[] =
-                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao, cargo: u.funcaoConfianca.nome, siglaUnidade: u.lotacao.sigla} as Pessoa))
+                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao, cargo: u.cargo.nome, siglaUnidade: u.lotacao.sigla, idCargo: u.cargo.idCargo} as Pessoa))
                     .filter((item: Pessoa) => ['1', '2', '3'].includes(item.idOrgao));
 
             if (lista.length === 1) {
                 Frm.set(`${name}.sigla`, lista[0].sigla);
                 Frm.set(`${name}.descricao`, lista[0].nome);
                 Frm.set(`${name}.cargo`, lista[0].cargo);
-                Frm.set(`${name}.siglaUnidade`, lista[0].cargo);
+                Frm.set(`${name}.siglaUnidade`, lista[0].siglaUnidade);
+                Frm.set(`${name}.idCargo`, lista[0].idCargo);
+                if (onChange) {
+                    onChange(lista[0]);
+                }
             } else if (lista.length > 1) {
                 setPopupData(lista);
                 setIsOpen(true);
@@ -83,6 +89,12 @@ export default function PessoaMany({ Frm, name, label1, label2 }: PessoaProps) {
         if (selectedItem) {
             Frm.set(`${name}.sigla`, selectedItem.sigla);
             Frm.set(`${name}.descricao`, selectedItem.nome);
+            Frm.set(`${name}.cargo`, selectedItem.cargo);
+            Frm.set(`${name}.siglaUnidade`, selectedItem.siglaUnidade);
+            Frm.set(`${name}.idCargo`, selectedItem.idCargo);
+            if (onChange) {
+                onChange(selectedItem);
+            }
         }
         setIsOpen(false);
     }
