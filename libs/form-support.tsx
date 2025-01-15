@@ -630,6 +630,30 @@ export class FormHelper {
         );
     };
 
+    public RadioButtons = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+        return this.setData ? (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                {options.map((option, idx) => (
+                    <Form.Check
+                        key={option.id}
+                        type="radio"
+                        label={option.name}
+                        name={name}
+                        value={option.id}
+                        checked={this.get(name) === option.id}
+                        onChange={e => this.set(name, e.target.value)}
+                    />
+                ))}
+            </div>
+        ) : (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
+            </div>
+        )
+    }
+
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase

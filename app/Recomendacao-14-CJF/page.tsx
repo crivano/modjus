@@ -14,8 +14,9 @@ function interview(Frm: FormHelper) {
 
   return <>
     <PessoaMany Frm={Frm} name="pessoa" label1="Sigla" label2="Nome" />
-    <Frm.CheckBoxes label="Opções 1" labelsAndNames={options.map(opt => ({ label: opt.name, name: `opcao1_${opt.name}` }))} />
-    <Frm.CheckBoxes label="Opções 2" labelsAndNames={options.map(opt => ({ label: opt.name, name: `opcao2_${opt.name}` }))} />
+    <Frm.RadioButtons label="01) Nos meses de Outubro a Dezembro de 2024, declaro a realização de:" name="opcao1" options={options} />
+    <Frm.RadioButtons label="02) Nos meses de Outubro a Dezembro de 2024, declaro que, nos termos do art. 3º do Provimento nº TRF2-PVC-2023/00002, de 02 de fevereiro de 2023:
+" name="opcao2" options={options} />
     {JSON.stringify(Frm.data)}
   </>
 }
@@ -23,13 +24,7 @@ function interview(Frm: FormHelper) {
 function document(data: any) {
   return <>
     <p>Pessoa: {data.pessoa?.descricao}</p>
-    <p>Opções 1:</p>
-    <ul>
-      {Object.keys(data).filter(key => key.startsWith('opcao1_') && data[key]).map(key => <li key={key}>{key.replace('opcao1_', '')}</li>)}
-    </ul>
-    <p>Opções 2:</p>
-    <ul>
-      {Object.keys(data).filter(key => key.startsWith('opcao2_') && data[key]).map(key => <li key={key}>{key.replace('opcao2_', '')}</li>)}
-    </ul>
+    <p>Opções 1: {data.opcao1}</p>
+    <p>Opções 2: {data.opcao2}</p>
   </>
 }
