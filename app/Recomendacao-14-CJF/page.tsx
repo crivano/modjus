@@ -22,12 +22,11 @@ export default function Recomendacao14CJF() {
 
     return <>
       <div className="scrollableContainer">
-        <PessoaMany Frm={Frm} name="pessoa" label1="Sigla" label2="Nome" onChange={handlePessoaChange} />
+        <PessoaMany Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={handlePessoaChange} />
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
         <h5 style={{ marginTop: '10px' }}>Favor marcar a opção pertinente ao trabalho realizado</h5>
         <Frm.RadioButtons label="01) Nos meses de Outubro a Dezembro de 2024, declaro a realização de:" name="opcao1" options={options1} />
         <Frm.RadioButtons label="02) Nos meses de Outubro a Dezembro de 2024, declaro que, nos termos do art. 3º do Provimento nº TRF2-PVC-2023/00002, de 02 de fevereiro de 2023:" name="opcao2" options={options2} />
-        {JSON.stringify(Frm.data)}
       </div>
     </>
   }
@@ -45,5 +44,5 @@ export default function Recomendacao14CJF() {
     </>
   }
 
-  return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'Recomendacao 14 CJF' })
+  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'Recomendacao 14 CJF' })
 }

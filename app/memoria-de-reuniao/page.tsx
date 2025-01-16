@@ -129,5 +129,5 @@ function document(data: any) {
 }
 
 export default function MeetingMemory() {
-    return Model(meetingForm, document, { saveButton: true, pdfButton: true, pdfFileName: 'memoria-de-reuniao' });
+    return Model(meetingForm, document, { saveButton: true, pdfButton: false, pdfFileName: 'memoria-de-reuniao' });
 }

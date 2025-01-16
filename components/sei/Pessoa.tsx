@@ -17,11 +17,11 @@ async function loadPessoa(texto: string) {
         const retorno = await fetch(`/api/siga-rest/pessoas?texto=${encodeURI(texto)}`);
         const json = await retorno.json();
         if (json.erro) {
-            throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+            throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na Matrícula do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
         }
         return json;
     } catch (error: any) {
-        throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na sigla do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+        throw new Error("Houve um problema ao tentar buscar a lista de pessoas pesquisadas informada na Matrícula do Titular. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
     }
 }
 
