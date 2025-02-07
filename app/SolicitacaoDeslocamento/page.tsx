@@ -101,27 +101,33 @@ export default function SolicitacaoDeslocamento() {
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
         <h2>Cálculo de Diária</h2>
-        <Frm.Select label="Informar manualmente o resultado do cálculo?" name="informarManual" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={4}/>
+        <Frm.Select label="Informar manualmente o resultado do cálculo?" name="informarManual" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12}/>
         {Frm.data.informarManual === '1' && (
           <>
-            <Frm.MoneyInput label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={4} />
-            <Frm.MoneyInput label="Adicional de Deslocamento" name="adicionalDeslocamento" width={4} />
-            <Frm.MoneyInput label="Desconto de Auxílio Alimentação" name="descontoAuxilioAlimentacao" width={4} />
-            <Frm.MoneyInput label="Desconto de Auxílio Transporte" name="descontoAuxilioTransporte" width={4} />
+            <div className="row">
+            <Frm.MoneyInput label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={3} />
+            <Frm.MoneyInput label="Adicional de Deslocamento" name="adicionalDeslocamento" width={3} />
+            <Frm.MoneyInput label="Desconto de Aux Alimentação" name="descontoAuxilioAlimentacao" width={3} />
+            <Frm.MoneyInput label="Desconto de Aux Transporte" name="descontoAuxilioTransporte" width={3} />
             <Frm.MoneyInput label="Subtotal Bruto das Diárias" name="subtotalBrutoDiarias" width={4} />
             <Frm.MoneyInput label="Desconto de Teto" name="descontoTeto" width={4} />
             <Frm.MoneyInput label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={4} />
+            </div>
           </>
         )}
-        <Frm.Select label="Obter automaticamente auxílios de alimentação e transporte?" name="obterAuxilios" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={4}/>
+        <Frm.Select label="Obter automaticamente auxílios de alimentação e transporte?" name="obterAuxilios" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12}/>
         {Frm.data.obterAuxilios === '2' && (
           <>
-            <Frm.MoneyInput label="Valor Auxílio Alimentação" name="valorAuxilioAlimentacao" width={4} />
-            <Frm.MoneyInput label="Valor Auxílio Transporte" name="valorAuxilioTransporte" width={4} />
+            <div className="row">
+                <Frm.MoneyInput label="Valor Auxílio Alimentação" name="valorAuxilioAlimentacao" width={6} />
+                <Frm.MoneyInput label="Valor Auxílio Transporte" name="valorAuxilioTransporte" width={6} />
+            </div>
           </>
         )}
-        <Frm.Input label="Quantidade de Feriados Depois do Deslocamento" name="quantidadeFeriados" width={4} />
-        <Frm.Input label="Quantidade de Dias em que Não Será Paga a Diária Durante Deslocamento" name="quantidadeDiasSemDiaria" width={4} />
+        <div className="row">
+            <Frm.Input label="Quantidade de Feriados Depois do Deslocamento" name="quantidadeFeriados" width={6} />
+            <Frm.Input label="Quantidade de Dias em que Não Será Paga a Diária Durante Deslocamento" name="quantidadeDiasSemDiaria" width={6} />
+        </div>
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
