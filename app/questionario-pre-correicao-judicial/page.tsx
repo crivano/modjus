@@ -1318,5 +1318,5 @@ function document(data: any) {
 }
 
 export default function FormPreCorreicao() {
-  return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17' })
+  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'bpc-loas-pcd-mais-17' })
 }

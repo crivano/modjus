@@ -422,7 +422,7 @@ export class FormHelper {
                 {items.map((_: any, index: number) => (
                     <div key={index} className="d-flex align-items-center mb-2">
                         <div className="flex-grow-1">
-                            <Pessoa Frm={this} name={`${name}[${index}]`} label1="Sigla" label2="Nome" />
+                            <Pessoa Frm={this} name={`${name}[${index}]`} label1="Matrícula" label2="Nome" />
                         </div>
                         <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
                     </div>
