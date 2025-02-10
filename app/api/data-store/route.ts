@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-declare global {
-    var inMemoryDatabase: Map<string, any> | undefined;
-}
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',

@@ -31,7 +31,7 @@ function interview(Frm: FormHelper) {
 
     <Endereco Frm={Frm} name="endereco" />
 
-    <PessoaMany Frm={Frm} name="pessoa" />
+    <PessoaMany Frm={Frm} name="pessoa" label1="Matrícula do Titular" label2="Nome do Titular" />
 
     <SelectUnidade Frm={Frm} name="unidade" />
 
