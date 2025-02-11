@@ -97,38 +97,7 @@ export default function SolicitacaoDeslocamento() {
 
 </p>
         <Frm.RadioButtons label="Retorno à origem?" name="retornoOrigem" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={4} />
-
-        <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
-
-        <h2>Cálculo de Diária</h2>
-        <Frm.Select label="Informar manualmente o resultado do cálculo?" name="informarManual" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12}/>
-        {Frm.data.informarManual === '1' && (
-          <>
-            <div className="row">
-            <Frm.MoneyInput label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={3} />
-            <Frm.MoneyInput label="Adicional de Deslocamento" name="adicionalDeslocamento" width={3} />
-            <Frm.MoneyInput label="Desconto de Aux Alimentação" name="descontoAuxilioAlimentacao" width={3} />
-            <Frm.MoneyInput label="Desconto de Aux Transporte" name="descontoAuxilioTransporte" width={3} />
-            <Frm.MoneyInput label="Subtotal Bruto das Diárias" name="subtotalBrutoDiarias" width={4} />
-            <Frm.MoneyInput label="Desconto de Teto" name="descontoTeto" width={4} />
-            <Frm.MoneyInput label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={4} />
-            </div>
-          </>
-        )}
-        <Frm.Select label="Obter automaticamente auxílios de alimentação e transporte?" name="obterAuxilios" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12}/>
-        {Frm.data.obterAuxilios === '2' && (
-          <>
-            <div className="row">
-                <Frm.MoneyInput label="Valor Auxílio Alimentação" name="valorAuxilioAlimentacao" width={6} />
-                <Frm.MoneyInput label="Valor Auxílio Transporte" name="valorAuxilioTransporte" width={6} />
-            </div>
-          </>
-        )}
-        <div className="row">
-            <Frm.Input label="Quantidade de Feriados Depois do Deslocamento" name="quantidadeFeriados" width={6} />
-            <Frm.Input label="Quantidade de Dias em que Não Será Paga a Diária Durante Deslocamento" name="quantidadeDiasSemDiaria" width={6} />
-        </div>
-
+        
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
     </>
@@ -161,29 +130,6 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Meio de Transporte:</strong> {meioTransporteOptions.find(opt => opt.id === data.meioTransporte)?.name}</p>
         <p><strong>Origem:</strong> {data.origem_destino}</p>
         <p><strong>Retorno à origem?:</strong> {data.retornoOrigem === '1' ? 'Sim' : 'Não'}</p>
-
-        <h4>Cálculo de Diária</h4>
-        <p><strong>Informar manualmente o resultado do cálculo?:</strong> {data.informarManual === '1' ? 'Sim' : 'Não'}</p>
-        {data.informarManual === '1' && (
-          <>
-            <p><strong>Valor Bruto das Diárias:</strong> {data.valorBrutoDiarias}</p>
-            <p><strong>Adicional de Deslocamento:</strong> {data.adicionalDeslocamento}</p>
-            <p><strong>Desconto de Auxílio Alimentação:</strong> {data.descontoAuxilioAlimentacao}</p>
-            <p><strong>Desconto de Auxílio Transporte:</strong> {data.descontoAuxilioTransporte}</p>
-            <p><strong>Subtotal Bruto das Diárias:</strong> {data.subtotalBrutoDiarias}</p>
-            <p><strong>Desconto de Teto:</strong> {data.descontoTeto}</p>
-            <p><strong>Valor Líquido das Diárias:</strong> {data.valorLiquidoDiarias}</p>
-          </>
-        )}
-        <p><strong>Obter automaticamente auxílios de alimentação e transporte?:</strong> {data.obterAuxilios === '1' ? 'Sim' : 'Não'}</p>
-        {data.obterAuxilios === '2' && (
-          <>
-            <p><strong>Valor Auxílio Alimentação:</strong> {data.valorAuxilioAlimentacao}</p>
-            <p><strong>Valor Auxílio Transporte:</strong> {data.valorAuxilioTransporte}</p>
-          </>
-        )}
-        <p><strong>Quantidade de Feriados Depois do Deslocamento:</strong> {data.quantidadeFeriados}</p>
-        <p><strong>Quantidade de Dias em que Não Será Paga a Diária Durante Deslocamento:</strong> {data.quantidadeDiasSemDiaria}</p>
       </div>
     </>
   }
