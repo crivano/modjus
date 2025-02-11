@@ -74,7 +74,7 @@ export default function SolicitacaoDeslocamento() {
         </div>
         <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
         <div className="row">
-          <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12}  />
+          <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
         </div>
         <Frm.TextArea label="Serviço ou atividade a ser desenvolvida" name="servicoAtividade" width={12} />
         <Frm.TextArea label="Órgão" name="orgao" width={12} />
@@ -84,20 +84,16 @@ export default function SolicitacaoDeslocamento() {
 
         <h2>Dados do Deslocamento</h2>
         <div className="row">
-            <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
-            <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+          <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
+          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
         </div>
         <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
-        <div className="row">   
-            <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
-            <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
+        <div className="row">
+          <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
+          <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
         </div>
-        <Frm.Input label="Origem/Destino" name="origem_destino" width={12} />
-        <p style={{ marginTop: '1px', marginBottom: '0' }}>Se houver mais de um destino, separe todos por barra, por exemplo: RIO DE JANEIRO/SÃO PAULO/BRASÍLIA.
+        <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
 
-</p>
-        <Frm.RadioButtons label="Retorno à origem?" name="retornoOrigem" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={4} />
-        
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
     </>
@@ -128,8 +124,18 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Justificativa:</strong> {data.justificativa}</p>
         <p><strong>Tipo de Deslocamento:</strong> {tipoDeslocamentoOptions.find(opt => opt.id === data.tipoDeslocamento)?.name}</p>
         <p><strong>Meio de Transporte:</strong> {meioTransporteOptions.find(opt => opt.id === data.meioTransporte)?.name}</p>
-        <p><strong>Origem:</strong> {data.origem_destino}</p>
-        <p><strong>Retorno à origem?:</strong> {data.retornoOrigem === '1' ? 'Sim' : 'Não'}</p>
+        {data.trajeto?.map((trajeto: any, i: number) => (
+          <div key={i}>
+            <div className="row">
+              <p style={{ width: '50%' }}><strong>Origem:</strong> {trajeto.origem}</p>
+              <p style={{ width: '50%' }}><strong>Destino:</strong> {trajeto.destino}</p>
+            </div>
+            <p><strong>Transporte até o embarque:</strong> {trajeto.transporteAteEmbarque}</p>
+            <p><strong>Transporte após o desembarque:</strong> {trajeto.transporteAposDesembarque}</p>
+            <p><strong>Hospedagem custeada/fornecida por órgão da administração pública:</strong> {trajeto.hospedagem}</p>
+          </div>
+        ))}
+        
       </div>
     </>
   }

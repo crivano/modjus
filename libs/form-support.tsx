@@ -578,8 +578,8 @@ export class FormHelper {
                                         <Form.Label>Responsável</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            value={this.get(`${name}[${index}].acoes[${acaoIndex}].responsavel`)}
-                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].responsavel`, e.target.value)}
+                                            value={this.get(`${name}[${acaoIndex}].responsavel`)}
+                                            onChange={e => this.set(`${name}[${acaoIndex}].responsavel`, e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group className="mb-2">
@@ -654,6 +654,124 @@ export class FormHelper {
         )
     }
 
+    public DynamicListTrajeto = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { origem: '', destino: '', transporteAteEmbarque: '', transporteAposDesembarque: '', hospedagem: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const handleReturnToOrigin = (checked: boolean) => {
+            const items = this.get(name) || [];
+            if (checked) {
+                if (items.length > 0) {
+                    const newItem = {
+                        origem: items[items.length - 1].destino,
+                        destino: items[0].origem,
+                        transporteAteEmbarque: '',
+                        transporteAposDesembarque: '',
+                        hospedagem: ''
+                    };
+                    const newData = [...items, newItem];
+                    this.set(name, newData);
+                }
+            } else {
+                const newData = items.slice(0, -1);
+                this.set(name, newData);
+            }
+        };
+
+        const items = this.get(name) || [];
+        const transporteOptions = [
+            { id: '1', name: 'Com adicional de deslocamento' },
+            { id: '2', name: 'Sem adicional de deslocamento' },
+            { id: '3', name: 'Veículo oficial' }
+        ];
+        const hospedagemOptions = [
+            { id: '1', name: 'Sim' },
+            { id: '2', name: 'Não' }
+        ];
+
+        return (
+            <div className={this.colClass(width)}>
+                <div className="d-flex align-items-center">
+                    <Form.Label><strong>{label}</strong></Form.Label>
+                    <Button variant="success" onClick={addItem} className="ms-2">Adicionar percurso</Button>
+                    <Form.Check
+                        type="checkbox"
+                        label="Retorno à origem"
+                        onChange={e => handleReturnToOrigin(e.target.checked)}
+                        className="ms-2"
+                    />
+                </div>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1">
+                            <div className="row">
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Origem</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={this.get(`${name}[${index}].origem`)}
+                                        onChange={e => this.set(`${name}[${index}].origem`, e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Destino</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={this.get(`${name}[${index}].destino`)}
+                                        onChange={e => this.set(`${name}[${index}].destino`, e.target.value)}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <div className="row">
+                            <Form.Group className="mb-2 col-md-6">
+                                <Form.Label>Transporte até o embarque</Form.Label>
+                                <Form.Select
+                                    value={this.get(`${name}[${index}].transporteAteEmbarque`)}
+                                    onChange={e => this.set(`${name}[${index}].transporteAteEmbarque`, e.target.value)}
+                                >
+                                    {transporteOptions.map(option => (
+                                        <option key={option.id} value={option.id}>{option.name}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group className="mb-2 col-md-6">
+                                <Form.Label>Transporte após o desembarque</Form.Label>
+                                <Form.Select
+                                    value={this.get(`${name}[${index}].transporteAposDesembarque`)}
+                                    onChange={e => this.set(`${name}[${index}].transporteAposDesembarque`, e.target.value)}
+                                >
+                                    {transporteOptions.map(option => (
+                                        <option key={option.id} value={option.id}>{option.name}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                            </div>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
+                                <Form.Select
+                                    value={this.get(`${name}[${index}].hospedagem`)}
+                                    onChange={e => this.set(`${name}[${index}].hospedagem`, e.target.value)}
+                                >
+                                    {hospedagemOptions.map(option => (
+                                        <option key={option.id} value={option.id}>{option.name}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    };
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase
