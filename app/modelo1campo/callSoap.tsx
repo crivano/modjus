@@ -23,7 +23,7 @@ async function handleClick(setError: (message: string) => void) {
   }
 }
 
-export default function callSoap({ Frm }: { Frm: FormHelper }) {
+export default function CallSoap({ Frm }: { Frm: FormHelper }) {
   const [error, setError] = useState<string | null>(null);
 
   return (

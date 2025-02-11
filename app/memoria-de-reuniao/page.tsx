@@ -5,7 +5,7 @@ import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
 import styles from './memoria-de-reuniao.module.css'; // Import the CSS module
 
-function meetingForm(Frm: FormHelper) {
+function MeetingForm(Frm: FormHelper) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
         setStartDate(date);
@@ -129,5 +129,5 @@ function document(data: any) {
 }
 
 export default function MeetingMemory() {
-    return Model(meetingForm, document, { saveButton: true, pdfButton: false, pdfFileName: 'memoria-de-reuniao' });
+    return Model(MeetingForm, document, { saveButton: true, pdfButton: false, pdfFileName: 'memoria-de-reuniao' });
 }

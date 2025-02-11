@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 
-function interview(Frm: FormHelper) {
+function Interview(Frm: FormHelper) {
   const oCaracteristicas = [
     { label: 'Turma Recursal', name: 'turmaRecursal' },
     { label: 'Juizado Especial Federal', name: 'jef' },
@@ -1318,5 +1318,5 @@ function document(data: any) {
 }
 
 export default function FormPreCorreicao() {
-  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'bpc-loas-pcd-mais-17' })
+  return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'bpc-loas-pcd-mais-17' })
 }
