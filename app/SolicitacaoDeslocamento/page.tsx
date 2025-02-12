@@ -5,6 +5,7 @@ import { FormHelper } from "@/libs/form-support"
 import { useState } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import ErrorPopup from "@/components/ErrorPopup"
+import axios from 'axios';
 
 const tipoBeneficiarioOptions = [
   { id: '1', name: 'TRF2/SJRJ/SJES' },
@@ -52,12 +53,33 @@ export default function SolicitacaoDeslocamento() {
   const [calculoManual, setCalculoManual] = useState("2");
   const [obterAuxilios, setObterAuxilios] = useState("2");
 
+  async function fetchDadosBancarios(matricula: string, Frm: FormHelper) {
+    try {
+      const response = await axios.get('/api/dados-bancarios', { params: { matricula } });
+      const { banco, agencia, contaCorrente } = (response.data as { data: { banco: string, agencia: string, contaCorrente: string } }).data;
+      Frm.set('banco', banco);
+      Frm.set('agencia', agencia);
+      Frm.set('conta', contaCorrente);
+    } catch (error) {
+      Frm.set('banco', '');
+      Frm.set('agencia', '');
+      Frm.set('conta', '');
+      setError('Não foi possivel encontrar os dados bancários');
+    }
+  }
+
+  function handlePessoaChange(pessoa: any, Frm: FormHelper) {
+    if (pessoa && pessoa.sigla) {
+      fetchDadosBancarios(pessoa.sigla, Frm);
+    }
+  }
+
   function interview(Frm: FormHelper) {
     return <>
       <div className="scrollableContainer">
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
-        <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" />
+        <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
         <div className="row">
           <Frm.Input label="Banco" name="banco" width={4} />
           <Frm.Input label="Agência" name="agencia" width={4} />
