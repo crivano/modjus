@@ -20,6 +20,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   const args = { SiglaSistema: 'SEI-CORREICAO', IdentificacaoServico: 'FormularioCorreicao' }
   const res = await client.listarUnidadesAsync(args)
   const a = res[0].parametros.item.map((u: any) => ({ id: u.IdUnidade.$value, sigla: u.Sigla.$value, descricao: u.Descricao.$value}))
-  console.log(a);
+  console.log(JSON.stringify(a));
   return new Response(JSON.stringify(a), { status: 200, headers: { 'Content-Type': 'application/json' }, });
 }
