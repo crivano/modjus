@@ -22,9 +22,11 @@ interface DocumentoConteudo {
 const checkIP = (req: NextRequest): boolean => {
   const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
 
+  console.log("Antes de pegar o Cabeçalho x-forwarded-for:");
+  
   // Acessar o cabeçalho 'x-forwarded-for'
   const forwardedFor = req.headers.get('x-forwarded-for');
-  console.log("Cabeçalho x-forwarded-for:", forwardedFor);
+  console.log("Depois de Cabeçalho x-forwarded-for:", forwardedFor);
 
   // Se 'x-forwarded-for' não existir, utilizar 'req.ip'
   const requestIP = forwardedFor
@@ -55,12 +57,12 @@ const checkAuth = (req: NextRequest): boolean => {
 // Função principal para lidar com GET requests
 export async function GET(req: NextRequest) {
   try {
-    if (!checkIP(req)) {
+     if (!checkIP(req)) {
       console.log("checkIP");
       return new NextResponse('Autenticação Inválida', {
         status: 403
       });
-    }
+    } 
 
     // Verificação de autenticação básica
     if (!checkAuth(req)) {
