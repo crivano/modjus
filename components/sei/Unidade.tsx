@@ -88,9 +88,9 @@ export default function UnidadeMany({ Frm, name,  onChange}: UnidadeProps) {
         <>
             <div className="col col-12">
                 <div className="row">
-                    <Frm.Input label={'Sigla'}   name={`${name}.sigla`} width={3} />
+                    <Frm.Input label='Sigla'   name={`${name}.sigla`} width={3} />
                     <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen, setError)} >...</Frm.Button>
-                    <Frm.Input label={'Descrição'} name={`${name}.nome`} width={""} />
+                    <Frm.Input label='Descrição' name={`${name}.descricao`} width={""} />
                 </div>
                 <div>  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
 
