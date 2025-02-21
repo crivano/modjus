@@ -656,7 +656,7 @@ export class FormHelper {
 
     public DynamicListTrajeto = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         const addItem = () => {
-            const newData = [...(this.get(name) || []), { origem: '', destino: '', transporteAteEmbarque: '', transporteAposDesembarque: '', hospedagem: '' }];
+            const newData = [...(this.get(name) || []), { origem: '', destino: '', transporteAteEmbarque: '1', transporteAposDesembarque: '1', hospedagem: '1', dataTrecho: '' }];
             this.set(name, newData);
         };
 
@@ -673,9 +673,10 @@ export class FormHelper {
                     const newItem = {
                         origem: items[items.length - 1].destino,
                         destino: items[0].origem,
-                        transporteAteEmbarque: '',
-                        transporteAposDesembarque: '',
-                        hospedagem: ''
+                        transporteAteEmbarque: '1',
+                        transporteAposDesembarque: '1',
+                        hospedagem: '1',
+                        dataTrecho: ''
                     };
                     const newData = [...items, newItem];
                     this.set(name, newData);
@@ -754,17 +755,27 @@ export class FormHelper {
                                 </Form.Select>
                             </Form.Group>
                             </div>
-                            <Form.Group className="mb-2">
-                                <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
-                                <Form.Select
-                                    value={this.get(`${name}[${index}].hospedagem`)}
-                                    onChange={e => this.set(`${name}[${index}].hospedagem`, e.target.value)}
-                                >
-                                    {hospedagemOptions.map(option => (
-                                        <option key={option.id} value={option.id}>{option.name}</option>
-                                    ))}
-                                </Form.Select>
-                            </Form.Group>
+                            <div className="row">
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Data do Trecho</Form.Label>
+                                    <Form.Control
+                                        type="date"
+                                        value={this.get(`${name}[${index}].dataTrecho`) || ''}
+                                        onChange={e => this.set(`${name}[${index}].dataTrecho`, e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
+                                    <Form.Select
+                                        value={this.get(`${name}[${index}].hospedagem`)}
+                                        onChange={e => this.set(`${name}[${index}].hospedagem`, e.target.value)}
+                                    >
+                                        {hospedagemOptions.map(option => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                            </div>
                         </div>
                         <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
                     </div>
