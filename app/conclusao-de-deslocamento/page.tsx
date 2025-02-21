@@ -87,7 +87,7 @@ function document(data: any) {
             <label>Valor Bruto das Diárias:</label>{' '}{ValorBrutoDasDiarias || "Não informado"}<br></br>
             <label>Adicional de Deslocamento:</label>{' '}{AdicionalDeDeslocamento || "Não informado"}<br></br>
             <label>Desconto de Auxílio Alimentação:</label>{' '}{DescontoDeAuxilioAlimentacao || "Não informado"}<br></br>
-            <label>Desconto de Auxílio Transporte</label>{' '}{DescontoDeAuxilioTransporte || "Não informado"}<br></br>
+            <label>Desconto de Auxílio Transporte:</label>{' '}{DescontoDeAuxilioTransporte || "Não informado"}<br></br>
             <label>Desconto de Teto:</label>{' '}{DescontoDeTeto || "Não informado"}<br></br>
             <label>Valor Líquido das Diárias:</label>{' '}{ValorLiquidoDasDiarias || "Não informado"}<br></br>
             <label>Valor Total das Passagens:</label>{' '}{ValorTotalDasPassagens || "Não informado"}<br></br>
