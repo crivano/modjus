@@ -14,7 +14,7 @@ function MeetingForm(Frm: FormHelper) {
 
     return (
         <div>
-            CONCLUSÃO DE DESLOCAMENTO SIGA Nº TRF2-FOR-2024/01564
+            <strong>CONCLUSÃO DE DESLOCAMENTO SIGA Nº TRF2-FOR-2024/01564</strong>
             <p><strong>Dados para o relatório de deslocamentos</strong></p>
             <Frm.TextArea label="Código da Solicitação de Deslocamento:" name="codigo" width={12} />
             <Frm.TextArea label="Data da Solicitação de Deslocamento:" name="dataDeslocamento" width={12} />
@@ -32,7 +32,7 @@ function MeetingForm(Frm: FormHelper) {
             <Frm.TextArea label="Valor Bruto das Diárias:" name="ValorBrutoDasDiarias" width={12} />
             <Frm.TextArea label="Adicional de Deslocamento:" name="AdicionalDeDeslocamento" width={12} />
             <Frm.TextArea label="Desconto de Auxílio Alimentação:" name="DescontoDeAuxilioAlimentacao" width={12} />
-            <Frm.TextArea label="Desconto de Auxílio Transporte" name="DescontoDeAuxilioTransporte" width={12} />
+            <Frm.TextArea label="Desconto de Auxílio Transporte:" name="DescontoDeAuxilioTransporte" width={12} />
             <Frm.TextArea label="Desconto de Teto:" name="DescontoDeTeto" width={12} />
             <Frm.TextArea label="Valor Líquido das Diárias:" name="ValorLiquidoDasDiarias" width={12} />
             <Frm.TextArea label="Valor Total das Passagens:" name="ValorTotalDasPassagens" width={12} />
@@ -68,7 +68,7 @@ function document(data: any) {
 
     return (
         <div>
-            <p>CONCLUSÃO DE DESLOCAMENTO SIGA Nº TRF2-FOR-2024/01564</p>
+            <p><strong>CONCLUSÃO DE DESLOCAMENTO SIGA Nº TRF2-FOR-2024/01564</strong></p>
             <strong>Dados para o relatório de deslocamentos</strong><br></br>
 
             <label>Código da Solicitação de Deslocamento: </label>{' '}{codigo || "Não informado"}<br></br>
@@ -76,21 +76,21 @@ function document(data: any) {
             <label>Proponente:</label>{' '}{proponente || "Não informado"}<br></br>
             <label>Cargo do Proponente:</label>{' '}{cargoProponente || "Não informado"}<br></br>
             <label>Tipo de Beneficiário:</label>{' '}{tipoDeBeneficiario || "Não informado"}<br></br>
-            <label>Código da Solicitação de Deslocamento:</label>{' '}{Beneficiario || "Não informado"}<br></br>
-            <label>Data da Solicitação de Deslocamenot:</label>{' '}{CargoDoBeneficiario || "Não informado"}<br></br>
-            <label>Proponente:</label>{' '}{Finalidade || "Não informado"}<br></br>
-            <label>Cargo do Proponente:</label>{' '}{TipoDeViagem || "Não informado"}<br></br>
-            <label>Tipo de Beneficiário:</label>{' '}{Itinerario || "Não informado"}<br></br>
-            <label>Código da Solicitação de Deslocamento:</label>{' '}{RetornoAOrigem || "Não informado"}<br></br>
-            <label>Data da Solicitação de Deslocamenot:</label>{' '}{Periodo || "Não informado"}<br></br>
-            <label>Proponente:</label>{' '}{MeioDeTransporte || "Não informado"}<br></br>
-            <label>Cargo do Proponente:</label>{' '}{ValorBrutoDasDiarias || "Não informado"}<br></br>
-            <label>Tipo de Beneficiário:</label>{' '}{AdicionalDeDeslocamento || "Não informado"}
-            <label>Código da Solicitação de Deslocamento:</label>{' '}{DescontoDeAuxilioAlimentacao || "Não informado"}<br></br>
-            <label>Data da Solicitação de Deslocamenot:</label>{' '}{DescontoDeAuxilioTransporte || "Não informado"}<br></br>
-            <label>Proponente:</label>{' '}{DescontoDeTeto || "Não informado"}<br></br>
-            <label>Cargo do Proponente:</label>{' '}{ValorLiquidoDasDiarias || "Não informado"}<br></br>
-            <label>Tipo de Beneficiário:</label>{' '}{ValorTotalDasPassagens || "Não informado"}<br></br>
+            <label>Beneficiário:</label>{' '}{Beneficiario || "Não informado"}<br></br>
+            <label>Cargo do Beneficiário:</label>{' '}{CargoDoBeneficiario || "Não informado"}<br></br>
+            <label>Finalidade:</label>{' '}{Finalidade || "Não informado"}<br></br>
+            <label>Tipo de Viagem:</label>{' '}{TipoDeViagem || "Não informado"}<br></br>
+            <label>Itinerário:</label>{' '}{Itinerario || "Não informado"}<br></br>
+            <label>Retorno à Origem:</label>{' '}{RetornoAOrigem || "Não informado"}<br></br>
+            <label>Período:</label>{' '}{Periodo || "Não informado"}<br></br>
+            <label>Meio de Transporte:</label>{' '}{MeioDeTransporte || "Não informado"}<br></br>
+            <label>Valor Bruto das Diárias:</label>{' '}{ValorBrutoDasDiarias || "Não informado"}<br></br>
+            <label>Adicional de Deslocamento:</label>{' '}{AdicionalDeDeslocamento || "Não informado"}<br></br>
+            <label>Desconto de Auxílio Alimentação:</label>{' '}{DescontoDeAuxilioAlimentacao || "Não informado"}<br></br>
+            <label>Desconto de Auxílio Transporte</label>{' '}{DescontoDeAuxilioTransporte || "Não informado"}<br></br>
+            <label>Desconto de Teto:</label>{' '}{DescontoDeTeto || "Não informado"}<br></br>
+            <label>Valor Líquido das Diárias:</label>{' '}{ValorLiquidoDasDiarias || "Não informado"}<br></br>
+            <label>Valor Total das Passagens:</label>{' '}{ValorTotalDasPassagens || "Não informado"}<br></br>
         </div>
     );
 }
