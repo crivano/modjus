@@ -51,6 +51,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Caso seja possível à parte executar atividades (trabalhos formais ou informais) que lhe garantam sustento, há necessidade de afastamento periódico do trabalho para rotinas de tratamento ou internações? Em caso positivo, quantas vezes por dia (ou semana, ou mês) e respectiva duração." name="afastamentoPeriodico" width={12} />
     <Frm.TextArea label="Há necessidade de medicações de uso contínuo? Em caso positivo, tais medicações influenciam de forma significativa a interação com as demais pessoas e/ou ambiente? Há necessidade de uso de fraldas?" name="medicacoesDeUsoContinuo" width={12} />
     <Frm.TextArea label="O(A) periciando(a) depende de supervisão ou acompanhamento permanente de terceiros em sua vida diária?" name="supervisao" width={12} />
+    <Frm.TextArea label="A pessoa periciada apresenta impedimento de longo prazo de natureza física, mental, intelectual ou sensorial que, em interação com barreiras, obstrua sua participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas da mesma faixa etária, que produza efeitos pelo prazo mínimo de 2 (dois) anos?" name="impedimentoMinimoDoisAnos" width={12} />
     <Frm.TextArea label="Informações Adicionais que o(a) perito(a) entenda que possam ajudar no julgamento da lide." name="informacoesAdicionais" width={12} />
 
     {/* <div className="col col-12">

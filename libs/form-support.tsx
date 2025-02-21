@@ -3,6 +3,9 @@ import ReactTextareaAutosize from 'react-textarea-autosize'
 import { z, ZodTypeAny, ZodError } from 'zod'
 import ReactSelect from 'react-select'
 import _ from 'lodash'
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { calculateAge } from './age'
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -13,7 +16,6 @@ export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
         return undefined;
     }
 }, schema);
-
 
 type FieldErrorProps = {
     formState: FormState
@@ -142,7 +144,37 @@ export class FormHelper {
         )
     }
 
-    public TextArea = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+    public DatePicker = ({ label, name, width, addAge }: { label: string, name: string, addAge?: boolean, width?: number | string }) => {
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name}>
+                <Form.Label>{label}</Form.Label>
+                <DatePicker
+                    selected={this.get(name)}
+                    onChange={(date) => this.set(name, date)}
+                    className="form-control"
+                    dateFormat="dd/MM/yyyy"
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <p>
+                    <strong>
+                        {this.get(name)
+                            ? new Date(this.get(name)).toLocaleDateString('en-GB') +
+                            (addAge
+                                ? ` (${calculateAge(this.get(name))})`
+                                : '')
+                            : ''}
+                    </strong>
+                </p>
+            </div>
+        );
+    }
+
+    public TextArea = ({ label, name, width }: { label: string | null, name: string, width?: number | string }) => {
+        if (label === null) return null
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
