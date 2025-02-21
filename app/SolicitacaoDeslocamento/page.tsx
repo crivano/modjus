@@ -80,10 +80,26 @@ export default function SolicitacaoDeslocamento() {
     }
   }
 
+  function handleProponenteChange(proponente: any, Frm: FormHelper) {
+    if (proponente) {
+        Frm.set('funcaoProponente', proponente.funcao || '');
+        Frm.set('cargoProponente', proponente.cargo || '');
+    }
+  }
+
   function interview(Frm: FormHelper) {
     return <>
       <div className="scrollableContainer">
 
+        <h2>Dados do Proponente</h2>
+        <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
+        <div className="row">
+          <Frm.Input label="Função" name="funcaoProponente" width={6} />
+          <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+        </div>
+
+        <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+        
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
         <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
@@ -154,8 +170,15 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
 
+        <h4>Dados do Proponente</h4>
+        <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
+        <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
+        <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
+        <p><strong>Cargo:</strong> {data.cargoProponente || 'Não informado'}</p>
+
+        <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
-        <p><strong>Proponente:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
+        <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
         <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
