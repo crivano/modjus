@@ -1,4 +1,16 @@
+# Modjus
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Setup
+
+1. Clone the repository.
+2. Install [`Nodejs`](https://nodejs.org/).
+3. Copy the `.env.example` file to `.env` and set it as enviroment variables.
+4. Install [`Python`](https://www.python.org/).
+5. Install [`Visual Studio Community`](https://visualstudio.microsoft.com/pt-br/vs/community/).
+6. Install node-gyp with `npm install -g node-gyp`.
+7. Install dependencies with `npm install`.
 
 ## Getting Started
 
