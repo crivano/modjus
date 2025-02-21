@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { FormHelper } from "@/libs/form-support";
-import styles from '@/PessoaMany.module.css';
 import { Modal } from 'react-bootstrap';
 import TableRecords from '../table-records';
 import ErrorPopup from "@/components/ErrorPopup";

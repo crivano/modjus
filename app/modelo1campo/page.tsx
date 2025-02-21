@@ -4,6 +4,7 @@ import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import Endereco from "./Endereco"
 import { Suspense, useState } from "react"
+import PessoaMany from "@/components/sei/Pessoa"
 import UnidadeMany from "@/components/sei/Unidade"
 
 export default function Modelo1Campo() {
@@ -30,8 +31,9 @@ function interview(Frm: FormHelper) {
 
     <Endereco Frm={Frm} name="endereco" />
 
-    <UnidadeMany Frm={Frm} name="unidade"  />
+    <PessoaMany Frm={Frm} label1="sigla" label2="sigla2" name="pessoa"/>
 
+    <UnidadeMany Frm={Frm}  name="unidade"/>
 
     <Frm.TextArea label="Qual é o texto1?" name="texto1" />
 

@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
+import Unidade from "@/components/sei/Unidade"
 
 function Interview(Frm: FormHelper) {
   const oCaracteristicas = [
@@ -37,7 +38,7 @@ function Interview(Frm: FormHelper) {
       </div>
 
       <h2>1. Informações da Unidade</h2>
-      <SelectUnidade Frm={Frm} name="t1Unidade" width={4} />
+      <Unidade Frm={Frm} name="t1Unidade"/>
       <Frm.dateInput label="Data da Instalação" name="t1DataDaInstalacao" width={4} />
       <Frm.TextArea label="Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)" name="t1Competencias" width={12} />
       <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
@@ -405,7 +406,7 @@ function document(data: any) {
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           <div>Unidade</div>
         </label>
-        <p style={{ fontWeight: 'bold' }}>{t1Unidade || "Não informado"}</p>
+        <p style={{ fontWeight: 'bold' }}>{t1Unidade?.descricao || "Não informado"}</p>
       </div>
       <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>

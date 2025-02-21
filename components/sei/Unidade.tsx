@@ -1,34 +1,31 @@
 import { useEffect, useState } from 'react';
 import { FormHelper } from "@/libs/form-support";
-import styles from '@/PessoaMany.module.css';
 import { Modal } from 'react-bootstrap';
 import TableRecords from '../table-records';
 import ErrorPopup from "@/components/ErrorPopup";
 
 
 // Carregar dados de unidade do SEI
-async function loadUnidade(texto: string) {
+async function loadUnidade(sigla: string) {
     try {
-        const retorno = await fetch(`/api/sei-soap`);
+        const retorno = await fetch(`/api/sei-soap?sigla=${encodeURI(sigla)}`);
         const json = await retorno.json();
         if (json.erro) {
-            throw new Error("Houve um problema ao tentar buscar a lista de unidade pesquisadas informada na sigla da Unidade. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+            throw new Error("Houve um problema ao tentar buscar a lista de unidades pesquisadas informada. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
         }
         return json;
     } catch (error: any) {
-        throw new Error("Houve um problema ao tentar buscar a lista de unidade pesquisadas informada na sigla da Unidade. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
+        throw new Error("Houve um problema ao tentar buscar a lista de unidades pesquisadas informada. Tente mais tarde. Caso o erro persista abra um chamado informando este erro.");
     }
 }
 
 interface UnidadeProps {
     Frm: FormHelper;
     name: string;
-
     onChange?: (unidade: any) => void;
 }
 
 type Unidade = {
-    id: string
     sigla: string
     nome: string
 }
@@ -45,15 +42,17 @@ export default function UnidadeMany({ Frm, name,  onChange}: UnidadeProps) {
             if (!sigla) {
                 throw new Error("Sigla não informada");
             }
-            const json = await loadUnidade(sigla);
+            const unidades = await loadUnidade(sigla);
 
-            if (json.erro) {
-                throw new Error("Nenhuma unidade listada para a sigla informada");
+               // Verifica se a API retornou um erro ou unidades vazias
+            if (!unidades || unidades.length === 0) {
+                throw new Error("Nenhuma unidade encontrada para a sigla informada.");
             }
     
 
             const lista: Unidade[] =
-                json.map((u: any) => ({ id : u.id, sigla: u.sigla, nome: u.descricao} as Unidade)).filter((item: Unidade) =>  item.sigla.includes(sigla) || item.nome.includes(sigla));
+                unidades.map((u: any) => ({ sigla: u.sigla, nome: u.descricao} as Unidade))
+                    
 
             if (lista.length === 1) {
                 Frm.set(`${name}.sigla`, lista[0].sigla);
@@ -76,7 +75,6 @@ export default function UnidadeMany({ Frm, name,  onChange}: UnidadeProps) {
         if (selectedItem) {
             Frm.set(`${name}.sigla`, selectedItem.sigla);
             Frm.set(`${name}.descricao`, selectedItem.nome);
-
             if (onChange) {
                 onChange(selectedItem);
             }
@@ -88,9 +86,9 @@ export default function UnidadeMany({ Frm, name,  onChange}: UnidadeProps) {
         <>
             <div className="col col-12">
                 <div className="row">
-                    <Frm.Input label='Sigla'   name={`${name}.sigla`} width={3} />
+                    <Frm.Input label="Sigla"   name={`${name}.sigla`} width={3} />
                     <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen, setError)} >...</Frm.Button>
-                    <Frm.Input label='Descrição' name={`${name}.descricao`} width={""} />
+                    <Frm.Input label="Descrição" name={`${name}.descricao`} width={""} />
                 </div>
                 <div>  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
 
