@@ -4,17 +4,41 @@ import ErrorPopup from "@/components/ErrorPopup";
 
 async function loadUnidades() {
     try {
-    const retorno = await fetch(process.env.NEXT_PUBLIC_URL_SEISOAP as string)
-    const json = await retorno.json()
-    if (json.erro) {
+      const response = await fetch(process.env.NEXT_PUBLIC_URL_SEISOAP as string);
+      const json = await response.json();
+  
+      // Verificação do erro dentro da resposta
+      if (json.erro) {
+        // Envia o log de erro para o servidor
+         await logToServer('error: ' + json.error);
         throw new Error("Houve um problema ao tentar buscar a lista de unidades pesquisadas. Repita a operação. Caso o erro persista abra um chamado informando este erro.");
       }
-      return json;
+  
+      return json; // Retorna o json se não houver erro
     } catch (error: any) {
-        throw new Error("Houve um problema ao tentar buscar a lista de unidades pesquisadas. Repita a operação. Caso o erro persista abra um chamado informando este erro.");
- } 
-   
-}
+    // Envia o log de erro para o servidor
+      await logToServer('error: ' + error.message);
+      throw new Error("Houve um problema ao tentar buscar a lista de unidades pesquisadas. Repita a operação. Caso o erro persista abra um chamado informando este erro.");
+    }
+  }
+
+  async function logToServer(logMessage: string) {
+    try {
+      // Envia o log para a API Route no servidor
+      const response = await fetch('/api/log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ logMessage }),
+      });
+  
+      const result = await response.json();
+      console.log('Log enviado para o servidor:', result); // Log no client-side para saber que foi enviado
+    } catch (error) {
+      console.error('Erro ao enviar log para o servidor:', error);
+    }
+  }
 
 export default function SelectUnidade({ Frm, name, width }: { Frm: FormHelper, name: string, width?: number | string }) {
    
@@ -40,7 +64,7 @@ export default function SelectUnidade({ Frm, name, width }: { Frm: FormHelper, n
         
         }
         if (loading) fetchData()
-    }, [])
+    }, [loading])
 
     if (loading) return <Frm.SelectAutocomplete label="Unidade (carregando)" name={name + '_loading'} options={[]} width={width} />
 
