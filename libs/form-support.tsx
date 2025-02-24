@@ -6,6 +6,9 @@ import _ from 'lodash'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { calculateAge } from './age'
+import Pessoa from "@/components/sei/Pessoa"
+import { Editor } from '@tinymce/tinymce-react'
+import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -129,7 +132,7 @@ export class FormHelper {
 
     public colClass = (width?: string | number) => `mt-3 col ${typeof width === 'string' ? width : `col-12 col-md-${width || 12}`}`
 
-    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
@@ -148,12 +151,7 @@ export class FormHelper {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <DatePicker
-                    selected={this.get(name)}
-                    onChange={(date) => this.set(name, date)}
-                    className="form-control"
-                    dateFormat="dd/MM/yyyy"
-                />
+                <DatePicker selected={this.get(name)} onChange={(date) => this.set(name, date)} className="form-control" dateFormat="dd/MM/yyyy" selectsMultiple={false as true} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group>
         ) : (
@@ -169,6 +167,74 @@ export class FormHelper {
                             : ''}
                     </strong>
                 </p>
+            </div>
+        );
+    }
+
+
+    public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
+        const formatDate = (date: string) => {
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
+
+        const parseDate = (date: string) => {
+            const [day, month, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        const value = this.get(name) || '';
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="date"
+                    value={value ? parseDate(value) : ''}
+                    onChange={e => this.set(name, formatDate(e.target.value))}
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{value}</strong></p>
+            </div>
+        );
+    }
+    public timeInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const formatTime = (time: string) => {
+            const [hours, minutes] = time.split(':');
+            return `${hours}:${minutes}`;
+        };
+
+        const parseTime = (time: string) => {
+            const [hours, minutes] = time.split(':');
+            return `${hours}:${minutes}`;
+        };
+
+        const value = this.get(name) || '';
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="time"
+                    value={value ? parseTime(value) : ''}
+                    onChange={e => this.set(name, formatTime(e.target.value))}
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{value}</strong></p>
             </div>
         );
     }
@@ -200,17 +266,20 @@ export class FormHelper {
             </Form.Group >
         ) : (
             <div className={this.colClass(width)}>
-                <Form.Label>{label}</Form.Label>
-                <p><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
         )
     }
 
     public SelectAutocomplete = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+
+
+        const selectedOption = options.find(option => option.id === this.get(name));
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <ReactSelect name={name} defaultValue={this.get(name)} onChange={e => this.set(name, e.value)} options={options.map(i => ({ value: i.id, label: i.name }))} />
+                <ReactSelect name={name} value={selectedOption ? { value: selectedOption.id, label: selectedOption.name } : 'Selecione'} defaultValue={this.get(name)} onChange={e => this.set(name, e.value)} options={options.map(i => ({ value: i.id, label: i.name }))} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group >
         ) : (
@@ -310,6 +379,43 @@ export class FormHelper {
         )
     }
 
+    public MoneyInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const formatCurrency = (value: string) => {
+            const numericValue = value.replace(/\D/g, '');
+            const formattedValue = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(parseFloat(numericValue) / 100);
+            return formattedValue.replace('R$', '').trim();
+        };
+
+        const parseCurrency = (value: string) => {
+            return value.replace(/\D/g, '');
+        };
+
+        const value = this.get(name) || '0';
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="text"
+                    value={formatCurrency(value)}
+                    onChange={e => this.set(name, parseCurrency(e.target.value))}
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{formatCurrency(value)}</strong></p>
+            </div>
+        );
+    }
+
     public Button = ({ onClick, variant, children }: { onClick: () => void, variant?: string, children: any }) => {
         return this.setData ? (
             <div className="col col-auto mt-3">
@@ -323,6 +429,388 @@ export class FormHelper {
             </div>
         )
     }
+    public DynamicListPessoa = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { sigla: '', descricao: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1">
+                            <Pessoa Frm={this} name={`${name}[${index}]`} label1="Matrícula" label2="Nome" />
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+    public DynamicListParticipantesExtras = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { nome: '', email: '', funcao: '', unidade: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1">
+                            <Form.Group className="mb-2">
+                                <Form.Label>Nome</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].nome`)}
+                                    onChange={e => this.set(`${name}[${index}].nome`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={this.get(`${name}[${index}].email`)}
+                                    onChange={e => this.set(`${name}[${index}].email`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Função</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].funcao`)}
+                                    onChange={e => this.set(`${name}[${index}].funcao`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Unidade</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].unidade`)}
+                                    onChange={e => this.set(`${name}[${index}].unidade`, e.target.value)}
+                                />
+                            </Form.Group>
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+    public DynamicListItensDePauta = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { item: '', comentarios: '', acoes: [] }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const addAcao = (itemIndex: number) => {
+            const newData = [...(this.get(name) || [])];
+            if (!newData[itemIndex].acoes) {
+                newData[itemIndex].acoes = [];
+            }
+            newData[itemIndex].acoes.push({ acao: '', responsavel: '', dataPrevista: '' });
+            this.set(name, newData);
+        };
+
+        const removeAcao = (itemIndex: number, acaoIndex: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData[itemIndex].acoes.splice(acaoIndex, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                {items.map((item: any, index: number) => (
+                    <div key={index} className="mb-2">
+                        <div className="d-flex align-items-center">
+                            <div className="flex-grow-1">
+                                <Form.Group className="mb-2">
+                                    <Form.Label>Item {index + 1}</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={this.get(`${name}[${index}].item`)}
+                                        onChange={e => this.set(`${name}[${index}].item`, e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-2">
+                                    <Form.Label>Comentários</Form.Label>
+                                    <Editor
+                                        apiKey="okl0dnjy21cv4l4ea6r0ealf62lttmbjpsbqtevspcitokf4"
+                                        value={this.get(`${name}[${index}].comentarios`) || ''}
+                                        init={{
+                                            height: 300,
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount'
+                                            ],
+                                            toolbar:
+                                                'undo redo | formatselect | bold italic backcolor | \
+                                                alignleft aligncenter alignright alignjustify | \
+                                                bullist numlist outdent indent | removeformat | help'
+                                        }}
+                                        onEditorChange={(content) => {
+                                            this.set(`${name}[${index}].comentarios`, content);
+                                        }}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 align-self-start">-</Button>
+                        </div>
+                        <Form.Label>Ações</Form.Label>
+                        <Button variant="success" onClick={() => addAcao(index)} className="ms-2">+</Button>
+                        {item.acoes?.map((acao: any, acaoIndex: number) => (
+                            <div key={acaoIndex} className="d-flex align-items-center mb-2">
+                                <div className="flex-grow-1">
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Ação {acaoIndex + 1}</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={this.get(`${name}[${index}].acoes[${acaoIndex}].acao`)}
+                                            onChange={e => this.set(`${name}[${index}].acoes[${acaoIndex}].acao`, e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Responsável</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={this.get(`${name}[${acaoIndex}].responsavel`)}
+                                            onChange={e => this.set(`${name}[${acaoIndex}].responsavel`, e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-2">
+                                        <Form.Label>Data Prevista</Form.Label>
+                                        <this.dateInput
+                                            label=""
+                                            name={`${name}[${index}].acoes[${acaoIndex}].dataPrevista`}
+                                            width={12}
+                                        />
+                                    </Form.Group>
+                                </div>
+                                <Button variant="danger" onClick={() => removeAcao(index, acaoIndex)} className="ms-2 align-self-start">-</Button>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    public QuantidadeServidoresTeletrabalho = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        return this.setData ? (
+            <QuantidadeServidoresTeletrabalho Frm={this} name={name} />
+        ) : (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                {this.get(name)?.map((servidor: any, i: number) => (
+                    <div key={i} className="row">
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Nome do Servidor' : ''}</Form.Label>
+                            <p><strong>{servidor.nome}</strong></p>
+                        </div>
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Período' : ''}</Form.Label>
+                            <p><strong>{servidor.periodo}</strong></p>
+                        </div>
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Data de Envio' : ''}</Form.Label>
+                            <p><strong>{servidor.dataEnvio}</strong></p>
+                        </div>
+                        <div className="col-3">
+                            <Form.Label>{i === 0 ? 'Número' : ''}</Form.Label>
+                            <p><strong>{servidor.numero}</strong></p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    public RadioButtons = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+        return this.setData ? (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                {options.map((option, idx) => (
+                    <Form.Check
+                        key={option.id}
+                        type="radio"
+                        label={option.name}
+                        name={name}
+                        value={option.id}
+                        checked={this.get(name) === option.id}
+                        onChange={e => this.set(name, e.target.value)}
+                    />
+                ))}
+            </div>
+        ) : (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
+            </div>
+        )
+    }
+
+    public DynamicListTrajeto = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { origem: '', destino: '', transporteAteEmbarque: '1', transporteAposDesembarque: '1', hospedagem: '1', dataTrecho: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const handleReturnToOrigin = (checked: boolean) => {
+            const items = this.get(name) || [];
+            if (checked) {
+                if (items.length > 0) {
+                    const newItem = {
+                        origem: items[items.length - 1].destino,
+                        destino: items[0].origem,
+                        transporteAteEmbarque: '1',
+                        transporteAposDesembarque: '1',
+                        hospedagem: '1',
+                        dataTrecho: ''
+                    };
+                    const newData = [...items, newItem];
+                    this.set(name, newData);
+                }
+            } else {
+                const newData = items.slice(0, -1);
+                this.set(name, newData);
+            }
+        };
+
+        const items = this.get(name) || [];
+        const transporteOptions = [
+            { id: '1', name: 'Com adicional de deslocamento' },
+            { id: '2', name: 'Sem adicional de deslocamento' },
+            { id: '3', name: 'Veículo oficial' }
+        ];
+        const hospedagemOptions = [
+            { id: '1', name: 'Sim' },
+            { id: '2', name: 'Não' }
+        ];
+
+        return (
+            <div className={this.colClass(width)}>
+                <div className="d-flex align-items-center">
+                    <Form.Label><strong>{label}</strong></Form.Label>
+                    <Button variant="success" onClick={addItem} className="ms-2">Adicionar percurso</Button>
+                    <Form.Check
+                        type="checkbox"
+                        label="Retorno à origem"
+                        onChange={e => handleReturnToOrigin(e.target.checked)}
+                        className="ms-2"
+                    />
+                </div>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1">
+                            <div className="row">
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Origem</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={this.get(`${name}[${index}].origem`)}
+                                        onChange={e => this.set(`${name}[${index}].origem`, e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Destino</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={this.get(`${name}[${index}].destino`)}
+                                        onChange={e => this.set(`${name}[${index}].destino`, e.target.value)}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <div className="row">
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Transporte até o embarque</Form.Label>
+                                    <Form.Select
+                                        value={this.get(`${name}[${index}].transporteAteEmbarque`)}
+                                        onChange={e => this.set(`${name}[${index}].transporteAteEmbarque`, e.target.value)}
+                                    >
+                                        {transporteOptions.map(option => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Transporte após o desembarque</Form.Label>
+                                    <Form.Select
+                                        value={this.get(`${name}[${index}].transporteAposDesembarque`)}
+                                        onChange={e => this.set(`${name}[${index}].transporteAposDesembarque`, e.target.value)}
+                                    >
+                                        {transporteOptions.map(option => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                            </div>
+                            <div className="row">
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Data do Trecho</Form.Label>
+                                    <Form.Control
+                                        type="date"
+                                        value={this.get(`${name}[${index}].dataTrecho`) || ''}
+                                        onChange={e => this.set(`${name}[${index}].dataTrecho`, e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
+                                    <Form.Select
+                                        value={this.get(`${name}[${index}].hospedagem`)}
+                                        onChange={e => this.set(`${name}[${index}].hospedagem`, e.target.value)}
+                                    >
+                                        {hospedagemOptions.map(option => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    };
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase

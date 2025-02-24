@@ -1,0 +1,45 @@
+.error-popup {
+  position: fixed;
+  width: 800px;
+  transform: translateX(-50%);
+  top:20%;
+  left: 50%;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 1000;
+}
+  
+  .error-popup-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .error-popup-message {
+    margin-right: 10px;
+  }
+  
+  .error-popup-close {
+    background: none;
+    border: none;
+    color: #721c24;
+    cursor: pointer;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .scrollableContainer {
+    max-height: 80vh;
+    overflow-y: auto;
+  }

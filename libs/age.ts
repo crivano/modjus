@@ -3,11 +3,17 @@ export const calculateAge = (birthday: string): string => {
     const birthDate = new Date(birthday);
     let years = today.getFullYear() - birthDate.getFullYear();
     let months = today.getMonth() - birthDate.getMonth();
+    let days = today.getDate() - birthDate.getDate();
+
+    if (days < 0) {
+        months--;
+    }
     if (months < 0) {
         years--;
         months += 12;
     }
-    return years > 0 && years < 1
+
+    return years === 0
         ? `${months} ${months === 1 ? 'mês' : 'meses'}`
         : `${years} ${years === 1 ? 'ano' : 'anos'}`;
 }

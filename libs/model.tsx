@@ -33,7 +33,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
     
     return (<div>
         <div className="container-fluid">
-            <div className="content mt-3">
+            
                 <div className="row">
                     <div id="modjus-interview" className="col col-12 col-md-6">
                         <h1 className="mt-3">Formulário</h1>
@@ -41,6 +41,9 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                             <div className="row">
                                 {interview(Frm)}
                             </div>
+                        </div>
+                        <div className="d-flex justify-content-end mt-2">
+                            {(!options || options.saveButton !== false) && <button className="btn btn-primary" onClick={handleSave}>Transportar</button>}
                         </div>
                     </div>
                     <div className="col col-12 col-md-6">
@@ -50,11 +53,11 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                                 {document(data)}
                             </div>
                         </div>
+                        <div className="d-flex justify-content-end mt-2">
+                            {options?.pdfButton && <Print id={options?.pdfFileName} className="btn btn-primary" />}
+                        </div>
                     </div>
                 </div>
-            </div>
-            {options?.pdfButton && <Print id={options?.pdfFileName} className="btn btn-primary mt-3 mb-3" />}
-            {(!options || !options.pdfButton || options?.saveButton) && <button className="btn btn-primary mt-3 mb-3" onClick={handleSave}>Salvar</button>}
         </div>
     </div>
     );
