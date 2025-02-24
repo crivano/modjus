@@ -12,6 +12,12 @@ const tipoBeneficiarioOptions = [
     { id: '3', name: 'Colaborador Eventual' }
 ]
 
+const tipoDeslocamentoOptions = [
+    { id: '', name: '' },
+    { id: '1', name: 'Nacional' },
+    { id: '2', name: 'Internacional' }
+  ]
+
 const meioTransporteOptions = [
     { id: '', name: '' },
     { id: '1', name: 'Aéreo' },
@@ -27,18 +33,19 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
         setStartDate(date);
     };
 
-function handlePessoaChange(beneficiario: any, Frm: FormHelper) {
-    if (beneficiario && beneficiario.sigla) {
-        Frm.set('funcaoPessoa', beneficiario.funcao || '');
+    function handleBeneficiarioChange(beneficiario: any, Frm: FormHelper) {
+        if (beneficiario && beneficiario.sigla) {
+            Frm.set('funcaoBeneficiario', beneficiario.funcao || '');
+            Frm.set('cargoBeneficiario', beneficiario.cargo || '');
+        }
     }
-}
 
-function handleProponenteChange(proponente: any, Frm: FormHelper) {
-    if (proponente) {
-        Frm.set('funcaoProponente', proponente.funcao || '');
-        Frm.set('cargoProponente', proponente.cargo || '');
+    function handleProponenteChange(proponente: any, Frm: FormHelper) {
+        if (proponente) {
+            Frm.set('funcaoProponente', proponente.funcao || '');
+            Frm.set('cargoProponente', proponente.cargo || '');
+        }
     }
-}
 
     return (
         <div>
@@ -51,29 +58,43 @@ function handleProponenteChange(proponente: any, Frm: FormHelper) {
 
             <h2>Dados do Proponente</h2>
             <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
-
-            {/* <Frm.TextArea label="Nome:" name="proponete" width={12} /> */}
             <Frm.TextArea label="Cargo:" name="cargoProponente" width={12} />
 
             <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
             <h2>Dados do Beneficiário</h2>
             <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
+            <Pessoa Frm={Frm} name="beneficiario" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
 
-            <Pessoa Frm={Frm} name="beneficiario" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
+            <Frm.TextArea label="Cargo:" name="cargoBeneficiario" width={12} />
 
-            {/* <Frm.TextArea label="Tipo de Beneficiário:" name="tipoDeBeneficiario" width={12} /> */}
-            {/* <Frm.TextArea label="Beneficiário" name="Beneficiario" width={12} /> */}
-            <Frm.TextArea label="Cargo do Beneficiário:" name="CargoDoBeneficiario" width={12} />
+
             <Frm.TextArea label="Finalidade:" name="Finalidade" width={12} />
 
-            <Frm.Select label='Tipo de Viagem' name='TipoDeViagem' options={meioTransporteOptions} width={12} />
+            <Frm.Select label='Tipo de Viagem' name='tipoViagem' options={tipoDeslocamentoOptions} width={12} />
 
             {/* <Frm.TextArea label="Tipo de Viagem:" name="TipoDeViagem" width={12} /> */}
             <Frm.TextArea label="Itinerário:" name="Itinerario" width={12} />
             <Frm.TextArea label="Retorno à Origem:" name="RetornoAOrigem" width={12} />
-            <Frm.TextArea label="Período:" name="Periodo" width={12} />
-            <Frm.TextArea label="Meio de Transporte:" name="MeioDeTransporte" width={12} />
+
+            <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+
+            <h2>Dados do Deslocamento</h2>
+            {/* <Frm.TextArea label="Período:" name="Periodo" width={12} /> */}
+
+            <div className="row">
+                <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
+                <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+            </div>
+
+            {/* <Frm.TextArea label="Meio de Transporte:" name="MeioDeTransporte" width={12} /> */}
+            <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
+
+            <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+
+            <h2>Cálculo das Diárias</h2>
+            {/* <Frm.TextArea label="Período:" name="Periodo" width={12} /> */}
+
             <Frm.TextArea label="Valor Bruto das Diárias:" name="ValorBrutoDasDiarias" width={12} />
             <Frm.TextArea label="Adicional de Deslocamento:" name="AdicionalDeDeslocamento" width={12} />
             <Frm.TextArea label="Desconto de Auxílio Alimentação:" name="DescontoDeAuxilioAlimentacao" width={12} />
@@ -91,17 +112,10 @@ function document(data: any) {
     const {
         codigo,
         dataDeslocamento,
-        proponente,
         cargoProponente,
-        tipoBeneficiario,
-        beneficiario,
-        CargoDoBeneficiario,
         Finalidade,
-        TipoDeViagem,
         Itinerario,
         RetornoAOrigem,
-        Periodo,
-        MeioDeTransporte,
         ValorBrutoDasDiarias,
         AdicionalDeDeslocamento,
         DescontoDeAuxilioAlimentacao,
@@ -110,6 +124,12 @@ function document(data: any) {
         ValorLiquidoDasDiarias,
         ValorTotalDasPassagens
     } = Frm.data;
+
+    const formatDateToBrazilian = (date: string) => {
+        if (!date) return 'Não informado';
+        const [year, month, day] = date.split('-');
+        return `${day}/${month}/${year}`;
+      };  
 
     const getOptionName = (options: { id: string, name: string }[], id: string) => {
         return options.find(opt => opt.id === id)?.name || 'Não informado';
@@ -125,18 +145,26 @@ function document(data: any) {
 
             {/* DADOS DO PROPONENTE */}
             Proponente:{data.proponente?.descricao || 'Não informado'}<br></br>
-            <label>Cargo do Proponente:</label>{' '}{cargoProponente || "Não informado"}<br></br>
+            {/* AJUSTAR */} <label>Cargo do Proponente:</label>{' '}{cargoProponente || "Não informado"}<br></br> 
 
             {/* DADOS DO BENEFICIÁRIO */}
             <label>Tipo de Beneficiário:</label> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)} <br></br>
             Beneficiário: {data.beneficiario?.descricao || 'Não informado'}<br></br>
-            <label>Cargo do Beneficiário:</label>{' '}{CargoDoBeneficiario || "Não informado"}<br></br>
+            {/* <p><strong>Cargo:</strong> {data.cargoBeneficiario || 'Não informado'}</p> */}
+            Cargo do Beneficiário: {data.cargoBeneficiario || 'Não informado'}<br></br>
+            {/* <label>Cargo do Beneficiário:</label>{' '}{cargoBeneficiario || "Não informado"}<br></br> */}
             <label>Finalidade:</label>{' '}{Finalidade || "Não informado"}<br></br>
-            <label>Tipo de Viagem:</label> {getOptionName(meioTransporteOptions, data.TipoDeViagem)} <br></br>
+
+            <label>Tipo de Viagem:</label> {getOptionName(tipoDeslocamentoOptions, data.tipoViagem)} <br></br>
+
             <label>Itinerário:</label>{' '}{Itinerario || "Não informado"}<br></br>
             <label>Retorno à Origem:</label>{' '}{RetornoAOrigem || "Não informado"}<br></br>
-            <label>Período:</label>{' '}{Periodo || "Não informado"}<br></br>
-            <label>Meio de Transporte:</label>{' '}{MeioDeTransporte || "Não informado"}<br></br>
+
+            {/* DADOS DO DESLOCAMENTO */}
+            Período: De {formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}<br></br>
+            Meio de Transporte: {getOptionName(meioTransporteOptions, data.meioTransporte)}<br></br>
+
+            {/* CÁLCULO DAS DIÁRIAS */}
             <label>Valor Bruto das Diárias:</label>{' '}{ValorBrutoDasDiarias || "Não informado"}<br></br>
             <label>Adicional de Deslocamento:</label>{' '}{AdicionalDeDeslocamento || "Não informado"}<br></br>
             <label>Desconto de Auxílio Alimentação:</label>{' '}{DescontoDeAuxilioAlimentacao || "Não informado"}<br></br>
