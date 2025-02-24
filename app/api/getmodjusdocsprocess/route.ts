@@ -54,9 +54,21 @@ const checkAuth = (req: NextRequest): boolean => {
   return username === process.env.AUTH_USER && password === process.env.AUTH_PASS;
 };
 
-// Função principal para lidar com GET requests
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
+ 
   try {
+  // Obter parâmetros de query da URL
+  const num_processo = req.nextUrl.searchParams.get('num_processo');
+  const nome_documento = req.nextUrl.searchParams.get('nome_documento');
+
+  // Verificar se os parâmetros são válidos
+  if (!num_processo || !nome_documento) {
+    return NextResponse.json(
+      { error: 'Parâmetros num_processo e nome_documento são obrigatórios.' },
+      { status: 400 }
+    );
+  }
+
      if (!checkIP(req)) {
       console.log("checkIP");
       return new NextResponse('Autenticação Inválida', {
@@ -72,6 +84,7 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    
     // Conectar ao banco de dados
     const connection = getDatabaseConnection();
     console.log("Conectou no Banco");
@@ -79,7 +92,13 @@ export async function GET(req: NextRequest) {
     // Realizar a consulta SQL para pegar todos os registros
     const [rows] = await new Promise<[DocumentoConteudo[]]>((resolve, reject) => {
       connection.query(
-        'SELECT dc.id_documento, id_serie, conteudo FROM sei.documento_conteudo dc inner join sei.documento d on d.id_documento = dc.id_documento where id_serie = 1336', // Removendo o filtro para pegar todos os registros
+        `SELECT s.nome, dc.conteudo 
+         FROM protocolo p 
+         JOIN documento d ON id_procedimento = p.id_protocolo 
+         JOIN serie s ON s.id_serie = d.id_serie 
+         JOIN documento_conteudo dc ON dc.id_documento = d.id_documento 
+         WHERE protocolo_formatado = ? AND UPPER(s.nome) = UPPER(?)`,
+        [num_processo, nome_documento], 
         (err, results) => {
           if (err) reject(err);
           resolve([results as DocumentoConteudo[]]);
