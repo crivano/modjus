@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
 
-function MeetingForm(Frm: FormHelper) {
+function ConclusaoDeslocamento(Frm: FormHelper) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
         setStartDate(date);
@@ -94,5 +94,5 @@ function document(data: any) {
 }
 
 export default function MeetingMemory() {
-    return Model(MeetingForm, document, { saveButton: true, pdfButton: false, pdfFileName: 'conclusao-de-deslocamento' });
+    return Model(ConclusaoDeslocamento, document, { saveButton: true, pdfButton: false, pdfFileName: 'conclusao-de-deslocamento' });
 }
