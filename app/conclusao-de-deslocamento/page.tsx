@@ -47,6 +47,10 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
         }
     }
 
+    function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
+        Frm.set('RetornoAOrigem', event.target.checked ? 'Sim' : 'Não');
+    }
+
     return (
         <div>
             <strong>CONCLUSÃO DE DESLOCAMENTO</strong>
@@ -65,35 +69,29 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
             <h2>Dados do Beneficiário</h2>
             <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
             <Pessoa Frm={Frm} name="beneficiario" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
-
             <Frm.TextArea label="Cargo:" name="cargoBeneficiario" width={12} />
-
-
             <Frm.TextArea label="Finalidade:" name="Finalidade" width={12} />
-
             <Frm.Select label='Tipo de Viagem' name='tipoViagem' options={tipoDeslocamentoOptions} width={12} />
-
-            {/* <Frm.TextArea label="Tipo de Viagem:" name="TipoDeViagem" width={12} /> */}
             <Frm.TextArea label="Itinerário:" name="Itinerario" width={12} />
-            <Frm.TextArea label="Retorno à Origem:" name="RetornoAOrigem" width={12} />
-
+            <label style={{ marginTop: '20px' }}>
+                <input type="checkbox" onChange={handleRetornoAOrigemChange} />
+                {' '} Retorno à Origem
+            </label>
+            
             <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
             <h2>Dados do Deslocamento</h2>
-            {/* <Frm.TextArea label="Período:" name="Periodo" width={12} /> */}
 
             <div className="row">
                 <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
                 <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
             </div>
 
-            {/* <Frm.TextArea label="Meio de Transporte:" name="MeioDeTransporte" width={12} /> */}
             <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
 
             <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
             <h2>Cálculo das Diárias</h2>
-            {/* <Frm.TextArea label="Período:" name="Periodo" width={12} /> */}
 
             <Frm.TextArea label="Valor Bruto das Diárias:" name="ValorBrutoDasDiarias" width={12} />
             <Frm.TextArea label="Adicional de Deslocamento:" name="AdicionalDeDeslocamento" width={12} />
@@ -150,15 +148,14 @@ function document(data: any) {
             {/* DADOS DO BENEFICIÁRIO */}
             <label>Tipo de Beneficiário:</label> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)} <br></br>
             Beneficiário: {data.beneficiario?.descricao || 'Não informado'}<br></br>
-            {/* <p><strong>Cargo:</strong> {data.cargoBeneficiario || 'Não informado'}</p> */}
             Cargo do Beneficiário: {data.cargoBeneficiario || 'Não informado'}<br></br>
-            {/* <label>Cargo do Beneficiário:</label>{' '}{cargoBeneficiario || "Não informado"}<br></br> */}
             <label>Finalidade:</label>{' '}{Finalidade || "Não informado"}<br></br>
 
             <label>Tipo de Viagem:</label> {getOptionName(tipoDeslocamentoOptions, data.tipoViagem)} <br></br>
 
             <label>Itinerário:</label>{' '}{Itinerario || "Não informado"}<br></br>
             <label>Retorno à Origem:</label>{' '}{RetornoAOrigem || "Não informado"}<br></br>
+
 
             {/* DADOS DO DESLOCAMENTO */}
             Período: De {formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}<br></br>
