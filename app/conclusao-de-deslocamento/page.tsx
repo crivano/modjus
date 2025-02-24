@@ -16,7 +16,7 @@ const tipoDeslocamentoOptions = [
     { id: '', name: '' },
     { id: '1', name: 'Nacional' },
     { id: '2', name: 'Internacional' }
-  ]
+]
 
 const meioTransporteOptions = [
     { id: '', name: '' },
@@ -77,7 +77,7 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
                 <input type="checkbox" onChange={handleRetornoAOrigemChange} />
                 {' '} Retorno à Origem
             </label>
-            
+
             <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
             <h2>Dados do Deslocamento</h2>
@@ -93,13 +93,15 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
 
             <h2>Cálculo das Diárias</h2>
 
-            <Frm.TextArea label="Valor Bruto das Diárias:" name="ValorBrutoDasDiarias" width={12} />
-            <Frm.TextArea label="Adicional de Deslocamento:" name="AdicionalDeDeslocamento" width={12} />
-            <Frm.TextArea label="Desconto de Auxílio Alimentação:" name="DescontoDeAuxilioAlimentacao" width={12} />
-            <Frm.TextArea label="Desconto de Auxílio Transporte:" name="DescontoDeAuxilioTransporte" width={12} />
-            <Frm.TextArea label="Desconto de Teto:" name="DescontoDeTeto" width={12} />
-            <Frm.TextArea label="Valor Líquido das Diárias:" name="ValorLiquidoDasDiarias" width={12} />
-            <Frm.TextArea label="Valor Total das Passagens:" name="ValorTotalDasPassagens" width={12} />
+            <div className='row'>
+                <Frm.MoneyInput label="Valor Bruto das Diárias:" name="ValorBrutoDasDiarias" width={4} />
+                <Frm.MoneyInput label="Adicional de Deslocamento:" name="AdicionalDeDeslocamento" width={4} />
+                <Frm.MoneyInput label="Desconto de Auxílio Alimentação:" name="DescontoDeAuxilioAlimentacao" width={4} />
+                <Frm.MoneyInput label="Desconto de Auxílio Transporte:" name="DescontoDeAuxilioTransporte" width={4} />
+                <Frm.MoneyInput label="Desconto de Teto:" name="DescontoDeTeto" width={4} />
+                <Frm.MoneyInput label="Valor Líquido das Diárias:" name="ValorLiquidoDasDiarias" width={4} />
+                <Frm.MoneyInput label="Valor Total das Passagens:" name="ValorTotalDasPassagens" width={4} />
+            </div>
         </div>
     );
 }
@@ -127,10 +129,19 @@ function document(data: any) {
         if (!date) return 'Não informado';
         const [year, month, day] = date.split('-');
         return `${day}/${month}/${year}`;
-      };  
+    };
 
     const getOptionName = (options: { id: string, name: string }[], id: string) => {
         return options.find(opt => opt.id === id)?.name || 'Não informado';
+    };
+
+    const formatCurrency = (value: number | string | undefined) => {
+        if (value === undefined) return 'Não informado';
+        if (typeof value === 'string') {
+            value = parseFloat(value);
+            value /= 100;
+        }
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     };
 
     return (
@@ -143,7 +154,7 @@ function document(data: any) {
 
             {/* DADOS DO PROPONENTE */}
             Proponente:{data.proponente?.descricao || 'Não informado'}<br></br>
-            {/* AJUSTAR */} <label>Cargo do Proponente:</label>{' '}{cargoProponente || "Não informado"}<br></br> 
+            {/* AJUSTAR */} <label>Cargo do Proponente:</label>{' '}{cargoProponente || "Não informado"}<br></br>
 
             {/* DADOS DO BENEFICIÁRIO */}
             <label>Tipo de Beneficiário:</label> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)} <br></br>
@@ -152,7 +163,6 @@ function document(data: any) {
             <label>Finalidade:</label>{' '}{Finalidade || "Não informado"}<br></br>
 
             <label>Tipo de Viagem:</label> {getOptionName(tipoDeslocamentoOptions, data.tipoViagem)} <br></br>
-
             <label>Itinerário:</label>{' '}{Itinerario || "Não informado"}<br></br>
             <label>Retorno à Origem:</label>{' '}{RetornoAOrigem || "Não informado"}<br></br>
 
@@ -162,13 +172,13 @@ function document(data: any) {
             Meio de Transporte: {getOptionName(meioTransporteOptions, data.meioTransporte)}<br></br>
 
             {/* CÁLCULO DAS DIÁRIAS */}
-            <label>Valor Bruto das Diárias:</label>{' '}{ValorBrutoDasDiarias || "Não informado"}<br></br>
-            <label>Adicional de Deslocamento:</label>{' '}{AdicionalDeDeslocamento || "Não informado"}<br></br>
-            <label>Desconto de Auxílio Alimentação:</label>{' '}{DescontoDeAuxilioAlimentacao || "Não informado"}<br></br>
-            <label>Desconto de Auxílio Transporte:</label>{' '}{DescontoDeAuxilioTransporte || "Não informado"}<br></br>
-            <label>Desconto de Teto:</label>{' '}{DescontoDeTeto || "Não informado"}<br></br>
-            <label>Valor Líquido das Diárias:</label>{' '}{ValorLiquidoDasDiarias || "Não informado"}<br></br>
-            <label>Valor Total das Passagens:</label>{' '}{ValorTotalDasPassagens || "Não informado"}<br></br>
+            <label>Valor Bruto das Diárias:</label>{' '}{formatCurrency(ValorBrutoDasDiarias) || "Não informado"}<br></br>
+            <label>Adicional de Deslocamento:</label>{' '}{formatCurrency(AdicionalDeDeslocamento) || "Não informado"}<br></br>
+            <label>Desconto de Auxílio Alimentação:</label>{' '}{formatCurrency(DescontoDeAuxilioAlimentacao) || "Não informado"}<br></br>
+            <label>Desconto de Auxílio Transporte:</label>{' '}{formatCurrency(DescontoDeAuxilioTransporte) || "Não informado"}<br></br>
+            <label>Desconto de Teto:</label>{' '}{formatCurrency(DescontoDeTeto) || "Não informado"}<br></br>
+            <label>Valor Líquido das Diárias:</label>{' '}{formatCurrency(ValorLiquidoDasDiarias) || "Não informado"}<br></br>
+            <label>Valor Total das Passagens:</label>{' '}{formatCurrency(ValorTotalDasPassagens) || "Não informado"}<br></br>
         </div>
     );
 }
