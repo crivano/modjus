@@ -3,8 +3,11 @@ import ReactTextareaAutosize from 'react-textarea-autosize'
 import { z, ZodTypeAny, ZodError } from 'zod'
 import ReactSelect from 'react-select'
 import _ from 'lodash'
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { calculateAge } from './age'
 import Pessoa from "@/components/sei/Pessoa"
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor } from '@tinymce/tinymce-react'
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
@@ -16,7 +19,6 @@ export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
         return undefined;
     }
 }, schema);
-
 
 type FieldErrorProps = {
     formState: FormState
@@ -130,7 +132,7 @@ export class FormHelper {
 
     public colClass = (width?: string | number) => `mt-3 col ${typeof width === 'string' ? width : `col-12 col-md-${width || 12}`}`
 
-    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void}) => {
+    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
@@ -144,6 +146,31 @@ export class FormHelper {
             </div>
         )
     }
+
+    public DatePicker = ({ label, name, width, addAge }: { label: string, name: string, addAge?: boolean, width?: number | string }) => {
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name}>
+                <Form.Label>{label}</Form.Label>
+                <DatePicker selected={this.get(name)} onChange={(date) => this.set(name, date)} className="form-control" dateFormat="dd/MM/yyyy" selectsMultiple={false as true} />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <p>
+                    <strong>
+                        {this.get(name)
+                            ? new Date(this.get(name)).toLocaleDateString('en-GB') +
+                            (addAge
+                                ? ` (${calculateAge(this.get(name))})`
+                                : '')
+                            : ''}
+                    </strong>
+                </p>
+            </div>
+        );
+    }
+
 
     public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         const formatDate = (date: string) => {
@@ -212,7 +239,8 @@ export class FormHelper {
         );
     }
 
-    public TextArea = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+    public TextArea = ({ label, name, width }: { label: string | null, name: string, width?: number | string }) => {
+        if (label === null) return null
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
@@ -245,8 +273,8 @@ export class FormHelper {
     }
 
     public SelectAutocomplete = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
-        
-        
+
+
         const selectedOption = options.find(option => option.id === this.get(name));
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
@@ -732,28 +760,28 @@ export class FormHelper {
                                 </Form.Group>
                             </div>
                             <div className="row">
-                            <Form.Group className="mb-2 col-md-6">
-                                <Form.Label>Transporte até o embarque</Form.Label>
-                                <Form.Select
-                                    value={this.get(`${name}[${index}].transporteAteEmbarque`)}
-                                    onChange={e => this.set(`${name}[${index}].transporteAteEmbarque`, e.target.value)}
-                                >
-                                    {transporteOptions.map(option => (
-                                        <option key={option.id} value={option.id}>{option.name}</option>
-                                    ))}
-                                </Form.Select>
-                            </Form.Group>
-                            <Form.Group className="mb-2 col-md-6">
-                                <Form.Label>Transporte após o desembarque</Form.Label>
-                                <Form.Select
-                                    value={this.get(`${name}[${index}].transporteAposDesembarque`)}
-                                    onChange={e => this.set(`${name}[${index}].transporteAposDesembarque`, e.target.value)}
-                                >
-                                    {transporteOptions.map(option => (
-                                        <option key={option.id} value={option.id}>{option.name}</option>
-                                    ))}
-                                </Form.Select>
-                            </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Transporte até o embarque</Form.Label>
+                                    <Form.Select
+                                        value={this.get(`${name}[${index}].transporteAteEmbarque`)}
+                                        onChange={e => this.set(`${name}[${index}].transporteAteEmbarque`, e.target.value)}
+                                    >
+                                        {transporteOptions.map(option => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                                <Form.Group className="mb-2 col-md-6">
+                                    <Form.Label>Transporte após o desembarque</Form.Label>
+                                    <Form.Select
+                                        value={this.get(`${name}[${index}].transporteAposDesembarque`)}
+                                        onChange={e => this.set(`${name}[${index}].transporteAposDesembarque`, e.target.value)}
+                                    >
+                                        {transporteOptions.map(option => (
+                                            <option key={option.id} value={option.id}>{option.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
                             </div>
                             <div className="row">
                                 <Form.Group className="mb-2 col-md-6">
