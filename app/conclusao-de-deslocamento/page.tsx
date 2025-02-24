@@ -4,6 +4,13 @@ import { useState } from 'react';
 import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
 
+const tipoBeneficiarioOptions = [
+    { id: '', name: '' },
+    { id: '1', name: 'TRF2/SJRJ/SJES' },
+    { id: '2', name: 'Colaborador' },
+    { id: '3', name: 'Colaborador Eventual' }
+  ]
+
 function ConclusaoDeslocamento(Frm: FormHelper) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
@@ -18,7 +25,13 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
             <Frm.TextArea label="Data da Solicitação de Deslocamento:" name="dataDeslocamento" width={12} />
             <Frm.TextArea label="Proponente:" name="proponete" width={12} />
             <Frm.TextArea label="Cargo do Proponente:" name="cargoProponente" width={12} />
-            <Frm.TextArea label="Tipo de Beneficiário:" name="tipoDeBeneficiario" width={12} />
+
+            <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+
+            <h2>Dados do Beneficiário</h2>
+            <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
+
+            {/* <Frm.TextArea label="Tipo de Beneficiário:" name="tipoDeBeneficiario" width={12} /> */}
             <Frm.TextArea label="Beneficiário" name="Beneficiario" width={12} />
             <Frm.TextArea label="Cargo do Beneficiário:" name="CargoDoBeneficiario" width={12} />
             <Frm.TextArea label="Finalidade:" name="Finalidade" width={12} />
@@ -46,7 +59,7 @@ function document(data: any) {
         dataDeslocamento,
         proponente,
         cargoProponente,
-        tipoDeBeneficiario,
+        tipoBeneficiario,
         Beneficiario,
         CargoDoBeneficiario,
         Finalidade,
@@ -64,6 +77,10 @@ function document(data: any) {
         ValorTotalDasPassagens
     } = Frm.data;
 
+    const getOptionName = (options: { id: string, name: string }[], id: string) => {
+        return options.find(opt => opt.id === id)?.name || 'Não informado';
+      };
+
     return (
         <div>
             <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p>
@@ -73,7 +90,8 @@ function document(data: any) {
             <label>Data da Solicitação de Deslocamento: </label>{' '}{dataDeslocamento || "Não informado"}<br></br>
             <label>Proponente:</label>{' '}{proponente || "Não informado"}<br></br>
             <label>Cargo do Proponente:</label>{' '}{cargoProponente || "Não informado"}<br></br>
-            <label>Tipo de Beneficiário:</label>{' '}{tipoDeBeneficiario || "Não informado"}<br></br>
+
+            <label>Tipo de Beneficiário:</label> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)} <br></br>
             <label>Beneficiário:</label>{' '}{Beneficiario || "Não informado"}<br></br>
             <label>Cargo do Beneficiário:</label>{' '}{CargoDoBeneficiario || "Não informado"}<br></br>
             <label>Finalidade:</label>{' '}{Finalidade || "Não informado"}<br></br>
