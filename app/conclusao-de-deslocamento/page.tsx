@@ -12,7 +12,7 @@ function MeetingForm(Frm: FormHelper) {
 
     return (
         <div>
-            <strong>CONCLUSÃO DE DESLOCAMENTO SIGA Nº TRF2-FOR-2024/01564</strong>
+            <strong>CONCLUSÃO DE DESLOCAMENTO</strong>
             <p><strong>Dados para o relatório de deslocamentos</strong></p>
             <Frm.TextArea label="Código da Solicitação de Deslocamento:" name="codigo" width={12} />
             <Frm.TextArea label="Data da Solicitação de Deslocamento:" name="dataDeslocamento" width={12} />
@@ -66,7 +66,7 @@ function document(data: any) {
 
     return (
         <div>
-            <p><strong>CONCLUSÃO DE DESLOCAMENTO SIGA Nº TRF2-FOR-2024/01564</strong></p>
+            <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p>
             <strong>Dados para o relatório de deslocamentos</strong><br></br>
 
             <label>Código da Solicitação de Deslocamento: </label>{' '}{codigo || "Não informado"}<br></br>
@@ -92,7 +92,6 @@ function document(data: any) {
         </div>
     );
 }
-
 
 export default function MeetingMemory() {
     return Model(MeetingForm, document, { saveButton: true, pdfButton: false, pdfFileName: 'conclusao-de-deslocamento' });
