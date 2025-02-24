@@ -9,6 +9,8 @@
     "@typescript-eslint/no-var": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-empty-object-type": "off"
-    }
+    "@typescript-eslint/no-empty-object-type": "off",
+    "@typescript-eslint/no-duplicate-enum-values": "off"
+  }
 }
+

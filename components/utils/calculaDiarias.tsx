@@ -124,7 +124,7 @@ function calcularDiarias(
         }
 
         let diaria = valorUnitatioDaDiaria;
-        let diariaParaCalculoDoDeslocamento = valorUnitarioDaDiariaParaCalculoDoDeslocamento;
+        const diariaParaCalculoDoDeslocamento = valorUnitarioDaDiariaParaCalculoDoDeslocamento;
         if (internacional) {
             diaria = floor(valorUnitatioDaDiaria * cotacaoDoDolar);
         }
