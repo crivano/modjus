@@ -645,10 +645,10 @@ export class FormHelper {
         return (
             <div className={this.colClass(width)}>
                 <Form.Label>{label}</Form.Label>
-                <Button variant="success" onClick={addItem} className="ms-2">+</Button>
+                <Button variant="success" onClick={addItem} className="ms-2 m-2">+</Button>
                 {items.map((_: any, index: number) => (
                     <div key={index} className="d-flex align-items-center mb-2">
-                        <div className="flex-grow-1">
+                        <div className="flex-grow-1 card p-3 m-2" style={{backgroundColor: '#edf7fe'}}>
                             <Form.Group className="mb-2">
                                 <Form.Label>Data de Embarque</Form.Label>
                                 <Form.Control
@@ -740,6 +740,13 @@ export class FormHelper {
                 <Form.Label>{label}</Form.Label>
                 <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
+        )
+    }
+
+    // add space
+    public Space = () => {	
+        return (	
+            <div style={{ marginTop: '20px' }}></div> 
         )
     }
 

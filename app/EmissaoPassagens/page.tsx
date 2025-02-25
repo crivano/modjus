@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import { FormHelper } from "@/libs/form-support"; 
+import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model";
 import styles from './emissao-de-passagens.module.css'; // Import the CSS module
 
@@ -13,10 +13,17 @@ function EmissaoPassagens(Frm: FormHelper) {
 
     return (
         <div className={styles.scrollableContainer}>
-            <h1>EMISSAO DE PASSAGENS</h1>
+            <h3>EMISSÃO DE PASSAGENS</h3>
             <strong>Passagens</strong>
             <Frm.DynamicListDadosEmbarque label="Dados do Embarque" name="dadosEmbarque" width={12} />
+            <p><strong>Reserva</strong></p>
+            <Frm.Input label="Número do RPA:" name="numeroRPA" />
+            <Frm.Space/>
+            <p><strong>Custos</strong></p>
+            <Frm.Input label="Valor Total das Passagens:" name="valorTotalPassagens" />
+            
         </div>
+        
     );
 }
 
@@ -24,12 +31,14 @@ function document(data: any) {
     const Frm = new FormHelper();
     Frm.update(data);
     const {
+        numeroRPA,
+        valorTotalPassagens,
         dadosEmbarque,
     } = Frm.data;
 
     return (
         <div className='scrollableContainer'>
-            <h1 style={{ textAlign: 'center' }}>EMISSAO DE PASSAGENS</h1>
+            <p style={{ textAlign: 'center' }}><strong>EMISSÃO DE PASSAGENS</strong></p>
             <div style={{ marginTop: '1rem', width: '100%' }}>
                 <p><strong>Passagens</strong></p>
             </div>
@@ -37,8 +46,8 @@ function document(data: any) {
             <div style={{ marginTop: '1rem', width: '100%' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
                     <thead>
-                        <tr style={{textAlign:'center'}}>
-                            <th style={{ border:'1px solid black' }}>Data de Embarque</th>
+                        <tr style={{ textAlign: 'center', color: 'black', backgroundColor: 'lightgray' }}>
+                            <th style={{ border: '1px solid black' }}>Data de Embarque</th>
                             <th style={{ border: '1px solid black' }}>Trecho</th>
                             <th style={{ border: '1px solid black' }}>Empresa</th>
                             <th style={{ border: '1px solid black' }}>Vôo/Linha</th>
@@ -46,7 +55,7 @@ function document(data: any) {
                     </thead>
                     <tbody>
                         {dadosEmbarque?.map((dadosEmbarque: any, index: number) => (
-                            <tr key={index}>
+                            <tr key={index} style={{ textAlign: 'center' }}>
                                 <td style={{ border: '1px solid black' }}>{dadosEmbarque.dataEmbarque}</td>
                                 <td style={{ border: '1px solid black' }}>{dadosEmbarque.trecho}</td>
                                 <td style={{ border: '1px solid black' }}>{dadosEmbarque.empresa}</td>
@@ -56,6 +65,12 @@ function document(data: any) {
                     </tbody>
                 </table>
             </div>
+            <br></br>
+
+            <p><strong>Reserva</strong></p>
+            <p>Número do RPA: {numeroRPA || 'Não informado'}</p>
+            <p><strong>Custos</strong></p>
+            <p>Valor Total das Passagens: {valorTotalPassagens || 'Não informado'}</p>
         </div>
     );
 }
