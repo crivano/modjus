@@ -322,6 +322,7 @@ export class FormHelper {
     }
 
     public RadioButtonsTable = ({ label, labelsAndNames, options, width }: { label: string, labelsAndNames: { label: string, name: string }[], options: { id: string, name: string }[], width?: number | string }) => {
+        if (!labelsAndNames || labelsAndNames.length === 0) return null
         return this.setData ? (
             <div className={this.colClass(width)}>
                 <Form.Label>{label}</Form.Label>

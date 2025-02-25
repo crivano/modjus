@@ -18,7 +18,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="./favicon.ico" />
       </head>
-      <body className="">
+      <body>
         <ImportBsJS />
         {children}
       </body>
