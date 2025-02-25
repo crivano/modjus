@@ -629,6 +629,19 @@ export class FormHelper {
     }
 
     public DynamicListDadosEmbarque = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+
+        const formatDate = (date: string) => {
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
+
+        const parseDate = (date: string) => {
+            const [day, month, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        const value = this.get(name) || '';
+
         const addItem = () => {
             const newData = [...(this.get(name) || []), { dataEmbarque: '', trecho: '', Empresa: '', vooLInha: '' }];
             this.set(name, newData);
@@ -652,9 +665,9 @@ export class FormHelper {
                             <Form.Group className="mb-2">
                                 <Form.Label>Data de Embarque</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    value={this.get(`${name}[${index}].dataEmbarque`)}
-                                    onChange={e => this.set(`${name}[${index}].dataEmbarque`, e.target.value)}
+                                    type="date"
+                                    value={value ? parseDate(this.get(`${name}[${index}].dataEmbarque`)) : ''}
+                                    onChange={e => this.set(`${name}[${index}].dataEmbarque`, formatDate(e.target.value))}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-2">
