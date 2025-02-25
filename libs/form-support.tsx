@@ -757,9 +757,9 @@ export class FormHelper {
     }
 
     // add space
-    public Space = () => {	
+    public Space = ({px}) => {	
         return (	
-            <div style={{ marginTop: '20px' }}></div> 
+            <div style={{ marginTop: px }}></div> 
         )
     }
 

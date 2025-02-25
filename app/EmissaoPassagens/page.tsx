@@ -18,12 +18,10 @@ function EmissaoPassagens(Frm: FormHelper) {
             <Frm.DynamicListDadosEmbarque label="Dados do Embarque" name="dadosEmbarque" width={12} />
             <p><strong>Reserva</strong></p>
             <Frm.Input label="Número do RPA:" name="numeroRPA" />
-            <Frm.Space/>
+            <Frm.Space px="20px"/>
             <p><strong>Custos</strong></p>
-            <Frm.Input label="Valor Total das Passagens:" name="valorTotalPassagens" />
-            
+            <Frm.Input label="Valor Total das Passagens:" name="valorTotalPassagens" />  
         </div>
-        
     );
 }
 
@@ -43,7 +41,7 @@ function document(data: any) {
                 <p><strong>Passagens</strong></p>
             </div>
 
-            <div style={{ marginTop: '1rem', width: '100%' }}>
+            <div style={{ marginTop: '1rem', marginBottom:'1rem', width: '100%' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
                     <thead>
                         <tr style={{ textAlign: 'center', color: 'black', backgroundColor: 'lightgray' }}>
@@ -65,12 +63,16 @@ function document(data: any) {
                     </tbody>
                 </table>
             </div>
-            <br></br>
 
-            <p><strong>Reserva</strong></p>
-            <p>Número do RPA: {numeroRPA || 'Não informado'}</p>
-            <p><strong>Custos</strong></p>
-            <p>Valor Total das Passagens: {valorTotalPassagens || 'Não informado'}</p>
+            <div>
+                <strong>Reserva</strong>
+                <p>Número do RPA: {numeroRPA || 'Não informado'}</p>
+            </div>            
+            
+            <div>
+                <strong>Custos</strong>
+                <p>Valor Total das Passagens: {valorTotalPassagens || 'Não informado'}</p>
+            </div>
         </div>
     );
 }
