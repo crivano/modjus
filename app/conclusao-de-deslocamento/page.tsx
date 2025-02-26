@@ -122,13 +122,13 @@ function document(data: any) {
         DescontoDeAuxilioTransporte,
         DescontoDeTeto,
         ValorLiquidoDasDiarias,
-        ValorTotalDasPassagens
+        ValorTotalDasPassagens,
     } = Frm.data;
+
 
 const formatDateToBrazilian = (date: string) => {
     if (!date) return 'Não informado';
-    const [year, month, day] = date.split('-');
-    return `${day}/${month}/${year}`;
+    return date;
 };
 
 const getOptionName = (options: { id: string, name: string }[], id: string) => {
