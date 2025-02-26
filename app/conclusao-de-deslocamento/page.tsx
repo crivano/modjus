@@ -181,7 +181,7 @@ function document(data: any) {
             <label>Retorno à Origem:</label> <span style={{ color: 'blue' }}>{retorno_a_origem || "Não informado"}</span><br></br>
 
             {/* DADOS DO DESLOCAMENTO */}
-            <label>Período:</label> De <span style={{ color: 'blue' }}>{formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}</span><br></br>
+            <label>Período:</label> <span style={{ color: 'blue' }}>De {formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}</span><br></br>
             <label>Meio de Transporte:</label> <span style={{ color: 'blue' }}>{getOptionName(meioTransporteOptions, data.meioTransporte)}</span><br></br>
 
             {/* CÁLCULO DAS DIÁRIAS */}
