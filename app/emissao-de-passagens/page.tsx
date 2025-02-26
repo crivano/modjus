@@ -15,12 +15,12 @@ function EmissaoPassagens(Frm: FormHelper) {
         <div className={styles.scrollableContainer}>
             <h3>EMISSÃO DE PASSAGENS</h3>
             <strong>Passagens</strong>
-            <Frm.DynamicListDadosEmbarque label="Dados do Embarque" name="dadosEmbarque" width={12} />
+            <Frm.DynamicListDadosEmbarque label="Dados do Embarque" name="dadosEmbarque"/>
             <p><strong>Reserva</strong></p>
             <Frm.Input label="Número do RPA:" name="numeroRPA" />
             <Frm.Space px="20px"/>
             <p><strong>Custos</strong></p>
-            <Frm.Input label="Valor Total das Passagens:" name="valorTotalPassagens" />  
+            <Frm.MoneyInput label="Valor Total das Passagens:" name="valorTotalPassagens" width={6} />
         </div>
     );
 }
@@ -33,6 +33,20 @@ function document(data: any) {
         valorTotalPassagens,
         dadosEmbarque,
     } = Frm.data;
+
+    const formatDateToBrazilian = (date: string) => {
+        if (!date) return 'Não informado';
+        return date;
+    };
+
+    const formatCurrency = (value: number | string | undefined) => {
+        if (value === undefined) return 'Não informado';
+        if (typeof value === 'string') {
+            value = parseFloat(value);
+            value /= 100;
+        }
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    };
 
     return (
         <div className='scrollableContainer'>
@@ -66,12 +80,12 @@ function document(data: any) {
 
             <div>
                 <strong>Reserva</strong>
-                <p>Número do RPA: {numeroRPA || 'Não informado'}</p>
+                <p>Número do RPA: <span style={{color:'blue'}}>{numeroRPA || 'Não informado'}</span></p>
             </div>            
             
             <div>
                 <strong>Custos</strong>
-                <p>Valor Total das Passagens: {valorTotalPassagens || 'Não informado'}</p>
+                <p>Valor Total das Passagens: <span style={{color:'blue'}}>{formatCurrency(data.valorTotalPassagens) || 'Não informado'}</span></p>
             </div>
         </div>
     );
