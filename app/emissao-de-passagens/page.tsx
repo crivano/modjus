@@ -85,7 +85,7 @@ function document(data: any) {
             
             <div>
                 <strong>Custos</strong>
-                <p>Valor Total das Passagens: <span style={{color:'blue'}}>{formatCurrency(data.valorTotalPassagens) || 'Não informado'}</span></p>
+                <p>Valor Total das Passagens: <span style={{color:'blue'}}>{formatCurrency(valorTotalPassagens) || 'Não informado'}</span></p>
             </div>
         </div>
     );
