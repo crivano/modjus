@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
 import Pessoa from "@/components/sei/Pessoa"
+import { FormCheck } from 'react-bootstrap';
 
 const tipoBeneficiarioOptions = [
     { id: '', name: '' },
@@ -48,7 +49,7 @@ function handleProponenteChange(proponente: any, Frm: FormHelper) {
 }
 
 function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
-    Frm.set('RetornoAOrigem', event.target.checked ? 'Sim' : 'Não');
+    Frm.set('RetornoAOrigem', event.target.value);
 }
 
 return (
@@ -73,10 +74,23 @@ return (
         <Frm.TextArea label="Finalidade:" name="Finalidade" width={12} />
         <Frm.Select label='Tipo de Viagem' name='tipoViagem' options={tipoDeslocamentoOptions} width={12} />
         <Frm.TextArea label="Itinerário:" name="Itinerario" width={12} />
-        <label style={{ marginTop: '20px' }}>
-            <input type="checkbox" onChange={handleRetornoAOrigemChange} />
-            {' '} Retorno à Origem
-        </label>
+        <div style={{ marginTop: '20px' }}>
+                <label>Retorno à Origem:</label>
+                <FormCheck
+                    type="radio"
+                    label="Sim"
+                    name="RetornoAOrigem"
+                    value="Sim"
+                    onChange={handleRetornoAOrigemChange}
+                />
+                <FormCheck
+                    type="radio"
+                    label="Não"
+                    name="RetornoAOrigem"
+                    value="Não"
+                    onChange={handleRetornoAOrigemChange}
+                />
+            </div>
 
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
