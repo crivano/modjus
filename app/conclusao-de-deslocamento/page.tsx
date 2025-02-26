@@ -54,7 +54,7 @@ function ConclusaoDeslocamento(Frm: FormHelper) {
 
     return (
         <div>
-            <strong>CONCLUSÃO DE DESLOCAMENTO</strong>
+            <div className="margin-bottom: 0.3em; margin-top: 1em; font-weight: bold; font-size: 120%;">CONCLUSÃO DE DESLOCAMENTO</div>
             <p><strong>Dados para o relatório de deslocamentos</strong></p>
             <div className='row'>
                 <Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacao_codigo" width={6} />
