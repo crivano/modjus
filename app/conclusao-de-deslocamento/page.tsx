@@ -141,7 +141,6 @@ function document(data: any) {
         passagens_liquido,
     } = Frm.data;
 
-
     const formatDateToBrazilian = (date: string) => {
         if (!date) return 'Não informado';
         return date;
@@ -165,34 +164,34 @@ function document(data: any) {
             <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p>
             <strong>Dados para o relatório de deslocamentos</strong><br></br>
 
-            <label>Código da Solicitação de Deslocamento: </label>{' '}{solicitacao_codigo || "Não informado"}<br></br>
-            <label>Data da Solicitação de Deslocamento: </label>{' '}{formatDateToBrazilian(solicitacao_data) || "Não informado"}<br></br>
+            <label>Código da Solicitação de Deslocamento: </label> <span style={{color:'blue'}}>{solicitacao_codigo || "Não informado"}</span><br></br>
+            <label>Data da Solicitação de Deslocamento: </label> <span style={{color:'blue'}}>{formatDateToBrazilian(solicitacao_data) || "Não informado"}</span><br></br>
 
             {/* DADOS DO PROPONENTE */}
-            <label>Proponente:</label>{' '}{data.proponente?.descricao || 'Não informado'}<br></br>
-            <label>Cargo do Proponente:</label>{' '}{prop_cargo_funcao || "Não informado"}<br></br>
+            <label>Proponente:</label> <span style={{color:'blue'}}>{data.proponente?.descricao || 'Não informado'}</span><br></br>
+            <label>Cargo do Proponente:</label> <span style={{color:'blue'}}>{prop_cargo_funcao || "Não informado"}</span><br></br>
 
             {/* DADOS DO BENEFICIÁRIO */}
-            <label>Tipo de Beneficiário:</label> {getOptionName(tipoBeneficiarioOptions, data.benef_tipo)} <br></br>
-            <label>Beneficiário:</label> {data.beneficiario?.descricao || 'Não informado'}<br></br>
-            <label>Cargo do Beneficiário:</label> {data.benef_cargo_funcao || 'Não informado'}<br></br>
-            <label>Finalidade:</label>{' '}{finalidade || "Não informado"}<br></br>
-            <label>Tipo de Viagem:</label> {getOptionName(tipoDeslocamentoOptions, data.tipo_viagem)} <br></br>
-            <label>Itinerário:</label>{' '}{itinerario || "Não informado"}<br></br>
-            <label>Retorno à Origem:</label>{' '}{retorno_a_origem || "Não informado"}<br></br>
+            <label>Tipo de Beneficiário:</label> <span style={{color:'blue'}}>{getOptionName(tipoBeneficiarioOptions, data.benef_tipo)} </span><br></br>
+            <label>Beneficiário:</label> <span style={{color:'blue'}}>{data.beneficiario?.descricao || 'Não informado'}</span><br></br>
+            <label>Cargo do Beneficiário:</label> <span style={{color:'blue'}}>{data.benef_cargo_funcao || 'Não informado'}</span><br></br>
+            <label>Finalidade:</label> <span style={{color:'blue'}}>{finalidade || "Não informado"}</span><br></br>
+            <label>Tipo de Viagem:</label> <span style={{color:'blue'}}>{getOptionName(tipoDeslocamentoOptions, data.tipo_viagem)} </span><br></br>
+            <label>Itinerário:</label> <span style={{color:'blue'}}>{itinerario || "Não informado"}</span><br></br>
+            <label>Retorno à Origem:</label> <span style={{color:'blue'}}>{retorno_a_origem || "Não informado"}</span><br></br>
 
             {/* DADOS DO DESLOCAMENTO */}
-            <label>Período:</label> De {formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}<br></br>
-            <label>Meio de Transporte:</label>{' '}{getOptionName(meioTransporteOptions, data.meioTransporte)}<br></br>
+            <label>Período:</label> De <span style={{color:'blue'}}>{formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}</span><br></br>
+            <label>Meio de Transporte:</label> <span style={{color:'blue'}}>{getOptionName(meioTransporteOptions, data.meioTransporte)}</span><br></br>
 
             {/* CÁLCULO DAS DIÁRIAS */}
-            <label>Valor Bruto das Diárias:</label>{' '}{formatCurrency(diarias_bruto) || "Não informado"}<br></br>
-            <label>Adicional de Deslocamento:</label>{' '}{formatCurrency(adic_desloc) || "Não informado"}<br></br>
-            <label>Desconto de Auxílio Alimentação:</label>{' '}{formatCurrency(desc_a_alim) || "Não informado"}<br></br>
-            <label>Desconto de Auxílio Transporte:</label>{' '}{formatCurrency(desc_a_transp) || "Não informado"}<br></br>
-            <label>Desconto de Teto:</label>{' '}{formatCurrency(desc_teto) || "Não informado"}<br></br>
-            <label>Valor Líquido das Diárias:</label>{' '}{formatCurrency(diarias_liquido) || "Não informado"}<br></br>
-            <label>Valor Total das Passagens:</label>{' '}{formatCurrency(passagens_liquido) || "Não informado"}<br></br>
+            <label>Valor Bruto das Diárias:</label> <span style={{color:'blue'}}>{formatCurrency(diarias_bruto) || "Não informado"}</span><br></br>
+            <label>Adicional de Deslocamento:</label> <span style={{color:'blue'}}>{formatCurrency(adic_desloc) || "Não informado"}</span><br></br>
+            <label>Desconto de Auxílio Alimentação:</label> <span style={{color:'blue'}}>{formatCurrency(desc_a_alim) || "Não informado"}</span><br></br>
+            <label>Desconto de Auxílio Transporte:</label> <span style={{color:'blue'}}>{formatCurrency(desc_a_transp) || "Não informado"}</span><br></br>
+            <label>Desconto de Teto:</label> <span style={{color:'blue'}}>{formatCurrency(desc_teto) || "Não informado"}</span><br></br>
+            <label>Valor Líquido das Diárias:</label> <span style={{color:'blue'}}>{formatCurrency(diarias_liquido) || "Não informado"}</span><br></br>
+            <label>Valor Total das Passagens:</label> <span style={{color:'blue'}}>{formatCurrency(passagens_liquido) || "Não informado"}</span><br></br>
         </div>
     );
 }
