@@ -10,6 +10,8 @@ import Pessoa from "@/components/sei/Pessoa"
 import { Editor } from '@tinymce/tinymce-react'
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 
+const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
         return parseInt(a, 10)
@@ -320,6 +322,7 @@ export class FormHelper {
     }
 
     public RadioButtonsTable = ({ label, labelsAndNames, options, width }: { label: string, labelsAndNames: { label: string, name: string }[], options: { id: string, name: string }[], width?: number | string }) => {
+        if (!labelsAndNames || labelsAndNames.length === 0) return null
         return this.setData ? (
             <div className={this.colClass(width)}>
                 <Form.Label>{label}</Form.Label>
@@ -566,7 +569,7 @@ export class FormHelper {
                                 <Form.Group className="mb-2">
                                     <Form.Label>Comentários</Form.Label>
                                     <Editor
-                                        apiKey="okl0dnjy21cv4l4ea6r0ealf62lttmbjpsbqtevspcitokf4"
+                                        apiKey={TINYMCE_API_KEY}
                                         value={this.get(`${name}[${index}].comentarios`) || ''}
                                         init={{
                                             height: 300,

@@ -5,7 +5,7 @@ import { FormHelper, labelToName } from "@/libs/form-support"
 import { calculateAge, formatTextBasedOnAge, parseDescriptionWithCondition } from "@/libs/age"
 
 function interview(Frm: FormHelper) {
-  const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '-1 ano'
+  const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '0 ano'
 
   const oEscolaridade = [
     '',
@@ -35,11 +35,12 @@ function interview(Frm: FormHelper) {
     'Ficar em pé e andar (> 1 e < 7 anos)',
     'Fazer caminhadas (> 7 anos)',
     'Permanecer em pé (> 7 anos)',
-    'Subir e descer escadas',
-    'Abaixar ou agachar',
-    'Erguer peso',
-    'Atividades com esforço físico e cardiorrespiratório',
+    'Subir e descer escadas (> 3 anos)',
+    'Abaixar ou agachar (> 3 anos)',
+    'Erguer peso (> 3 anos)',
+    'Atividades com esforço físico e cardiorrespiratório (> 3 anos)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName('atividades ' + i)}` }))
+  console.log('oAtividadeFisica', oAtividadeFisica)
 
   const oAutoCuidado = [
     'Desenvolvimento neuropsicomotor (< 7 anos)',
@@ -59,13 +60,13 @@ function interview(Frm: FormHelper) {
 
   const oRelacoes = [
     'Expectativa de aprendizagem futura (< 3 anos)',
+    'Possibilidade de frequentar creche sem AEE – atendimento educacional especializado (< 3 anos)',
     'Atenção/Concentração em objetos e pessoas (> 6 meses e < 3 anos)',
     'Desenvolvimento da fala e linguagem (> 1 ano e < 3 anos)',
+    'Interação com crianças e adultos no âmbito familiar e espaços sociais (> 1 e < 7 anos)',
     'Fala/Comunicação/Desenvolvimento da linguagem (> 3 e < 7 anos)',
-    'Possibilidade de frequentar creche sem AEE – atendimento educacional especializado (< 3 anos)',
     'Aprendizagem e aquisição de conceitos esperados para sua faixa etária (> 3 e < 7 anos)',
     'Frequentar educação infantil (> 3 e < 7 anos)',
-    'Interação com crianças e adultos no âmbito familiar e espaços sociais (> 1 e < 7 anos)',
     'Participar de atividades recreativas, esportivas e pedagógicas em grupo (> 3 e < 7 anos)',
     'Atenção/Concentração em objetos e pessoas (> 3 e < 7 anos)',
     'Ouvir (> 7 anos)',
@@ -111,7 +112,7 @@ function interview(Frm: FormHelper) {
     </div>
 
     <Frm.RadioButtonsTable label="Atividade Física" labelsAndNames={oAtividadeFisica} options={oNivel} width={12} />
-    <Frm.RadioButtonsTable label="Auto Cuidado e Âmbito Doméstico" labelsAndNames={oAutoCuidado} options={oNivel} width={12} />
+    <Frm.RadioButtonsTable label={formatTextBasedOnAge(age, "{Desenvolvimento (< 7 anos)}{Auto Cuidado e Âmbito Doméstico (> 7 anos)}")} labelsAndNames={oAutoCuidado} options={oNivel} width={12} />
     <Frm.RadioButtonsTable label={formatTextBasedOnAge(age, "Relações Interpessoais e Sociais. Aprendizagem. Cognição. {Inserção Profissional. (> 7 anos)}")} labelsAndNames={oRelacoes} options={oNivel} width={12} />
 
     <div className="col col-12 mt-3">
