@@ -631,6 +631,80 @@ export class FormHelper {
         );
     }
 
+    public DynamicListDadosEmbarque = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+
+        const formatDate = (date: string) => {
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
+
+        const parseDate = (date: string) => {
+            const [day, month, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        const value = this.get(name) || '';
+
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { data_de_embarque: '', trecho: '', Empresa: '', vooLInha: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2 m-2">+</Button>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1 card p-3 m-2" style={{backgroundColor: '#edf7fe'}}>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Data de Embarque</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    value={value ? parseDate(this.get(`${name}[${index}].data_de_embarque`)) : ''}
+                                    onChange={e => this.set(`${name}[${index}].data_de_embarque`, formatDate(e.target.value))}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Trecho</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].trecho`)}
+                                    onChange={e => this.set(`${name}[${index}].trecho`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Empresa</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].empresa`)}
+                                    onChange={e => this.set(`${name}[${index}].empresa`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Vôo/Linha</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].vooLinha`)}
+                                    onChange={e => this.set(`${name}[${index}].vooLinha`, e.target.value)}
+                                />
+                            </Form.Group>
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
     public QuantidadeServidoresTeletrabalho = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         return this.setData ? (
             <QuantidadeServidoresTeletrabalho Frm={this} name={name} />
@@ -682,6 +756,13 @@ export class FormHelper {
                 <Form.Label>{label}</Form.Label>
                 <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
+        )
+    }
+
+    // add space
+    public Space = ({px}) => {	
+        return (	
+            <div style={{ marginTop: px }}></div> 
         )
     }
 
