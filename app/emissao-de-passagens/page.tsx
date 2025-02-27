@@ -15,12 +15,12 @@ function EmissaoPassagens(Frm: FormHelper) {
         <div className={styles.scrollableContainer}>
             <h3>EMISSÃO DE PASSAGENS</h3>
             <strong>Passagens</strong>
-            <Frm.DynamicListDadosEmbarque label="Dados do Embarque" name="dadosEmbarque"/>
+            <Frm.DynamicListDadosEmbarque label="Dados do Embarque" name="dadosEmbarque" />
             <p><strong>Reserva</strong></p>
-            <Frm.Input label="Número do RPA:" name="numeroRPA" />
-            <Frm.Space px="20px"/>
+            <Frm.Input label="Número do RPA:" name="rpa_passagens" />
+            <Frm.Space px="20px" />
             <p><strong>Custos</strong></p>
-            <Frm.MoneyInput label="Valor Total das Passagens:" name="valorTotalPassagens" width={6} />
+            <Frm.MoneyInput label="Valor Total das Passagens:" name="valor_passagens" width={6} />
         </div>
     );
 }
@@ -29,8 +29,8 @@ function document(data: any) {
     const Frm = new FormHelper();
     Frm.update(data);
     const {
-        numeroRPA,
-        valorTotalPassagens,
+        rpa_passagens,
+        valor_passagens,
         dadosEmbarque,
     } = Frm.data;
 
@@ -50,12 +50,13 @@ function document(data: any) {
 
     return (
         <div className='scrollableContainer'>
-            <p style={{ textAlign: 'center' }}><strong>EMISSÃO DE PASSAGENS</strong></p>
-            <div style={{ marginTop: '1rem', width: '100%' }}>
-                <p><strong>Passagens</strong></p>
+            <div style={{ textAlign: 'center', marginBottom: '0.3em', marginTop: '1em', fontWeight: 'bold', fontSize: '120%' }}>
+                EMISSÃO DE PASSAGENS
             </div>
 
-            <div style={{ marginTop: '1rem', marginBottom:'1rem', width: '100%' }}>
+            <span style={{ fontWeight: 'bold' }}>Passagens</span>
+
+            <div style={{ marginTop: '1rem', marginBottom: '1rem', width: '100%' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
                     <thead>
                         <tr style={{ textAlign: 'center', backgroundColor: 'lightgray' }}>
@@ -68,7 +69,7 @@ function document(data: any) {
                     <tbody>
                         {dadosEmbarque?.map((dadosEmbarque: any, index: number) => (
                             <tr key={index} style={{ textAlign: 'center' }}>
-                                <td style={{ border: '1px solid black' }}>{dadosEmbarque.dataEmbarque}</td>
+                                <td style={{ border: '1px solid black' }}>{dadosEmbarque.data_de_embarque}</td>
                                 <td style={{ border: '1px solid black' }}>{dadosEmbarque.trecho}</td>
                                 <td style={{ border: '1px solid black' }}>{dadosEmbarque.empresa}</td>
                                 <td style={{ border: '1px solid black' }}>{dadosEmbarque.vooLinha}</td>
@@ -80,12 +81,12 @@ function document(data: any) {
 
             <div>
                 <strong>Reserva</strong>
-                <p>Número do RPA: <span style={{color:'blue'}}>{numeroRPA || 'Não informado'}</span></p>
-            </div>            
-            
+                <p>Número do RPA: <span style={{ color: 'blue' }}>{rpa_passagens || 'Não informado'}</span></p>
+            </div>
+
             <div>
                 <strong>Custos</strong>
-                <p>Valor Total das Passagens: <span style={{color:'blue'}}>{formatCurrency(valorTotalPassagens) || 'Não informado'}</span></p>
+                <p>Valor Total das Passagens: <span style={{ color: 'blue' }}>{formatCurrency(valor_passagens) || 'Não informado'}</span></p>
             </div>
         </div>
     );

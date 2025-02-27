@@ -643,7 +643,7 @@ export class FormHelper {
         const value = this.get(name) || '';
 
         const addItem = () => {
-            const newData = [...(this.get(name) || []), { dataEmbarque: '', trecho: '', Empresa: '', vooLInha: '' }];
+            const newData = [...(this.get(name) || []), { data_de_embarque: '', trecho: '', Empresa: '', vooLInha: '' }];
             this.set(name, newData);
         };
 
@@ -666,8 +666,8 @@ export class FormHelper {
                                 <Form.Label>Data de Embarque</Form.Label>
                                 <Form.Control
                                     type="date"
-                                    value={value ? parseDate(this.get(`${name}[${index}].dataEmbarque`)) : ''}
-                                    onChange={e => this.set(`${name}[${index}].dataEmbarque`, formatDate(e.target.value))}
+                                    value={value ? parseDate(this.get(`${name}[${index}].data_de_embarque`)) : ''}
+                                    onChange={e => this.set(`${name}[${index}].data_de_embarque`, formatDate(e.target.value))}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-2">
