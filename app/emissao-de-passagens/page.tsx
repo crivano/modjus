@@ -58,7 +58,7 @@ function document(data: any) {
             <div style={{ marginTop: '1rem', marginBottom:'1rem', width: '100%' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
                     <thead>
-                        <tr style={{ textAlign: 'center', color: 'black', backgroundColor: 'lightgray' }}>
+                        <tr style={{ textAlign: 'center', backgroundColor: 'lightgray' }}>
                             <th style={{ border: '1px solid black' }}>Data de Embarque</th>
                             <th style={{ border: '1px solid black' }}>Trecho</th>
                             <th style={{ border: '1px solid black' }}>Empresa</th>
