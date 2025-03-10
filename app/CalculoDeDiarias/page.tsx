@@ -3,6 +3,8 @@
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import { useState } from "react"
+import axios from 'axios'
+import ErrorPopup from '@/components/ErrorPopup' // Adjust the import path as necessary
 
 const resultadoCalculoOptions = [
   { id: '', name: '' },
@@ -18,12 +20,30 @@ const auxiliosOptions = [
 
 export default function CalculoDeDiarias() {
   const [formData, setFormData] = useState({});
+  const [error, setError] = useState("");
+  const [fetchedData, setFetchedData] = useState(null);
   const Frm = new FormHelper();
+
+  async function fetchProcessData(numeroProcesso: string) {
+    try {
+      const response = await axios.get('/api/getmodjusdocsprocess', {
+        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
+        headers: {
+          'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
+          'x-forwarded-for': '172.16.10.91'
+        }
+      });
+      setFetchedData(response.data);
+    } catch (error) {
+      setError('Não foi possível encontrar os dados adicionais');
+    }
+  }
 
   function interview(Frm: FormHelper) {
     return <>
       <div className="scrollableContainer">
         <h2>Cálculo de Diárias</h2>
+        <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
         <Frm.Select label="Informar manualmente o resultado do cálculo" name="resultadoCalculo" options={resultadoCalculoOptions} width={12} />
         {Frm.get('resultadoCalculo') === '1' && (
           <>
@@ -48,6 +68,13 @@ export default function CalculoDeDiarias() {
         <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
         <Frm.Input label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="quantidadeDiasSemDiaria" width={12} />
         <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
+        {error && <ErrorPopup message={error} onClose={() => setError("")} />}
+        {fetchedData && (
+          <div>
+            <h3>Dados do Processo</h3>
+            <pre>{JSON.stringify(fetchedData, null, 2)}</pre>
+          </div>
+        )}
       </div>
     </>
   }
@@ -68,6 +95,7 @@ export default function CalculoDeDiarias() {
     return <>
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>CÁLCULO DE DIÁRIAS</h4>
+        <p><strong>Número do Processo:</strong> {data.numeroProcesso || 'Não informado'}</p>
         <p><strong>Informar manualmente o resultado do cálculo:</strong> {getOptionName(resultadoCalculoOptions, data.resultadoCalculo)}</p>
         {data.resultadoCalculo === '1' && (
           <>

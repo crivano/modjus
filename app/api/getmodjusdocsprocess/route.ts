@@ -59,7 +59,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
   // Obter parâmetros de query da URL
   const num_processo = req.nextUrl.searchParams.get('num_processo');
-  const nome_documento = req.nextUrl.searchParams.get('nome_documento');
+  const nome_documento = decodeURIComponent(req.nextUrl.searchParams.get('nome_documento'));
 
   // Verificar se os parâmetros são válidos
   if (!num_processo || !nome_documento) {
@@ -69,12 +69,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-     if (!checkIP(req)) {
-      console.log("checkIP");
-      return new NextResponse('Autenticação Inválida', {
-        status: 403
-      });
-    } 
+      if (!checkIP(req)) {
+       console.log("checkIP");
+       return new NextResponse('Autenticação Inválida', {
+         status: 403
+       });
+     } 
 
     // Verificação de autenticação básica
     if (!checkAuth(req)) {
