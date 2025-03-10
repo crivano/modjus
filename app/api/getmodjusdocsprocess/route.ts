@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';  // Importando NextRequest para middleware
 import mysql from 'mysql2';
 import { JSDOM } from 'jsdom';
+import { transformArrayToJson } from '@/components/utils/transformArrayToJson'; // Import the utility function
 
 // Função para conectar ao banco de dados usando variáveis de ambiente
 const getDatabaseConnection = () => {
@@ -135,7 +136,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
       // Verificar se algum dado foi encontrado
       if (modjusDataList.length > 0) {
-        return new NextResponse(JSON.stringify(modjusDataList), { status: 200 });
+        const jsonData = transformArrayToJson(modjusDataList); // Transform the array of strings into JSON
+        return new NextResponse(JSON.stringify(jsonData), { status: 200 });
       } else {
         return new NextResponse('Nenhum atributo modjus-data encontrado.', {
           status: 404
