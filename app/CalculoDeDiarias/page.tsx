@@ -22,6 +22,7 @@ export default function CalculoDeDiarias() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
+  const [solicitacaoOptions, setSolicitacaoOptions] = useState([]);
   const Frm = new FormHelper();
 
   async function fetchProcessData(numeroProcesso: string) {
@@ -34,6 +35,10 @@ export default function CalculoDeDiarias() {
         }
       });
       setFetchedData(response.data);
+      setSolicitacaoOptions((response.data as any[]).map((item: any) => ({
+        id: item.id,
+        name: `${item.pessoa.descricao} (${item.periodoDe} - ${item.periodoAte})`
+      })));
     } catch (error) {
       setError('Não foi possível encontrar os dados adicionais');
     }
@@ -44,6 +49,9 @@ export default function CalculoDeDiarias() {
       <div className="scrollableContainer">
         <h2>Cálculo de Diárias</h2>
         <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
+        {fetchedData && (
+          <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} width={12} />
+        )}
         <Frm.Select label="Informar manualmente o resultado do cálculo" name="resultadoCalculo" options={resultadoCalculoOptions} width={12} />
         {Frm.get('resultadoCalculo') === '1' && (
           <>
