@@ -35,9 +35,9 @@ export default function CalculoDeDiarias() {
         }
       });
       setFetchedData(response.data);
-      setSolicitacaoOptions((response.data as any[]).map((item: any) => ({
-        id: item.id,
-        name: `${item.pessoa.descricao} (${item.periodoDe} - ${item.periodoAte})`
+      setSolicitacaoOptions((response.data as any[]).map((item: { modjusData: any, numero_documento: string }) => ({
+        id: item.modjusData.id,
+        name: item.numero_documento
       })));
     } catch (error) {
       setError('Não foi possível encontrar os dados adicionais');
