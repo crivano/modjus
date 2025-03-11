@@ -18,6 +18,7 @@ interface DocumentoConteudo {
   conteudo: string;
 }
 
+
 // Função para verificar se o IP da requisição é permitido
 const checkIP = (req: NextRequest): boolean => {
   const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
@@ -110,7 +111,8 @@ export async function GET(req: NextRequest) {
 
         // Adicionar o valor encontrado ao array, se existir
         if (modjusData) {
-          modjusDataList.push(modjusData);
+          const cleanModjusData = modjusData.replace(/\\"/g, '"'); // Remove as barras invertidas extras
+           modjusDataList.push(cleanModjusData);
         }
       });
 
