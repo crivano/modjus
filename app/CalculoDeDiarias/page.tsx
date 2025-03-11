@@ -22,13 +22,13 @@ export default function CalculoDeDiarias() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
-  const [solicitacaoOptions, setSolicitacaoOptions] = useState([]);
+  const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
   const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
   const Frm = new FormHelper();
 
   async function fetchProcessData(numeroProcesso: string) {
     try {
-      const response = await axios.get('/api/getmodjusdocsprocess', {
+      const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
         params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
@@ -36,11 +36,11 @@ export default function CalculoDeDiarias() {
         }
       });
       setFetchedData(response.data);
-      setSolicitacaoOptions((response.data as any[]).map((item: { modjusData: any, numero_documento: string }) => ({
+      setSolicitacaoOptions([{ id: '', name: '' }, ...response.data.map((item: { modjusData: any, numero_documento: string }) => ({
         id: item.modjusData.id,
         name: item.numero_documento,
         data: item.modjusData // Store the entire data
-      })));
+      }))]);
     } catch (error) {
       setError('Não foi possível encontrar os dados adicionais');
     }
