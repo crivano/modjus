@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';  // Importando NextRequest para middleware
 import mysql from 'mysql2';
 import { JSDOM } from 'jsdom';
+import { transformArrayToJson } from '@/components/utils/transformArrayToJson'; // Import the utility function
 
 // Função para conectar ao banco de dados usando variáveis de ambiente
 const getDatabaseConnection = () => {
@@ -16,6 +17,7 @@ interface DocumentoConteudo {
   id_documento: number;
   id_serie: number;
   conteudo: string;
+  protocolo_formatado: string;
 }
 
 // Função para verificar se o IP da requisição é permitido
@@ -59,7 +61,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
   // Obter parâmetros de query da URL
   const num_processo = req.nextUrl.searchParams.get('num_processo');
-  const nome_documento = req.nextUrl.searchParams.get('nome_documento');
+  const nome_documento = decodeURIComponent(req.nextUrl.searchParams.get('nome_documento'));
 
   // Verificar se os parâmetros são válidos
   if (!num_processo || !nome_documento) {
@@ -69,12 +71,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-     if (!checkIP(req)) {
-      console.log("checkIP");
-      return new NextResponse('Autenticação Inválida', {
-        status: 403
-      });
-    } 
+      if (!checkIP(req)) {
+       console.log("checkIP");
+       return new NextResponse('Autenticação Inválida', {
+         status: 403
+       });
+     } 
 
     // Verificação de autenticação básica
     if (!checkAuth(req)) {
@@ -92,12 +94,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Realizar a consulta SQL para pegar todos os registros
     const [rows] = await new Promise<[DocumentoConteudo[]]>((resolve, reject) => {
       connection.query(
-        `SELECT s.nome, dc.conteudo 
+        `SELECT s.nome, dc.conteudo, d.numero, p1.protocolo_formatado
          FROM protocolo p 
          JOIN documento d ON id_procedimento = p.id_protocolo 
+         JOIN protocolo p1 ON p1.id_protocolo = d.id_documento
          JOIN serie s ON s.id_serie = d.id_serie 
          JOIN documento_conteudo dc ON dc.id_documento = d.id_documento 
-         WHERE protocolo_formatado = ? AND UPPER(s.nome) = UPPER(?)`,
+         WHERE p.protocolo_formatado = ? AND UPPER(s.nome) = UPPER(?)`,
         [num_processo, nome_documento], 
         (err, results) => {
           if (err) reject(err);
@@ -114,7 +117,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // Verificar se o resultado foi encontrado
     if (rows.length > 0) {
       // Array para armazenar os dados extraídos
-      const modjusDataList: string[] = [];
+      const modjusDataList: { modjusData: string, numero_documento: string }[] = [];
 
       // Iterar sobre todos os registros e extrair o valor de 'modjus-data'
       rows.forEach((row) => {
@@ -129,13 +132,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         // Adicionar o valor encontrado ao array, se existir
         if (modjusData) {
-          modjusDataList.push(modjusData);
+          modjusDataList.push({ modjusData, numero_documento: row.protocolo_formatado });
         }
       });
 
       // Verificar se algum dado foi encontrado
       if (modjusDataList.length > 0) {
-        return new NextResponse(JSON.stringify(modjusDataList), { status: 200 });
+        const jsonData = transformArrayToJson(modjusDataList); // Transform the array of objects into JSON
+        return new NextResponse(JSON.stringify(jsonData), { status: 200 });
       } else {
         return new NextResponse('Nenhum atributo modjus-data encontrado.', {
           status: 404

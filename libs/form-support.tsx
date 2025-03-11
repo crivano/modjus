@@ -9,6 +9,7 @@ import { calculateAge } from './age'
 import Pessoa from "@/components/sei/Pessoa"
 import { Editor } from '@tinymce/tinymce-react'
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
+import axios from 'axios';
 
 const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
 
@@ -257,21 +258,28 @@ export class FormHelper {
         )
     }
 
-    public Select = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+    public Select = ({ label, name, options, width, onChange }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string, onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => {
+        const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+            this.set(name, e.target.value);
+            if (onChange) {
+                onChange(e);
+            }
+        };
+
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <Form.Select name={name} value={this.get(name)} onChange={e => this.set(name, e.target.value)}>
-                    {options.map(c => (<option value={c.id} key={c.id}  >{c.name}</option>))}
+                <Form.Select name={name} value={this.get(name)} onChange={handleChange}>
+                    {options.map(c => (<option value={c.id} key={c.id}>{c.name}</option>))}
                 </Form.Select>
                 <FieldError formState={this.formState} name={name} />
-            </Form.Group >
+            </Form.Group>
         ) : (
             <div className={this.colClass(width)}>
                 {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
                 <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
-        )
+        );
     }
 
     public SelectAutocomplete = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
@@ -895,6 +903,29 @@ export class FormHelper {
             </div>
         );
     };
+
+    public InputWithButton = ({ label, name, buttonText, onButtonClick, width }: { label: string, name: string, buttonText: string, onButtonClick: (value: string) => void, width?: number | string }) => {
+        const handleButtonClick = () => {
+            const value = this.get(name);
+            onButtonClick(value);
+        };
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <div className="d-flex">
+                    <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} />
+                    <Button variant="primary" onClick={handleButtonClick} className="ms-2">{buttonText}</Button>
+                </div>
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{this.get(name)}</strong></p>
+            </div>
+        );
+    }
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase
