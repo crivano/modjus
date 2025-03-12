@@ -5,8 +5,6 @@ import { parseStringPromise } from 'xml2js';
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const matricula = searchParams.get('matricula');
-    const dataIni = searchParams.get('dataIni');
-    const dataFim = searchParams.get('dataFim');
 
     if (!matricula) {
         return NextResponse.json({ error: 'Matricula is required' }, { status: 400 });
@@ -20,7 +18,7 @@ export async function GET(req: NextRequest) {
     } else if (matriculaPrefix === 'RJ') {
         orgao = 2;
     } else {
-        return NextResponse.json({ error: 'Não foi possível pegar os dados bancários' }, { status: 400 });
+        return NextResponse.json({ error: 'Não foi possível pegar os valores de diaria de transporte' }, { status: 400 });
     }
 
     const soapEnvelope = `
@@ -30,8 +28,8 @@ export async function GET(req: NextRequest) {
                 <web:obtemValorAT>
                     <web:matricula>${matricula.substring(2)}</web:matricula>
                     <web:idOrgao>${orgao}</web:idOrgao>
-                    <web:dataIni>${dataIni}</web:dataIni>
-                    <web:dataFim>${dataFim}</web:dataFim>
+                    <web:dataIni>2099-01-01</web:dataIni>
+                    <web:dataFim>2099-01-01</web:dataFim>
                 </web:obtemValorAT>
             </soapenv:Body>
         </soapenv:Envelope>
