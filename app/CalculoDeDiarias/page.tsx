@@ -32,7 +32,7 @@ export default function CalculoDeDiarias() {
         params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
-          'x-forwarded-for': '172.16.10.91'
+          'x-forwarded-for': '127.0.0.1'
         }
       });
       setFetchedData(response.data);
