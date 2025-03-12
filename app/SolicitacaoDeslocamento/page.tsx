@@ -192,7 +192,7 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Local:</strong> {data.local || 'Não informado'}</p>
 
         <h4>Dados do Deslocamento</h4>
-        <p><strong>Período:</strong> De {formatDateToBrazilian(data.periodoDe)} até {formatDateToBrazilian(data.periodoAte)}</p>
+        <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
         <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
         <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
         <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, data.meioTransporte)}</p>

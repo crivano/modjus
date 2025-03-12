@@ -109,41 +109,56 @@ export default function CalculoDeDiarias() {
       return `${day}/${month}/${year}`;
     };
 
-    const transporteOptions = [
-      { id: '1', name: 'Com adicional de deslocamento' },
-      { id: '2', name: 'Sem adicional de deslocamento' },
-      { id: '3', name: 'Veículo oficial' }
-    ];
-
     const tipoBeneficiarioOptions = [
-      { id: '1', name: 'Beneficiário 1' },
-      { id: '2', name: 'Beneficiário 2' }
-    ];
+      { id: '', name: '' },
+      { id: '1', name: 'TRF2/SJRJ/SJES' },
+      { id: '2', name: 'Colaborador' },
+      { id: '3', name: 'Colaborador Eventual' }
+    ]
 
     const faixaOptions = [
-      { id: '1', name: 'Faixa 1' },
-      { id: '2', name: 'Faixa 2' }
-    ];
-
-    const hospedagemOptions = [
-      { id: '1', name: 'Sim' },
-      { id: '2', name: 'Não' }
-    ];
+      { id: '', name: '' },
+      { id: '1', name: 'Membro do Conselho' },
+      { id: '2', name: 'Desembargador Federal' },
+      { id: '3', name: 'Juiz Federal de 1º Grau/Juiz Federal Substituto' },
+      { id: '4', name: 'Analista Judiciário/Cargo em Comissão' },
+      { id: '5', name: 'Técnico Judiciário/Auxiliar Judiciário/Função Comissionada' }
+    ]
 
     const acrescimoOptions = [
-      { id: '1', name: 'Sim' },
-      { id: '2', name: 'Não' }
-    ];
-
-    const tipoDeslocamentoOptions = [
-      { id: '1', name: 'Deslocamento 1' },
-      { id: '2', name: 'Deslocamento 2' }
-    ];
+      { id: '', name: '' },
+      { id: '1', name: 'Nenhum' },
+      { id: '2', name: 'Equipe de Trabalho' },
+      { id: '3', name: 'Assessoramento de Autoridade' },
+      { id: '4', name: 'Assistência Direta à Autoridade' },
+      { id: '5', name: 'Segurança de Magistrado' }
+    ]
 
     const tipoDiariaOptions = [
-      { id: '1', name: 'Tipo 1' },
-      { id: '2', name: 'Tipo 2' }
-    ];
+      { id: '', name: '' },
+      { id: '1', name: 'Padrão' },
+      { id: '2', name: 'Meia Diária a Pedido' },
+      { id: '3', name: 'Sem Diária' }
+    ]
+
+    const tipoDeslocamentoOptions = [
+      { id: '', name: '' },
+      { id: '1', name: 'Nacional' },
+      { id: '2', name: 'Internacional' }
+    ]
+
+    const meioTransporteOptions = [
+      { id: '', name: '' },
+      { id: '1', name: 'Aéreo' },
+      { id: '2', name: 'Rodoviário' },
+      { id: '3', name: 'Hidroviário' },
+      { id: '4', name: 'Veículo Próprio' },
+      { id: '5', name: 'Sem Passagens' }]
+
+      const hospedagemOptions = [
+        { id: '1', name: 'Sim' },
+        { id: '2', name: 'Não' }
+      ];
 
     return <>
       <div className="scrollableContainer">
@@ -168,7 +183,7 @@ export default function CalculoDeDiarias() {
             <p><strong>Período:</strong> De {selectedSolicitacao.periodoDe} até {selectedSolicitacao.periodoAte}</p>
             <p><strong>Justificativa:</strong> {selectedSolicitacao.justificativa || 'Não informado'}</p>
             <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento)}</p>
-            <p><strong>Meio de Transporte:</strong> {getOptionName(transporteOptions, selectedSolicitacao.meioTransporte)}</p>
+            <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte)}</p>
             {selectedSolicitacao.trajeto?.length > 0 && (
               <>
                 <h4>Trechos</h4>
@@ -187,8 +202,8 @@ export default function CalculoDeDiarias() {
                       <tr key={i}>
                         <td>{formatDateToBrazilian(trajeto.dataTrecho)}</td>
                         <td>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
-                        <td>{getOptionName(transporteOptions, trajeto.transporteAteEmbarque)}</td>
-                        <td>{getOptionName(transporteOptions, trajeto.transporteAposDesembarque)}</td>
+                        <td>{getOptionName(meioTransporteOptions, trajeto.transporteAteEmbarque)}</td>
+                        <td>{getOptionName(meioTransporteOptions, trajeto.transporteAposDesembarque)}</td>
                         <td>{getOptionName(hospedagemOptions, trajeto.hospedagem)}</td>
                       </tr>
                     ))}
