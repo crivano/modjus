@@ -39,7 +39,7 @@ export default function ConclusaoDeslocamento() {
     async function fetchProcessData(numeroProcesso: string) {
         try {
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
+                params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Conclusão de Deslocamento (modjus) Thiago' },
                 headers: {
                     'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
                     'x-forwarded-for': '127.0.0.1'
@@ -128,33 +128,33 @@ export default function ConclusaoDeslocamento() {
                         <strong>Dados para o relatório de deslocamentos</strong><br></br>
 
                         <label>Código da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedCode.name}</span><br></br>
-                        <label>Data da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{formatDateToBrazilian("solicitacao_data") || "Não informado"}</span><br></br>
+                        <label>Data da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedSolicitacao.solicitacao_data || "Não informado"}</span><br></br>
 
                         {/* DADOS DO PROPONENTE */}
                         <label>Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.descricao || 'Não informado'}</span><br></br>
                         <label>Cargo do Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.cargo || "Não informado"}</span><br></br>
 
                         {/* DADOS DO BENEFICIÁRIO */}
-                        <label>Tipo de Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.tipoBeneficiario} </span><br></br>
-                        <label>Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.pessoa?.descricao || 'Não informado'}</span><br></br>
-                        <label>Cargo do Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.pessoa?.cargo || 'Não informado'}</span><br></br>
-                        <label>Finalidade:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.servicoAtividade || "Não informado"}</span><br></br>
-                        <label>Tipo de Viagem:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.tipoDeslocamento} </span><br></br>
-                        <label>Itinerário:</label> <span style={{ color: 'blue' }}>{"Rio de janeiro / São Paulo" || "Não informado"}</span><br></br>
-                        <label>Retorno à Origem:</label> <span style={{ color: 'blue' }}>{"retorno_a_origem" || "Não informado"}</span><br></br>
+                        <label>Tipo de Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.benef_tipo} </span><br></br>
+                        <label>Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.beneficiario?.descricao || 'Não informado'}</span><br></br>
+                        <label>Cargo do Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.beneficiario?.cargo || 'Não informado'}</span><br></br>
+                        <label>Finalidade:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.finalidade || "Não informado"}</span><br></br>
+                        <label>Tipo de Viagem:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.tipo_viagem} </span><br></br>
+                        <label>Itinerário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.itinerario || "Não informado"}</span><br></br>
+                        <label>Retorno à Origem:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.retorno_a_origem || "Não informado"}</span><br></br>
 
                         {/* DADOS DO DESLOCAMENTO */}
                         <label>Período:</label> <span style={{ color: 'blue' }}> {selectedSolicitacao.periodoDe} a {selectedSolicitacao.periodoAte}</span><br></br>
                         <label>Meio de Transporte:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.meioTransporte}</span><br></br>
 
                         {/* VALORES DAS DIÁRIAS */}
-                        <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(20) || "Não informado"}</span><br></br>
-                        <label>Adicional de Deslocamento:</label> <span style={{ color: 'blue' }}>{formatCurrency(80) || "Não informado"}</span><br></br>
-                        <label>Desconto de Auxílio Alimentação:</label> <span style={{ color: 'blue' }}>{formatCurrency(50) || "Não informado"}</span><br></br>
-                        <label>Desconto de Auxílio Transporte:</label> <span style={{ color: 'blue' }}>{formatCurrency(90) || "Não informado"}</span><br></br>
-                        <label>Desconto de Teto:</label> <span style={{ color: 'blue' }}>{formatCurrency(200) || "Não informado"}</span><br></br>
-                        <label>Valor Líquido das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(65) || "Não informado"}</span><br></br>
-                        <label>Valor Total das Passagens:</label> <span style={{ color: 'blue' }}>{formatCurrency(85) || "Não informado"}</span><br></br>
+                        <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.diarias_bruto) || "Não informado"}</span><br></br>
+                        <label>Adicional de Deslocamento:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.adic_desloc) || "Não informado"}</span><br></br>
+                        <label>Desconto de Auxílio Alimentação:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.desc_a_alim) || "Não informado"}</span><br></br>
+                        <label>Desconto de Auxílio Transporte:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.desc_a_transp) || "Não informado"}</span><br></br>
+                        <label>Desconto de Teto:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.desc_teto) || "Não informado"}</span><br></br>
+                        <label>Valor Líquido das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.diarias_liquido) || "Não informado"}</span><br></br>
+                        <label>Valor Total das Passagens:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.passagens_liquido) || "Não informado"}</span><br></br>
                     </>
                 )}
             </div>
