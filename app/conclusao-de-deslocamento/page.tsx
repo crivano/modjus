@@ -69,23 +69,23 @@ export default function ConclusaoDeslocamento() {
         setStartDate(date);
     };
 
-    function handleProponenteChange(proponente: any, nameCargoProponente: any, Frm: FormHelper) {
-        if (proponente) {
-            Frm.set('funcaoProponente', proponente.funcao || '');
-            Frm.set(nameCargoProponente, proponente.cargo || '');
-        }
-    }
+    // function handleProponenteChange(proponente: any, nameCargoProponente: any, Frm: FormHelper) {
+    //     if (proponente) {
+    //         Frm.set('funcaoProponente', proponente.funcao || '');
+    //         Frm.set(nameCargoProponente, proponente.cargo || '');
+    //     }
+    // }
 
-    function handleBeneficiarioChange(beneficiario: any, nameCargoBeneficiario: any, Frm: FormHelper) {
-        if (beneficiario && beneficiario.sigla) {
-            Frm.set('funcaoBeneficiario', beneficiario.funcao || '');
-            Frm.set(nameCargoBeneficiario, beneficiario.cargo || '');
-        }
-    }
+    // function handleBeneficiarioChange(beneficiario: any, nameCargoBeneficiario: any, Frm: FormHelper) {
+    //     if (beneficiario && beneficiario.sigla) {
+    //         Frm.set('funcaoBeneficiario', beneficiario.funcao || '');
+    //         Frm.set(nameCargoBeneficiario, beneficiario.cargo || '');
+    //     }
+    // }
 
-    function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
-        Frm.set('retorno_a_origem', event.target.value);
-    }
+    // function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
+    //     Frm.set('retorno_a_origem', event.target.value);
+    // }
 
     function interview(Frm: FormHelper) {
         return <>
@@ -124,7 +124,7 @@ export default function ConclusaoDeslocamento() {
             <div className="scrollableContainer">
                 {selectedSolicitacao && (
                     <>
-                        <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p>
+                        {/* <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p> */}
                         <strong>Dados para o relatório de deslocamentos</strong><br></br>
 
                         <label>Código da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedCode.name}</span><br></br>
@@ -135,17 +135,17 @@ export default function ConclusaoDeslocamento() {
                         <label>Cargo do Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.cargo || "Não informado"}</span><br></br>
 
                         {/* DADOS DO BENEFICIÁRIO */}
-                        <label>Tipo de Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.benef_tipo} </span><br></br>
+                        <label>Tipo de Beneficiário:</label> <span style={{ color: 'blue' }}>{getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.benef_tipo)} </span><br></br>
                         <label>Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.beneficiario?.descricao || 'Não informado'}</span><br></br>
                         <label>Cargo do Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.beneficiario?.cargo || 'Não informado'}</span><br></br>
                         <label>Finalidade:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.finalidade || "Não informado"}</span><br></br>
-                        <label>Tipo de Viagem:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.tipo_viagem} </span><br></br>
+                        <label>Tipo de Viagem:</label> <span style={{ color: 'blue' }}>{getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipo_viagem)} </span><br></br>
                         <label>Itinerário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.itinerario || "Não informado"}</span><br></br>
                         <label>Retorno à Origem:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.retorno_a_origem || "Não informado"}</span><br></br>
 
                         {/* DADOS DO DESLOCAMENTO */}
                         <label>Período:</label> <span style={{ color: 'blue' }}> {selectedSolicitacao.periodoDe} a {selectedSolicitacao.periodoAte}</span><br></br>
-                        <label>Meio de Transporte:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.meioTransporte}</span><br></br>
+                        <label>Meio de Transporte:</label> <span style={{ color: 'blue' }}>{getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte)}</span><br></br>
 
                         {/* VALORES DAS DIÁRIAS */}
                         <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao.diarias_bruto) || "Não informado"}</span><br></br>
@@ -161,5 +161,5 @@ export default function ConclusaoDeslocamento() {
         </>
     }
 
-    return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'CalculoDeDiarias' })
+    return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
 }
