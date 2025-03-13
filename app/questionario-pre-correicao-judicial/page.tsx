@@ -251,7 +251,7 @@ function Interview(Frm: FormHelper) {
       </div>
     )}
       <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t12CumprimentoDasMetasDaInspecaoAnterior" width={12} />
       <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
       <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
 
