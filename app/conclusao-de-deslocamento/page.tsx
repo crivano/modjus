@@ -76,26 +76,6 @@ export default function ConclusaoDeslocamento() {
         }
     }
 
-    // async function fetchProcessDataCalculoDiarias(numeroProcesso: string) {
-    //     try {
-    //         const response2 = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-    //             params: { num_processo: numeroProcesso, nome_documento: 'Cálculo de Diárias de Deslocamento (modjus)' },
-    //             headers: {
-    //                 'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
-    //                 'x-forwarded-for': '127.0.0.1'
-    //             }
-    //         });
-    //         setFetchedData2(response2.data);
-    //         setSolicitacaoOptions2([{ id: '', name: '' }, ...response2.data.map((item: { modjusData: any, numero_documento: string }) => ({
-    //             id: item.modjusData.id,
-    //             name: item.numero_documento,
-    //             data: item.modjusData // Store the entire data
-    //         }))]);
-    //     } catch (error) {
-    //         alert('Não foi possível encontrar os dados adicionais');
-    //     }
-    // }
-
     function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const selectedId = event.target.value;
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
@@ -135,6 +115,7 @@ export default function ConclusaoDeslocamento() {
     // function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
     //     Frm.set('retorno_a_origem', event.target.value);
     // }
+    let bool = false;
 
     function interview(Frm: FormHelper) {
         return <>
@@ -149,7 +130,7 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Select label="Selecione o código da solicitação de deslocamento" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={handleSolicitacaoChange} width={12} />
                     )}
 
-                    {fetchedData2 && (
+                    {fetchedData2 && selectedSolicitacao && (
                         <Frm.Select label="Selecione o código do cálculo de diária" name="solicitacaoDeslocamentoCalculoDiaria" options={solicitacaoOptions2} onChange={handleSolicitacaoChange2} width={12} />
                     )}
                 </div>
@@ -199,7 +180,7 @@ export default function ConclusaoDeslocamento() {
         let origemDestino = null
         const trajeto = fetchFieldFromJsonObject(selectedSolicitacao, "trajeto");
         origemDestino = trajeto ? (trajeto.origem + " / " + trajeto.destino) : "Não informado";
-        
+
         return <>
             <div className="scrollableContainer">
                 {selectedSolicitacao && (
