@@ -212,7 +212,6 @@ export default function ConclusaoDeslocamento() {
 
                 {selectedSolicitacao2 && (
                     <>
-
                         {/* VALORES DAS DIÁRIAS */}
                         <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorBrutoDiarias) || "Não informado"}</span><br></br>
                         <label>Adicional de Deslocamento:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorAdicionalDeslocamento) || "Não informado"}</span><br></br>
