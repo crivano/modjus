@@ -824,12 +824,14 @@ export class FormHelper {
                 <div className="d-flex align-items-center">
                     <Form.Label><strong>{label}</strong></Form.Label>
                     <Button variant="success" onClick={addItem} className="ms-2">Adicionar percurso</Button>
+                    <div hidden>
                     <Form.Check
                         type="checkbox"
                         label="Retorno à origem"
                         onChange={e => handleReturnToOrigin(e.target.checked)}
                         className="ms-2"
                     />
+                    </div>
                 </div>
                 {items.map((_: any, index: number) => (
                     <div key={index} className="d-flex align-items-center mb-2">
