@@ -23,6 +23,12 @@ const faixaOptions = [
   { id: '5', name: 'Técnico Judiciário/Auxiliar Judiciário/Função Comissionada' }
 ]
 
+const retorno_a_origem = [
+  { id: '', name: '' },
+  { id: '1', name: 'Sim' },
+  { id: '2', name: 'Não' },
+]
+
 const acrescimoOptions = [
   { id: '', name: '' },
   { id: '1', name: 'Nenhum' },
@@ -59,6 +65,18 @@ export default function SolicitacaoDeslocamento() {
   const [formData, setFormData] = useState({});
   const Frm = new FormHelper();
 
+  const [dataAtual, setDataAtual] = useState('');
+  // ...existing state variables...
+
+  useEffect(() => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    setDataAtual(`${day}/${month}/${year}`);
+    Frm.set('dataAtual', `${day}/${month}/${year}`); // Garante que o FormHelper também tenha a data
+  }, [Frm]);
+
   async function fetchDadosBancarios(matricula: string, Frm: FormHelper) {
     try {
       const response = await axios.get('/api/dados-bancarios', { params: { matricula } });
@@ -82,9 +100,39 @@ export default function SolicitacaoDeslocamento() {
 
   function handleProponenteChange(proponente: any, Frm: FormHelper) {
     if (proponente) {
-        Frm.set('funcaoProponente', proponente.funcao || '');
-        Frm.set('cargoProponente', proponente.cargo || '');
+      Frm.set('funcaoProponente', proponente.funcao || '');
+      Frm.set('cargoProponente', proponente.cargo || '');
     }
+  }
+
+  const handleReturnToOrigin = (checked: boolean) => {
+    const items = this.get(name) || [];
+    if (checked) {
+      if (items.length > 0) {
+        const newItem = {
+          origem: items[items.length - 1].destino,
+          destino: items[0].origem,
+          transporteAteEmbarque: '1',
+          transporteAposDesembarque: '1',
+          hospedagem: '1',
+          dataTrecho: ''
+        };
+        const newData = [...items, newItem];
+        this.set(name, newData);
+      }
+    } else {
+      const newData = items.slice(0, -1);
+      this.set(name, newData);
+    }
+  };
+
+  function getCurrentDate(Frm: FormHelper) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${day}/${month}/${year}`
   }
 
   function interview(Frm: FormHelper) {
@@ -92,6 +140,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
 
         <h2>Dados do Proponente</h2>
+        <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} />
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
           <Frm.Input label="Função" name="funcaoProponente" width={6} />
@@ -99,7 +148,7 @@ export default function SolicitacaoDeslocamento() {
         </div>
 
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
-        
+
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
         <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
@@ -136,6 +185,7 @@ export default function SolicitacaoDeslocamento() {
         <div className="row">
           <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
+          <Frm.RadioButtons label="Retorno a Origem?" name="retorno-origem" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
         </div>
         <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
 
@@ -145,6 +195,7 @@ export default function SolicitacaoDeslocamento() {
   }
 
   function document(data: any) {
+
     const transporteOptions = [
       { id: '1', name: 'Com adicional de deslocamento' },
       { id: '2', name: 'Sem adicional de deslocamento' },
@@ -166,11 +217,15 @@ export default function SolicitacaoDeslocamento() {
       return options.find(opt => opt.id === id)?.name || 'Não informado';
     };
 
+    const getOptionReturn = (options: { id: string, name: string }[], id: string) => {
+      return options.find(opt => opt.id === id)?.name || 'Não informado';
+    };
+
     return <>
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
-
         <h4>Dados do Proponente</h4>
+        <p style={{display:'none'}}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
         <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
         <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
