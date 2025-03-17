@@ -260,13 +260,13 @@ export class FormHelper {
     }
 
     public Select = ({ label, name, options, width, onChange }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string, onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => {
+        if (label === null) return null
         const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
             this.set(name, e.target.value);
             if (onChange) {
                 onChange(e);
             }
         };
-
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
@@ -673,7 +673,7 @@ export class FormHelper {
                 <Button variant="success" onClick={addItem} className="ms-2 m-2">+</Button>
                 {items.map((_: any, index: number) => (
                     <div key={index} className="d-flex align-items-center mb-2">
-                        <div className="flex-grow-1 card p-3 m-2" style={{backgroundColor: '#edf7fe'}}>
+                        <div className="flex-grow-1 card p-3 m-2" style={{ backgroundColor: '#edf7fe' }}>
                             <Form.Group className="mb-2">
                                 <Form.Label>Data de Embarque</Form.Label>
                                 <Form.Control
@@ -769,9 +769,9 @@ export class FormHelper {
     }
 
     // add space
-    public Space = ({px}) => {	
-        return (	
-            <div style={{ marginTop: px }}></div> 
+    public Space = ({ px }) => {
+        return (
+            <div style={{ marginTop: px }}></div>
         )
     }
 
@@ -824,12 +824,14 @@ export class FormHelper {
                 <div className="d-flex align-items-center">
                     <Form.Label><strong>{label}</strong></Form.Label>
                     <Button variant="success" onClick={addItem} className="ms-2">Adicionar percurso</Button>
+                    <div hidden>
                     <Form.Check
                         type="checkbox"
                         label="Retorno à origem"
                         onChange={e => handleReturnToOrigin(e.target.checked)}
                         className="ms-2"
                     />
+                    </div>
                 </div>
                 {items.map((_: any, index: number) => (
                     <div key={index} className="d-flex align-items-center mb-2">
