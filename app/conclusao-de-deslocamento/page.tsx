@@ -189,7 +189,7 @@ export default function ConclusaoDeslocamento() {
                         <strong>Dados para o relatório de deslocamentos</strong><br></br>
 
                         <label>Código da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedCode.name}</span><br></br>
-                        <label>Data da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedSolicitacao.solicitacao_data || "Não informado"}</span><br></br>
+                        <label>Data da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedSolicitacao.dataAtual || "Não informado"}</span><br></br>
 
                         {/* DADOS DO PROPONENTE */}
                         <label>Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.descricao || 'Não informado'}</span><br></br>
