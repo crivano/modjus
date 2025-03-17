@@ -196,7 +196,7 @@ export default function CalculoDeDiarias() {
         {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
-        
+       <div style={{ display: 'none' }}>
               <h2>Dados do Proponente</h2>
               <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome"  />
               <div className="row">
@@ -244,6 +244,7 @@ export default function CalculoDeDiarias() {
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
               </div>
               <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
+      </div>
         {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
@@ -466,46 +467,73 @@ export default function CalculoDeDiarias() {
         <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
         <p><strong>Quantidade de feriados durante o deslocamento:</strong> {data.quantidadeFeriados || 'Não informado'}</p>
         <p><strong>Quantidade de dias em que não será paga a diária durante o deslocamento:</strong> {data.quantidadeDiasSemDiaria || 'Não informado'}</p>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Trecho</th>
-              <th>Valor da Diária</th>
-              <th>Adicional de Deslocamento</th>
-              <th>Desconto Auxílio Alimentação</th>
-              <th>Desconto Auxílio Transporte</th>
-              <th>Subtotal</th>
-              <th>Desconto Teto</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dadosTabelaCalculoDiarias.map((dia, i) => (
-              <tr key={i}>
-                <td>{dia.data}</td>
-                <td>{dia.trecho}</td>
-                <td>{dia.valorBrutoDiarias}</td>
-                <td>{dia.valorAdicionalDeslocamento}</td>
-                <td>{dia.valorDescontoAlimentacao}</td>
-                <td>{dia.valorDescontoTransporte}</td>
-                <td>{dia.subtotalBrutoDiarias}</td>
-                <td>{dia.descontoTeto}</td>
-                <td>{dia.valorLiquidoDiarias}</td>
+        {data.auxilios === '2' && (
+          <>
+            <p><strong>Valor do auxílio alimentação:</strong> {formatCurrency(data.valorAuxilioAlimentacao || '0')}</p>
+            <p><strong>Valor do auxílio transporte:</strong> {formatCurrency(data.valorAuxilioTransporte || '0')}</p>
+          </>
+        )}
+        {data.resultadoCalculo === '2' && (
+          <>
+            <h4>Informação manual de cálculo</h4>
+            <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
+            <p><strong>Valor bruto das diárias:</strong> {formatCurrency(data.valorBrutoDiarias || '0')}</p>
+            <p><strong>Valor adicional de deslocamento:</strong> {formatCurrency(data.valorAdicionalDeslocamento || '0')}</p>
+            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatCurrency(data.valorDescontoAlimentacao || '0')}</p>
+            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatCurrency(data.valorDescontoTransporte || '0')}</p>
+            <p><strong>Subtotal bruto das diárias:</strong> {formatCurrency(data.subtotalBrutoDiarias || '0')}</p>
+            <p><strong>Desconto de teto:</strong> {formatCurrency(data.descontoTeto || '0')}</p>
+            <p><strong>Valor líquido das diárias:</strong> {formatCurrency(data.valorLiquidoDiarias || '0')}</p>
+          </>
+        )}
+        {data.auxilios === '2' && (
+          <>
+            <p><strong>Valor do auxílio alimentação:</strong> {formatCurrency(data.valorAuxilioAlimentacao || '0')}</p>
+            <p><strong>Valor do auxílio transporte:</strong> {formatCurrency(data.valorAuxilioTransporte || '0')}</p>
+          </>
+        )}
+        {data.resultadoCalculo === '1' && (
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+          <th>Data</th>
+          <th>Trecho</th>
+          <th>Valor da Diária</th>
+          <th>Adicional de Deslocamento</th>
+          <th>Desconto Auxílio Alimentação</th>
+          <th>Desconto Auxílio Transporte</th>
+          <th>Subtotal</th>
+          <th>Desconto Teto</th>
+          <th>Total</th>
               </tr>
-            ))}
-            <tr>
-              <td colSpan={2}><strong>Total</strong></td>
-              <td>{formatCurrency(totals.totalDiaria.toString())}</td>
-              <td>{formatCurrency(totals.totalAdicionalDeslocamento.toString())}</td>
-              <td>{formatCurrency(totals.totalDescontoAlimentacao.toString())}</td>
-              <td>{formatCurrency(totals.totalDescontoTransporte.toString())}</td>
-              <td>{formatCurrency(totals.totalSubtotal.toString())}</td>
-              <td>{formatCurrency(totals.totalDescontoTeto.toString())}</td>
-              <td>{formatCurrency(totals.total.toString())}</td>
-            </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {dadosTabelaCalculoDiarias.map((dia, i) => (
+          <tr key={i}>
+            <td>{dia.data}</td>
+            <td>{dia.trecho}</td>
+            <td>{dia.valorBrutoDiarias}</td>
+            <td>{dia.valorAdicionalDeslocamento}</td>
+            <td>{dia.valorDescontoAlimentacao}</td>
+            <td>{dia.valorDescontoTransporte}</td>
+            <td>{dia.subtotalBrutoDiarias}</td>
+            <td>{dia.descontoTeto}</td>
+            <td>{dia.valorLiquidoDiarias}</td>
+          </tr>
+              ))}
+              <tr>
+          <td colSpan={2}><strong>Total</strong></td>
+          <td>{formatCurrency(totals.totalDiaria.toString())}</td>
+          <td>{formatCurrency(totals.totalAdicionalDeslocamento.toString())}</td>
+          <td>{formatCurrency(totals.totalDescontoAlimentacao.toString())}</td>
+          <td>{formatCurrency(totals.totalDescontoTransporte.toString())}</td>
+          <td>{formatCurrency(totals.totalSubtotal.toString())}</td>
+          <td>{formatCurrency(totals.totalDescontoTeto.toString())}</td>
+          <td>{formatCurrency(totals.total.toString())}</td>
+              </tr>
+            </tbody>
+          </table>
+        )}
       </div>
     </>
   }
