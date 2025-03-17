@@ -11,7 +11,8 @@ import { Editor } from '@tinymce/tinymce-react'
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 import axios from 'axios';
 
-const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+//const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+const TINYMCE_API_KEY = 'no-api-key';
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {

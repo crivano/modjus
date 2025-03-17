@@ -105,9 +105,9 @@ function Interview(Frm: FormHelper) {
       <h2>5. Estagiários</h2>
       <div className="row">
         <Frm.Select label="Número de estagiários de nível superior previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
-        <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+        <Frm.Select label="Número de estagiários de nível médio previstos para unidade" name="t5NumeroPrevistoDeEstagiariosDeNivelMedio" options={oDe1a20} width={3} />
         <Frm.Select label="Número de estagiários de nível superior lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelSuperior" options={oDe1a20} width={3} />
-        <Frm.Select label="Número de estagiários de nível médio lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelMédio" options={oDe1a20} width={3} />
+        <Frm.Select label="Número de estagiários de nível médio lotados na unidade" name="t5NumeroEfetivoDeEstagiariosDeNivelMedio" options={oDe1a20} width={3} />
       </div>
 
       <h2>6. Instalações Físicas e Infraestrutura</h2>
@@ -251,7 +251,7 @@ function Interview(Frm: FormHelper) {
       </div>
     )}
       <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas" width={12} />
+      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t12CumprimentoDasMetasDaInspecaoAnterior" width={12} />
       <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
       <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
 
@@ -309,9 +309,9 @@ function document(data: any) {
     t4NomeENumeroDeServidoresEmAuxilioOuRequisitados,
     t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular,
     t5NumeroPrevistoDeEstagiariosDeNivelSuperior,
-    t5NumeroPrevistoDeEstagiariosDeNivelMédio,
+    t5NumeroPrevistoDeEstagiariosDeNivelMedio,
     t5NumeroEfetivoDeEstagiariosDeNivelSuperior,
-    t5NumeroEfetivoDeEstagiariosDeNivelMédio,
+    t5NumeroEfetivoDeEstagiariosDeNivelMedio,
     t6InstalacoesFisicasEInfraestrutura,
     t7LivrosEPastasUtilizados,
     t7LivrosEPastasSubstituidos,
@@ -718,7 +718,7 @@ function document(data: any) {
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>Número de estagiários de nível médio previstos para unidade</div>
-            <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelMédio || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelMedio || "Não informado"}</p>
           </label>
         </div>
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
@@ -730,7 +730,7 @@ function document(data: any) {
         <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>Número de estagiários de nível médio lotados na unidade</div>
-            <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelMédio || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelMedio || "Não informado"}</p>
           </label>
         </div>
       </div>
