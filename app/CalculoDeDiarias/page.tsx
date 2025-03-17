@@ -104,7 +104,7 @@ export default function CalculoDeDiarias() {
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
+        params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)' },
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
           'x-forwarded-for': '127.0.0.1'
