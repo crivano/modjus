@@ -57,7 +57,7 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
             const json = await loadPessoa(sigla);
 
             if (!json.list) {
-                throw new Error("Nenhuma pessoa listada para a sigla informada");
+                throw new Error("Nenhuma pessoa listada para a matrícula informada");
             }
     
 
