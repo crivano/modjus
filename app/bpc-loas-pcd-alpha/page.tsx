@@ -11,7 +11,7 @@ function interview(Frm: FormHelper) {
     '',
     'Não Frequenta Creche (< 3 anos)',
     'Frequenta Creche (< 3 anos)',
-    'Não Frequentou a Escola (> 3 anos)',
+    'Não Frequenta a Escola (> 3 anos)',
     'Educação Infantil (> 3 e < 7 anos)',
     'Ensino Fundamental - 1º ano (> 6 anos)',
     'Ensino Fundamental - 2º ano (> 6 anos)',
@@ -32,8 +32,8 @@ function interview(Frm: FormHelper) {
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
   const oAlfabetizacao = [
     '',
-    'Não É Alfabetizado',
-    'É Alfabetizado'
+    'Não É Alfabetizado(a)',
+    'É Alfabetizado(a)'
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
   const oFuncoesDoCorpo = "Funções Mentais;Funções Sensoriais da Visão;Funções Sensoriais da Audição;Funções Sensoriais Adicionais e Dor;Funções da Voz e da Fala;Funções do Sistema Cardiovascular;Funções do Sistema Hematológico;Funções do Sistema Imunológico;Funções do Sistema Respiratório;Funções do Sistema Digestivo;Funções do Sistema Metabólico e Endócrino;Funções Geniturinárias e Reprodutivas;Funções Neuromusculoesqueléticas e Relacionadas ao Movimento;Funções da Pele e Estruturas Relacionadas".split(';').map((i) => ({ label: i, name: `${labelToName(i)}` }))
   const oNivel = "Grau A;Grau B;Grau C;Grau D".split(';').map((i) => ({ id: `${i.split(' ')[1]}`, name: i }))
