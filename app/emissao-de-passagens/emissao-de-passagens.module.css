@@ -1,0 +1,5 @@
+.scrollableContainer {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
+}

@@ -18,6 +18,7 @@ interface DocumentoConteudo {
   conteudo: string;
 }
 
+
 // Função para verificar se o IP da requisição é permitido
 const checkIP = (req: NextRequest): boolean => {
   const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
@@ -72,6 +73,17 @@ export async function GET(req: NextRequest) {
       });
     }
 
+     // Obter parâmetros de query da URL
+  const num_documento = req.nextUrl.searchParams.get('num_documento');
+
+  // Verificar se os parâmetros são válidos
+  if (!num_documento) {
+    return NextResponse.json(
+      { error: 'Parâmetro num_documento é obrigatório.' },
+      { status: 400 }
+    );
+  }
+
     // Conectar ao banco de dados
     const connection = getDatabaseConnection();
     console.log("Conectou no Banco");
@@ -79,7 +91,14 @@ export async function GET(req: NextRequest) {
     // Realizar a consulta SQL para pegar todos os registros
     const [rows] = await new Promise<[DocumentoConteudo[]]>((resolve, reject) => {
       connection.query(
-        'SELECT dc.id_documento, id_serie, conteudo FROM sei.documento_conteudo dc inner join sei.documento d on d.id_documento = dc.id_documento where id_serie = 1336', // Removendo o filtro para pegar todos os registros
+        `SELECT s.nome, dc.conteudo, d.numero, p1.protocolo_formatado
+        FROM protocolo p 
+        JOIN documento d ON id_procedimento = p.id_protocolo 
+        JOIN protocolo p1 ON p1.id_protocolo = d.id_documento
+        JOIN serie s ON s.id_serie = d.id_serie 
+        JOIN documento_conteudo dc ON dc.id_documento = d.id_documento 
+        WHERE p1.protocolo_formatado = ? `,
+       [num_documento], 
         (err, results) => {
           if (err) reject(err);
           resolve([results as DocumentoConteudo[]]);
@@ -110,13 +129,16 @@ export async function GET(req: NextRequest) {
 
         // Adicionar o valor encontrado ao array, se existir
         if (modjusData) {
-          modjusDataList.push(modjusData);
+     //     const cleanModjusData = modjusData.replace(/\\"/g, '"'); // Remove as barras invertidas extras
+           modjusDataList.push(modjusData);
         }
       });
 
       // Verificar se algum dado foi encontrado
       if (modjusDataList.length > 0) {
-        return new NextResponse(JSON.stringify(modjusDataList), { status: 200 });
+        return new NextResponse(JSON.stringify(modjusDataList), { status: 200 , headers: {
+          'Content-Type': 'application/json',
+        },} );
       } else {
         return new NextResponse('Nenhum atributo modjus-data encontrado.', {
           status: 404

@@ -9,8 +9,10 @@ import { calculateAge } from './age'
 import Pessoa from "@/components/sei/Pessoa"
 import { Editor } from '@tinymce/tinymce-react'
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
+import axios from 'axios';
 
-const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+//const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+const TINYMCE_API_KEY = 'no-api-key';
 
 export const numericString = (schema: ZodTypeAny) => z.preprocess((a) => {
     if (typeof a === 'string') {
@@ -257,22 +259,28 @@ export class FormHelper {
         )
     }
 
-    public Select = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+    public Select = ({ label, name, options, width, onChange }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string, onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => {
         if (label === null) return null
+        const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+            this.set(name, e.target.value);
+            if (onChange) {
+                onChange(e);
+            }
+        };
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
-                <Form.Select name={name} value={this.get(name)} onChange={e => this.set(name, e.target.value)}>
-                    {options.map(c => (<option value={c.id} key={c.id}  >{c.name}</option>))}
+                <Form.Select name={name} value={this.get(name)} onChange={handleChange}>
+                    {options.map(c => (<option value={c.id} key={c.id}>{c.name}</option>))}
                 </Form.Select>
                 <FieldError formState={this.formState} name={name} />
-            </Form.Group >
+            </Form.Group>
         ) : (
             <div className={this.colClass(width)}>
                 {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
                 <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
-        )
+        );
     }
 
     public SelectAutocomplete = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
@@ -632,6 +640,80 @@ export class FormHelper {
         );
     }
 
+    public DynamicListDadosEmbarque = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+
+        const formatDate = (date: string) => {
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
+
+        const parseDate = (date: string) => {
+            const [day, month, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        const value = this.get(name) || '';
+
+        const addItem = () => {
+            const newData = [...(this.get(name) || []), { data_de_embarque: '', trecho: '', Empresa: '', vooLInha: '' }];
+            this.set(name, newData);
+        };
+
+        const removeItem = (index: number) => {
+            const newData = [...(this.get(name) || [])];
+            newData.splice(index, 1);
+            this.set(name, newData);
+        };
+
+        const items = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Button variant="success" onClick={addItem} className="ms-2 m-2">+</Button>
+                {items.map((_: any, index: number) => (
+                    <div key={index} className="d-flex align-items-center mb-2">
+                        <div className="flex-grow-1 card p-3 m-2" style={{ backgroundColor: '#edf7fe' }}>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Data de Embarque</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    value={value ? parseDate(this.get(`${name}[${index}].data_de_embarque`)) : ''}
+                                    onChange={e => this.set(`${name}[${index}].data_de_embarque`, formatDate(e.target.value))}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Trecho</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].trecho`)}
+                                    onChange={e => this.set(`${name}[${index}].trecho`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Empresa</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].empresa`)}
+                                    onChange={e => this.set(`${name}[${index}].empresa`, e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Vôo/Linha</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.get(`${name}[${index}].vooLinha`)}
+                                    onChange={e => this.set(`${name}[${index}].vooLinha`, e.target.value)}
+                                />
+                            </Form.Group>
+                        </div>
+                        <Button variant="danger" onClick={() => removeItem(index)} className="ms-2 mt-5">-</Button>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
     public QuantidadeServidoresTeletrabalho = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         return this.setData ? (
             <QuantidadeServidoresTeletrabalho Frm={this} name={name} />
@@ -683,6 +765,13 @@ export class FormHelper {
                 <Form.Label>{label}</Form.Label>
                 <p className="report-field"><strong>{options.find(option => option.id === this.get(name))?.name}</strong></p>
             </div>
+        )
+    }
+
+    // add space
+    public Space = ({ px }) => {
+        return (
+            <div style={{ marginTop: px }}></div>
         )
     }
 
@@ -815,6 +904,29 @@ export class FormHelper {
             </div>
         );
     };
+
+    public InputWithButton = ({ label, name, buttonText, onButtonClick, width }: { label: string, name: string, buttonText: string, onButtonClick: (value: string) => void, width?: number | string }) => {
+        const handleButtonClick = () => {
+            const value = this.get(name);
+            onButtonClick(value);
+        };
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <div className="d-flex">
+                    <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} />
+                    <Button variant="primary" onClick={handleButtonClick} className="ms-2">{buttonText}</Button>
+                </div>
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{this.get(name)}</strong></p>
+            </div>
+        );
+    }
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase
