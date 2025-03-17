@@ -115,7 +115,7 @@ export default function ConclusaoDeslocamento() {
     // function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
     //     Frm.set('retorno_a_origem', event.target.value);
     // }
-    let bool = false;
+    // let bool = false;
 
     function interview(Frm: FormHelper) {
         return <>
