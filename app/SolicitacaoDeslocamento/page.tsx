@@ -185,7 +185,7 @@ export default function SolicitacaoDeslocamento() {
         <div className="row">
           <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
-          <Frm.RadioButtons label="Retorno a Origem?" name="retorno-origem" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
+          <Frm.RadioButtons label="Retorno a Origem?" name="retorno-origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
         </div>
         <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
 
