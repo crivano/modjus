@@ -258,6 +258,7 @@ export class FormHelper {
     }
 
     public Select = ({ label, name, options, width }: { label: string, name: string, options: { id: string, name: string }[], width?: number | string }) => {
+        if (label === null) return null
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
                 <Form.Label>{label}</Form.Label>
