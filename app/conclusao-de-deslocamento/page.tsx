@@ -31,13 +31,9 @@ export default function ConclusaoDeslocamento() {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
     const [fetchedData, setFetchedData] = useState(null);
-    const [fetchedData2, setFetchedData2] = useState(null);
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
-    const [solicitacaoOptions2, setSolicitacaoOptions2] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
-    const [selectedSolicitacao2, setSelectedSolicitacao2] = useState(null);
     const [selectedCode, setSelectedCode] = useState(null);
-    const [selectedCode2, setSelectedCode2] = useState(null);
     const Frm = new FormHelper();
 
     async function fetchProcessData(numeroProcesso: string) {
@@ -45,7 +41,7 @@ export default function ConclusaoDeslocamento() {
             
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
                 
-                params: { num_processo: numeroProcesso, nome_documento: process.env.NEXT_PUBLIC_FORM_DISPLACEMENT_REQUEST },
+                params: { num_processo: numeroProcesso, nome_documento: process.env.NEXT_PUBLIC_FORM_DAILY_CALCULATION },
                 headers: {
                     'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
                     'x-forwarded-for': '127.0.0.1'
@@ -54,21 +50,6 @@ export default function ConclusaoDeslocamento() {
 
             setFetchedData(response.data);
             setSolicitacaoOptions([{ id: '', name: '' }, ...response.data.map((item: { modjusData: any, numero_documento: string }) => ({
-                id: item.modjusData.id,
-                name: item.numero_documento,
-                data: item.modjusData // Store the entire data
-            }))]);
-
-            const response2 = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                params: { num_processo: numeroProcesso, nome_documento:  process.env.NEXT_PUBLIC_FORM_DAILY_CALCULATION },
-                headers: {
-                    'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
-                    'x-forwarded-for': '127.0.0.1'
-                }
-            });
-
-            setFetchedData2(response2.data);
-            setSolicitacaoOptions2([{ id: '', name: '' }, ...response2.data.map((item: { modjusData: any, numero_documento: string }) => ({
                 id: item.modjusData.id,
                 name: item.numero_documento,
                 data: item.modjusData // Store the entire data
@@ -83,16 +64,7 @@ export default function ConclusaoDeslocamento() {
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
         setSelectedCode(selected)
         setSelectedSolicitacao(selected ? selected.data : null);
-        Frm.update({ ...formData, solicitacaoDeslocamento: selectedId }, setFormData);
-    }
-
-    function handleSolicitacaoChange2(event: React.ChangeEvent<HTMLSelectElement>) {
-        const selectedId2 = event.target.value;
-        const selected2 = solicitacaoOptions2.find(option => option.name === selectedId2);
-
-        setSelectedCode2(selected2)
-        setSelectedSolicitacao2(selected2 ? selected2.data : null);
-        Frm.update({ ...formData, solicitacaoDeslocamentoCalculoDiaria: selectedId2 }, setFormData);
+        Frm.update({ ...formData, solicitacaoDeslocamentoCalculoDiaria: selectedId }, setFormData);
     }
 
     const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -129,11 +101,7 @@ export default function ConclusaoDeslocamento() {
                     <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
 
                     {fetchedData && (
-                        <Frm.Select label="Selecione o código da solicitação de deslocamento" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={handleSolicitacaoChange} width={12} />
-                    )}
-
-                    {fetchedData2 && selectedSolicitacao && (
-                        <Frm.Select label="Selecione o código do cálculo de diária" name="solicitacaoDeslocamentoCalculoDiaria" options={solicitacaoOptions2} onChange={handleSolicitacaoChange2} width={12} />
+                        <Frm.Select label="Selecione o código do cálculo de diária" name="solicitacaoDeslocamentoCalculoDiaria" options={solicitacaoOptions} onChange={handleSolicitacaoChange} width={12} />
                     )}
                 </div>
             </div>
@@ -188,19 +156,19 @@ export default function ConclusaoDeslocamento() {
                 {selectedSolicitacao && (
                     <>
                         {/* <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p> */}
-                        <strong>Dados para o relatório de deslocamentos</strong><br></br>
+                        <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                         <label>Código da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedCode.name}</span><br></br>
                         <label>Data da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedSolicitacao.dataAtual || "Não informado"}</span><br></br>
 
                         {/* DADOS DO PROPONENTE */}
                         <label>Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.descricao || 'Não informado'}</span><br></br>
-                        <label>Cargo do Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.cargo || "Não informado"}</span><br></br>
+                        <label>Cargo do Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.cargoProponente || "Não informado"}</span><br></br>
 
                         {/* DADOS DO BENEFICIÁRIO */}
                         <label>Tipo de Beneficiário:</label> <span style={{ color: 'blue' }}>{getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario)} </span><br></br>
                         <label>Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.pessoa?.descricao || 'Não informado'}</span><br></br>
-                        <label>Cargo do Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.pessoa?.cargo || 'Não informado'}</span><br></br>
+                        <label>Cargo do Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.cargoBeneficiario || 'Não informado'}</span><br></br>
                         <label>Finalidade:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.servicoAtividade || "Não informado"}</span><br></br>
                         <label>Tipo de Viagem:</label> <span style={{ color: 'blue' }}>{getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento)} </span><br></br>
                         <label>Itinerário:</label> <span style={{ color: 'blue' }}>{origemDestino}</span><br></br>
@@ -209,19 +177,15 @@ export default function ConclusaoDeslocamento() {
                         {/* DADOS DO DESLOCAMENTO */}
                         <label>Período:</label> <span style={{ color: 'blue' }}> {selectedSolicitacao.periodoDe} a {selectedSolicitacao.periodoAte}</span><br></br>
                         <label>Meio de Transporte:</label> <span style={{ color: 'blue' }}>{getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte)}</span><br></br>
-                    </>
-                )}
 
-                {selectedSolicitacao2 && (
-                    <>
                         {/* VALORES DAS DIÁRIAS */}
-                        <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorBrutoDiarias) || "Não informado"}</span><br></br>
-                        <label>Adicional de Deslocamento:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorAdicionalDeslocamento) || "Não informado"}</span><br></br>
-                        <label>Desconto de Auxílio Alimentação:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorDescontoAlimentacao) || "Não informado"}</span><br></br>
-                        <label>Desconto de Auxílio Transporte:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorDescontoTransporte) || "Não informado"}</span><br></br>
-                        <label>Desconto de Teto:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.descontoTeto) || "Não informado"}</span><br></br>
-                        <label>Valor Líquido das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.valorLiquidoDiarias) || "Não informado"}</span><br></br>
-                        <label>Valor Total das Passagens:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao2?.resultadoCalculo) || "Não informado"}</span><br></br>
+                        <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorBrutoDiarias) || "Não informado"}</span><br></br>
+                        <label>Adicional de Deslocamento:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorAdicionalDeslocamento) || "Não informado"}</span><br></br>
+                        <label>Desconto de Auxílio Alimentação:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorDescontoAlimentacao) || "Não informado"}</span><br></br>
+                        <label>Desconto de Auxílio Transporte:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorDescontoTransporte) || "Não informado"}</span><br></br>
+                        <label>Desconto de Teto:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.descontoTeto) || "Não informado"}</span><br></br>
+                        <label>Valor Líquido das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorLiquidoDiarias) || "Não informado"}</span><br></br>
+                        <label>Valor Total das Passagens:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.resultadoCalculo) || "Não informado"}</span><br></br>
                     </>
                 )}
             </div>
