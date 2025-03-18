@@ -238,3 +238,11 @@ function calcularDiarias(
 
     return r;
 }
+
+export {
+    calcularDiarias,
+    FaixaEnum,
+    DeslocamentoConjuntoEnum,
+    TipoDeDiariaEnum,
+    TipoDeTransporteParaEmbarqueEDestinoEnum,
+    };
