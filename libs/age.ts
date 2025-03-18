@@ -109,7 +109,7 @@ export function parseDescriptionWithCondition(ageStr: string, input: string): { 
     if (ageInMonths < 0)
         return { text: input, valid: true, textOrNull: input };
 
-    const regex = /(.*)\s*\(([^)]+)\)\s*$/;
+    const regex = /(.*)\s*\s\(([^)]+)\)\s*$/;
     const match = input.match(regex);
     if (!match) {
         return { text: input, valid: true, textOrNull: input };
