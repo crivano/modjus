@@ -3,9 +3,11 @@
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import { useState } from "react"
+import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
 import ErrorPopup from '@/components/ErrorPopup' // Adjust the import path as necessary
+import { calcularDiarias, DeslocamentoConjuntoEnum, FaixaEnum, TipoDeDiariaEnum } from '@/components/utils/calculaDiarias' // Adjust the import path as necessary
 
 const tipoBeneficiarioOptions = [
   { id: '', name: '' },
@@ -78,7 +80,27 @@ const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
 
 export default function CalculoDeDiarias() {
-  const [formData, setFormData] = useState({});
+  interface FormData {
+    valorUnitatioDaDiaria?: string;
+    valorUnitarioDaDiariaParaCalculoDoDeslocamento?: string;
+    faixa?: string;
+    deslocamentoConjunto?: boolean;
+    internacional?: string;
+    cotacaoDoDolar?: string;
+    tipoDiaria?: string;
+    tipoDeslocamento?: string;
+    prorrogacao?: string;
+    valorJaRecebido?: string;
+    valorUnitarioDoAuxilioAlimentacao?: string;
+    valorUnitarioDoAuxilioTransporte?: string;
+    tetoDiaria?: string;
+    tetoMeiaDiaria?: string;
+    trajeto?: any[];
+    feriados?: any[];
+    diasSemDiaria?: any[];
+  }
+
+  const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
   const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
@@ -190,6 +212,30 @@ export default function CalculoDeDiarias() {
     }
   }
 
+  const handleCalcularDiarias = (Frm: FormHelper) => {
+    const result = calcularDiarias(
+      // Pass the necessary parameters from formData
+      parseFloat(Frm.data.valorUnitatioDaDiaria || '0'),
+      parseFloat(Frm.data.valorUnitarioDaDiariaParaCalculoDoDeslocamento || '0'),
+      Frm.data.faixa as unknown as FaixaEnum,
+      Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
+      Frm.data.internacional === '1',
+      parseFloat(Frm.data.cotacaoDoDolar || '0'),
+      Frm.data.tipoDiaria as unknown as TipoDeDiariaEnum,
+      Frm.data.prorrogacao === '1',
+      parseFloat(Frm.data.valorJaRecebido || '0'),
+      parseFloat(Frm.data.valorUnitarioDoAuxilioAlimentacao || '0'),
+      parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0'),
+      parseFloat(Frm.data.tetoDiaria || '0'),
+      parseFloat(Frm.data.tetoMeiaDiaria || '0'),
+      Frm.data.trajeto || [],
+      Frm.data.feriados || [],
+      Frm.data.diasSemDiaria || []
+    );
+
+    Frm.set('resultadoCalculoDiarias', result || {});
+  };
+
   function interview(Frm: FormHelper) {
     return <>
       <div className="scrollableContainer">
@@ -255,33 +301,39 @@ export default function CalculoDeDiarias() {
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
         )}
         {selectedSolicitacao && (
-          <>
+            <>
             <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions} width={12} />
             {Frm.get('resultadoCalculo') === '2' && (
               <>
-                <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
-                <Frm.MoneyInput label="Valor bruto das diárias" name="valorBrutoDiarias" width={12} />
-                <Frm.MoneyInput label="Valor adicional de deslocamento" name="valorAdicionalDeslocamento" width={12} />
-                <Frm.MoneyInput label="Valor do desconto de auxílio alimentação" name="valorDescontoAlimentacao" width={12} />
-                <Frm.MoneyInput label="Valor do desconto de auxílio transporte" name="valorDescontoTransporte" width={12} />
-                <Frm.MoneyInput label="Subtotal bruto das diárias" name="subtotalBrutoDiarias" width={12} />
-                <Frm.MoneyInput label="Desconto de teto" name="descontoTeto" width={12} />
-                <Frm.MoneyInput label="Valor líquido das diárias" name="valorLiquidoDiarias" width={12} />
+              <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
+              <Frm.MoneyInput label="Valor bruto das diárias" name="valorBrutoDiarias" width={12} />
+              <Frm.MoneyInput label="Valor adicional de deslocamento" name="valorAdicionalDeslocamento" width={12} />
+              <Frm.MoneyInput label="Valor do desconto de auxílio alimentação" name="valorDescontoAlimentacao" width={12} />
+              <Frm.MoneyInput label="Valor do desconto de auxílio transporte" name="valorDescontoTransporte" width={12} />
+              <Frm.MoneyInput label="Subtotal bruto das diárias" name="subtotalBrutoDiarias" width={12} />
+              <Frm.MoneyInput label="Desconto de teto" name="descontoTeto" width={12} />
+              <Frm.MoneyInput label="Valor líquido das diárias" name="valorLiquidoDiarias" width={12} />
               </>
             )}
             <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={handleAuxiliosChange} width={12} />
             {Frm.get('auxilios') === '2' && (
               <>
-                <Frm.MoneyInput label="Valor do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
-                <Frm.MoneyInput label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
+              <Frm.MoneyInput label="Valor do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
+              <Frm.MoneyInput label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
               </>
             )}
             <Frm.Input label="Quantidade de feriados durante o deslocamento" name="quantidadeFeriados" width={12} />
             <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
             <Frm.Input label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="quantidadeDiasSemDiaria" width={12} />
             <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-          </>
+            {Frm.data.tipoDeslocamento === '2' && (
+              <Frm.MoneyInput label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
+            )}
+            </>
         )}
+        <>
+        <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
+        </>
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
     </>
@@ -534,7 +586,9 @@ export default function CalculoDeDiarias() {
             </tbody>
           </table>
         )}
+        {JSON.stringify(data)}
       </div>
+      
     </>
   }
 
