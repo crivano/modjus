@@ -42,8 +42,10 @@ export default function ConclusaoDeslocamento() {
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
+            
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
+                
+                params: { num_processo: numeroProcesso, nome_documento: process.env.NEXT_PUBLIC_FORM_DISPLACEMENT_REQUEST },
                 headers: {
                     'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
                     'x-forwarded-for': '127.0.0.1'
@@ -58,7 +60,7 @@ export default function ConclusaoDeslocamento() {
             }))]);
 
             const response2 = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                params: { num_processo: numeroProcesso, nome_documento: 'Cálculo de Diárias de Deslocamento (modjus)' },
+                params: { num_processo: numeroProcesso, nome_documento:  process.env.NEXT_PUBLIC_FORM_DAILY_CALCULATION },
                 headers: {
                     'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
                     'x-forwarded-for': '127.0.0.1'
