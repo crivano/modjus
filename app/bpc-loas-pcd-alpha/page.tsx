@@ -92,6 +92,18 @@ function interview(Frm: FormHelper) {
     'Possibilidade de se colocar no mercado de trabalho (> 17 anos)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName('relacoes ' + i)}` }))
 
+  let labelAlfabetizacao = parseDescriptionWithCondition(age, 'Alfabetização (> 6 anos)').textOrNull
+  if (['Ensino Médio - 1ª série',
+    'Ensino Médio - 2ª série',
+    'Ensino Médio - 3ª série',
+    'Curso Técnico',
+    'Ensino Superior',
+    'Mestrado',
+    'Doutorado',
+  ].includes(Frm.data.escolaridade)) {
+    labelAlfabetizacao = null
+  }
+
   return <>
     <Frm.Input label="Nome" name="nome" width={8} />
     {/* <Frm.Input label="Idade" name="idade" width={3} /> */}
@@ -99,7 +111,7 @@ function interview(Frm: FormHelper) {
     <Frm.Input label="Peso" name="peso" width={3} />
     <Frm.Input label="Altura" name="altura" width={3} />
     <Frm.Select label="Escolaridade" name="escolaridade" options={oEscolaridade} width={3} />
-    <Frm.Select label={parseDescriptionWithCondition(age, 'Alfabetização (> 6 anos)').textOrNull} name="alfabetizacao" options={oAlfabetizacao} width={3} />
+    <Frm.Select label={labelAlfabetizacao} name="alfabetizacao" options={oAlfabetizacao} width={3} />
     <Frm.Input label={parseDescriptionWithCondition(age, 'Outras informações sobre Escolaridade que o perito(a) considerar relevantes (> 7 anos)').textOrNull} name="outrasInformacoesSobreEscolaridade" width={12} />
     <Frm.TextArea label="Patologia(s) ou sequela(s) que acomete(m) a parte autora: Mencionar a(s) CID(s) indicando os documentos médicos que a comprovam" name="patologia" width={12} />
     <Frm.TextArea label="Resumo da História Clínica / Anamnese" name="anamnese" width={12} />
