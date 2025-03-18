@@ -11,7 +11,7 @@ function interview(Frm: FormHelper) {
     '',
     'Não Frequenta Creche (< 3 anos)',
     'Frequenta Creche (< 3 anos)',
-    'Não Frequenta a Escola (> 3 anos)',
+    'Não Frequenta a Escola (> 3 e < 17 anos)',
     'Educação Infantil (> 3 e < 7 anos)',
     'Ensino Fundamental - 1º ano (> 6 anos)',
     'Ensino Fundamental - 2º ano (> 6 anos)',
@@ -100,6 +100,7 @@ function interview(Frm: FormHelper) {
     <Frm.Input label="Altura" name="altura" width={3} />
     <Frm.Select label="Escolaridade" name="escolaridade" options={oEscolaridade} width={3} />
     <Frm.Select label={parseDescriptionWithCondition(age, 'Alfabetização (> 6 anos)').textOrNull} name="alfabetizacao" options={oAlfabetizacao} width={3} />
+    <Frm.Input label={parseDescriptionWithCondition(age, 'Outras informações sobre Escolaridade que o perito(a) considerar relevantes (> 7 anos)').textOrNull} name="outrasInformacoesSobreEscolaridade" width={12} />
     <Frm.TextArea label="Patologia(s) ou sequela(s) que acomete(m) a parte autora: Mencionar a(s) CID(s) indicando os documentos médicos que a comprovam" name="patologia" width={12} />
     <Frm.TextArea label="Resumo da História Clínica / Anamnese" name="anamnese" width={12} />
     <Frm.TextArea label="Informações de exames e laudos apresentados" name="examesELaudos" width={12} />
