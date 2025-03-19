@@ -94,6 +94,9 @@ export default function SolicitacaoDeslocamento() {
 
   function handlePessoaChange(pessoa: any, Frm: FormHelper) {
     if (pessoa && pessoa.sigla) {
+      Frm.set('funcaoPessoa', pessoa.funcao || '');
+      Frm.set('cargoPessoa', pessoa.cargo || '');
+      // Frm.set('cpfPessoa', pessoa.cpf || '');
       fetchDadosBancarios(pessoa.sigla, Frm);
     }
   }
@@ -152,6 +155,10 @@ export default function SolicitacaoDeslocamento() {
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
         <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
+        {/* <Frm.Input label="CPF" name="cpfPessoa" width={6} />  */}
+        <Frm.Input label="Função" name="funcaoPessoa" width={6} />
+        <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
+
         <div className="row">
           <Frm.Input label="Banco" name="banco" width={4} />
           <Frm.Input label="Agência" name="agencia" width={4} />
@@ -234,7 +241,10 @@ export default function SolicitacaoDeslocamento() {
         <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
-        <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
+        <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>       
+        {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
+        <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
+        <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
         <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
 

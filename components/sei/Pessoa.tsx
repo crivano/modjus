@@ -40,6 +40,7 @@ type Pessoa = {
     siglaUnidade: string
     idCargo: string
     funcao: string
+   // cpf: string - api do siga não retorna cpfpessoa atualmente
 }
 
 export default function PessoaMany({ Frm, name, label1, label2, onChange}: PessoaProps) {
@@ -71,7 +72,8 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
                 Frm.set(`${name}.cargo`, lista[0].cargo);
                 Frm.set(`${name}.siglaUnidade`, lista[0].siglaUnidade);
                 Frm.set(`${name}.idCargo`, lista[0].idCargo);
-                Frm.set(`${name}.funcao`, lista[0].funcao);
+                Frm.set(`${name}.funcao`, lista[0].funcao);   
+          //      Frm.set(`${name}.cpf`, lista[0].cpf);             
                 if (onChange) {
                     onChange(lista[0]);
                 }
@@ -94,6 +96,7 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
             Frm.set(`${name}.siglaUnidade`, selectedItem.siglaUnidade);
             Frm.set(`${name}.idCargo`, selectedItem.idCargo);
             Frm.set(`${name}.funcao`, selectedItem.funcao);
+          //  Frm.set(`${name}.cpf`, selectedItem.cpf);
             if (onChange) {
                 onChange(selectedItem);
             }
