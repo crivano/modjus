@@ -5,9 +5,9 @@ import { FormHelper, labelToName } from "@/libs/form-support"
 import { calculateAge, formatTextBasedOnAge, parseDescriptionWithCondition } from "@/libs/age"
 import { useSearchParams } from 'next/navigation'
 
+let quesitoConclusivo = true
+
 function interview(Frm: FormHelper) {
-  const searchParams = useSearchParams()
-  const quesitoConclusivo = searchParams.get('quesito-conclusivo') === 'false' ? false : true
   const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '0 ano'
 
   const oEscolaridade = [
@@ -169,6 +169,9 @@ function document(data: any) {
   </div>
 }
 
-export default function BpcLoasPdcMais17() {
+export default function BpcLoasPcd() {
+  const searchParams = useSearchParams()
+  quesitoConclusivo = searchParams.get('quesito-conclusivo') === 'false' ? false : true
+
   return Model(interview, document, { saveButton: false, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17' })
 }
