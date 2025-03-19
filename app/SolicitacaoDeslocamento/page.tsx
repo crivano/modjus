@@ -193,6 +193,7 @@ export default function SolicitacaoDeslocamento() {
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
           <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
         </div>
+        <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
         <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
@@ -258,6 +259,7 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
         <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
         <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, data.meioTransporte)}</p>
+        <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
 
         {data.trajeto?.length > 0 && (
           <>
