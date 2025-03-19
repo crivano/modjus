@@ -3,13 +3,18 @@
 import Model from "@/libs/model"
 import { FormHelper, labelToName } from "@/libs/form-support"
 import { calculateAge, formatTextBasedOnAge, parseDescriptionWithCondition } from "@/libs/age"
+import { useSearchParams } from 'next/navigation'
 
 function interview(Frm: FormHelper) {
+  const searchParams = useSearchParams()
+  const quesitoConclusivo = searchParams.get('quesito-conclusivo') === 'false' ? false : true
   const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '0 ano'
 
   const oEscolaridade = [
     '',
+    'Não Frequenta Creche (< 3 anos)',
     'Frequenta Creche (< 3 anos)',
+    'Não Frequenta a Escola (> 3 e < 17 anos)',
     'Educação Infantil (> 3 e < 7 anos)',
     'Ensino Fundamental - 1º ano (> 6 anos)',
     'Ensino Fundamental - 2º ano (> 6 anos)',
@@ -27,6 +32,11 @@ function interview(Frm: FormHelper) {
     'Ensino Superior (> 17 anos)',
     'Mestrado (> 17 anos)',
     'Doutorado (> 17 anos)',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+  const oAlfabetizacao = [
+    '',
+    'Não É Alfabetizado(a)',
+    'É Alfabetizado(a)'
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
   const oFuncoesDoCorpo = "Funções Mentais;Funções Sensoriais da Visão;Funções Sensoriais da Audição;Funções Sensoriais Adicionais e Dor;Funções da Voz e da Fala;Funções do Sistema Cardiovascular;Funções do Sistema Hematológico;Funções do Sistema Imunológico;Funções do Sistema Respiratório;Funções do Sistema Digestivo;Funções do Sistema Metabólico e Endócrino;Funções Geniturinárias e Reprodutivas;Funções Neuromusculoesqueléticas e Relacionadas ao Movimento;Funções da Pele e Estruturas Relacionadas".split(';').map((i) => ({ label: i, name: `${labelToName(i)}` }))
   const oNivel = "Grau A;Grau B;Grau C;Grau D".split(';').map((i) => ({ id: `${i.split(' ')[1]}`, name: i }))
@@ -85,13 +95,27 @@ function interview(Frm: FormHelper) {
     'Possibilidade de se colocar no mercado de trabalho (> 17 anos)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName('relacoes ' + i)}` }))
 
+  let labelAlfabetizacao = parseDescriptionWithCondition(age, 'Alfabetização (> 6 anos)').textOrNull
+  if (['Ensino Médio - 1ª série',
+    'Ensino Médio - 2ª série',
+    'Ensino Médio - 3ª série',
+    'Curso Técnico',
+    'Ensino Superior',
+    'Mestrado',
+    'Doutorado',
+  ].includes(Frm.data.escolaridade)) {
+    labelAlfabetizacao = null
+  }
+
   return <>
     <Frm.Input label="Nome" name="nome" width={8} />
     {/* <Frm.Input label="Idade" name="idade" width={3} /> */}
     <Frm.DatePicker label="Data de Nascimento" name="dataDeNascimento" addAge={true} width={4} />
     <Frm.Input label="Peso" name="peso" width={3} />
     <Frm.Input label="Altura" name="altura" width={3} />
-    <Frm.Select label="Escolaridade" name="escolaridade" options={oEscolaridade} width={6} />
+    <Frm.Select label="Escolaridade" name="escolaridade" options={oEscolaridade} width={3} />
+    <Frm.Select label={labelAlfabetizacao} name="alfabetizacao" options={oAlfabetizacao} width={3} />
+    <Frm.Input label={parseDescriptionWithCondition(age, 'Outras informações sobre Escolaridade que o perito(a) considerar relevantes (> 7 anos)').textOrNull} name="outrasInformacoesSobreEscolaridade" width={12} />
     <Frm.TextArea label="Patologia(s) ou sequela(s) que acomete(m) a parte autora: Mencionar a(s) CID(s) indicando os documentos médicos que a comprovam" name="patologia" width={12} />
     <Frm.TextArea label="Resumo da História Clínica / Anamnese" name="anamnese" width={12} />
     <Frm.TextArea label="Informações de exames e laudos apresentados" name="examesELaudos" width={12} />
@@ -125,7 +149,7 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label={formatTextBasedOnAge(age, "{Há necessidade de medicações de uso contínuo e/ou alimentação especial? Há necessidade de comparecimento constante a estabelecimentos de saúde, terapia multidisciplinar, internações? Em caso positivo, tais medicações e/ou tratamentos/internações influenciam de forma significativa sua rotina ou a do(a) adulto(a) responsável pelo cuidado ou apoio? (< 17 anos)}{Há necessidade de medicações de uso contínuo? Em caso positivo, tais medicações influenciam de forma significativa a interação com as demais pessoas e/ou ambiente? (> 17 anos)}{ Há necessidade de assistência especial do cuidador na rotina diária da criança? (> 3 e < 7 anos)}{ Há necessidade de uso de fraldas? (> 7 anos)}")} name="medicacoesDeUsoContinuo" width={12} />
     <Frm.TextArea label={parseDescriptionWithCondition(age, "Caso seja possível à parte executar atividades (trabalhos formais ou informais) que lhe garantam sustento, há necessidade de afastamento periódico do trabalho para rotinas de tratamento ou internações? Em caso positivo, quantas vezes por dia (ou semana, ou mês) e respectiva duração. (> 17 anos)").textOrNull} name="afastamentoPeriodico" width={12} />
     <Frm.TextArea label={parseDescriptionWithCondition(age, "O(A) periciando(a) depende de supervisão ou acompanhamento permanente de terceiros em sua vida diária? (> 7 anos)").textOrNull} name="supervisao" width={12} />
-    <Frm.TextArea label="A pessoa periciada apresenta impedimento de longo prazo de natureza física, mental, intelectual ou sensorial que, em interação com barreiras, obstrua sua participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas da mesma faixa etária, que produza efeitos pelo prazo mínimo de 2 (dois) anos?" name="impedimentoMinimoDoisAnos" width={12} />
+    <Frm.TextArea label={quesitoConclusivo ? "A pessoa periciada apresenta impedimento de longo prazo de natureza física, mental, intelectual ou sensorial que, em interação com barreiras, obstrua sua participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas da mesma faixa etária, que produza efeitos pelo prazo mínimo de 2 (dois) anos?" : null} name="impedimentoMinimoDoisAnos" width={12} />
     <Frm.TextArea label="Informações Adicionais que o(a) perito(a) entenda que possam ajudar no julgamento da lide." name="informacoesAdicionais" width={12} />
 
     {/* <div className="col col-12">
