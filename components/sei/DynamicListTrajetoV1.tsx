@@ -25,7 +25,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
         if (trajetoSalvo !== trajeto) setTrajeto(trajetoSalvo);
         if (returnToOriginSalvo !== returnToOrigin) setReturnToOrigin(returnToOriginSalvo);
         if (trechosSalvos !== trechos) setTrechos(trechosSalvos);
-        updatetrechos(trajetoSalvo,  returnToOriginSalvo);
+        updatetrechos(trajetoSalvo,  returnToOriginSalvo, trechosSalvos);
     }, [Frm, name, trajeto, returnToOrigin, trechos]);
     
 
@@ -42,13 +42,16 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
         updatetrechos(Frm.get(`${name}`),  Frm.get(`${name}_returnToOrigin`));
     };
 
-    const updatetrechos = (trajetoStr, returnToOrigin) => {
+    const updatetrechos = (trajetoStr, returnToOrigin, trechosSalvos=null) => {
         if (!trajetoStr) {
             setTrechos([]); // Limpa os trechos se trajeto não for informado
             return;
         }
 
         const cidades = trajetoStr.split(" / ").map(c => c.trim());
+       
+        if (!trechosSalvos) {
+       
         const newTrechos = [];
 
         for (let i = 0; i < cidades.length - 1; i++) {
@@ -72,10 +75,14 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                 dataTrecho: ""
             });
         }
-
-        setTrechos(newTrechos); // Atualiza o estado dos trechos
+        
+         setTrechos(newTrechos); // Atualiza o estado dos trechos
         // Se necessário, você pode descomentar o Frm.set aqui para persistir os dados externamente
          Frm.set(`${name}_trechos`, newTrechos);
+        } else {
+        const newTrechos = trechosSalvos;;
+    }
+
     };
 
     return Frm.setData ? (
@@ -115,14 +122,8 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Transporte até o embarque</Form.Label>
                                     <Form.Select
-                                        value={trecho.transporteAteEmbarque}
-                                        onChange={e => {
-                                            const newTrechos = [...trechos];
-                                            newTrechos[index].transporteAteEmbarque = e.target.value;
-                                            setTrechos(newTrechos);
-                                            // Atualiza externamente se necessário
-                                             Frm.set(`${name}_trechos`, newTrechos);
-                                        }}
+                                        value={Frm.get(`${name}_trechos[${index}].transporteAteEmbarque`)}
+                                        onChange={e => Frm.set(`${name}_trechos[${index}].transporteAteEmbarque`, e.target.value)}
                                     >
                                         {transporteOptions.map(option => (
                                             <option key={option.id} value={option.id}>{option.name}</option>
@@ -132,14 +133,8 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Transporte após o desembarque</Form.Label>
                                     <Form.Select
-                                        value={trecho.transporteAposDesembarque}
-                                        onChange={e => {
-                                            const newTrechos = [...trechos];
-                                            newTrechos[index].transporteAposDesembarque = e.target.value;
-                                            setTrechos(newTrechos);
-                                            // Atualiza externamente se necessário
-                                             Frm.set(`${name}_trechos`, newTrechos);
-                                        }}
+                                        value={Frm.get(`${name}_trechos[${index}].transporteAposDesembarque`)}
+                                        onChange={e => Frm.set(`${name}_trechos[${index}].transporteAposDesembarque`, e.target.value)}
                                     >
                                         {transporteOptions.map(option => (
                                             <option key={option.id} value={option.id}>{option.name}</option>
@@ -152,27 +147,15 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                     <Form.Label>Data do Trecho</Form.Label>
                                     <Form.Control
                                         type="date"
-                                        value={trecho.dataTrecho}
-                                        onChange={e => {
-                                            const newTrechos = [...trechos];
-                                            newTrechos[index].dataTrecho = e.target.value;
-                                            setTrechos(newTrechos);
-                                            // Atualiza externamente se necessário
-                                            Frm.set(`${name}_trechos`, newTrechos);
-                                        }}
+                                        value={Frm.get(`${name}_trechos[${index}].dataTrecho`)}
+                                        onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
                                     <Form.Select
-                                        value={trecho.hospedagem}
-                                        onChange={e => {
-                                            const newTrechos = [...trechos];
-                                            newTrechos[index].hospedagem = e.target.value;
-                                            setTrechos(newTrechos);
-                                            // Atualiza externamente se necessário
-                                            // Frm.set(`${name}_trechos`, newTrechos);
-                                        }}
+                                        value={Frm.get(`${name}_trechos[${index}].hospedagem`)}
+                                        onChange={e => Frm.set(`${name}_trechos[${index}].hospedagem`, e.target.value)}
                                     >
                                         {hospedagemOptions.map(option => (
                                             <option key={option.id} value={option.id}>{option.name}</option>
