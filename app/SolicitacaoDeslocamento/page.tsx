@@ -178,8 +178,7 @@ export default function SolicitacaoDeslocamento() {
           <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
         </div>
         <Frm.TextArea label="Serviço ou atividade a ser desenvolvida" name="servicoAtividade" width={12} />
-        <Frm.TextArea label="Órgão" name="orgao" width={12} />
-        <Frm.TextArea label="Local" name="local" width={12} />
+
 
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
@@ -253,8 +252,6 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
         <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
         <p><strong>Serviço ou atividade a ser desenvolvida:</strong> {data.servicoAtividade || 'Não informado'}</p>
-        <p><strong>Órgão:</strong> {data.orgao || 'Não informado'}</p>
-        <p><strong>Local:</strong> {data.local || 'Não informado'}</p>
 
         <h4>Dados do Deslocamento</h4>
         <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
