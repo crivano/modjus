@@ -4,6 +4,7 @@ import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import { useState, useEffect } from "react"
 import Pessoa from "@/components/sei/Pessoa"
+import DynamicListTrajetoV1 from "@/components/sei/DynamicListTrajetoV1"
 import ErrorPopup from "@/components/ErrorPopup"
 import axios from 'axios';
 
@@ -191,10 +192,10 @@ export default function SolicitacaoDeslocamento() {
         <div className="row">
           <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
-          <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
+          {/* <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} /> */}
         </div>
         <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
-        <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
+        <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
@@ -255,13 +256,13 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
 
         <h4>Dados do Deslocamento</h4>
-        <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
+        <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte} - Retorno à Origem: {data.trajeto_returnToOrigin ? "Sim" : "Não"}</p>
         <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
         <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
         <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, data.meioTransporte)}</p>
         <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
 
-        {data.trajeto?.length > 0 && (
+        {data.trajeto_trechos?.length > 0 && (
           <>
             <h4>Trechos</h4>
             <table className="table table-bordered">
@@ -275,13 +276,13 @@ export default function SolicitacaoDeslocamento() {
                 </tr>
               </thead>
               <tbody>
-                {data.trajeto.map((trajeto: any, i: number) => (
+                {data.trajeto_trechos?.map((trecho: any, i: number) => (
                   <tr key={i}>
-                    <td>{formatDateToBrazilian(trajeto.dataTrecho)}</td>
-                    <td>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
-                    <td>{getOptionName(transporteOptions, trajeto.transporteAteEmbarque)}</td>
-                    <td>{getOptionName(transporteOptions, trajeto.transporteAposDesembarque)}</td>
-                    <td>{getOptionName(hospedagemOptions, trajeto.hospedagem)}</td>
+                    <td>{formatDateToBrazilian(trecho.dataTrecho)}</td>
+                    <td>{trecho.origem || 'Não informado'} / {trecho.destino || 'Não informado'}</td>
+                    <td>{getOptionName(transporteOptions, trecho.transporteAteEmbarque)}</td>
+                    <td>{getOptionName(transporteOptions, trecho.transporteAposDesembarque)}</td>
+                    <td>{getOptionName(hospedagemOptions, trecho.hospedagem)}</td>
                   </tr>
                 ))}
               </tbody>
