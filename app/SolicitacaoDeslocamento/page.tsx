@@ -144,7 +144,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
 
         <h2>Dados do Proponente</h2>
-        <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} />
+        <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={4} />
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
           <Frm.Input label="Função" name="funcaoProponente" width={6} />
@@ -234,6 +234,7 @@ export default function SolicitacaoDeslocamento() {
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
         <h4>Dados do Proponente</h4>
         <p style={{display:'none'}}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
+        <p><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
         <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
         <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
