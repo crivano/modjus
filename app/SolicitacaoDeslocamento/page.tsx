@@ -95,6 +95,7 @@ export default function SolicitacaoDeslocamento() {
   function handlePessoaChange(pessoa: any, Frm: FormHelper) {
     if (pessoa && pessoa.sigla) {
       fetchDadosBancarios(pessoa.sigla, Frm);
+      Frm.set('dataAtual', pessoa.cargo || '');
     }
   }
 
@@ -140,7 +141,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
 
         <h2>Dados do Proponente</h2>
-        <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} />
+        {/* <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} /> */}
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
           <Frm.Input label="Função" name="funcaoProponente" width={6} />
@@ -152,6 +153,9 @@ export default function SolicitacaoDeslocamento() {
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
         <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
+        <div className="row">
+          {/* <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} /> */}
+        </div>
         <div className="row">
           <Frm.Input label="Banco" name="banco" width={4} />
           <Frm.Input label="Agência" name="agencia" width={4} />
@@ -185,7 +189,7 @@ export default function SolicitacaoDeslocamento() {
         <div className="row">
           <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
-          <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
+          {/* <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} /> */}
         </div>
         <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
 
@@ -225,7 +229,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
         <h4>Dados do Proponente</h4>
-        <p style={{display:'none'}}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
+        <p style={{display:"none"}}><strong>Data da Solicitação:</strong> {data.dataAtual = dataAtual || 'Não informado'}</p>
         <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
         <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
@@ -234,6 +238,13 @@ export default function SolicitacaoDeslocamento() {
         <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
+
+
+
+        <p ><strong>Cargo do Beneficiário:</strong> {data.pessoa?.cargo || 'Não informado'}</p>
+
+
+
         <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
         <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
