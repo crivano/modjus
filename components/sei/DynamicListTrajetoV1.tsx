@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 
-const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
+const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }) => {
     const [trajeto, setTrajeto] = useState(Frm.get(`${name}`) || "");
     const [returnToOrigin, setReturnToOrigin] = useState(Frm.get(`${name}_returnToOrigin`) || false);
     const [trechos, setTrechos] = useState(Frm.get(`${name}_trechos`) || []);
+    const [qtdCidades, setQuantidadeCidades] = useState<number>(0);
+
+    const periodoInicial = Frm.get(`${periodoDe}`) || "Não informado"
+    const [day, month, year] = periodoInicial.split('/');
+    const dataInicio = `${year}-${month}-${day}`;
+
+    const periodoFinal = Frm.get(`${periodoAte}`) || "Não informado"
+    const [dayFim, monthFim, yearFim] = periodoFinal.split('/');
+    const dataFim = `${yearFim}-${monthFim}-${dayFim}`;
 
     const transporteOptions = [
         { id: '1', name: 'Com adicional de deslocamento' },
@@ -21,13 +30,13 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
         const trajetoSalvo = Frm.get(`${name}`);
         const returnToOriginSalvo = Frm.get(`${name}_returnToOrigin`);
         const trechosSalvos = Frm.get(`${name}_trechos`);
-    
+
         if (trajetoSalvo !== trajeto) setTrajeto(trajetoSalvo);
         if (returnToOriginSalvo !== returnToOrigin) setReturnToOrigin(returnToOriginSalvo);
         if (trechosSalvos !== trechos) setTrechos(trechosSalvos);
-        updatetrechos(trajetoSalvo,  returnToOriginSalvo, trechosSalvos);
+        updatetrechos(trajetoSalvo, returnToOriginSalvo, trechosSalvos);
     }, [Frm, name, trajeto, returnToOrigin, trechos]);
-    
+
 
     const handleTrajetoChange = (e) => {
         const newTrajeto = e.target.value;
@@ -39,49 +48,50 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
     const handleReturnToOriginV1 = (checked) => {
         setReturnToOrigin(checked);
         Frm.set(`${name}_returnToOrigin`, checked);
-        updatetrechos(Frm.get(`${name}`),  Frm.get(`${name}_returnToOrigin`));
+        updatetrechos(Frm.get(`${name}`), Frm.get(`${name}_returnToOrigin`));
     };
 
-    const updatetrechos = (trajetoStr, returnToOrigin, trechosSalvos=null) => {
+    const updatetrechos = (trajetoStr, returnToOrigin, trechosSalvos = null) => {
         if (!trajetoStr) {
             setTrechos([]); // Limpa os trechos se trajeto não for informado
             return;
         }
 
         const cidades = trajetoStr.split(" / ").map(c => c.trim());
-       
+        setQuantidadeCidades(cidades.length);
+
         if (!trechosSalvos) {
-       
-        const newTrechos = [];
 
-        for (let i = 0; i < cidades.length - 1; i++) {
-            newTrechos.push({
-                origem: cidades[i],
-                destino: cidades[i + 1],
-                transporteAteEmbarque: "1",
-                transporteAposDesembarque: "1",
-                hospedagem: "1",
-                dataTrecho: ""
-            });
-        }
+            const newTrechos = [];
 
-        if (returnToOrigin && cidades.length > 1) {
-            newTrechos.push({
-                origem: cidades[cidades.length - 1],
-                destino: cidades[0],
-                transporteAteEmbarque: "1",
-                transporteAposDesembarque: "1",
-                hospedagem: "1",
-                dataTrecho: ""
-            });
-        }
-        
-         setTrechos(newTrechos); // Atualiza o estado dos trechos
-        // Se necessário, você pode descomentar o Frm.set aqui para persistir os dados externamente
-         Frm.set(`${name}_trechos`, newTrechos);
+            for (let i = 0; i < cidades.length - 1; i++) {
+                newTrechos.push({
+                    origem: cidades[i],
+                    destino: cidades[i + 1],
+                    transporteAteEmbarque: "1",
+                    transporteAposDesembarque: "1",
+                    hospedagem: "1",
+                    dataTrecho: ""
+                });
+            }
+
+            if (returnToOrigin && cidades.length > 1) {
+                newTrechos.push({
+                    origem: cidades[cidades.length - 1],
+                    destino: cidades[0],
+                    transporteAteEmbarque: "1",
+                    transporteAposDesembarque: "1",
+                    hospedagem: "1",
+                    dataTrecho: ""
+                });
+            }
+
+            setTrechos(newTrechos); // Atualiza o estado dos trechos
+            // Se necessário, você pode descomentar o Frm.set aqui para persistir os dados externamente
+            Frm.set(`${name}_trechos`, newTrechos);
         } else {
-        const newTrechos = trechosSalvos;;
-    }
+            const newTrechos = trechosSalvos;;
+        }
 
     };
 
@@ -103,11 +113,12 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                 checked={Frm.get(`${name}_returnToOrigin`) || false}
                 onChange={(e) => handleReturnToOriginV1(e.target.checked)}
             />
-
             {
+
                 (trechos || []).map((trecho, index) => (
                     <div key={index} className="d-flex align-trechos-center mb-2">
-                        <div className="flex-grow-1">
+                        <div className="flex-grow-1 card p-2 lightblue" style={{ backgroundColor: '#EFF5FB' }}>
+                            <Form.Label><center><h6>Trajeto {index + 1}</h6></center></Form.Label>
                             <div className="row">
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Origem</Form.Label>
@@ -142,14 +153,37 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                     </Form.Select>
                                 </Form.Group>
                             </div>
-                            <div className="row">
+                            <div className="row mt-2 pt-2">
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Data do Trecho</Form.Label>
-                                    <Form.Control
-                                        type="date"
-                                        value={Frm.get(`${name}_trechos[${index}].dataTrecho`)}
-                                        onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
-                                    />
+
+                                    {index === 0 ?
+                                        <Form.Control
+                                            type="date"
+                                            value={dataInicio}
+                                            disabled
+                                        />
+                                        : !returnToOrigin && index === qtdCidades - 2
+                                            ?
+                                            <Form.Control
+                                                type="date"
+                                                value={dataFim}
+                                                disabled
+                                            />
+                                            : returnToOrigin && index === qtdCidades - 1
+                                            ? 
+                                            <Form.Control
+                                                type="date"
+                                                value={dataFim}
+                                                disabled                                            
+                                            />
+                                            :
+                                            <Form.Control
+                                                type="date"
+                                                value={Frm.get(`${name}_trechos[${index}].dataTrecho`)}
+                                                onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
+                                            />
+                                        }
                                 </Form.Group>
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
