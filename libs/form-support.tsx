@@ -929,6 +929,48 @@ export class FormHelper {
             </div>
         );
     }
+
+    public FeriadosInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
+        const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+            const quantity = parseInt(e.target.value, 10);
+            const feriados = this.get(name) || [];
+            const newFeriados = feriados.slice(0, quantity);
+            while (newFeriados.length < quantity) {
+                newFeriados.push('');
+            }
+            this.set(name, newFeriados);
+        };
+
+        const handleDateChange = (index: number, date: string) => {
+            const feriados = this.get(name) || [];
+            feriados[index] = date;
+            this.set(name, feriados);
+        };
+
+        const quantityOptions = Array.from({ length: 31 }, (_, i) => ({ id: `${i}`, name: `${i}` }));
+        const feriados = this.get(name) || [];
+
+        return (
+            <div className={this.colClass(width)}>
+                <Form.Label>{label}</Form.Label>
+                <Form.Select onChange={handleQuantityChange} value={feriados.length}>
+                    {quantityOptions.map(option => (
+                        <option key={option.id} value={option.id}>{option.name}</option>
+                    ))}
+                </Form.Select>
+                {feriados.map((feriado: string, index: number) => (
+                    <Form.Group key={index} className="mt-2">
+                        <Form.Label>Data {index + 1}</Form.Label>
+                        <Form.Control
+                            type="date"
+                            value={feriado}
+                            onChange={e => handleDateChange(index, e.target.value)}
+                        />
+                    </Form.Group>
+                ))}
+            </div>
+        );
+    };
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase

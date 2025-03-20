@@ -2,7 +2,7 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
@@ -123,6 +123,12 @@ export default function CalculoDeDiarias() {
   
   const Frm = new FormHelper();
 
+  useEffect(() => {
+    if (Frm.data && Frm.data.solicitacaoDeslocamento) {
+      fetchProcessData(Frm.data.processo);
+    }
+  }, []);
+
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
@@ -242,55 +248,55 @@ export default function CalculoDeDiarias() {
         {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
-       <div style={{ display: 'none' }}>
-              <h2>Dados do Proponente</h2>
-              <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome"  />
-              <div className="row">
-          <Frm.Input label="Função" name="funcaoProponente" width={6} />
-          <Frm.Input label="Cargo" name="cargoProponente" width={6} />
-              </div>
+          <div style={{ display: 'none' }}>
+                  <h2>Dados do Proponente</h2>
+                  <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome"  />
+                  <div className="row">
+              <Frm.Input label="Função" name="funcaoProponente" width={6} />
+              <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+                  </div>
 
-              <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+                  <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
-              <h2>Dados do Beneficiário</h2>
-              <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
-              <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome"  />
-              <div className="row">
-          <Frm.Input label="Banco" name="banco" width={4} />
-          <Frm.Input label="Agência" name="agencia" width={4} />
-          <Frm.Input label="Conta" name="conta" width={4} />
-              </div>
-              <Frm.Select label="Faixa" name="faixa" options={faixaOptions} width={12} />
+                  <h2>Dados do Beneficiário</h2>
+                  <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
+                  <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome"  />
+                  <div className="row">
+              <Frm.Input label="Banco" name="banco" width={4} />
+              <Frm.Input label="Agência" name="agencia" width={4} />
+              <Frm.Input label="Conta" name="conta" width={4} />
+                  </div>
+                  <Frm.Select label="Faixa" name="faixa" options={faixaOptions} width={12} />
 
-              <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+                  <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
-              <h2>Dados da Atividade</h2>
-              <div className="row">
-          <Frm.Select label="Acréscimo (art. 10, V)" name="acrescimo" options={acrescimoOptions} width={12} />
-          <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
-              </div>
-              <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
-              <div className="row">
-          <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
-              </div>
-              <Frm.TextArea label="Serviço ou atividade a ser desenvolvida" name="servicoAtividade" width={12} />
-              <Frm.TextArea label="Órgão" name="orgao" width={12} />
-              <Frm.TextArea label="Local" name="local" width={12} />
+                  <h2>Dados da Atividade</h2>
+                  <div className="row">
+              <Frm.Select label="Acréscimo (art. 10, V)" name="acrescimo" options={acrescimoOptions} width={12} />
+              <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
+                  </div>
+                  <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
+                  <div className="row">
+              <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
+                  </div>
+                  <Frm.TextArea label="Serviço ou atividade a ser desenvolvida" name="servicoAtividade" width={12} />
+                  <Frm.TextArea label="Órgão" name="orgao" width={12} />
+                  <Frm.TextArea label="Local" name="local" width={12} />
 
-              <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+                  <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
-              <h2>Dados do Deslocamento</h2>
-              <div className="row">
-          <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
-          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
-              </div>
-              <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
-              <div className="row">
-          <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
-          <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
-              </div>
-              <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
-      </div>
+                  <h2>Dados do Deslocamento</h2>
+                  <div className="row">
+              <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
+              <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+                  </div>
+                  <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
+                  <div className="row">
+              <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
+              <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
+                  </div>
+                  <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
+          </div>
         {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
@@ -300,7 +306,7 @@ export default function CalculoDeDiarias() {
         {fetchedData && (
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
         )}
-        {selectedSolicitacao && (
+        {Frm.data && Frm.data.solicitacaoDeslocamento && (
             <>
             <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions} width={12} />
             {Frm.get('resultadoCalculo') === '2' && (
@@ -315,25 +321,36 @@ export default function CalculoDeDiarias() {
               <Frm.MoneyInput label="Valor líquido das diárias" name="valorLiquidoDiarias" width={12} />
               </>
             )}
-            <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={handleAuxiliosChange} width={12} />
+
+            {Frm.get('resultadoCalculo') === '1' && (
+              <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={handleAuxiliosChange} width={12} />
+            )}
+
             {Frm.get('auxilios') === '2' && (
               <>
               <Frm.MoneyInput label="Valor do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
               <Frm.MoneyInput label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
               </>
             )}
-            <Frm.Input label="Quantidade de feriados durante o deslocamento" name="quantidadeFeriados" width={12} />
-            <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-            <Frm.Input label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="quantidadeDiasSemDiaria" width={12} />
-            <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-            {Frm.data.tipoDeslocamento === '2' && (
-              <Frm.MoneyInput label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
+            
+            {Frm.get('resultadoCalculo') === '1' && (
+              <>
+              <Frm.FeriadosInput label="Quantidade de feriados durante o deslocamento" name="feriados" width={12} />
+              <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
+              <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="DiasSemDiaria" width={12} />
+              <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
+              {Frm.data.tipoDeslocamento === '2' && (
+                <Frm.MoneyInput label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
+              )}
+              <div>
+                <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
+              </div>
+              </>
             )}
             </>
         )}
-        <>
-        <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
-        </>
+        
+        
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
     </>
@@ -514,15 +531,19 @@ export default function CalculoDeDiarias() {
             )}
           </>
         )}
-        <h4 style={{ textAlign: 'center' }}>CÁLCULO DE DIÁRIAS</h4>
-        <p><strong>Obter automaticamente o resultado do cálculo de diária:</strong> {getOptionName(resultadoCalculoOptions, data.resultadoCalculo)}</p>
-        <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
-        <p><strong>Quantidade de feriados durante o deslocamento:</strong> {data.quantidadeFeriados || 'Não informado'}</p>
-        <p><strong>Quantidade de dias em que não será paga a diária durante o deslocamento:</strong> {data.quantidadeDiasSemDiaria || 'Não informado'}</p>
-        {data.auxilios === '2' && (
+        {data.resultadoCalculo === '1' && (
           <>
-            <p><strong>Valor do auxílio alimentação:</strong> {formatCurrency(data.valorAuxilioAlimentacao || '0')}</p>
-            <p><strong>Valor do auxílio transporte:</strong> {formatCurrency(data.valorAuxilioTransporte || '0')}</p>
+          <h4 style={{ textAlign: 'center' }}>CÁLCULO DE DIÁRIAS</h4>
+          <p><strong>Obter automaticamente o resultado do cálculo de diária:</strong> {getOptionName(resultadoCalculoOptions, data.resultadoCalculo)}</p>
+          <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
+          <p><strong>Quantidade de feriados durante o deslocamento:</strong> {data.quantidadeFeriados || 'Não informado'}</p>
+          <p><strong>Quantidade de dias em que não será paga a diária durante o deslocamento:</strong> {data.quantidadeDiasSemDiaria || 'Não informado'}</p>
+          {data.auxilios === '2' && (
+            <>
+              <p><strong>Valor do auxílio alimentação:</strong> {formatCurrency(data.valorAuxilioAlimentacao || '0')}</p>
+              <p><strong>Valor do auxílio transporte:</strong> {formatCurrency(data.valorAuxilioTransporte || '0')}</p>
+            </>
+          )}
           </>
         )}
         {data.resultadoCalculo === '2' && (
@@ -586,9 +607,8 @@ export default function CalculoDeDiarias() {
             </tbody>
           </table>
         )}
-        {JSON.stringify(data)}
       </div>
-      
+      {JSON.stringify(data)}
     </>
   }
 
