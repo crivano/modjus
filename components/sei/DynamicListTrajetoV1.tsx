@@ -116,7 +116,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
             {
 
                 (trechos || []).map((trecho, index) => (
-                    <div key={index} className="d-flex align-trechos-center mb-2">
+                    <div key={index} className="d-flex align-trechos-center my-3">
                         <div className="flex-grow-1 card p-2 lightblue" style={{ backgroundColor: '#EFF5FB' }}>
                             <Form.Label><center><h6>Trajeto {index + 1}</h6></center></Form.Label>
                             <div className="row">
@@ -161,6 +161,8 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
                                         <Form.Control
                                             type="date"
                                             value={dataInicio}
+                                            onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, dataInicio)}
+                                            // onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
                                             disabled
                                         />
                                         : !returnToOrigin && index === qtdCidades - 2
@@ -168,6 +170,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
                                             <Form.Control
                                                 type="date"
                                                 value={dataFim}
+                                                { ...Frm.set(`${name}_trechos[${index}].dataTrecho`, dataFim)}
                                                 disabled
                                             />
                                             : returnToOrigin && index === qtdCidades - 1
@@ -175,6 +178,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
                                             <Form.Control
                                                 type="date"
                                                 value={dataFim}
+                                                { ...Frm.set(`${name}_trechos[${index}].dataTrecho`, dataFim)}
                                                 disabled                                            
                                             />
                                             :
