@@ -322,9 +322,9 @@ export default function CalculoDeDiarias() {
               <Frm.MoneyInput label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
               </>
             )}
-            <Frm.Input label="Quantidade de feriados durante o deslocamento" name="quantidadeFeriados" width={12} />
+            <Frm.FeriadosInput label="Quantidade de feriados durante o deslocamento" name="feriados" width={12} />
             <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-            <Frm.Input label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="quantidadeDiasSemDiaria" width={12} />
+            <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="DiasSemDiaria" width={12} />
             <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
             {Frm.data.tipoDeslocamento === '2' && (
               <Frm.MoneyInput label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
@@ -334,6 +334,7 @@ export default function CalculoDeDiarias() {
         <>
         <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
         </>
+        {JSON.stringify(Frm.data)}
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
     </>
