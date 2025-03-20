@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react';
+//import { useState } from 'react';
 import { FormHelper } from "@/libs/form-support";
+import { useState, useEffect } from "react"
 import Model from "@/libs/model"
+import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
 
 const tipoBeneficiarioOptions = [
@@ -28,19 +30,20 @@ const meioTransporteOptions = [
 ]
 
 export default function ConclusaoDeslocamento() {
+
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
+    const Frm = new FormHelper();
     const [fetchedData, setFetchedData] = useState(null);
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const [selectedCode, setSelectedCode] = useState(null);
-    const Frm = new FormHelper();
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
-            
+
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                
+
                 params: { num_processo: numeroProcesso, nome_documento: process.env.NEXT_PUBLIC_FORM_DAILY_CALCULATION },
                 headers: {
                     'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
@@ -65,6 +68,43 @@ export default function ConclusaoDeslocamento() {
         setSelectedCode(selected)
         setSelectedSolicitacao(selected ? selected.data : null);
         Frm.update({ ...formData, solicitacaoDeslocamentoCalculoDiaria: selectedId }, setFormData);
+
+        // if (selected) {
+
+        //     const solicitacaoData = selected.data;
+        //     Frm.set('proponente', {descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''});
+        //     Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
+        //     Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
+        //     Frm.set('pessoa', {
+        //         descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || '', cargo: solicitacaoData.pessoa?.cargo || ''
+        //     });
+        //     Frm.set('banco', solicitacaoData.banco || '');
+        //     Frm.set('dataAtual', solicitacaoData.dataAtual || '');
+
+        //     Frm.set('agencia', solicitacaoData.agencia || '');
+        //     Frm.set('conta', solicitacaoData.conta || '');
+        //     Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+        //     Frm.set('faixa', solicitacaoData.faixa || '');
+        //     Frm.set('acrescimo', solicitacaoData.acrescimo || '');
+        //     Frm.set('tipoDiaria', solicitacaoData.tipoDiaria || '');
+        //     Frm.set('prorrogacao', solicitacaoData.prorrogacao || '');
+        //     Frm.set('servicoAtividade', solicitacaoData.servicoAtividade || '');
+        //     Frm.set('orgao', solicitacaoData.orgao || '');
+        //     Frm.set('local', solicitacaoData.local || '');
+        //     Frm.set('periodoDe', solicitacaoData.periodoDe || '');
+        //     Frm.set('periodoAte', solicitacaoData.periodoAte || '');
+        //     Frm.set('justificativa', solicitacaoData.justificativa || '');
+        //     Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
+        //     Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
+        //     Frm.set('trajeto', solicitacaoData.trajeto || []);
+        // }
+    }
+
+    function handleProponenteChange(proponente: any, Frm: FormHelper) {
+        if (proponente) {
+            Frm.set('funcaoProponente', proponente.funcao || '');
+            Frm.set('cargoProponente', proponente.cargo || '');
+        }
     }
 
     const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -72,28 +112,37 @@ export default function ConclusaoDeslocamento() {
         setStartDate(date);
     };
 
-    // function handleProponenteChange(proponente: any, nameCargoProponente: any, Frm: FormHelper) {
-    //     if (proponente) {
-    //         Frm.set('funcaoProponente', proponente.funcao || '');
-    //         Frm.set(nameCargoProponente, proponente.cargo || '');
-    //     }
-    // }
-
-    // function handleBeneficiarioChange(beneficiario: any, nameCargoBeneficiario: any, Frm: FormHelper) {
-    //     if (beneficiario && beneficiario.sigla) {
-    //         Frm.set('funcaoBeneficiario', beneficiario.funcao || '');
-    //         Frm.set(nameCargoBeneficiario, beneficiario.cargo || '');
-    //     }
-    // }
-
-    // function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
-    //     Frm.set('retorno_a_origem', event.target.value);
-    // }
-    const bool = false;
-
+    // ÁREA DE ENTRADA DE DADOS
     function interview(Frm: FormHelper) {
         return <>
             <div className="scrollableContainer">
+
+                <h2>Dados do Proponente</h2>
+                {/* <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} /> */}
+                {/* <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
+                <div className="row">
+                    <Frm.Input label="Função" name="funcaoProponente" width={6} />
+                    <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+                </div> */}
+
+                <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
+
+                <div className="row">
+                    <Frm.Input label="Função" name="funcaoProponente" width={6} />
+                    <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+                </div>
+
+                <Frm.Input label="Finalidade" name="finalidade" width={4} />
+
+                {/* <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorBrutoDiarias) /> */}
+
+                <Frm.Input label="Adicional de Deslocamento" name="adic_desloc" />
+                <Frm.Input label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" />
+                <Frm.Input label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" />
+                <Frm.Input label="Desconto de Teto" name="desconto_teto" />
+                <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" />
+                <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" />
+
                 <div className="margin-bottom: 0.3em; margin-top: 1em; font-weight: bold; font-size: 120%;">CONCLUSÃO DE DESLOCAMENTO</div>
                 <p><strong>Dados para o relatório de deslocamentos</strong></p>
                 <div className='"flex-grow-1 card p-3 m-2' style={{ backgroundColor: '#edf7fe' }}>
@@ -101,14 +150,27 @@ export default function ConclusaoDeslocamento() {
                     <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
 
                     {fetchedData && (
-                        <Frm.Select label="Selecione o código do cálculo de diária" name="solicitacaoDeslocamentoCalculoDiaria" options={solicitacaoOptions} onChange={handleSolicitacaoChange} width={12} />
+                        <Frm.Select 
+                            label="Selecione o código do cálculo de diária" 
+                            name="solicitacaoDeslocamentoCalculoDiaria" 
+                            options={solicitacaoOptions} 
+                            onChange={handleSolicitacaoChange} width={12} 
+                        />
                     )}
                 </div>
             </div>
         </>
     }
 
+    // ÁREA DE SAÍDA DOS DADOS
     function document(data: any) {
+        const Frm = new FormHelper();
+        Frm.update(data);
+        // const {
+        //     funcaoProponente,
+        //     cargoProponente,
+        //     finalidade,
+        // } = Frm.data;
 
         const formatDateToBrazilian = (date: string) => {
             if (!date) return 'Não informado';
@@ -151,46 +213,79 @@ export default function ConclusaoDeslocamento() {
         const trajeto = fetchFieldFromJsonObject(selectedSolicitacao, "trajeto");
         origemDestino = trajeto ? (trajeto.origem + " / " + trajeto.destino) : "Não informado";
 
+        function formatForm (name: string, field: any) {
+            return <><label>{name}:</label> <span style={{ color: 'blue' }}>{field || "Não informado"}</span><br></br></>
+        }
+
         return <>
-            <div className="scrollableContainer">
-                {selectedSolicitacao && (
-                    <>
-                        {/* <p><strong>CONCLUSÃO DE DESLOCAMENTO</strong></p> */}
-                        <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                        <label>Código da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedCode.name}</span><br></br>
-                        <label>Data da Solicitação de Deslocamento: </label> <span style={{ color: 'blue' }}>{selectedSolicitacao.dataAtual || "Não informado"}</span><br></br>
+            {!selectedSolicitacao && (
+                <div className="scrollableContainer">
+                    <h4>Dados do Proponente</h4>
+                    {/* <p style={{display:"none"}}><strong>Data da Solicitação:</strong> { || 'Não informado'}</p> */}
+                    <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                        {/* DADOS DO PROPONENTE */}
-                        <label>Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.proponente?.descricao || 'Não informado'}</span><br></br>
-                        <label>Cargo do Proponente:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.cargoProponente || "Não informado"}</span><br></br>
+                    {formatForm("Data da Solicitação:", data.dataAtual = "dataAtual")}
+                    {formatForm("Código da Solicitação de Deslocamento:", data.name)}
 
-                        {/* DADOS DO BENEFICIÁRIO */}
-                        <label>Tipo de Beneficiário:</label> <span style={{ color: 'blue' }}>{getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario)} </span><br></br>
-                        <label>Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.pessoa?.descricao || 'Não informado'}</span><br></br>
-                        <label>Cargo do Beneficiário:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.cargoBeneficiario || 'Não informado'}</span><br></br>
-                        <label>Finalidade:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.servicoAtividade || "Não informado"}</span><br></br>
-                        <label>Tipo de Viagem:</label> <span style={{ color: 'blue' }}>{getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento)} </span><br></br>
-                        <label>Itinerário:</label> <span style={{ color: 'blue' }}>{origemDestino}</span><br></br>
-                        <label>Retorno à Origem:</label> <span style={{ color: 'blue' }}>{selectedSolicitacao.retorno_a_origem || "Não informado"}</span><br></br>
+                    {/* DADOS DO PROPONENTE */}
+                    {formatForm("Proponente:", data.proponente?.descricao)}
+                    {formatForm("Cargo do Proponente:", data.cargoProponente)}
 
-                        {/* DADOS DO DESLOCAMENTO */}
-                        <label>Período:</label> <span style={{ color: 'blue' }}> {selectedSolicitacao.periodoDe} a {selectedSolicitacao.periodoAte}</span><br></br>
-                        <label>Meio de Transporte:</label> <span style={{ color: 'blue' }}>{getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte)}</span><br></br>
+                    {/* DADOS DO BENEFICIÁRIO */}
+                    {formatForm("Beneficiário:",getOptionName(tipoBeneficiarioOptions, data.pessoa?.descricao))}
+                    {formatForm("Tipo de Beneficiário:",getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario))}
+                    {formatForm("Cargo do Beneficiário:",getOptionName(tipoBeneficiarioOptions, data.pessoa?.cargo))}
 
-                        {/* VALORES DAS DIÁRIAS */}
-                        <label>Valor Bruto das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorBrutoDiarias) || "Não informado"}</span><br></br>
-                        <label>Adicional de Deslocamento:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorAdicionalDeslocamento) || "Não informado"}</span><br></br>
-                        <label>Desconto de Auxílio Alimentação:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorDescontoAlimentacao) || "Não informado"}</span><br></br>
-                        <label>Desconto de Auxílio Transporte:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorDescontoTransporte) || "Não informado"}</span><br></br>
-                        <label>Desconto de Teto:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.descontoTeto) || "Não informado"}</span><br></br>
-                        <label>Valor Líquido das Diárias:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.valorLiquidoDiarias) || "Não informado"}</span><br></br>
-                        <label>Valor Total das Passagens:</label> <span style={{ color: 'blue' }}>{formatCurrency(selectedSolicitacao?.resultadoCalculo) || "Não informado"}</span><br></br>
-                    </>
-                )}
-            </div>
+                    {formatForm("Finalidade:",getOptionName(tipoBeneficiarioOptions, data.finalidade))}
+                    {formatForm("Tipo de Viagem:",getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento))}
+                    {formatForm("Itinerário:",getOptionName(tipoDeslocamentoOptions, data.origemDestino))}
+                    {formatForm("Retorno à Origem:",getOptionName(tipoDeslocamentoOptions, data.retorno_a_origem))}
+
+                    {/* VALORES DAS DIÁRIAS */}
+                    {formatForm("Valor Bruto das Diárias:",getOptionName(tipoDeslocamentoOptions, data.valorBrutoDiarias))}
+                    {formatForm("Adicional de Deslocamento:",getOptionName(tipoDeslocamentoOptions, data.adic_desloc))}
+                    {formatForm("Desconto de Auxílio Alimentação:",getOptionName(tipoDeslocamentoOptions, data.valorDescontoAlimentacao))}
+                    {formatForm("Desconto de Auxílio Transporte:",getOptionName(tipoDeslocamentoOptions, data.valorDescontoTransporte))}
+                    {formatForm("Desconto de Teto:",getOptionName(tipoDeslocamentoOptions, data.descontoTeto))}
+                    {formatForm("Valor Líquido das Diárias:",getOptionName(tipoDeslocamentoOptions, data.valorLiquidoDiarias))}
+                    {formatForm("Valor Total das Passagens:",getOptionName(tipoDeslocamentoOptions, data.resultadoCalculo))}
+                </div>
+            )}
+
+            {selectedSolicitacao && (
+                <>
+                    <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
+
+
+                    {formatForm("Data da Solicitação:", data.dataAtual = "dataAtual")}
+                    {formatForm("Código da Solicitação de Deslocamento:",selectedSolicitacao.dataAtual)}
+
+                    {/* DADOS DO PROPONENTE */}
+                    {formatForm("Proponente:", selectedSolicitacao.proponente?.descricao)}
+                    {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente)}
+
+                    {/* DADOS DO BENEFICIÁRIO */}
+                    {formatForm("Beneficiário:", selectedCode.name)}
+                    {formatForm("Tipo de Beneficiário:",getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario))}
+                    {formatForm("Cargo do Beneficiário:",getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.pessoa?.cargo))}
+
+                    {formatForm("Finalidade:",getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.finalidade))}
+                    {formatForm("Tipo de Viagem:",getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento))}
+                    {formatForm("Itinerário:",getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.origemDestino))}
+                    {formatForm("Retorno à Origem:",getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.retorno_a_origem))}
+
+                    {/* VALORES DAS DIÁRIAS */}
+                    {formatForm("Valor Bruto das Diárias:", selectedSolicitacao.valorBrutoDiarias)}
+                    {formatForm("Adicional de Deslocamento:", selectedSolicitacao.adic_desloc)}
+                    {formatForm("Desconto de Auxílio Alimentação:", selectedSolicitacao.valorDescontoAlimentacao)}
+                    {formatForm("Desconto de Auxílio Transporte:", selectedSolicitacao.valorDescontoTransporte)}
+                    {formatForm("Desconto de Teto:", selectedSolicitacao.descontoTeto)}
+                    {formatForm("Valor Líquido das Diárias:", selectedSolicitacao.valorLiquidoDiarias)}
+                    {formatForm("Valor Total das Passagens:",selectedSolicitacao.resultadoCalculo)}
+                </>
+            )}
         </>
     }
-
     return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
 }
