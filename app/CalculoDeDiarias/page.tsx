@@ -2,7 +2,7 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
@@ -122,6 +122,12 @@ export default function CalculoDeDiarias() {
   ];
   
   const Frm = new FormHelper();
+
+  useEffect(() => {
+    if (Frm.data && Frm.data.solicitacaoDeslocamento) {
+      fetchProcessData(Frm.data.processo);
+    }
+  }, []);
 
   async function fetchProcessData(numeroProcesso: string) {
     try {
@@ -300,7 +306,7 @@ export default function CalculoDeDiarias() {
         {fetchedData && (
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
         )}
-        {selectedSolicitacao && (
+        {Frm.data && Frm.data.solicitacaoDeslocamento && (
             <>
             <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions} width={12} />
             {Frm.get('resultadoCalculo') === '2' && (
@@ -602,7 +608,7 @@ export default function CalculoDeDiarias() {
           </table>
         )}
       </div>
-      
+      {JSON.stringify(data)}
     </>
   }
 
