@@ -179,7 +179,10 @@ export class FormHelper {
     public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         const formatDate = (date: string) => {
             const [year, month, day] = date.split('-');
-            return `${day}/${month}/${year}`;
+            if (year &&  month && day) {
+                return `${day}/${month}/${year}`;
+            }
+            return "Não informado"
         };
 
         const parseDate = (date: string) => {
