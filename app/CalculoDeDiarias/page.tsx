@@ -260,7 +260,7 @@ export default function CalculoDeDiarias() {
     : (trecho.transporteAposDesembarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
          semDespesasDeHospedagem: trecho.hospedagem ? false : true
       };
-  });i
+  });
 
     console.log(Frm.data);
     const result = calcularDiarias(
