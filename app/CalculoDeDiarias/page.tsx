@@ -428,7 +428,7 @@ export default function CalculoDeDiarias() {
     };
 
     const formatCurrency = (value: string) => {
-      const numericValue = value.replace(/\D/g, '');
+      const numericValue = value?.replace(/\D/g, '');
       return new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
@@ -545,6 +545,10 @@ export default function CalculoDeDiarias() {
       };
     });
   
+    function formatFloatValue(value: number): string {
+      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
     return <>
       <div className="scrollableContainer">
         {data.solicitacaoDeslocamento && (
@@ -650,34 +654,35 @@ export default function CalculoDeDiarias() {
               </tr>
             </thead>
             <tbody>
-              {dadosTabelaCalculoDiarias.map((dia, i) => (
+              {data.resultadoCalculoDiarias?.dias?.map((dia, i) => (
           <tr key={i}>
             <td>{dia.data}</td>
             <td>{dia.trecho}</td>
-            <td>{dia.valorBrutoDiarias}</td>
-            <td>{dia.valorAdicionalDeslocamento}</td>
-            <td>{dia.valorDescontoAlimentacao}</td>
-            <td>{dia.valorDescontoTransporte}</td>
-            <td>{dia.subtotalBrutoDiarias}</td>
-            <td>{dia.descontoTeto}</td>
-            <td>{dia.valorLiquidoDiarias}</td>
+            <td>{formatFloatValue(dia.diaria)}</td>
+            <td>{formatFloatValue(dia.acrescimoDeDeslocamento)}</td>
+            <td>{formatFloatValue(dia.descontoDeAuxilioAlimentacao)}</td>
+            <td>{formatFloatValue(dia.descontoDeAuxilioTransporte)}</td>
+            <td>{formatFloatValue(dia.subtotalBruto)}</td>
+            <td>{formatFloatValue(dia.descontoDeTeto)}</td>
+            <td>{formatFloatValue(dia.subtotalLiquido)}</td>
           </tr>
               ))}
               <tr>
           <td colSpan={2}><strong>Total</strong></td>
-          <td>{formatCurrency(totals.totalDiaria.toString())}</td>
-          <td>{formatCurrency(totals.totalAdicionalDeslocamento.toString())}</td>
-          <td>{formatCurrency(totals.totalDescontoAlimentacao.toString())}</td>
-          <td>{formatCurrency(totals.totalDescontoTransporte.toString())}</td>
-          <td>{formatCurrency(totals.totalSubtotal.toString())}</td>
-          <td>{formatCurrency(totals.totalDescontoTeto.toString())}</td>
-          <td>{formatCurrency(totals.total.toString())}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido)}</td>
               </tr>
             </tbody>
           </table>
         )}
+        {// JSON.stringify(data)
+        }
       </div>
-      {JSON.stringify(data)}
     </>
   }
 
