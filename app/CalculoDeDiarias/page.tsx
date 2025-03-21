@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
+import DynamicListTrajetoV1 from "@/components/sei/DynamicListTrajetoV1"
 import ErrorPopup from '@/components/ErrorPopup' // Adjust the import path as necessary
 import { calcularDiarias, DeslocamentoConjuntoEnum, FaixaEnum, TipoDeDiariaEnum } from '@/components/utils/calculaDiarias' // Adjust the import path as necessary
 
@@ -132,7 +133,7 @@ export default function CalculoDeDiarias() {
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)' },
+        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
           'x-forwarded-for': '127.0.0.1'
@@ -176,6 +177,8 @@ export default function CalculoDeDiarias() {
       Frm.set('pessoa', {
         descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
       });
+      Frm.set('funcaoPessoa', solicitacaoData.funcaoPessoa || '');
+      Frm.set('cargoPessoa', solicitacaoData.cargoPessoa || '');
       Frm.set('banco', solicitacaoData.banco || '');
       Frm.set('agencia', solicitacaoData.agencia || '');
       Frm.set('conta', solicitacaoData.conta || '');
@@ -192,7 +195,9 @@ export default function CalculoDeDiarias() {
       Frm.set('justificativa', solicitacaoData.justificativa || '');
       Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
       Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
-      Frm.set('trajeto', solicitacaoData.trajeto || []);
+      Frm.set('trajeto', solicitacaoData.trajeto || '');
+      Frm.set('trechos', solicitacaoData.trajeto_trechos || []);
+      Frm.set('return_to_origin', solicitacaoData.trajeto_returnToOrigin || false);
     }
   }
 
@@ -234,7 +239,7 @@ export default function CalculoDeDiarias() {
       parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0'),
       parseFloat(Frm.data.tetoDiaria || '0'),
       parseFloat(Frm.data.tetoMeiaDiaria || '0'),
-      Frm.data.trajeto || [],
+      Frm.data.trechos || [],
       Frm.data.feriados || [],
       Frm.data.diasSemDiaria || []
     );
@@ -295,7 +300,7 @@ export default function CalculoDeDiarias() {
               <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
               <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
                   </div>
-                  <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
+                  <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
           </div>
         {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
@@ -485,11 +490,11 @@ export default function CalculoDeDiarias() {
             <h4>Dados da Solicitação de Deslocamento</h4>
             <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
             <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
-            <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
-            <p><strong>Cargo:</strong> {data.cargoProponente || 'Não informado'}</p>
             <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
             <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
             <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
+            <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
+            <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
             <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
             <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
             <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
@@ -516,7 +521,7 @@ export default function CalculoDeDiarias() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.trajeto.map((trajeto: any, i: number) => (
+                    {data.trechos.map((trajeto: any, i: number) => (
                       <tr key={i}>
                         <td>{formatDateToBrazilian(trajeto.dataTrecho)}</td>
                         <td>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
