@@ -226,5 +226,5 @@ export default function ConclusaoDeslocamento() {
         </>
     }
 
-    return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
+    return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'ConclusaoDeDeslocamento' })
 }

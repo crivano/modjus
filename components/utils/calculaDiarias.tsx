@@ -29,8 +29,8 @@ enum TipoDeTransporteParaEmbarqueEDestinoEnum {
 }
 
 interface DiariasDaJusticaFederalParametroTrecho {
-    dataInicio: Date;
-    dataTermino: Date;
+    dataTrechoInicial: Date;
+    dataTrechoFinal: Date;
     trecho: string;
     transporteEmbarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
     transporteDesembarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
@@ -116,11 +116,11 @@ function calcularDiarias(
 
         let ultimaData: Date | null = null;
         for (const trecho of trechos) {
-            if (!trecho.dataInicio) throw new Error("Trecho não pode ter data nula");
-            if (ultimaData && isBefore(trecho.dataInicio, ultimaData)) {
+            if (!trecho.dataTrechoInicial) throw new Error("Trecho não pode ter data nula");
+            if (ultimaData && isBefore(trecho.dataTrechoInicial, ultimaData)) {
                 throw new Error("Trecho não pode ter data menor do que a última data do trecho anterior");
             }
-            ultimaData = trecho.dataInicio;
+            ultimaData = trecho.dataTrechoInicial;
         }
 
         let diaria = valorUnitatioDaDiaria;
@@ -142,7 +142,7 @@ function calcularDiarias(
             diaria = floor(diaria * 0.8);
         }
 
-        if (differenceInDays(trechos[trechos.length - 1].dataTermino, trechos[0].dataInicio) + 1 > 45) {
+        if (differenceInDays(trechos[trechos.length - 1].dataTrechoFinal, trechos[0].dataTrechoInicial) + 1 > 45) {
             diaria = floor(diaria * 0.6);
         }
 
@@ -151,7 +151,7 @@ function calcularDiarias(
             const trecho = trechos[i];
             const proximoTrecho = fUltimoTrecho ? null : trechos[i + 1];
 
-            for (const d of listaDeDatas(trecho.dataInicio, trecho.dataTermino)) {
+            for (const d of listaDeDatas(trecho.dataTrechoInicial, trecho.dataTrechoFinal)) {
                 const dia: DiariasDaJusticaFederalResultadoDiario = {
                     data: format(d, 'dd/MM/yyyy'),
                     trecho: trecho.trecho,
@@ -164,8 +164,8 @@ function calcularDiarias(
                     subtotalLiquido: 0
                 };
 
-                const primeiroDiaDoTrecho = d.getTime() === trecho.dataInicio.getTime();
-                const proximoTrechoComecaNoMesmoDia = proximoTrecho ? trecho.dataInicio.getTime() === proximoTrecho.dataInicio.getTime() : false;
+                const primeiroDiaDoTrecho = d.getTime() === trecho.dataTrechoInicial.getTime();
+                const proximoTrechoComecaNoMesmoDia = proximoTrecho ? trecho.dataTrechoInicial.getTime() === proximoTrecho.dataTrechoInicial.getTime() : false;
 
                 if (primeiroDiaDoTrecho) {
                     if (trecho.transporteEmbarque === TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO) {
@@ -178,7 +178,7 @@ function calcularDiarias(
                 }
 
                 const semDespesasDeHospedagem = trecho.semDespesasDeHospedagem;
-                const ultimoDia = d.getTime() === trechos[trechos.length - 1].dataTermino.getTime();
+                const ultimoDia = d.getTime() === trechos[trechos.length - 1].dataTrechoFinal.getTime();
                 const meiaDiaria = semDespesasDeHospedagem || (!internacional && ultimoDia) || tipoDeDiaria === TipoDeDiariaEnum.MEIA_DIARIA_A_PEDIDO;
                 dia.diaria = meiaDiaria ? floor(diaria / 2) : diaria;
 

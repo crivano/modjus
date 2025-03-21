@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
+import { Modal } from 'react-bootstrap';
+import ErrorPopup from "@/components/ErrorPopup";
 
 const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
     const [trajeto, setTrajeto] = useState(Frm.get(`${name}`) || "");
     const [returnToOrigin, setReturnToOrigin] = useState(Frm.get(`${name}_returnToOrigin`) || false);
     const [trechos, setTrechos] = useState(Frm.get(`${name}_trechos`) || []);
+    const [error, setError] = useState("");
 
     const transporteOptions = [
         { id: '1', name: 'Com adicional de deslocamento' },
@@ -61,7 +64,8 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                 transporteAteEmbarque: "1",
                 transporteAposDesembarque: "1",
                 hospedagem: "1",
-                dataTrecho: ""
+                dataTrechoInicial: "",
+                dataTrechoFinal: ""
             });
         }
 
@@ -72,7 +76,8 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                 transporteAteEmbarque: "1",
                 transporteAposDesembarque: "1",
                 hospedagem: "1",
-                dataTrecho: ""
+                dataTrechoInicial: "",
+                dataTrechoFinal: ""
             });
         }
         
@@ -143,15 +148,47 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                 </Form.Group>
                             </div>
                             <div className="row">
+                                {/* Agrupamento das Datas */}
                                 <Form.Group className="mb-2 col-md-6">
-                                    <Form.Label>Data do Trecho</Form.Label>
-                                    <Form.Control
-                                        type="date"
-                                        value={Frm.get(`${name}_trechos[${index}].dataTrecho`)}
-                                        onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
-                                    />
+                                    <div className="row d-flex align-items-end">
+                                        <div className="col-6">
+                                            <Form.Label>Data do Trecho Inicial</Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                value={Frm.get(`${name}_trechos[${index}].dataTrechoInicial`)}
+                                                onChange={e => Frm.set(`${name}_trechos[${index}].dataTrechoInicial`, e.target.value)}
+                                            />
+                                        </div>
+
+                                        <div className="col-6">
+                                            <Form.Label>Data do Trecho Final</Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                value={Frm.get(`${name}_trechos[${index}].dataTrechoFinal`)}
+                                                onChange={e => {
+                                                    try {
+                                                        const dataInicial = Frm.get(`${name}_trechos[${index}].dataTrechoInicial`);
+                                                        const dataFinal = e.target.value;
+    
+                                                        if (dataInicial && dataFinal < dataInicial) {
+                                                            throw new Error("Data Final do trecho não pode ser menor que Data Inicial do trecho");
+                                                        }
+    
+                                                        Frm.set(`${name}_trechos[${index}].dataTrechoFinal`, dataFinal);
+                                                        setError(""); // Clear any previous error
+                                                    } catch (error: any) {
+                                                        setError(error.message);
+                                                    }
+
+                                                }}
+                                            />  
+                                        </div>
+                                    </div>
+                                    <div>  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
                                 </Form.Group>
-                                <Form.Group className="mb-2 col-md-6">
+
+                                {/* Campo de Hospedagem */}
+                                <Form.Group className="mb-2 col-md-6 d-flex flex-column">
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
                                     <Form.Select
                                         value={Frm.get(`${name}_trechos[${index}].hospedagem`)}
@@ -163,6 +200,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                     </Form.Select>
                                 </Form.Group>
                             </div>
+
                         </div>
                     </div>
                 ))

@@ -101,6 +101,21 @@ export default function CalculoDeDiarias() {
     diasSemDiaria?: any[];
   }
 
+  interface DiariasDaJusticaFederalParametroTrecho {
+      dataTrechoInicial: Date;
+      dataTrechoFinal: Date;
+      trecho: string;
+      transporteEmbarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
+      transporteDesembarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
+      semDespesasDeHospedagem: boolean;
+  }
+
+  enum TipoDeTransporteParaEmbarqueEDestinoEnum {
+    COM_ADICIONAL_DE_DESLOCAMENTO = "Com Adicional de Deslocamento",
+    SEM_ADICIONAL_DE_DESLOCAMENTO = "Sem Adicional de Deslocamento",
+    VEICULO_OFICIAL = "Veículo Oficial"
+}
+
   const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
@@ -224,27 +239,73 @@ export default function CalculoDeDiarias() {
   }
 
   const handleCalcularDiarias = (Frm: FormHelper) => {
+    // Ler trajeto_trechos e cooverter ele para o seguinte formato
+
+    const trechos_para_calcular: DiariasDaJusticaFederalParametroTrecho[] = Frm.data.trechos.map(trecho => {
+      const parseDate = (dateStr: string) => {
+          if (!dateStr) return new Date();
+          const [year, month, day] = dateStr.split('-').map(Number);
+          return new Date(year, month - 1, day); // Garantindo fuso local sem ajustes inesperados
+      };
+  
+      return {
+          dataTrechoInicial: parseDate(trecho.dataTrechoInicial),
+          dataTrechoFinal: parseDate(trecho.dataTrechoFinal),
+          trecho: `${trecho.origem || 'Origem Desconhecida'} / ${trecho.destino || 'Destino Desconhecido'}`,
+          transporteEmbarque: trecho.transporteAteEmbarque === '1' 
+    ? TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO 
+    : (trecho.transporteAteEmbarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
+    transporteDesembarque: trecho.transporteAposDesembarque === '1' 
+    ? TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO 
+    : (trecho.transporteAposDesembarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
+         semDespesasDeHospedagem: trecho.hospedagem ? false : true
+      };
+  });i
+
+    console.log(Frm.data);
     const result = calcularDiarias(
       // Pass the necessary parameters from formData
-      parseFloat(Frm.data.valorUnitatioDaDiaria || '0'),
-      parseFloat(Frm.data.valorUnitarioDaDiariaParaCalculoDoDeslocamento || '0'),
-      Frm.data.faixa as unknown as FaixaEnum,
-      Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
-      Frm.data.internacional === '1',
-      parseFloat(Frm.data.cotacaoDoDolar || '0'),
-      Frm.data.tipoDiaria as unknown as TipoDeDiariaEnum,
-      Frm.data.prorrogacao === '1',
-      parseFloat(Frm.data.valorJaRecebido || '0'),
-      parseFloat(Frm.data.valorUnitarioDoAuxilioAlimentacao || '0'),
-      parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0'),
-      parseFloat(Frm.data.tetoDiaria || '0'),
-      parseFloat(Frm.data.tetoMeiaDiaria || '0'),
-      Frm.data.trechos || [],
-      Frm.data.feriados || [],
-      Frm.data.diasSemDiaria || []
-    );
+     
+     parseFloat('763.6'),
+     parseFloat('763.6'),
+     null,
+     null,
+     false,
+     parseFloat('0.0'),
+     TipoDeDiariaEnum.PADRAO,
+     false,
+     parseFloat('0.0'),
+     parseFloat('63.32'),
+     parseFloat('0.0'),
+     parseFloat('1106.2'),
+     parseFloat('1106.2'),
+     trechos_para_calcular || [],
+     Frm.data.feriados || [],
+     Frm.data.diasSemDiaria || []
+   );
+
+    // const result = calcularDiarias(
+    //    // Pass the necessary parameters from formData
+    //   parseFloat(Frm.data.valorUnitatioDaDiaria || '0'),
+    //   parseFloat(Frm.data.valorUnitarioDaDiariaParaCalculoDoDeslocamento || '0'),
+    //   Frm.data.faixa as unknown as FaixaEnum,
+    //   Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
+    //   Frm.data.internacional === '1',
+    //   parseFloat(Frm.data.cotacaoDoDolar || '0'),
+    //   Frm.data.tipoDiaria as unknown as TipoDeDiariaEnum,
+    //   Frm.data.prorrogacao === '1',
+    //   parseFloat(Frm.data.valorJaRecebido || '0'),
+    //   parseFloat(Frm.data.valorUnitarioDoAuxilioAlimentacao || '0'),
+    //   parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0'),
+    //   parseFloat(Frm.data.tetoDiaria || '0'),
+    //   parseFloat(Frm.data.tetoMeiaDiaria || '0'),
+    //   trechos || [],
+    //   Frm.data.feriados || [],
+    //   Frm.data.diasSemDiaria || []
+    // );
 
     Frm.set('resultadoCalculoDiarias', result || {});
+    console.log(result);
   };
 
   function interview(Frm: FormHelper) {
@@ -469,7 +530,8 @@ export default function CalculoDeDiarias() {
   
     const dadosTabelaCalculoDiarias = Array.from({ length: diasDeslocamento }).map((_, i) => {
       const currentDate = new Date(new Date(data.periodoDe).getTime() + i * 1000 * 3600 * 24);
-      const trajeto = data.trajeto?.find((t: any) => new Date(t.dataTrecho).getTime() === currentDate.getTime());
+      const trajeto = data.trechos?.find((t: any) => new Date(t.dataTrecho).getTime() === currentDate.getTime());
+      console.log(trajeto);
       return {
         data: formatDateToBrazilian(currentDate.toISOString().split('T')[0]),
         trecho: trajeto ? `${trajeto.origem || 'Não informado'} / ${trajeto.destino || 'Não informado'}` : '-',
@@ -507,13 +569,14 @@ export default function CalculoDeDiarias() {
             <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
             <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
             <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, data.meioTransporte)}</p>
-            {data.trajeto?.length > 0 && (
+            {data.trechos?.length > 0 && (
               <>
                 <h4>Trechos</h4>
                 <table className="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Data</th>
+                      <th>Data Inicial</th>
+                      <th>Data Final</th>
                       <th>Trecho</th>
                       <th>Transporte até o embarque</th>
                       <th>Transporte até o destino</th>
@@ -523,7 +586,8 @@ export default function CalculoDeDiarias() {
                   <tbody>
                     {data.trechos.map((trajeto: any, i: number) => (
                       <tr key={i}>
-                        <td>{formatDateToBrazilian(trajeto.dataTrecho)}</td>
+                        <td>{formatDateToBrazilian(trajeto.dataTrechoInicial)}</td>
+                        <td>{formatDateToBrazilian(trajeto.dataTrechoFinal)}</td>
                         <td>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
                         <td>{getOptionName(meioTransporteOptions, trajeto.transporteAteEmbarque)}</td>
                         <td>{getOptionName(meioTransporteOptions, trajeto.transporteAposDesembarque)}</td>
@@ -617,7 +681,7 @@ export default function CalculoDeDiarias() {
     </>
   }
 
-  return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'CalculoDeDiarias' })
+  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'CalculoDeDiarias' })
 }
 function getOptionName(options: { id: string, name: string }[], id: string) {
   return options.find(opt => opt.id === id)?.name || 'Não informado';

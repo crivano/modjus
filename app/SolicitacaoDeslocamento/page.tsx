@@ -119,7 +119,8 @@ export default function SolicitacaoDeslocamento() {
           transporteAteEmbarque: '1',
           transporteAposDesembarque: '1',
           hospedagem: '1',
-          dataTrecho: ''
+          dataTrechoInicial: '',
+          dataTrechoFinal: ''
         };
         const newData = [...items, newItem];
         this.set(name, newData);
@@ -157,8 +158,10 @@ export default function SolicitacaoDeslocamento() {
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
         <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
         {/* <Frm.Input label="CPF" name="cpfPessoa" width={6} />  */}
-        <Frm.Input label="Função" name="funcaoPessoa" width={6} />
-        <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
+        <div className="row">
+          <Frm.Input label="Função" name="funcaoPessoa" width={6} />
+          <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
+        </div>
 
         <div className="row">
           <Frm.Input label="Banco" name="banco" width={4} />
@@ -186,7 +189,22 @@ export default function SolicitacaoDeslocamento() {
         <h2>Dados do Deslocamento</h2>
         <div className="row">
           <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
-          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6}   onChange={e => {
+                                                    try {
+                                                        const dataInicial = Frm.get(`periodoDe`);
+                                                        const dataFinal = e.target.value;
+    
+                                                        if (dataInicial && dataFinal < dataInicial) {
+                                                            throw new Error("Data Final do afastamento não pode ser menor que Data Inicial do afastamento");
+                                                        }
+    
+                                                      
+                                                        setError(""); // Clear any previous error
+                                                    } catch (error: any) {
+                                                        setError(error.message);
+                                                    }
+
+                                                }}/>
         </div>
         <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
         <div className="row">
@@ -268,7 +286,8 @@ export default function SolicitacaoDeslocamento() {
             <table className="table table-bordered">
               <thead>
                 <tr>
-                  <th>Data</th>
+                  <th>Data inicial</th>
+                  <th>Data final</th>
                   <th>Trecho</th>
                   <th>Transporte até o embarque</th>
                   <th>Transporte até o destino</th>
@@ -278,7 +297,8 @@ export default function SolicitacaoDeslocamento() {
               <tbody>
                 {data.trajeto_trechos?.map((trecho: any, i: number) => (
                   <tr key={i}>
-                    <td>{formatDateToBrazilian(trecho.dataTrecho)}</td>
+                    <td>{formatDateToBrazilian(trecho.dataTrechoInicial)}</td>
+                    <td>{formatDateToBrazilian(trecho.dataTrechoFinal)}</td>
                     <td>{trecho.origem || 'Não informado'} / {trecho.destino || 'Não informado'}</td>
                     <td>{getOptionName(transporteOptions, trecho.transporteAteEmbarque)}</td>
                     <td>{getOptionName(transporteOptions, trecho.transporteAposDesembarque)}</td>
@@ -293,5 +313,5 @@ export default function SolicitacaoDeslocamento() {
     </>
   }
 
-  return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'SolicitacaoDeslocamento' })
+  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'SolicitacaoDeslocamento' })
 }
