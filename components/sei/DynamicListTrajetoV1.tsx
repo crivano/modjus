@@ -8,8 +8,8 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
     const [qtdCidades, setQuantidadeCidades] = useState<number>(0);
 
     const periodoInicial = Frm.get(`${periodoDe}`) || "Não informado"
-    const [day, month, year] = periodoInicial.split('/');
-    const dataInicio = `${year}-${month}-${day}`;
+    const [dayInicio, monthInicio, yearInicio] = periodoInicial.split('/');
+    const dataInicio = `${yearInicio}-${monthInicio}-${dayInicio}`;
 
     const periodoFinal = Frm.get(`${periodoAte}`) || "Não informado"
     const [dayFim, monthFim, yearFim] = periodoFinal.split('/');
@@ -117,7 +117,9 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
 
                 (trechos || []).map((trecho, index) => (
                     <div key={index} className="d-flex align-trechos-center my-3">
-                        <div className="flex-grow-1 card p-2 lightblue" style={{ backgroundColor: '#EFF5FB' }}>
+                        <div className="flex-grow-1 card p-2 lightblue" 
+                             style={{ backgroundColor: '#EFF5FB'}}
+                             >
                             <Form.Label><center><h6>Trajeto {index + 1}</h6></center></Form.Label>
                             <div className="row">
                                 <Form.Group className="mb-2 col-md-6">
@@ -153,7 +155,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
                                     </Form.Select>
                                 </Form.Group>
                             </div>
-                            <div className="row mt-2 pt-2">
+                            <div className="row mt-2 pt-2" style={{display:'flex'}}>
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Data do Trecho</Form.Label>
 
@@ -161,33 +163,43 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, periodoDe, periodoAte, width }
                                         <Form.Control
                                             type="date"
                                             value={dataInicio}
-                                            onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, dataInicio)}
-                                            // onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
-                                            disabled
+                                            readOnly
+
+                                        // onBlur={() => {
+                                        //     console.log("onBlur disparado para dataInicio");
+                                        //     console.log("Enviando dataInicio:", dataInicio, "para", `${name}_trechos[${index}].dataTrecho`);
+                                        //     Frm.set(`${name}_trechos[${index}].dataTrecho`, dataInicio);
+                                        //     console.log("FormHelper após set:", Frm.data);
+                                        // }}
+                                        // onChange={() => Frm.set(`${name}_trechos[${index}].dataTrecho`, '10/06/2025')}
+                                        //onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value = '10/06/2025' )}
+                                        // disabled
                                         />
                                         : !returnToOrigin && index === qtdCidades - 2
                                             ?
                                             <Form.Control
                                                 type="date"
                                                 value={dataFim}
-                                                { ...Frm.set(`${name}_trechos[${index}].dataTrecho`, dataFim)}
-                                                disabled
+                                                // { ...Frm.set(`${name}_trechos[${index}].dataTrecho`, dataFim)}
+                                                onChange={() => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value = '2025/03/02')}
+                                            // disabled
                                             />
                                             : returnToOrigin && index === qtdCidades - 1
-                                            ? 
-                                            <Form.Control
-                                                type="date"
-                                                value={dataFim}
-                                                { ...Frm.set(`${name}_trechos[${index}].dataTrecho`, dataFim)}
-                                                disabled                                            
-                                            />
-                                            :
-                                            <Form.Control
-                                                type="date"
-                                                value={Frm.get(`${name}_trechos[${index}].dataTrecho`)}
-                                                onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
-                                            />
-                                        }
+                                                ?
+                                                <Form.Control
+                                                    type="date"
+                                                    value={dataFim}
+                                                // { ...Frm.set(`${name}_trechos[${index}].dataTrecho`, dataFim)}
+                                                //onChange={() => Frm.set(`${name}_trechos[${index}].dataTrecho`, '2025-03-02')}
+                                                // disabled                                            
+                                                />
+                                                :
+                                                <Form.Control
+                                                    type="date"
+                                                    value={Frm.get(`${name}_trechos[${index}].dataTrecho`)}
+                                                    onChange={e => Frm.set(`${name}_trechos[${index}].dataTrecho`, e.target.value)}
+                                                />
+                                    }
                                 </Form.Group>
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
