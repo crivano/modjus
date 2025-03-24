@@ -94,7 +94,7 @@ export default function ConclusaoDeslocamento() {
     function formatForm(name: string, field: any) {
         return <>
             <label>{name}</label> 
-                <span style={{ color: 'blue' }}>{field || "Não informado"}</span>
+                <span style={{ color: 'blue' }}>{' ' + field || "Não informado"}</span>
                 <br></br>
         </>
     }
