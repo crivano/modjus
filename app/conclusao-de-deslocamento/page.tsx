@@ -142,6 +142,12 @@ export default function ConclusaoDeslocamento() {
                     <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={tipoDeslocamentoOptions} />
                     <Frm.Input label="Itinerário" name="origemDestino" width={6} />
                     <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={retornoAOrigem} width={12} />
+                    <div className="row">
+                        <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
+                        <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+                    </div>
+                    <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={4} />
+
 
                     {/* Dados dos cálculos */}
                     <div className="row">
@@ -155,7 +161,7 @@ export default function ConclusaoDeslocamento() {
                     </div>
                 </div>
 
-                <div className='card m-2 p-2' style={{ backgroundColor: '#edf7fe' }}>
+                <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
                     <h6>Dados da Solicitação de Deslocamento</h6>
                     <Frm.InputWithButton
                         label="Número do Processo"
@@ -194,6 +200,9 @@ export default function ConclusaoDeslocamento() {
             tipoDeslocamento,
             origemDestino,
             retorno_a_origem,
+            periodoDe,
+            periodoAte,
+            meioTransporte,
             valorBrutoDiarias,
             valorAdicionalDeslocamento,
             valorDescontoTransporte,
@@ -250,22 +259,24 @@ export default function ConclusaoDeslocamento() {
                     {/* <p style={{display:"none"}}><strong>Data da Solicitação:</strong> { || 'Não informado'}</p> */}
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Data da Solicitação:", data.dataSolicitacao)}
                     {formatForm("Código da Solicitação de Deslocamento:", data.solicitacaoDeslocamento)}
+                    {formatForm("Data da Solicitação:", data.dataSolicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", data.proponente?.descricao)}
                     {formatForm("Cargo do Proponente:", cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Beneficiário:", pessoa?.descricao)}
                     {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, tipoBeneficiario))}
+                    {formatForm("Beneficiário:", pessoa?.descricao)}
                     {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
 
                     {formatForm("Finalidade:", finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
-                    {formatForm("Retorno à Origem:",  getOptionName(retornoAOrigem, retorno_a_origem))}
+                    {formatForm("Retorno à Origem:", getOptionName(retornoAOrigem, retorno_a_origem))}
+                    {formatForm("Período:", periodoDe + " a " + periodoAte)}
+                    {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", valorBrutoDiarias)}
