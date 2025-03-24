@@ -79,6 +79,7 @@ const tabelaDeDiariasAuxilioAlimentacao = {
 
 const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
+const valorUnitarioDoAuxilioAlimentacao = 63.32;
 
 export default function CalculoDeDiarias() {
   interface FormData {
@@ -116,6 +117,12 @@ export default function CalculoDeDiarias() {
     VEICULO_OFICIAL = "Veículo Oficial"
 }
 
+enum TipoDeDiariaEnum {
+  PADRAO = "Padrão",
+  MEIA_DIARIA_A_PEDIDO = "Meia Diária a Pedido",
+  SEM_DIARIA = "Sem Diária"
+}
+
   const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
@@ -136,6 +143,20 @@ export default function CalculoDeDiarias() {
     { id: '4', name: 'Analista Judiciário/Cargo em Comissão' },
     { id: '5', name: 'Técnico Judiciário/Auxiliar Judiciário/Função Comissionada' }
   ];
+
+  // Criando um mapeamento de ID para Enum
+const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
+  if (name) {
+      const enumKey = Object.keys(TipoDeDiariaEnum).find(
+          key => TipoDeDiariaEnum[key as keyof typeof TipoDeDiariaEnum] === name
+      );
+
+      if (enumKey) {
+          acc[id] = TipoDeDiariaEnum[enumKey as keyof typeof TipoDeDiariaEnum];
+      }
+  }
+  return acc;
+}, {} as Record<string, TipoDeDiariaEnum>);
   
   const Frm = new FormHelper();
 
@@ -223,7 +244,6 @@ export default function CalculoDeDiarias() {
     if (selectedAuxilio === '1' && selectedSolicitacao) {
       const faixa = getOptionName(faixaOptions, selectedSolicitacao.faixa);
       const tipoDiaria = getOptionName(tipoDiariaOptions, selectedSolicitacao.tipoDiaria);
-      const auxilioAlimentacao = tabelaDeDiariasAuxilioAlimentacao[faixa]?.[tipoDiaria.toLowerCase()] || 0;
 
       fetchAuxilioTransporte(selectedSolicitacao.pessoa.sigla).then(auxilioTransporte => {
         const diasDeslocamento = (new Date(selectedSolicitacao.periodoAte).getTime() - new Date(selectedSolicitacao.periodoDe).getTime()) / (1000 * 3600 * 24) + 1;
@@ -231,7 +251,7 @@ export default function CalculoDeDiarias() {
 
         Frm.update({
           ...formData,
-          valorAuxilioAlimentacao: auxilioAlimentacao,
+          valorAuxilioAlimentacao: valorUnitarioDoAuxilioAlimentacao,
           valorAuxilioTransporte: valorTotalAuxilioTransporte
         }, setFormData);
       });
@@ -263,46 +283,56 @@ export default function CalculoDeDiarias() {
   });
 
     console.log(Frm.data);
-    const result = calcularDiarias(
-      // Pass the necessary parameters from formData
+  //   const result = calcularDiarias(
+  //     // Pass the necessary parameters from formData
      
-     parseFloat('763.6'),
-     parseFloat('763.6'),
-     null,
-     null,
-     false,
-     parseFloat('0.0'),
-     TipoDeDiariaEnum.PADRAO,
-     false,
-     parseFloat('0.0'),
-     parseFloat('63.32'),
-     parseFloat('0.0'),
-     parseFloat('1106.2'),
-     parseFloat('1106.2'),
-     trechos_para_calcular || [],
-     Frm.data.feriados || [],
-     Frm.data.diasSemDiaria || []
-   );
+  //    parseFloat('763.6'),
+  //    parseFloat('763.6'),
+  //    null,
+  //    null,
+  //    false,
+  //    parseFloat('0.0'),
+  //    TipoDeDiariaEnum.PADRAO,
+  //    false,
+  //    parseFloat('0.0'),
+  //    parseFloat('63.32'),
+  //    parseFloat('0.0'),
+  //    parseFloat('1106.2'),
+  //    parseFloat('1106.2'),
+  //    trechos_para_calcular || [],
+  //    Frm.data.feriados || [],
+  //    Frm.data.diasSemDiaria || []
+  //  );
 
-    // const result = calcularDiarias(
-    //    // Pass the necessary parameters from formData
-    //   parseFloat(Frm.data.valorUnitatioDaDiaria || '0'),
-    //   parseFloat(Frm.data.valorUnitarioDaDiariaParaCalculoDoDeslocamento || '0'),
-    //   Frm.data.faixa as unknown as FaixaEnum,
-    //   Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
-    //   Frm.data.internacional === '1',
-    //   parseFloat(Frm.data.cotacaoDoDolar || '0'),
-    //   Frm.data.tipoDiaria as unknown as TipoDeDiariaEnum,
-    //   Frm.data.prorrogacao === '1',
-    //   parseFloat(Frm.data.valorJaRecebido || '0'),
-    //   parseFloat(Frm.data.valorUnitarioDoAuxilioAlimentacao || '0'),
-    //   parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0'),
-    //   parseFloat(Frm.data.tetoDiaria || '0'),
-    //   parseFloat(Frm.data.tetoMeiaDiaria || '0'),
-    //   trechos || [],
-    //   Frm.data.feriados || [],
-    //   Frm.data.diasSemDiaria || []
-    // );
+  function obterValorDiaria(faixaId, isInternacional, tipoDiariaParam) {
+    const faixa = faixaOptions.find(f => f.id === faixaId);
+    if (!faixa || !faixa.name) return 0; // Retorna 0 se a faixa não for encontrada
+  
+    const tipoDiaria = isInternacional ? 'exterior' : tipoDiariaParam === '1' ? 'nacional' : tipoDiariaParam === '2' ? 'meia' : 'Sem Diária';
+    
+    return tabelaDeDiariasAuxilioAlimentacao[faixa.name]?.[tipoDiaria] || 0;
+  }
+
+
+  const result = calcularDiarias(
+     // Pass the necessary parameters from formData
+    parseFloat(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria) || '0.0'),
+    parseFloat(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria) || '0.0'),
+    Frm.data.faixa as unknown as FaixaEnum,
+    Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
+    Frm.data.internacional === '1',
+    parseFloat(Frm.data.cotacaoDoDolar || '0.0'),
+    tipoDiariaMap[Frm.data.tipoDiaria],
+    Frm.data.prorrogacao === '1',
+    parseFloat(Frm.data.valorJaRecebido || '0.0'),
+    valorUnitarioDoAuxilioAlimentacao,
+    parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0.0'),
+    valorTetoDiariaNacionalAuxilioAlimentacao,
+    valorTetoMeiaDiariaNacionalAuxilioAlimentacao,
+    trechos_para_calcular || [],
+    Frm.data.feriados || [],
+    Frm.data.diasSemDiaria || []
+  );
 
     Frm.set('resultadoCalculoDiarias', result || {});
     console.log(result);
