@@ -32,20 +32,15 @@ export default function ConclusaoDeslocamento() {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
     const [fetchedData, setFetchedData] = useState(null);
-    const [fetchedData2, setFetchedData2] = useState(null);
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
-    const [solicitacaoOptions2, setSolicitacaoOptions2] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
-    // const [selectedSolicitacao2, setSelectedSolicitacao2] = useState(null);
     const [selectedCode, setSelectedCode] = useState(null);
-    const [selectedCode2, setSelectedCode2] = useState(null);
     const Frm = new FormHelper();
 
-    // const [startDate, setStartDate] = useState<Date | null>(new Date());
-    // const handleDateChange = (date: Date | null) => {
-    //     setStartDate(date);
-    // };
-
+    const [startDate, setStartDate] = useState<Date | null>(new Date());
+    const handleDateChange = (date: Date | null) => {
+        setStartDate(date);
+    };
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -94,79 +89,116 @@ export default function ConclusaoDeslocamento() {
         return <><label>{name}</label> <span style={{ color: 'blue' }}>{field || "Não informado"}</span><br></br></>
     }
 
-    // function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
-    //     Frm.set('retorno_a_origem', event.target.value);
-    // }
-
-    
     // INTERVEIW - ÁREA DA ENTREVISTA
     function interview(Frm: FormHelper) {
         return <>
             <div className="scrollableContainer">
-                <div className="margin-bottom: 0.3em; margin-top: 1em; font-weight: bold; font-size: 120%;">CONCLUSÃO DE DESLOCAMENTO</div>
-                <p><strong>Dados para o relatório de deslocamentos</strong></p>
-                <h2>Dados do Proponente</h2>
+                <div>
+                    <div className="margin-bottom: 0.3em; 
+                                margin-top: 1em; 
+                                font-weight: bold; 
+                                font-size: 120%;">
+                        CONCLUSÃO DE DESLOCAMENTO
+                    </div>
+                    <p><strong>Dados para o relatório de deslocamentos</strong></p>
+                    <h2>Dados do Proponente</h2>
+                    <div className="row">
+                        <Frm.Input label="Data da Solicitação" name="dataSolicitacao" width={6} />
+                        <Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacaoDeslocamento" width={6} />
+                    </div>
+                    {/* <span><Frm.Input label="Data da Solicitação" name="dataSolicitacao" width={4} /></span>
+                    <span><Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacaoDeslocamento" width={4} /></span> */}
 
-                <span hidden><Frm.Input label="Data da Solicitação" name="xx/xx/xxxx" width={4} /></span>
+                    <Pessoa
+                        Frm={Frm} name="proponente"
+                        label1="Matrícula"
+                        label2="Nome"
+                        onChange={(proponente) => handleProponenteChange(proponente, Frm)}
+                    />
 
-                <Pessoa 
-                    Frm={Frm} name="proponente" 
-                    label1="Matrícula" 
-                    label2="Nome" 
-                    onChange={(proponente) => handleProponenteChange(proponente, Frm)}
-                />
+                    <div className="row">
+                        <Frm.Input label="Função" name="funcaoProponente" width={6} />
+                        <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+                    </div>
 
-                <div className="row">
-                    <Frm.Input label="Função" name="funcaoProponente" width={6} />
-                    <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+                    <p></p><h2>Dados do Beneficiário</h2>
+
+                    <Pessoa
+                        Frm={Frm}
+                        name="beneficiario"
+                        label1="Matrícula"
+                        label2="Nome"
+                        onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
+
+                    <div className="row">
+                        <Frm.Input label="Função" name="funcaoBeneficiario" width={6} />
+                        <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
+                    </div>
+
+                    <Frm.Input label="Finalidade" name="finalidade" width={4} />
+                    <Frm.Input label="Tipo de Viagem" name="tipoDeslocamento" width={4} />
+                    <Frm.Input label="Itinerário" name="origemDestino" width={6} />
+                    <Frm.Input label="Retorno à Origem" name="retorno_a_origem" width={4} />
+
+                    {/* Dados dos cálculos */}
+                    <Frm.Input label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
+                    <Frm.Input label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
+                    <Frm.Input label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
+                    <Frm.Input label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
+                    <Frm.Input label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
+                    <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
+                    <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
                 </div>
 
-                <p></p><h2>Dados do Beneficiário</h2>
+                <div className='card m-2 p-2' style={{ backgroundColor: '#edf7fe' }}>
+                    <h6>Dados da Solicitação de Deslocamento</h6>
+                    <Frm.InputWithButton
+                        label="Número do Processo"
+                        name="numeroProcesso"
+                        buttonText="Buscar"
+                        onButtonClick={fetchProcessData}
+                        width={6}
+                    />
 
-                <Pessoa 
-                    Frm={Frm} 
-                    name="beneficiario" 
-                    label1="Matrícula" 
-                    label2="Nome" 
-                    onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} /> 
-
-                <div className="row">
-                    <Frm.Input label="Função" name="funcaoBeneficiario" width={6} />
-                    <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
+                    {fetchedData && (
+                        <Frm.Select label="Selecione o código da solicitação de deslocamento"
+                            name="solicitacaoDeslocamento"
+                            options={solicitacaoOptions}
+                            onChange={handleSolicitacaoChange}
+                            width={8}
+                        />
+                    )}
                 </div>
-
-                <Frm.Input label="Finalidade" name="finalidade" width={4} />
-
-                {/* Dados dos cálculos */}
-                <Frm.Input label="Valor Bruto das Diárias" name="valorBrutoDiarias" />
-                <Frm.Input label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" />
-                <Frm.Input label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" />
-                <Frm.Input label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" />
-                <Frm.Input label="Desconto de Teto" name="descontoTeto" />
-                <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" />
-                <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" />
-
-            </div>
-            <div className='"flex-grow-1 card p-3 m-2' style={{ backgroundColor: '#edf7fe' }}>
-                <h6>Dados da Solicitação de Deslocamento</h6>
-                <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
-
-                {fetchedData && (
-                    <Frm.Select label="Selecione o código da solicitação de deslocamento" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={handleSolicitacaoChange} width={12} />
-                )}
-
-                {fetchedData2 && selectedSolicitacao && (
-                    <Frm.Select label="Selecione o código do cálculo de diária" 
-                                name="solicitacaoDeslocamentoCalculoDiaria" 
-                                options={solicitacaoOptions2} 
-                                onChange={handleSolicitacaoChange} width={12} 
-                            />
-                )}
             </div>
         </>
     }
 
     function document(data: any) {
+
+        const Frm = new FormHelper();
+        Frm.update(data);
+        const {
+            dataSolicitacao,
+            solicitacaoDeslocamento,
+            proponente,
+            cargoProponente,
+            pessoa,
+            tipoBeneficiario,
+            cargoBeneficiario,
+            finalidade,
+            tipoDeslocamento,
+            origemDestino,
+            retorno_a_origem,
+            valorBrutoDiarias,
+            valorAdicionalDeslocamento,
+            valorDescontoTransporte,
+            totalDeDescontoDeTeto,
+            valorDescontoAlimentacao,
+            valorLiquidoDiarias,
+            resultadoCalculo,
+        } = Frm.data;
+
+        console.log(data)
 
         const formatDateToBrazilian = (date: string) => {
             if (!date) return 'Não informado';
@@ -205,10 +237,6 @@ export default function ConclusaoDeslocamento() {
             }
         }
 
-        let origemDestino = null
-        const trajeto = fetchFieldFromJsonObject(selectedSolicitacao, "trajeto");
-        origemDestino = trajeto ? (trajeto.origem + " / " + trajeto.destino) : "Não informado";
-
         return <>
 
             {!selectedSolicitacao && (
@@ -217,38 +245,38 @@ export default function ConclusaoDeslocamento() {
                     {/* <p style={{display:"none"}}><strong>Data da Solicitação:</strong> { || 'Não informado'}</p> */}
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Data da Solicitação:", data.dataAtual = "xx/xx/xxxx")}
-                    {formatForm("Código da Solicitação de Deslocamento:", data.name)}
+                    {formatForm("Data da Solicitação:", data.dataSolicitacao)}
+                    {formatForm("Código da Solicitação de Deslocamento:", data.solicitacaoDeslocamento)}
 
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", data.proponente?.descricao)}
-                    {formatForm("Cargo do Proponente:", data.cargoProponente)}
+                    {formatForm("Cargo do Proponente:", cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Beneficiário:", data.pessoa?.descricao)}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario))}
-                    {formatForm("Cargo do Beneficiário:", data.cargoBeneficiario)}
+                    {formatForm("Beneficiário:", pessoa?.descricao)}
+                    {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, tipoBeneficiario))}
+                    {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
 
-                    {formatForm("Finalidade:", data.servicoAtividade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento))}
-                    {formatForm("Itinerário:", data.origemDestino)}
-                    {formatForm("Retorno à Origem:", data.retorno_a_origem)}
+                    {formatForm("Finalidade:", finalidade)}
+                    {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, tipoDeslocamento))}
+                    {formatForm("Itinerário:", origemDestino)}
+                    {formatForm("Retorno à Origem:", retorno_a_origem)}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", data.valorBrutoDiarias)}
-                    {formatForm("Adicional de Deslocamento:", data.valorAdicionalDeslocamento)}
-                    {formatForm("Desconto de Auxílio Alimentação:", data.valorDescontoAlimentacao)}
-                    {formatForm("Desconto de Auxílio Transporte:", data.valorDescontoTransporte)}
-                    {formatForm("Desconto de Teto:", data.descontoTeto)}
-                    {formatForm("Valor Líquido das Diárias:", data.valorLiquidoDiarias)}
-                    {formatForm("Valor Total das Passagens:", data.resultadoCalculo)}
+                    {formatForm("Valor Bruto das Diárias:", valorBrutoDiarias)}
+                    {formatForm("Adicional de Deslocamento:", valorAdicionalDeslocamento)}
+                    {formatForm("Desconto de Auxílio Alimentação:", valorDescontoAlimentacao)}
+                    {formatForm("Desconto de Auxílio Transporte:", valorDescontoTransporte)}
+                    {formatForm("Desconto de Teto:", totalDeDescontoDeTeto)}
+                    {formatForm("Valor Líquido das Diárias:", valorLiquidoDiarias)}
+                    {formatForm("Valor Total das Passagens:", resultadoCalculo)}
                 </div>
             )}
 
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Data da Solicitação:", data.dataAtual = selectedSolicitacao.dataSolicitacao = "xx/xx/xxxx")} 
+                    {formatForm("Data da Solicitação:", data.dataAtual = selectedSolicitacao.dataSolicitacao = "xx/xx/xxxx")}
                     {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -260,7 +288,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario))}
                     {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa)}
 
-                    {formatForm("Finalidade:",selectedSolicitacao.servicoAtividade)}
+                    {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento))}
 
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto)}
