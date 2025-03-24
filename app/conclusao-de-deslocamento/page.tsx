@@ -284,13 +284,13 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", valorBrutoDiarias)}
-                    {formatForm("Adicional de Deslocamento:", valorAdicionalDeslocamento)}
-                    {formatForm("Desconto de Auxílio Alimentação:", valorDescontoAlimentacao)}
-                    {formatForm("Desconto de Auxílio Transporte:", valorDescontoTransporte)}
-                    {formatForm("Desconto de Teto:", totalDeDescontoDeTeto)}
-                    {formatForm("Valor Líquido das Diárias:", valorLiquidoDiarias)}
-                    {formatForm("Valor Total das Passagens:", resultadoCalculo)}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias))}
+                    {formatForm("Adicional de Deslocamento:",formatCurrency( valorAdicionalDeslocamento))}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte))}
+                    {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias))}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo))}
                 </div>
             )}
 
