@@ -128,6 +128,7 @@ enum TipoDeDiariaEnum {
   const [fetchedData, setFetchedData] = useState(null);
   const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
   const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
+
   const tipoDiariaOptions = [
     { id: '', name: '' },
     { id: '1', name: 'Padrão' },
@@ -199,6 +200,20 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   }
 
   function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
+    try {
+    if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.solicitacaoDeslocamento) {
+      setSelectedSolicitacao(Frm.data.solicitacaoDeslocamento);
+    } else if (!event.target.value || event.target.value == '') {
+      setSelectedSolicitacao(null);
+      new Error('Solicitação de deslocamento não encontrada');
+    } 
+      
+      setError('');
+    } catch (error) {
+      setError(error.message);
+      return
+    }
+    try {
     const selectedId = event.target.value;
     const selected = solicitacaoOptions.find(option => option.name === selectedId);
     setSelectedSolicitacao(selected ? selected.data : null);
@@ -234,6 +249,10 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
       Frm.set('trajeto', solicitacaoData.trajeto || '');
       Frm.set('trechos', solicitacaoData.trajeto_trechos || []);
       Frm.set('return_to_origin', solicitacaoData.trajeto_returnToOrigin || false);
+    }
+      setError('');
+    } catch (error) {
+      setError(error.message);
     }
   }
 
