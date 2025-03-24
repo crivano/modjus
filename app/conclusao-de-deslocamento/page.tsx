@@ -90,8 +90,13 @@ export default function ConclusaoDeslocamento() {
         }
     }
 
+    // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
     function formatForm(name: string, field: any) {
-        return <><label>{name}</label> <span style={{ color: 'blue' }}>{field || "Não informado"}</span><br></br></>
+        return <>
+            <label>{name}</label> 
+                <span style={{ color: 'blue' }}>{field || "Não informado"}</span>
+                <br></br>
+        </>
     }
 
     // INTERVEIW - ÁREA DA ENTREVISTA
