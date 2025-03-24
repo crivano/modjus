@@ -131,6 +131,7 @@ export default function ConclusaoDeslocamento() {
 
                     <p></p><h2>Dados do Beneficiário</h2>
 
+                    <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={6} />
                     <Pessoa
                         Frm={Frm}
                         name="beneficiario"
