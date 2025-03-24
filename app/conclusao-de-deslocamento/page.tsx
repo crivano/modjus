@@ -260,7 +260,7 @@ export default function ConclusaoDeslocamento() {
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", data.solicitacaoDeslocamento)}
-                    {formatForm("Data da Solicitação:", data.dataSolicitacao)}
+                    {formatForm("Data da Solicitação:", data.dataAtual)}
 
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", data.proponente?.descricao)}
@@ -275,7 +275,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
                     {formatForm("Retorno à Origem:", getOptionName(retornoAOrigem, retorno_a_origem))}
-                    {formatForm("Período:", (periodoDe + " a " + periodoAte) )}
+                    {formatForm("Período:", (periodoDe + " a " + periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
@@ -293,8 +293,8 @@ export default function ConclusaoDeslocamento() {
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
                     {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
-                    {formatForm("Data da Solicitação:", data.dataAtual = selectedSolicitacao.dataSolicitacao = "xx/xx/xxxx")}
-                    
+                    {formatForm("Data da Solicitação:", selectedSolicitacao.dataAtual)}
+
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", selectedSolicitacao.proponente?.descricao)}
                     {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente)}
