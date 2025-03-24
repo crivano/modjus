@@ -132,12 +132,14 @@ export default function ConclusaoDeslocamento() {
                     <p></p><h2>Dados do Beneficiário</h2>
 
                     <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={6} />
-                    <Pessoa
+                    <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
+                    
+                    {/* <Pessoa
                         Frm={Frm}
                         name="beneficiario"
                         label1="Matrícula"
                         label2="Nome"
-                        onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
+                        onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} /> */}
 
                     <div className="row">
                         <Frm.Input label="Função" name="funcaoBeneficiario" width={6} />
