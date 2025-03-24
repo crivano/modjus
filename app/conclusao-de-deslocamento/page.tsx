@@ -113,8 +113,8 @@ export default function ConclusaoDeslocamento() {
                     <p><strong>Dados para o relatório de deslocamentos</strong></p>
                     <h2>Dados do Proponente</h2>
                     <div className="row">
-                        <Frm.Input label="Data da Solicitação" name="dataSolicitacao" width={6} />
                         <Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacaoDeslocamento" width={6} />
+                        <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
                     </div>
 
                     <Pessoa
@@ -133,13 +133,6 @@ export default function ConclusaoDeslocamento() {
 
                     <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={6} />
                     <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
-                    
-                    {/* <Pessoa
-                        Frm={Frm}
-                        name="beneficiario"
-                        label1="Matrícula"
-                        label2="Nome"
-                        onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} /> */}
 
                     <div className="row">
                         <Frm.Input label="Função" name="funcaoBeneficiario" width={6} />
@@ -197,7 +190,7 @@ export default function ConclusaoDeslocamento() {
         const Frm = new FormHelper();
         Frm.update(data);
         const {
-            dataSolicitacao,
+            data_Solicitacao,
             solicitacaoDeslocamento,
             proponente,
             cargoProponente,
@@ -268,7 +261,7 @@ export default function ConclusaoDeslocamento() {
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", data.solicitacaoDeslocamento)}
-                    {formatForm("Data da Solicitação:", data.dataAtual)}
+                    {formatForm("Data da Solicitação de Deslocamento:", data.data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", data.proponente?.descricao)}
@@ -301,7 +294,7 @@ export default function ConclusaoDeslocamento() {
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
                     {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
-                    {formatForm("Data da Solicitação:", selectedSolicitacao.dataAtual)}
+                    {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual)}
 
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", selectedSolicitacao.proponente?.descricao)}
