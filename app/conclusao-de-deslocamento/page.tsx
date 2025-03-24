@@ -106,8 +106,6 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Input label="Data da Solicitação" name="dataSolicitacao" width={6} />
                         <Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacaoDeslocamento" width={6} />
                     </div>
-                    {/* <span><Frm.Input label="Data da Solicitação" name="dataSolicitacao" width={4} /></span>
-                    <span><Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacaoDeslocamento" width={4} /></span> */}
 
                     <Pessoa
                         Frm={Frm} name="proponente"
@@ -135,19 +133,21 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
                     </div>
 
-                    <Frm.Input label="Finalidade" name="finalidade" width={4} />
-                    <Frm.Input label="Tipo de Viagem" name="tipoDeslocamento" width={4} />
+                    <Frm.Input label="Finalidade" name="finalidade" width={12} />
+                    <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={tipoDeslocamentoOptions} />
                     <Frm.Input label="Itinerário" name="origemDestino" width={6} />
-                    <Frm.Input label="Retorno à Origem" name="retorno_a_origem" width={4} />
+                    <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
 
                     {/* Dados dos cálculos */}
-                    <Frm.Input label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
-                    <Frm.Input label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
-                    <Frm.Input label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
-                    <Frm.Input label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
-                    <Frm.Input label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
-                    <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
-                    <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
+                    <div className="row">
+                        <Frm.Input label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
+                        <Frm.Input label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
+                        <Frm.Input label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
+                        <Frm.Input label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
+                        <Frm.Input label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
+                        <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
+                        <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
+                    </div>
                 </div>
 
                 <div className='card m-2 p-2' style={{ backgroundColor: '#edf7fe' }}>
