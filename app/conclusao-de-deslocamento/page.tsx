@@ -248,7 +248,7 @@ export default function ConclusaoDeslocamento() {
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Data da Solicitação:", data.dataAtual = "dataAtual")}
+                    {formatForm("Data da Solicitação:", data.dataAtual = selectedSolicitacao.dataSolicitacao = "xx/xx/xxxx")} 
                     {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -264,7 +264,9 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento))}
 
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto)}
-                    {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin == true ? 'Sim' : 'Não')}
+                    {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin === true ? 'Sim' : 'Não')}
+                    {formatForm("Período:", selectedSolicitacao.periodoDe + " a " + selectedSolicitacao.periodoAte)}
+                    {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto))}
