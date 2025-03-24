@@ -91,7 +91,7 @@ export default function ConclusaoDeslocamento() {
     }
 
     function formatForm(name: string, field: any) {
-        return <><label>{name}:</label> <span style={{ color: 'blue' }}>{field || "Não informado"}</span><br></br></>
+        return <><label>{name}</label> <span style={{ color: 'blue' }}>{field || "Não informado"}</span><br></br></>
     }
 
     // function handleRetornoAOrigemChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -249,7 +249,7 @@ export default function ConclusaoDeslocamento() {
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
                     {formatForm("Data da Solicitação:", data.dataAtual = "dataAtual")}
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual)}
+                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
 
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", selectedSolicitacao.proponente?.descricao)}
@@ -258,22 +258,22 @@ export default function ConclusaoDeslocamento() {
                     {/* DADOS DO BENEFICIÁRIO */}
                     {formatForm("Beneficiário:", selectedSolicitacao.pessoa?.descricao)}
                     {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario))}
-                    {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoBeneficiario)}
+                    {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa)}
 
                     {formatForm("Finalidade:",selectedSolicitacao.servicoAtividade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento))}
 
-                    {formatForm("Itinerário:", selectedSolicitacao.origemDestino)}
-                    {formatForm("Retorno à Origem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.retorno_a_origem))}
+                    {formatForm("Itinerário:", selectedSolicitacao.trajeto)}
+                    {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin == true ? 'Sim' : 'Não')}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", selectedSolicitacao.valorBrutoDiarias)}
-                    {formatForm("Adicional de Deslocamento:", selectedSolicitacao.valorAdicionalDeslocamento)}
-                    {formatForm("Desconto de Auxílio Alimentação:", selectedSolicitacao.valorDescontoAlimentacao)}
-                    {formatForm("Desconto de Auxílio Transporte:", selectedSolicitacao.valorDescontoTransporte)}
-                    {formatForm("Desconto de Teto:", selectedSolicitacao.descontoTeto)}
-                    {formatForm("Valor Líquido das Diárias:", selectedSolicitacao.valorLiquidoDiarias)}
-                    {formatForm("Valor Total das Passagens:", selectedSolicitacao.resultadoCalculo)}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto))}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento))}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte))}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido))}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total))}
                 </>
             )}
         </>
