@@ -275,7 +275,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
                     {formatForm("Retorno à Origem:", getOptionName(retornoAOrigem, retorno_a_origem))}
-                    {formatForm("Período:", periodoDe + " a " + periodoAte)}
+                    {formatForm("Período:", (periodoDe + " a " + periodoAte) )}
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
@@ -292,9 +292,9 @@ export default function ConclusaoDeslocamento() {
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Data da Solicitação:", data.dataAtual = selectedSolicitacao.dataSolicitacao = "xx/xx/xxxx")}
                     {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
-
+                    {formatForm("Data da Solicitação:", data.dataAtual = selectedSolicitacao.dataSolicitacao = "xx/xx/xxxx")}
+                    
                     {/* DADOS DO PROPONENTE */}
                     {formatForm("Proponente:", selectedSolicitacao.proponente?.descricao)}
                     {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente)}
@@ -306,7 +306,6 @@ export default function ConclusaoDeslocamento() {
 
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento))}
-
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto)}
                     {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin === true ? 'Sim' : 'Não')}
                     {formatForm("Período:", selectedSolicitacao.periodoDe + " a " + selectedSolicitacao.periodoAte)}
