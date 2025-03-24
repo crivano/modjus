@@ -2,7 +2,7 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
@@ -170,7 +170,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
+        params: { num_processo: numeroProcesso, nome_documento: `${process.env.NEXT_PUBLIC_FORM_SOLDESLOC}` },
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
           'x-forwarded-for': '127.0.0.1'
@@ -356,7 +356,24 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     console.log(result);
   };
 
+  function handleFormaDeCalculo(event: ChangeEvent<HTMLSelectElement>, Frm: FormHelper): void {
+    const selectedOption = event.target.value;
+    if (selectedOption == '2') {
+      Frm.set('totalDiaria', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDiariasBruto));
+      Frm.set('totalAdicionalDeslocamento', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento));
+      Frm.set('totalDescontoAlimentacao', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao));
+      Frm.set('totalDescontoTransporte', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte));
+      Frm.set('totalSubtotal', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalBruto));
+      Frm.set('totalDescontoTeto', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeTeto));
+      Frm.set('total', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalLiquido));
+
+     Frm.update({ ...formData, resultadoCalculo: selectedOption }, setFormData);
+    }
+  }
+
   function interview(Frm: FormHelper) {
+ 
+
     return <>
       <div className="scrollableContainer">
         {
@@ -421,19 +438,32 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
         )}
         {Frm.data && Frm.data.solicitacaoDeslocamento && (
             <>
-            <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions} width={12} />
-            {Frm.get('resultadoCalculo') === '2' && (
+            <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions}  onChange={(event) =>  handleFormaDeCalculo(event, Frm)} width={12}/>
+            {Frm.get('resultadoCalculo') != '2' && ( 
+            <div style={{ display: 'none' }}>
+              <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
+              <Frm.Input label="Valor bruto das diárias" name="totalDiaria" width={12} />
+              <Frm.Input label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
+              <Frm.Input label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
+              <Frm.Input label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
+              <Frm.Input label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
+              <Frm.Input label="Desconto de teto" name="totalDescontoTeto" width={12} />
+              <Frm.Input label="Valor líquido das diárias" name="total" width={12} />
+              </div>
+            )} 
+
+            {Frm.get('resultadoCalculo') === '2' && ( 
               <>
               <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
-              <Frm.MoneyInput label="Valor bruto das diárias" name="valorBrutoDiarias" width={12} />
-              <Frm.MoneyInput label="Valor adicional de deslocamento" name="valorAdicionalDeslocamento" width={12} />
-              <Frm.MoneyInput label="Valor do desconto de auxílio alimentação" name="valorDescontoAlimentacao" width={12} />
-              <Frm.MoneyInput label="Valor do desconto de auxílio transporte" name="valorDescontoTransporte" width={12} />
-              <Frm.MoneyInput label="Subtotal bruto das diárias" name="subtotalBrutoDiarias" width={12} />
-              <Frm.MoneyInput label="Desconto de teto" name="descontoTeto" width={12} />
-              <Frm.MoneyInput label="Valor líquido das diárias" name="valorLiquidoDiarias" width={12} />
+              <Frm.Input label="Valor bruto das diárias" name="totalDiaria" width={12} />
+              <Frm.Input label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
+              <Frm.Input label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
+              <Frm.Input label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
+              <Frm.Input label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
+              <Frm.Input label="Desconto de teto" name="totalDescontoTeto" width={12} />
+              <Frm.Input label="Valor líquido das diárias" name="total" width={12} />
               </>
-            )}
+            )} 
 
             {Frm.get('resultadoCalculo') === '1' && (
               <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={handleAuxiliosChange} width={12} />
@@ -559,7 +589,16 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
         totalDescontoTeto += parseFloat(data.descontoTeto || '0');
         total += parseFloat(data.valorLiquidoDiarias || '0');
       }
-  
+
+      Frm.set('totalDiaria', totalDiaria);
+      Frm.set('totalAdicionalDeslocamento', totalAdicionalDeslocamento);
+      Frm.set('totalDescontoAlimentacao', totalDescontoAlimentacao);
+      Frm.set('totalDescontoTransporte', totalDescontoTransporte);
+      Frm.set('totalSubtotal', totalSubtotal);
+      Frm.set('totalDescontoTeto', totalDescontoTeto);
+      Frm.set('total', total);
+      
+
       return {
         totalDiaria,
         totalAdicionalDeslocamento,
@@ -669,13 +708,13 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
           <>
             <h4>Informação manual de cálculo</h4>
             <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
-            <p><strong>Valor bruto das diárias:</strong> {formatCurrency(data.valorBrutoDiarias || '0')}</p>
-            <p><strong>Valor adicional de deslocamento:</strong> {formatCurrency(data.valorAdicionalDeslocamento || '0')}</p>
-            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatCurrency(data.valorDescontoAlimentacao || '0')}</p>
-            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatCurrency(data.valorDescontoTransporte || '0')}</p>
-            <p><strong>Subtotal bruto das diárias:</strong> {formatCurrency(data.subtotalBrutoDiarias || '0')}</p>
-            <p><strong>Desconto de teto:</strong> {formatCurrency(data.descontoTeto || '0')}</p>
-            <p><strong>Valor líquido das diárias:</strong> {formatCurrency(data.valorLiquidoDiarias || '0')}</p>
+            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0' || '0')}</p>
+            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</p>
+            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || '0')}</p>
+            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || '0')}</p>
+            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto || '0')}</p>
+            <p><strong>Desconto de teto:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto  || '0')}</p>
+            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido || '0')}</p>
           </>
         )}
         {data.auxilios === '2' && (
