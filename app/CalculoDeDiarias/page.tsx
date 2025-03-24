@@ -239,8 +239,6 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
       Frm.set('tipoDiaria', solicitacaoData.tipoDiaria || '');
       Frm.set('prorrogacao', solicitacaoData.prorrogacao || '');
       Frm.set('servicoAtividade', solicitacaoData.servicoAtividade || '');
-      Frm.set('orgao', solicitacaoData.orgao || '');
-      Frm.set('local', solicitacaoData.local || '');
       Frm.set('periodoDe', solicitacaoData.periodoDe || '');
       Frm.set('periodoAte', solicitacaoData.periodoAte || '');
       Frm.set('justificativa', solicitacaoData.justificativa || '');
@@ -394,9 +392,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
                   <div className="row">
               <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
                   </div>
-                  <Frm.TextArea label="Serviço ou atividade a ser desenvolvida" name="servicoAtividade" width={12} />
-                  <Frm.TextArea label="Órgão" name="orgao" width={12} />
-                  <Frm.TextArea label="Local" name="local" width={12} />
+                  <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local:" name="servicoAtividade" width={12} />
 
                   <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
@@ -615,9 +611,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
             <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
             <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
-            <p><strong>Serviço ou atividade a ser desenvolvida:</strong> {data.servicoAtividade || 'Não informado'}</p>
-            <p><strong>Órgão:</strong> {data.orgao || 'Não informado'}</p>
-            <p><strong>Local:</strong> {data.local || 'Não informado'}</p>
+            <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
             <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
             <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
             <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
