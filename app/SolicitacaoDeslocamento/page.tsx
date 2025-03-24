@@ -145,7 +145,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
 
         <h2>Dados do Proponente</h2>
-        <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} />
+        <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={6} />
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
           <Frm.Input label="Função" name="funcaoProponente" width={6} />

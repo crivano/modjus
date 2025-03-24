@@ -220,6 +220,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
 
     if (selected) {
       const solicitacaoData = selected.data;
+      Frm.set('dataAtual',solicitacaoData.dataAtual || '');
       Frm.set('proponente', {
         descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
       });
@@ -362,6 +363,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
           <div style={{ display: 'none' }}>
+              <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={6} />
                   <h2>Dados do Proponente</h2>
                   <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome"  />
                   <div className="row">
@@ -591,7 +593,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     });
   
     function formatFloatValue(value: number): string {
-      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     return <>
@@ -599,6 +601,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
         {data.solicitacaoDeslocamento && (
           <>
             <h4>Dados da Solicitação de Deslocamento</h4>
+            <p><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
             <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
             <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
             <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
@@ -712,13 +715,13 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
               ))}
               <tr>
           <td colSpan={2}><strong>Total</strong></td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto)}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento)}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao)}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte)}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto)}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto)}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido)}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
+            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
               </tr>
             </tbody>
           </table>
