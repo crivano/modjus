@@ -28,6 +28,11 @@ const meioTransporteOptions = [
     { id: '5', name: 'Sem Passagens' }
 ]
 
+const retornoAOrigem = [
+    { id: '1', name: 'Sim' },
+    { id: '2', name: 'Não' },
+]
+
 export default function ConclusaoDeslocamento() {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
@@ -136,7 +141,7 @@ export default function ConclusaoDeslocamento() {
                     <Frm.Input label="Finalidade" name="finalidade" width={12} />
                     <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={tipoDeslocamentoOptions} />
                     <Frm.Input label="Itinerário" name="origemDestino" width={6} />
-                    <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
+                    <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={retornoAOrigem} width={12} />
 
                     {/* Dados dos cálculos */}
                     <div className="row">
@@ -260,7 +265,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
-                    {formatForm("Retorno à Origem:", retorno_a_origem)}
+                    {formatForm("Retorno à Origem:",  getOptionName(retornoAOrigem, retorno_a_origem))}
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", valorBrutoDiarias)}
