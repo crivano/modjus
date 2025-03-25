@@ -170,7 +170,9 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'},
+        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste'},
+        /* params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'}, */
+     
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
           'x-forwarded-for': '127.0.0.1'
@@ -661,26 +663,26 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             {data.trechos?.length > 0 && (
               <>
                 <h4>Trechos</h4>
-                <table className="table table-bordered">
+                <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
                   <thead>
-                    <tr>
-                      <th>Data Inicial</th>
-                      <th>Data Final</th>
-                      <th>Trecho</th>
-                      <th>Transporte até o embarque</th>
-                      <th>Transporte até o destino</th>
-                      <th>Hospedagem fornecida</th>
+                     <tr style={{ backgroundColor: "#f2f2f2" }}>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data Inicial</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data Final</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>Transporte até o embarque</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>Transporte até o destino</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>Hospedagem fornecida</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.trechos.map((trajeto: any, i: number) => (
-                      <tr key={i}>
-                        <td>{formatDateToBrazilian(trajeto.dataTrechoInicial)}</td>
-                        <td>{formatDateToBrazilian(trajeto.dataTrechoFinal)}</td>
-                        <td>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
-                        <td>{getOptionName(meioTransporteOptions, trajeto.transporteAteEmbarque)}</td>
-                        <td>{getOptionName(meioTransporteOptions, trajeto.transporteAposDesembarque)}</td>
-                        <td>{getOptionName(hospedagemOptions, trajeto.hospedagem)}</td>
+                      <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f9f9f9" }}>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trajeto.dataTrechoInicial)}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trajeto.dataTrechoFinal)}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(meioTransporteOptions, trajeto.transporteAteEmbarque)}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(meioTransporteOptions, trajeto.transporteAposDesembarque)}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(hospedagemOptions, trajeto.hospedagem)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -724,43 +726,43 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
           </>
         )}
         {data.resultadoCalculo === '1' && (
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-          <th>Data</th>
-          <th>Trecho</th>
-          <th>Valor da Diária</th>
-          <th>Adicional de Deslocamento</th>
-          <th>Desconto Auxílio Alimentação</th>
-          <th>Desconto Auxílio Transporte</th>
-          <th>Subtotal</th>
-          <th>Desconto Teto</th>
-          <th>Total</th>
+          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}> 
+          <thead>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+            <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Valor da Diária</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Adicional de Deslocamento</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Auxílio Alimentação</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Auxílio Transporte</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Subtotal</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Teto</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Total</th>
               </tr>
             </thead>
             <tbody>
               {data.resultadoCalculoDiarias?.dias?.map((dia, i) => (
-          <tr key={i}>
-            <td>{dia.data}</td>
-            <td>{dia.trecho}</td>
-            <td>{formatFloatValue(dia.diaria)}</td>
-            <td>{formatFloatValue(dia.acrescimoDeDeslocamento)}</td>
-            <td>{formatFloatValue(dia.descontoDeAuxilioAlimentacao)}</td>
-            <td>{formatFloatValue(dia.descontoDeAuxilioTransporte)}</td>
-            <td>{formatFloatValue(dia.subtotalBruto)}</td>
-            <td>{formatFloatValue(dia.descontoDeTeto)}</td>
-            <td>{formatFloatValue(dia.subtotalLiquido)}</td>
+            <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f9f9f9" }}>
+            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{dia.data}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{dia.trecho}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.diaria)}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.acrescimoDeDeslocamento)}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeAuxilioAlimentacao)}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeAuxilioTransporte)}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalBruto)}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeTeto)}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalLiquido)}</td>
           </tr>
               ))}
-              <tr>
-          <td colSpan={2}><strong>Total</strong></td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
-            <td>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
+            <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
+            <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
               </tr>
             </tbody>
           </table>
