@@ -69,7 +69,7 @@ export default function ConclusaoDeslocamento() {
     }
 
     const formatCurrency = (value: number | string | undefined) => {
-        if (value === undefined) return 'Não informado';
+        if (value === undefined) return '0,00';
         if (typeof value === 'string') {
             value = parseFloat(value);
             value /= 100;
