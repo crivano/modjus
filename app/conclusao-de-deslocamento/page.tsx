@@ -296,8 +296,6 @@ export default function ConclusaoDeslocamento() {
 
             {!selectedSolicitacao && (
                 <div className="scrollableContainer">
-                    <h4>Dados do Proponente</h4>
-                    {/* <p style={{display:"none"}}><strong>Data da Solicitação:</strong> { || 'Não informado'}</p> */}
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", data.solicitacaoDeslocamento)}
