@@ -33,6 +33,11 @@ const retornoAOrigem = [
     { id: '2', name: 'Não' },
 ]
 
+const editarForm = [
+    { id: '1', name: 'Sim' },
+    { id: '2', name: 'Não' },
+]
+
 const getOptionName = (options: { id: string, name: string }[], id: string) => {
     return options.find(opt => opt.id === id)?.name || 'Não informado';
 };
@@ -47,10 +52,29 @@ export default function ConclusaoDeslocamento() {
     const [selectedCode, setSelectedCode] = useState(null);
     const Frm = new FormHelper();
 
+    //const [wantToEdit, setWantToEdit] = useState(false);
+
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
         setStartDate(date);
     };
+
+    let wantToEdit = false;
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         const value = Frm.get('wantToEdit');
+    //         console.log("Valor retornado por Frm.get('wantToEdit'):", value);
+    //         setWantToEdit(value === '1');
+    //     }, 100);
+
+    //     return () => clearInterval(interval);
+    // }, []);
+
+    // useEffect(() => {
+    //     console.log("Estado wantToEdit atualizado:", wantToEdit);
+    // }, [wantToEdit]);
+
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -94,45 +118,45 @@ export default function ConclusaoDeslocamento() {
         const selectedId = event.target.value;
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
         setSelectedSolicitacao(selected ? selected.data : null);
-    
+
         if (selected) {
-          const solicitacaoData = selected.data;
-          Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
-          Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
+            const solicitacaoData = selected.data;
+            Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
+            Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
 
-          // PROPONENTE
-          Frm.set('proponente', {
-            descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
-          });
-          Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
-          Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
+            // PROPONENTE
+            Frm.set('proponente', {
+                descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
+            });
+            Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
+            Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
 
-          // BENEFICIARIO
-          Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-          Frm.set('pessoa', {
-            descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
-          });
-          Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-          Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
+            // BENEFICIARIO
+            Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+            Frm.set('pessoa', {
+                descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
+            });
+            Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+            Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
 
-          Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
-          Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento  || '');
-          Frm.set('origemDestino', solicitacaoData.trajeto || '');
-          Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? 'Sim' : 'Não');
-          Frm.set('periodoDe', solicitacaoData.periodoDe || '');
-          Frm.set('periodoAte', solicitacaoData.periodoAte || '');
-          Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
+            Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
+            Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
+            Frm.set('origemDestino', solicitacaoData.trajeto || '');
+            Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? '1' : '0');
+            Frm.set('periodoDe', solicitacaoData.periodoDe || '');
+            Frm.set('periodoAte', solicitacaoData.periodoAte || '');
+            Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
 
-          // CÁLCULO DE DIÁRIAS
-          Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias.totalDeDiariasBruto || '');
-          Frm.set('valorAdicionalDeslocamento', solicitacaoData.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento || '');
-          Frm.set('valorDescontoAlimentacao', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao || '');
-          Frm.set('valorDescontoTransporte', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte || '');
-          Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeTeto || '');
-          Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
-          Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
+            // CÁLCULO DE DIÁRIAS
+            Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias.totalDeDiariasBruto || '');
+            Frm.set('valorAdicionalDeslocamento', solicitacaoData.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento || '');
+            Frm.set('valorDescontoAlimentacao', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao || '');
+            Frm.set('valorDescontoTransporte', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte || '');
+            Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeTeto || '');
+            Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
+            Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
         }
-      }
+    }
 
     function handleProponenteChange(proponente: any, Frm: FormHelper) {
         if (proponente) {
@@ -161,6 +185,13 @@ export default function ConclusaoDeslocamento() {
     function interview(Frm: FormHelper) {
         return <>
             <div className="scrollableContainer">
+                <div className="margin-bottom: 0.3em; 
+                                margin-top: 1em; 
+                                font-weight: bold; 
+                                font-size: 120%;">
+                    CONCLUSÃO DE DESLOCAMENTO
+                </div>
+                <p><strong>Dados para o relatório de deslocamentos</strong></p>
                 <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
                     <h6>Dados da Solicitação de Deslocamento</h6>
                     <Frm.InputWithButton
@@ -180,17 +211,23 @@ export default function ConclusaoDeslocamento() {
                         />
                     )}
                 </div>
-                <div>
-                    <div className="margin-bottom: 0.3em; 
-                                margin-top: 1em; 
-                                font-weight: bold; 
-                                font-size: 120%;">
-                        CONCLUSÃO DE DESLOCAMENTO
-                    </div>
-                    <p><strong>Dados para o relatório de deslocamentos</strong></p>
+
+                <Frm.RadioButtons
+                    label="Deseja editar os dados manualmente?"
+                    name="wantToEdit"
+                    options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]}
+                    width={12}
+                />
+
+                <div hidden={Frm.get('wantToEdit') == '2' || Frm.get('wantToEdit') == null}>
+                    <Frm.TextArea label="Justifique" name="justificativa" width={12} />
                     <h2>Dados do Proponente</h2>
                     <div className="row">
-                        <Frm.Input label="Código da Solicitação de Deslocamento:" name="solicitacaoDeslocamento" width={6} />
+                        <Frm.Input
+                            label="Código da Solicitação de Deslocamento:"
+                            name="solicitacaoDeslocamento"
+                            width={6}
+                        />
                         <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
                     </div>
 
