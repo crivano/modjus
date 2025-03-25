@@ -51,6 +51,10 @@ export default function ConclusaoDeslocamento() {
         setStartDate(date);
     };
 
+    let wantToEdit = false;
+    const [radioSelected, setRadioSelected] = useState("nao"); // "Não" como padrão
+
+
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -131,8 +135,6 @@ export default function ConclusaoDeslocamento() {
             Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeTeto || '');
             Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
             Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
-
-            Frm.set('wantToEdit', '1');
         }
     }
 
@@ -190,15 +192,33 @@ export default function ConclusaoDeslocamento() {
                     )}
                 </div>
 
-                <Frm.RadioButtons
-                    label="Deseja editar os dados manualmente?"
-                    name="wantToEdit"
-                    options={[{ id: '2', name: 'Sim' }, { id: '1', name: 'Não' }]}
-                    width={12}
-                />
+                Deseja editar os dados da conclusão de deslocamento?
+                <div>
+                    <label>
+                        <input
+                            type="radio"
+                            name="opcao"
+                            value="sim"
+                            checked={radioSelected === "sim"}
+                            onChange={(e) => setRadioSelected(e.target.value)}
+                        />
+                        Sim
+                    </label>
+                    <br />
+                    <label>
+                        <input
+                            type="radio"
+                            name="opcao"
+                            value="nao"
+                            checked={radioSelected === "nao"}
+                            onChange={(e) => setRadioSelected(e.target.value)}
+                        />
+                        Não
+                    </label>
+                </div>
 
-                <div hidden={Frm.get('wantToEdit') === '1' || Frm.get('wantToEdit') === null}>
-                    <Frm.TextArea label="Justifique" name="justificativa" width={12} />
+                <div hidden={radioSelected == "nao"}>
+                    <Frm.TextArea label="Justifique:" name="justificativa" width={12} />
                     <h2>Dados do Proponente</h2>
                     <div className="row">
                         <Frm.Input
@@ -334,13 +354,13 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias) ||'0,00')}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(valorAdicionalDeslocamento) ||'0,00')}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao ||'0,00'))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte ||'0,00'))}
-                    {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto ||'0,00'))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias ||'0,00'))}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo ||'0,00'))}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias) || '0,00')}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(valorAdicionalDeslocamento) || '0,00')}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao || '0,00'))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte || '0,00'))}
+                    {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto || '0,00'))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias || '0,00'))}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo || '0,00'))}
                 </div>
             )}
 
@@ -368,12 +388,12 @@ export default function ConclusaoDeslocamento() {
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto) || '0,00')}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento)|| '0,00')}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao)|| '0,00')}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte)|| '0,00')}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto)|| '0,00')}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido)|| '0,00')}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total)|| '0,00')}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento) || '0,00')}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao) || '0,00')}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte) || '0,00')}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto) || '0,00')}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido) || '0,00')}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total) || '0,00')}
                 </>
             )}
         </>
