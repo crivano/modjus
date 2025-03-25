@@ -268,7 +268,7 @@ export default function ConclusaoDeslocamento() {
         const Frm = new FormHelper();
         Frm.update(data);
         const {
-            data_Solicitacao,
+            data_solicitacao,
             solicitacaoDeslocamento,
             proponente,
             cargoProponente,
@@ -321,11 +321,11 @@ export default function ConclusaoDeslocamento() {
                 <div className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Código da Solicitação de Deslocamento:", data.solicitacaoDeslocamento)}
-                    {formatForm("Data da Solicitação de Deslocamento:", data.data_solicitacao)}
+                    {formatForm("Código da Solicitação de Deslocamento:", solicitacaoDeslocamento)}
+                    {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
-                    {formatForm("Proponente:", data.proponente?.descricao)}
+                    {formatForm("Proponente:", proponente?.descricao)}
                     {formatForm("Cargo do Proponente:", cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
