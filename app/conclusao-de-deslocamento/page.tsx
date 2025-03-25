@@ -33,6 +33,11 @@ const retornoAOrigem = [
     { id: '2', name: 'Não' },
 ]
 
+const getOptionName = (options: { id: string, name: string }[], id: string) => {
+    return options.find(opt => opt.id === id)?.name || 'Não informado';
+};
+
+
 export default function ConclusaoDeslocamento() {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
@@ -111,7 +116,7 @@ export default function ConclusaoDeslocamento() {
           Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
 
           Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
-          Frm.set('tipoViagem', solicitacaoData.tipoDeslocamento || '');
+          Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento  || '');
           Frm.set('origemDestino', solicitacaoData.trajeto || '');
           Frm.set('return_to_origin', solicitacaoData.return_to_origin || '');
           Frm.set('periodoDe', solicitacaoData.periodoDe || '');
@@ -267,10 +272,6 @@ export default function ConclusaoDeslocamento() {
         const formatDateToBrazilian = (date: string) => {
             if (!date) return 'Não informado';
             return date;
-        };
-
-        const getOptionName = (options: { id: string, name: string }[], id: string) => {
-            return options.find(opt => opt.id === id)?.name || 'Não informado';
         };
 
         function fetchFieldFromJsonObject(jsonObject, fieldName) {
