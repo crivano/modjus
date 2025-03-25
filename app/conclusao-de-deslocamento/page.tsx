@@ -33,11 +33,6 @@ const retornoAOrigem = [
     { id: '2', name: 'Não' },
 ]
 
-const editarForm = [
-    { id: '1', name: 'Sim' },
-    { id: '2', name: 'Não' },
-]
-
 const getOptionName = (options: { id: string, name: string }[], id: string) => {
     return options.find(opt => opt.id === id)?.name || 'Não informado';
 };
@@ -51,9 +46,6 @@ export default function ConclusaoDeslocamento() {
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const [selectedCode, setSelectedCode] = useState(null);
     const Frm = new FormHelper();
-
-    //const [wantToEdit, setWantToEdit] = useState(false);
-
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
         setStartDate(date);
@@ -139,6 +131,8 @@ export default function ConclusaoDeslocamento() {
             Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeTeto || '');
             Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
             Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
+
+            //Frm.set('wantToEdit', '1');
         }
     }
 
@@ -160,7 +154,7 @@ export default function ConclusaoDeslocamento() {
     function formatForm(name: string, field: any) {
         return <>
             <label>{name}</label>
-            <span style={{ color: 'blue' }}>{' ' + field || "Não informado"}</span>
+            <span style={{ color: 'blue' }}>{' ' + field || "0,00"}</span>
             <br></br>
         </>
     }
@@ -203,7 +197,7 @@ export default function ConclusaoDeslocamento() {
                     width={12}
                 />
 
-                <div hidden={Frm.get('wantToEdit') == '2' || Frm.get('wantToEdit') == null}>
+                <div hidden={Frm.get('wantToEdit') === '2' || Frm.get('wantToEdit') === null}>
                     <Frm.TextArea label="Justifique" name="justificativa" width={12} />
                     <h2>Dados do Proponente</h2>
                     <div className="row">
@@ -246,7 +240,6 @@ export default function ConclusaoDeslocamento() {
                         <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
                     </div>
                     <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={4} />
-
 
                     {/* Dados dos cálculos */}
                     <div className="row">
@@ -291,10 +284,10 @@ export default function ConclusaoDeslocamento() {
             resultadoCalculo,
         } = Frm.data;
 
-        const formatDateToBrazilian = (date: string) => {
-            if (!date) return 'Não informado';
-            return date;
-        };
+        // const formatDateToBrazilian = (date: string) => {
+        //     if (!date) return 'Não informado';
+        //     return date;
+        // };
 
         function fetchFieldFromJsonObject(jsonObject, fieldName) {
             try {
@@ -341,13 +334,13 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias))}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(valorAdicionalDeslocamento))}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte))}
-                    {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias))}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo))}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias) ||'0,00')}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(valorAdicionalDeslocamento) ||'0,00')}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao ||'0,00'))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte ||'0,00'))}
+                    {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto ||'0,00'))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias ||'0,00'))}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo ||'0,00'))}
                 </div>
             )}
 
@@ -374,13 +367,13 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto))}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento))}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte))}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido))}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total))}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto) || '0,00')}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento)|| '0,00')}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao)|| '0,00')}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte)|| '0,00')}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto)|| '0,00')}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido)|| '0,00')}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total)|| '0,00')}
                 </>
             )}
         </>
