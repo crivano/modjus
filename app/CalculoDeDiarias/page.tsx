@@ -128,6 +128,7 @@ enum TipoDeDiariaEnum {
   const [fetchedData, setFetchedData] = useState(null);
   const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
   const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
+  const [dataFetched, setDataFetched] = useState(false); 
 
   const tipoDiariaOptions = [
     { id: '', name: '' },
@@ -374,7 +375,17 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   }
 
   function interview(Frm: FormHelper) {
- 
+    
+    useEffect(() => {
+      if (Frm.data && Frm.data.numeroProcesso && !dataFetched) {
+        fetchProcessData(Frm.data.numeroProcesso).then(() => {
+          if (Frm.data.solicitacaoDeslocamento) {
+            handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+          }
+          setDataFetched(true);
+        });
+      }
+    });
 
     return <>
       <div className="scrollableContainer">
