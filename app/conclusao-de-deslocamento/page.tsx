@@ -59,22 +59,6 @@ export default function ConclusaoDeslocamento() {
         setStartDate(date);
     };
 
-    let wantToEdit = false;
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         const value = Frm.get('wantToEdit');
-    //         console.log("Valor retornado por Frm.get('wantToEdit'):", value);
-    //         setWantToEdit(value === '1');
-    //     }, 100);
-
-    //     return () => clearInterval(interval);
-    // }, []);
-
-    // useEffect(() => {
-    //     console.log("Estado wantToEdit atualizado:", wantToEdit);
-    // }, [wantToEdit]);
-
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
         try {
