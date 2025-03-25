@@ -118,9 +118,10 @@ export default function ConclusaoDeslocamento() {
           Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
           Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento  || '');
           Frm.set('origemDestino', solicitacaoData.trajeto || '');
-          Frm.set('return_to_origin', solicitacaoData.return_to_origin || '');
+          Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? 'Sim' : 'Não');
           Frm.set('periodoDe', solicitacaoData.periodoDe || '');
           Frm.set('periodoAte', solicitacaoData.periodoAte || '');
+          Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
 
           // CÁLCULO DE DIÁRIAS
           Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias.totalDeDiariasBruto || '');
