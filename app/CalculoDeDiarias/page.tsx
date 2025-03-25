@@ -170,7 +170,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        params: { num_processo: numeroProcesso, nome_documento: `${process.env.NEXT_PUBLIC_FORM_SOLDESLOC}` },
+        params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'},
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
           'x-forwarded-for': '127.0.0.1'
@@ -309,12 +309,12 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   //    null,
   //    null,
   //    false,
-  //    parseFloat('0.0'),
+  //    parseFloat('0.00'),
   //    TipoDeDiariaEnum.PADRAO,
   //    false,
-  //    parseFloat('0.0'),
+  //    parseFloat('0.00'),
   //    parseFloat('63.32'),
-  //    parseFloat('0.0'),
+  //    parseFloat('0.00'),
   //    parseFloat('1106.2'),
   //    parseFloat('1106.2'),
   //    trechos_para_calcular || [],
@@ -334,17 +334,17 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
 
   const result = calcularDiarias(
      // Pass the necessary parameters from formData
-    parseFloat(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria) || '0.0'),
-    parseFloat(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria) || '0.0'),
+    parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
+    parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
     Frm.data.faixa as unknown as FaixaEnum,
     Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
     Frm.data.internacional === '1',
-    parseFloat(Frm.data.cotacaoDoDolar || '0.0'),
+    parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
     tipoDiariaMap[Frm.data.tipoDiaria],
     Frm.data.prorrogacao === '1',
-    parseFloat(Frm.data.valorJaRecebido || '0.0'),
+    parseFloat(Number(Frm.data.valorJaRecebido || '0').toFixed(2)),
     valorUnitarioDoAuxilioAlimentacao,
-    parseFloat(Frm.data.valorUnitarioDoAuxilioTransporte || '0.0'),
+    parseFloat(Number(Frm.data.valorUnitarioDoAuxilioTransporte || '0').toFixed(2)),
     valorTetoDiariaNacionalAuxilioAlimentacao,
     valorTetoMeiaDiariaNacionalAuxilioAlimentacao,
     trechos_para_calcular || [],
@@ -359,13 +359,13 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   function handleFormaDeCalculo(event: ChangeEvent<HTMLSelectElement>, Frm: FormHelper): void {
     const selectedOption = event.target.value;
     if (selectedOption == '2') {
-      Frm.set('totalDiaria', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDiariasBruto));
-      Frm.set('totalAdicionalDeslocamento', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento));
-      Frm.set('totalDescontoAlimentacao', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao));
-      Frm.set('totalDescontoTransporte', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte));
-      Frm.set('totalSubtotal', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalBruto));
-      Frm.set('totalDescontoTeto', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeTeto));
-      Frm.set('total', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalLiquido));
+      Frm.set('totalDiaria', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDiariasBruto).toFixed(2));
+      Frm.set('totalAdicionalDeslocamento', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento).toFixed(2));
+      Frm.set('totalDescontoAlimentacao', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao).toFixed(2));
+      Frm.set('totalDescontoTransporte', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte).toFixed(2));
+      Frm.set('totalSubtotal', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalBruto).toFixed(2));
+      Frm.set('totalDescontoTeto', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeTeto).toFixed(2));;
+      Frm.set('total', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalLiquido).toFixed(2));;
 
      Frm.update({ ...formData, resultadoCalculo: selectedOption }, setFormData);
     }
@@ -590,13 +590,13 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
         total += parseFloat(data.valorLiquidoDiarias || '0');
       }
 
-      Frm.set('totalDiaria', totalDiaria);
-      Frm.set('totalAdicionalDeslocamento', totalAdicionalDeslocamento);
-      Frm.set('totalDescontoAlimentacao', totalDescontoAlimentacao);
-      Frm.set('totalDescontoTransporte', totalDescontoTransporte);
-      Frm.set('totalSubtotal', totalSubtotal);
-      Frm.set('totalDescontoTeto', totalDescontoTeto);
-      Frm.set('total', total);
+      Frm.set('totalDiaria', Number(totalDiaria.toFixed(2)).toString());
+      Frm.set('totalAdicionalDeslocamento', Number(totalAdicionalDeslocamento.toFixed(2)).toString());
+      Frm.set('totalDescontoAlimentacao', Number(totalDescontoAlimentacao.toFixed(2)).toString());
+      Frm.set('totalDescontoTransporte', Number(totalDescontoTransporte).toFixed(2));
+      Frm.set('totalSubtotal', Number(totalSubtotal).toFixed(2));
+      Frm.set('totalDescontoTeto', Number(totalDescontoTeto).toFixed(2));
+      Frm.set('total', Number(total).toFixed(2));
       
 
       return {
