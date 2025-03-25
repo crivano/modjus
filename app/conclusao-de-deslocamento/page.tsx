@@ -68,13 +68,65 @@ export default function ConclusaoDeslocamento() {
         }
     }
 
-    function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const formatCurrency = (value: number | string | undefined) => {
+        if (value === undefined) return 'Não informado';
+        if (typeof value === 'string') {
+            value = parseFloat(value);
+            value /= 100;
+        }
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    };
+
+    // function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    //     const selectedId = event.target.value;
+    //     const selected = solicitacaoOptions.find(option => option.name === selectedId);
+    //     setSelectedCode(selected)
+    //     setSelectedSolicitacao(selected ? selected.data : null);
+    //     Frm.update({ ...formData, solicitacaoDeslocamento: selectedId }, setFormData);
+    // }
+
+    function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
         const selectedId = event.target.value;
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
-        setSelectedCode(selected)
         setSelectedSolicitacao(selected ? selected.data : null);
-        Frm.update({ ...formData, solicitacaoDeslocamento: selectedId }, setFormData);
-    }
+    
+        if (selected) {
+          const solicitacaoData = selected.data;
+          Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
+          Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
+
+          // PROPONENTE
+          Frm.set('proponente', {
+            descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
+          });
+          Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
+          Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
+
+          // BENEFICIARIO
+          Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+          Frm.set('pessoa', {
+            descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
+          });
+          Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+          Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
+
+          Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
+          Frm.set('tipoViagem', solicitacaoData.tipoDeslocamento || '');
+          Frm.set('origemDestino', solicitacaoData.trajeto || '');
+          Frm.set('return_to_origin', solicitacaoData.return_to_origin || '');
+          Frm.set('periodoDe', solicitacaoData.periodoDe || '');
+          Frm.set('periodoAte', solicitacaoData.periodoAte || '');
+
+          // CÁLCULO DE DIÁRIAS
+          Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias.totalDeDiariasBruto || '');
+          Frm.set('valorAdicionalDeslocamento', solicitacaoData.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento || '');
+          Frm.set('valorDescontoAlimentacao', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao || '');
+          Frm.set('valorDescontoTransporte', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte || '');
+          Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeTeto || '');
+          Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
+          Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
+        }
+      }
 
     function handleProponenteChange(proponente: any, Frm: FormHelper) {
         if (proponente) {
@@ -93,9 +145,9 @@ export default function ConclusaoDeslocamento() {
     // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
     function formatForm(name: string, field: any) {
         return <>
-            <label>{name}</label> 
-                <span style={{ color: 'blue' }}>{' ' + field || "Não informado"}</span>
-                <br></br>
+            <label>{name}</label>
+            <span style={{ color: 'blue' }}>{' ' + field || "Não informado"}</span>
+            <br></br>
         </>
     }
 
@@ -103,6 +155,25 @@ export default function ConclusaoDeslocamento() {
     function interview(Frm: FormHelper) {
         return <>
             <div className="scrollableContainer">
+                <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
+                    <h6>Dados da Solicitação de Deslocamento</h6>
+                    <Frm.InputWithButton
+                        label="Número do Processo"
+                        name="numeroProcesso"
+                        buttonText="Buscar"
+                        onButtonClick={fetchProcessData}
+                        width={6}
+                    />
+
+                    {fetchedData && (
+                        <Frm.Select label="Selecione o código da solicitação de deslocamento"
+                            name="solicitacaoDeslocamento"
+                            options={solicitacaoOptions}
+                            onChange={(event) => handleSolicitacaoChange(event, Frm)}
+                            width={8}
+                        />
+                    )}
+                </div>
                 <div>
                     <div className="margin-bottom: 0.3em; 
                                 margin-top: 1em; 
@@ -135,7 +206,7 @@ export default function ConclusaoDeslocamento() {
                     <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
 
                     <div className="row">
-                        <Frm.Input label="Função" name="funcaoBeneficiario" width={6} />
+                        {/* <Frm.Input label="Função" name="funcaoBeneficiario" width={6} /> */}
                         <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
                     </div>
 
@@ -160,26 +231,6 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
                         <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
                     </div>
-                </div>
-
-                <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
-                    <h6>Dados da Solicitação de Deslocamento</h6>
-                    <Frm.InputWithButton
-                        label="Número do Processo"
-                        name="numeroProcesso"
-                        buttonText="Buscar"
-                        onButtonClick={fetchProcessData}
-                        width={6}
-                    />
-
-                    {fetchedData && (
-                        <Frm.Select label="Selecione o código da solicitação de deslocamento"
-                            name="solicitacaoDeslocamento"
-                            options={solicitacaoOptions}
-                            onChange={handleSolicitacaoChange}
-                            width={8}
-                        />
-                    )}
                 </div>
             </div>
         </>
@@ -213,8 +264,6 @@ export default function ConclusaoDeslocamento() {
             resultadoCalculo,
         } = Frm.data;
 
-        console.log(data)
-
         const formatDateToBrazilian = (date: string) => {
             if (!date) return 'Não informado';
             return date;
@@ -222,15 +271,6 @@ export default function ConclusaoDeslocamento() {
 
         const getOptionName = (options: { id: string, name: string }[], id: string) => {
             return options.find(opt => opt.id === id)?.name || 'Não informado';
-        };
-
-        const formatCurrency = (value: number | string | undefined) => {
-            if (value === undefined) return 'Não informado';
-            if (typeof value === 'string') {
-                value = parseFloat(value);
-                value /= 100;
-            }
-            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         };
 
         function fetchFieldFromJsonObject(jsonObject, fieldName) {
@@ -281,7 +321,7 @@ export default function ConclusaoDeslocamento() {
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias))}
-                    {formatForm("Adicional de Deslocamento:",formatCurrency( valorAdicionalDeslocamento))}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(valorAdicionalDeslocamento))}
                     {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao))}
                     {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte))}
                     {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto))}
