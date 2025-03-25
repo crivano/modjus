@@ -132,7 +132,7 @@ export default function ConclusaoDeslocamento() {
             Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
             Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
 
-            //Frm.set('wantToEdit', '1');
+            Frm.set('wantToEdit', '1');
         }
     }
 
@@ -193,11 +193,11 @@ export default function ConclusaoDeslocamento() {
                 <Frm.RadioButtons
                     label="Deseja editar os dados manualmente?"
                     name="wantToEdit"
-                    options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]}
+                    options={[{ id: '2', name: 'Sim' }, { id: '1', name: 'Não' }]}
                     width={12}
                 />
 
-                <div hidden={Frm.get('wantToEdit') === '2' || Frm.get('wantToEdit') === null}>
+                <div hidden={Frm.get('wantToEdit') === '1' || Frm.get('wantToEdit') === null}>
                     <Frm.TextArea label="Justifique" name="justificativa" width={12} />
                     <h2>Dados do Proponente</h2>
                     <div className="row">
