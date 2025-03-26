@@ -267,13 +267,13 @@ export default function ConclusaoDeslocamento() {
 
                     {/* Dados dos cálculos */}
                     <div className="row">
-                        <Frm.MoneyInput label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
-                        <Frm.MoneyInput label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
-                        <Frm.MoneyInput label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
-                        <Frm.MoneyInput label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
-                        <Frm.MoneyInput label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
-                        <Frm.MoneyInput label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
-                        <Frm.MoneyInput label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
+                        <Frm.MoneyInputTemp label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
+                        <Frm.MoneyInputTemp label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
+                        <Frm.MoneyInputTemp label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
+                        <Frm.MoneyInputTemp label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
+                        <Frm.MoneyInputTemp label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
+                        <Frm.MoneyInputTemp label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
+                        <Frm.MoneyInputTemp label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
                     </div>
                 </div>
             </div>
