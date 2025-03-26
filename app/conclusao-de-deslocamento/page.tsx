@@ -39,19 +39,18 @@ const getOptionName = (options: { id: string, name: string }[], id: string) => {
 
 
 export default function ConclusaoDeslocamento() {
+    const Frm = new FormHelper();
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
     const [fetchedData, setFetchedData] = useState(null);
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const [selectedCode, setSelectedCode] = useState(null);
-    const Frm = new FormHelper();
+    const [radioSelected, setRadioSelected] = useState("nao"); // "Não" como padrão
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
         setStartDate(date);
     };
-
-    const [radioSelected, setRadioSelected] = useState("nao"); // "Não" como padrão
 
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
@@ -181,7 +180,7 @@ export default function ConclusaoDeslocamento() {
                     />
 
                     {fetchedData && (
-                        <Frm.Select label="Selecione o código da solicitação de deslocamento"
+                        <Frm.Select label="Selecione o código do cálculo de diárias"
                             name="solicitacaoDeslocamento"
                             options={solicitacaoOptions}
                             onChange={(event) => handleSolicitacaoChange(event, Frm)}
