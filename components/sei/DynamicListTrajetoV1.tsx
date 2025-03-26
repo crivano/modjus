@@ -63,7 +63,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                 destino: cidades[i + 1],
                 transporteAteEmbarque: "1",
                 transporteAposDesembarque: "1",
-                hospedagem: "1",
+                hospedagem: !returnToOrigin && i == cidades.length - 2 ? "2" : "1",
                 dataTrechoInicial: "",
                 dataTrechoFinal: ""
             });
@@ -75,7 +75,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                 destino: cidades[0],
                 transporteAteEmbarque: "1",
                 transporteAposDesembarque: "1",
-                hospedagem: "1",
+                hospedagem: "2",
                 dataTrechoInicial: "",
                 dataTrechoFinal: ""
             });
@@ -192,7 +192,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
                                     <Form.Select
                                         value={Frm.get(`${name}_trechos[${index}].hospedagem`)}
-                                        onChange={e => Frm.set(`${name}_trechos[${index}].hospedagem`, e.target.value)}
+                                        onChange={e => Frm.set(`${name}_trechos[${index}].hospedagem`, e.target.value)}                                        
                                     >
                                         {hospedagemOptions.map(option => (
                                             <option key={option.id} value={option.id}>{option.name}</option>
