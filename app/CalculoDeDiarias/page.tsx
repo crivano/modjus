@@ -357,7 +357,7 @@ const Frm = useMemo(() => new FormHelper(), []);
     Frm.data.prorrogacao === '1',
     parseFloat(Number(Frm.data.valorJaRecebidoPreviamente || '0').toFixed(2)),
     Frm.data.valorAuxilioAlimentacao,
-    parseFloat(Number(Frm.data.valorUnitarioDoAuxilioTransporte || '0').toFixed(2)),
+    Frm.data.valorAuxilioTransporte,
     valorTetoDiariaNacionalAuxilioAlimentacao,
     valorTetoMeiaDiariaNacionalAuxilioAlimentacao,
     trechos_para_calcular || [],
