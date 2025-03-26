@@ -361,7 +361,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo || '0,00'))}
 
                     {/* JUSTIFICATIVA */}
-                    {radioSelected == "sim"? formatForm("Justificativa:", justificativa): ''}
+                    {radioSelected == "sim"? formatForm("Justificativa:", justificativa || "Não informado"): ''}
                 </div>
             )}
 
