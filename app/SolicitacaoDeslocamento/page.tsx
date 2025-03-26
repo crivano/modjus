@@ -2,7 +2,7 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import DynamicListTrajetoV1 from "@/components/sei/DynamicListTrajetoV1"
 import ErrorPopup from "@/components/ErrorPopup"
@@ -64,7 +64,7 @@ const meioTransporteOptions = [
 export default function SolicitacaoDeslocamento() {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({});
-  const Frm = new FormHelper();
+  const Frm = useMemo(() => new FormHelper(), []);
 
   const [dataAtual, setDataAtual] = useState('');
   // ...existing state variables...
