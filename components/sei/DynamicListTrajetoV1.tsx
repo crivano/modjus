@@ -24,13 +24,13 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
         const trajetoSalvo = Frm.get(`${name}`);
         const returnToOriginSalvo = Frm.get(`${name}_returnToOrigin`);
         const trechosSalvos = Frm.get(`${name}_trechos`);
-    
+
         if (trajetoSalvo !== trajeto) setTrajeto(trajetoSalvo);
         if (returnToOriginSalvo !== returnToOrigin) setReturnToOrigin(returnToOriginSalvo);
         if (trechosSalvos !== trechos) setTrechos(trechosSalvos);
-        updatetrechos(trajetoSalvo,  returnToOriginSalvo, trechosSalvos);
+        updatetrechos(trajetoSalvo, returnToOriginSalvo, trechosSalvos);
     }, [Frm, name, trajeto, returnToOrigin, trechos]);
-    
+
 
     const handleTrajetoChange = (e) => {
         const newTrajeto = e.target.value;
@@ -42,51 +42,51 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
     const handleReturnToOriginV1 = (checked) => {
         setReturnToOrigin(checked);
         Frm.set(`${name}_returnToOrigin`, checked);
-        updatetrechos(Frm.get(`${name}`),  Frm.get(`${name}_returnToOrigin`));
+        updatetrechos(Frm.get(`${name}`), Frm.get(`${name}_returnToOrigin`));
     };
 
-    const updatetrechos = (trajetoStr, returnToOrigin, trechosSalvos=null) => {
+    const updatetrechos = (trajetoStr, returnToOrigin, trechosSalvos = null) => {
         if (!trajetoStr) {
             setTrechos([]); // Limpa os trechos se trajeto não for informado
             return;
         }
 
         const cidades = trajetoStr.split(" / ").map(c => c.trim());
-       
+
         if (!trechosSalvos) {
-       
-        const newTrechos = [];
 
-        for (let i = 0; i < cidades.length - 1; i++) {
-            newTrechos.push({
-                origem: cidades[i],
-                destino: cidades[i + 1],
-                transporteAteEmbarque: "1",
-                transporteAposDesembarque: "1",
-                hospedagem: !returnToOrigin && i == cidades.length - 2 ? "2" : "1",
-                dataTrechoInicial: "",
-                dataTrechoFinal: ""
-            });
-        }
+            const newTrechos = [];
 
-        if (returnToOrigin && cidades.length > 1) {
-            newTrechos.push({
-                origem: cidades[cidades.length - 1],
-                destino: cidades[0],
-                transporteAteEmbarque: "1",
-                transporteAposDesembarque: "1",
-                hospedagem: "2",
-                dataTrechoInicial: "",
-                dataTrechoFinal: ""
-            });
-        }
-        
-         setTrechos(newTrechos); // Atualiza o estado dos trechos
-        // Se necessário, você pode descomentar o Frm.set aqui para persistir os dados externamente
-         Frm.set(`${name}_trechos`, newTrechos);
+            for (let i = 0; i < cidades.length - 1; i++) {
+                newTrechos.push({
+                    origem: cidades[i],
+                    destino: cidades[i + 1],
+                    transporteAteEmbarque: "1",
+                    transporteAposDesembarque: "1",
+                    hospedagem: !returnToOrigin && i == cidades.length - 2 ? "2" : "1",
+                    dataTrechoInicial: "",
+                    dataTrechoFinal: ""
+                });
+            }
+
+            if (returnToOrigin && cidades.length > 1) {
+                newTrechos.push({
+                    origem: cidades[cidades.length - 1],
+                    destino: cidades[0],
+                    transporteAteEmbarque: "1",
+                    transporteAposDesembarque: "1",
+                    hospedagem: "2",
+                    dataTrechoInicial: "",
+                    dataTrechoFinal: ""
+                });
+            }
+
+            setTrechos(newTrechos); // Atualiza o estado dos trechos
+            // Se necessário, você pode descomentar o Frm.set aqui para persistir os dados externamente
+            Frm.set(`${name}_trechos`, newTrechos);
         } else {
-        const newTrechos = trechosSalvos;;
-    }
+            const newTrechos = trechosSalvos;;
+        }
 
     };
 
@@ -169,11 +169,11 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                                     try {
                                                         const dataInicial = Frm.get(`${name}_trechos[${index}].dataTrechoInicial`);
                                                         const dataFinal = e.target.value;
-    
+
                                                         if (dataInicial && dataFinal < dataInicial) {
                                                             throw new Error("Data Final do trecho não pode ser menor que Data Inicial do trecho");
                                                         }
-    
+
                                                         Frm.set(`${name}_trechos[${index}].dataTrechoFinal`, dataFinal);
                                                         setError(""); // Clear any previous error
                                                     } catch (error: any) {
@@ -181,23 +181,37 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                                     }
 
                                                 }}
-                                            />  
+                                            />
                                         </div>
                                     </div>
                                     <div>  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
                                 </Form.Group>
 
                                 {/* Campo de Hospedagem */}
+
                                 <Form.Group className="mb-2 col-md-6 d-flex flex-column">
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
-                                    <Form.Select
-                                        value={Frm.get(`${name}_trechos[${index}].hospedagem`)}
-                                        onChange={e => Frm.set(`${name}_trechos[${index}].hospedagem`, e.target.value)}                                        
-                                    >
-                                        {hospedagemOptions.map(option => (
-                                            <option key={option.id} value={option.id}>{option.name}</option>
-                                        ))}
-                                    </Form.Select>
+                                    {(index === trechos.length - 1)
+                                        ? <Form.Select
+                                            value={Frm.get(`${name}_trechos[${index}].hospedagem`)}
+                                            onChange={e => Frm.set(`${name}_trechos[${index}].hospedagem`, e.target.value)}
+                                            disabled
+                                        >
+                                            {hospedagemOptions.map(option => (
+                                                <option key={option.id} value={option.id}>{option.name}</option>
+                                            ))}
+                                        </Form.Select>
+
+                                        :
+                                        <Form.Select
+                                            value={Frm.get(`${name}_trechos[${index}].hospedagem`)}
+                                            onChange={e => Frm.set(`${name}_trechos[${index}].hospedagem`, e.target.value)}
+                                        >
+                                            {hospedagemOptions.map(option => (
+                                                <option key={option.id} value={option.id}>{option.name}</option>
+                                            ))}
+                                        </Form.Select>}
+
                                 </Form.Group>
                             </div>
 
