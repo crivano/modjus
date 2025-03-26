@@ -51,9 +51,7 @@ export default function ConclusaoDeslocamento() {
         setStartDate(date);
     };
 
-    let wantToEdit = false;
     const [radioSelected, setRadioSelected] = useState("nao"); // "Não" como padrão
-
 
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
@@ -302,6 +300,7 @@ export default function ConclusaoDeslocamento() {
             valorDescontoAlimentacao,
             valorLiquidoDiarias,
             resultadoCalculo,
+            justificativa
         } = Frm.data;
 
         // const formatDateToBrazilian = (date: string) => {
@@ -361,6 +360,9 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto || '0,00'))}
                     {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias || '0,00'))}
                     {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo || '0,00'))}
+
+                    {/* JUSTIFICATIVA */}
+                    {radioSelected == "sim"? formatForm("Justificativa:", justificativa): ''}
                 </div>
             )}
 
