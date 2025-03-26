@@ -190,22 +190,22 @@ export default function SolicitacaoDeslocamento() {
         <h2>Dados do Deslocamento</h2>
         <div className="row">
           <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
-          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6}   onChange={e => {
-                                                    try {
-                                                        const dataInicial = Frm.get(`periodoDe`);
-                                                        const dataFinal = e.target.value;
-    
-                                                        if (dataInicial && dataFinal < dataInicial) {
-                                                            throw new Error("Data Final do afastamento não pode ser menor que Data Inicial do afastamento");
-                                                        }
-    
-                                                      
-                                                        setError(""); // Clear any previous error
-                                                    } catch (error: any) {
-                                                        setError(error.message);
-                                                    }
+          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} onChange={e => {
+            try {
+              const dataInicial = Frm.get(`periodoDe`);
+              const dataFinal = e.target.value;
 
-                                                }}/>
+              if (dataInicial && dataFinal < dataInicial) {
+                throw new Error("Data Final do afastamento não pode ser menor que Data Inicial do afastamento");
+              }
+
+
+              setError(""); // Clear any previous error
+            } catch (error: any) {
+              setError(error.message);
+            }
+
+          }} />
         </div>
         <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
         <div className="row">
@@ -256,7 +256,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
         <h4>Dados do Proponente</h4>
-        <p style={{display:'none'}}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
+        <p style={{ display: 'none' }}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
         <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
         <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
@@ -265,7 +265,7 @@ export default function SolicitacaoDeslocamento() {
         <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
-        <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>       
+        <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
         {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
         <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
         <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
@@ -290,26 +290,26 @@ export default function SolicitacaoDeslocamento() {
         {data.trajeto_trechos?.length > 0 && (
           <>
             <h4>Trechos</h4>
-            <table className="table table-bordered">
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
               <thead>
-                <tr>
-                  <th>Data inicial</th>
-                  <th>Data final</th>
-                  <th>Trecho</th>
-                  <th>Transporte até o embarque</th>
-                  <th>Transporte até o destino</th>
-                  <th>Hospedagem fornecida</th>
+                <tr style={{ backgroundColor: "#f2f2f2" }}>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data inicial</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data final</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Transporte até o embarque</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Transporte até o destino</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Hospedagem fornecida</th>
                 </tr>
               </thead>
               <tbody>
                 {data.trajeto_trechos?.map((trecho: any, i: number) => (
-                  <tr key={i}>
-                    <td>{formatDateToBrazilian(trecho.dataTrechoInicial)}</td>
-                    <td>{formatDateToBrazilian(trecho.dataTrechoFinal)}</td>
-                    <td>{trecho.origem || 'Não informado'} / {trecho.destino || 'Não informado'}</td>
-                    <td>{getOptionName(transporteOptions, trecho.transporteAteEmbarque)}</td>
-                    <td>{getOptionName(transporteOptions, trecho.transporteAposDesembarque)}</td>
-                    <td>{getOptionName(hospedagemOptions, trecho.hospedagem)}</td>
+                  <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f9f9f9" }}>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trecho.dataTrechoInicial)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trecho.dataTrechoFinal)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{trecho.origem || 'Não informado'} / {trecho.destino || 'Não informado'}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(transporteOptions, trecho.transporteAteEmbarque)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(transporteOptions, trecho.transporteAposDesembarque)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(hospedagemOptions, trecho.hospedagem)}</td>
                   </tr>
                 ))}
               </tbody>
