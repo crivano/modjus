@@ -430,7 +430,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
                   <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
                   <div className="row">
               <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
-              {(Frm.get('prorrogacao') === '1') && <Frm.MoneyInput label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
+              {(Frm.get('prorrogacao') === '1') && <Frm.Input label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
    
                   </div>
                   <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local:" name="servicoAtividade" width={12} />
@@ -464,26 +464,26 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             {Frm.get('resultadoCalculo') != '2' && ( 
             <div style={{ display: 'none' }}>
               <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
-              <Frm.Input label="Valor bruto das diárias" name="totalDiaria" width={12} />
-              <Frm.Input label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
-              <Frm.Input label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
-              <Frm.Input label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
-              <Frm.Input label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
-              <Frm.Input label="Desconto de teto" name="totalDescontoTeto" width={12} />
-              <Frm.Input label="Valor líquido das diárias" name="total" width={12} />
+              <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
+              <Frm.MoneyInputFloat label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
+              <Frm.MoneyInputFloat label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
+              <Frm.MoneyInputFloat label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
+              <Frm.MoneyInputFloat label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
+              <Frm.MoneyInputFloat label="Desconto de teto" name="totalDescontoTeto" width={12} />
+              <Frm.MoneyInputFloat label="Valor líquido das diárias" name="total" width={12} />
               </div>
             )} 
 
             {Frm.get('resultadoCalculo') === '2' && ( 
               <>
               <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
-              <Frm.Input label="Valor bruto das diárias" name="totalDiaria" width={12} />
-              <Frm.Input label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
-              <Frm.Input label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
-              <Frm.Input label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
-              <Frm.Input label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
-              <Frm.Input label="Desconto de teto" name="totalDescontoTeto" width={12} />
-              <Frm.Input label="Valor líquido das diárias" name="total" width={12} />
+              <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
+              <Frm.MoneyInputFloat label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
+              <Frm.MoneyInputFloat label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
+              <Frm.MoneyInputFloat label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
+              <Frm.MoneyInputFloat label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
+              <Frm.MoneyInputFloat label="Desconto de teto" name="totalDescontoTeto" width={12} />
+              <Frm.MoneyInputFloat label="Valor líquido das diárias" name="total" width={12} />
               </>
             )} 
 
@@ -493,8 +493,8 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
 
             {Frm.get('auxilios') === '2' && (
               <>
-              <Frm.MoneyInput label="Valor do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
-              <Frm.MoneyInput label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
+              <Frm.MoneyInputFloat label="Valor do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
+              <Frm.MoneyInputFloat label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
               </>
             )}
             
@@ -505,7 +505,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
               <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="diasSemDiaria" width={12} />
               <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
               {Frm.data.tipoDeslocamento === '2' && (
-                <Frm.MoneyInput label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
+                <Frm.MoneyInputFloat label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
               )}
               <div>
                 <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
@@ -524,14 +524,6 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   function document(data: any) {
     const getOptionName = (options: { id: string, name: string }[], id: string) => {
       return options.find(opt => opt.id === id)?.name || 'Não informado';
-    };
-
-    const formatCurrency = (value: string) => {
-      const numericValue = value?.replace(/\D/g, '');
-      return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(parseFloat(numericValue) / 100);
     };
 
     const formatDateToBrazilian = (date: string) => {
@@ -643,17 +635,17 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
       return {
         data: formatDateToBrazilian(currentDate.toISOString().split('T')[0]),
         trecho: trajeto ? `${trajeto.origem || 'Não informado'} / ${trajeto.destino || 'Não informado'}` : '-',
-        valorBrutoDiarias: formatCurrency(data.valorBrutoDiarias || '0'),
-        valorAdicionalDeslocamento: formatCurrency(data.valorAdicionalDeslocamento || '0'),
-        valorDescontoAlimentacao: formatCurrency(data.valorDescontoAlimentacao || '0'),
-        valorDescontoTransporte: formatCurrency(data.valorDescontoTransporte || '0'),
-        subtotalBrutoDiarias: formatCurrency(data.subtotalBrutoDiarias || '0'),
-        descontoTeto: formatCurrency(data.descontoTeto || '0'),
-        valorLiquidoDiarias: formatCurrency(data.valorLiquidoDiarias || '0')
+        valorBrutoDiarias: data.valorBrutoDiarias || '0',
+        valorAdicionalDeslocamento: data.valorAdicionalDeslocamento || '0',
+        valorDescontoAlimentacao: data.valorDescontoAlimentacao || '0',
+        valorDescontoTransporte: data.valorDescontoTransporte || '0',
+        subtotalBrutoDiarias: data.subtotalBrutoDiarias || '0',
+        descontoTeto: data.descontoTeto || '0',
+        valorLiquidoDiarias: data.valorLiquidoDiarias || '0'
       };
     });
   
-    function formatFloatValue(value: number): string {
+    const formatFloatValue = (value: number): string => {
       return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
@@ -675,6 +667,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
             <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
             <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
+            {data.prorrogacao === '1' && <p><strong>Valor já recebido previamente:</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || '0')}</p>}
             <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
             <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
             <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
@@ -720,8 +713,8 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
           <p><strong>Quantidade de dias em que não será paga a diária durante o deslocamento:</strong> {data.quantidadeDiasSemDiaria || 'Não informado'}</p>
           {data.auxilios === '2' && (
             <>
-              <p><strong>Valor do auxílio alimentação:</strong> {formatCurrency(data.valorAuxilioAlimentacao || '0')}</p>
-              <p><strong>Valor do auxílio transporte:</strong> {formatCurrency(data.valorAuxilioTransporte || '0')}</p>
+              <p><strong>Valor do auxílio alimentação:</strong> {data.valorAuxilioAlimentacao || '0'}</p>
+              <p><strong>Valor do auxílio transporte:</strong> {data.valorAuxilioTransporte || '0'}</p>
             </>
           )}
           </>
@@ -730,19 +723,19 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
           <>
             <h4>Informação manual de cálculo</h4>
             <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
-            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</p>
-            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</p>
-            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || '0')}</p>
-            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || '0')}</p>
-            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto || '0')}</p>
-            <p><strong>Desconto de teto:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto  || '0')}</p>
-            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido || '0')}</p>
+            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || 0)}</p>
+            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || 0)}</p>
+            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || 0)}</p>
+            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || 0)}</p>
+            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto || 0)}</p>
+            <p><strong>Desconto de teto:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || 0)}</p>
+            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido || 0)}</p>
           </>
         )}
         {data.auxilios === '2' && (
           <>
-            <p><strong>Valor do auxílio alimentação:</strong> {formatCurrency(data.valorAuxilioAlimentacao || '0')}</p>
-            <p><strong>Valor do auxílio transporte:</strong> {formatCurrency(data.valorAuxilioTransporte || '0')}</p>
+            <p><strong>Valor do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
+            <p><strong>Valor do auxílio transporte:</strong> {formatFloatValue(data.valorAuxilioTransporte || 0)}</p>
           </>
         )}
         {data.resultadoCalculo === '1' && (

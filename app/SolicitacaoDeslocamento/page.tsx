@@ -180,7 +180,7 @@ export default function SolicitacaoDeslocamento() {
         <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
         <div className="row">
           <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
-          {(Frm.get('prorrogacao') === '1') && <Frm.MoneyInput label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
+          {(Frm.get('prorrogacao') === '1') && <Frm.MoneyInputFloat label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
         </div>
         <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local" name="servicoAtividade" width={12} />
 
@@ -248,17 +248,10 @@ export default function SolicitacaoDeslocamento() {
       return options.find(opt => opt.id === id)?.name || 'Não informado';
     };
 
-    function formatFloatValue(value: number): string {
+    const formatFloatValue = (value: number): string => {
       return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-    
-    const formatCurrency = (value: string) => {
-      const numericValue = value?.replace(/\D/g, '');
-      return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(parseFloat(numericValue) / 100);
     };
+
     return <>
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
@@ -283,7 +276,7 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
         <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
         <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
-        {(data.prorrogacao === '1') && <p><strong>Valor já recebido previamente :</strong> {formatCurrency(data.valorJaRecebidoPreviamente || '0')}</p>}
+        {(data.prorrogacao === '1') && <p><strong>Valor já recebido previamente :</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || 0)}</p>}
  
         <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
 
