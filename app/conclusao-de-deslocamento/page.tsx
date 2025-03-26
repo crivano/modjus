@@ -85,14 +85,6 @@ export default function ConclusaoDeslocamento() {
         return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     };
 
-    // function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    //     const selectedId = event.target.value;
-    //     const selected = solicitacaoOptions.find(option => option.name === selectedId);
-    //     setSelectedCode(selected)
-    //     setSelectedSolicitacao(selected ? selected.data : null);
-    //     Frm.update({ ...formData, solicitacaoDeslocamento: selectedId }, setFormData);
-    // }
-
     function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
         const selectedId = event.target.value;
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
