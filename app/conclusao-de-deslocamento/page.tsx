@@ -76,7 +76,7 @@ export default function ConclusaoDeslocamento() {
 
     const formatCurrency = (value: number | string | undefined) => {
         
-        if (value === undefined) return '0,00';
+        if (value === undefined || value === '') return '0,00';
         if (typeof value === 'string') {
             value = limparNumeros(value); 
             value = parseFloat(value);
@@ -391,9 +391,9 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
                     
-                    {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin === true ? 'Sim' : 'Não')}
+                    {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === true ? 'Sim' : 'Não')}
                     {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
-                    {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte))}
+                    {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto = valorBrutoDiarias) || '0,00')}
