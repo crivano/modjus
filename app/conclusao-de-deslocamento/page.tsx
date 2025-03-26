@@ -189,7 +189,7 @@ export default function ConclusaoDeslocamento() {
                     )}
                 </div>
 
-                Deseja editar os dados da conclusão de deslocamento?
+                Deseja editar os dados da conclusão de deslocamento manualmente?
                 <div>
                     <label>
                         <input
@@ -368,21 +368,24 @@ export default function ConclusaoDeslocamento() {
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento)}
-                    {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual)}
+                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = solicitacaoDeslocamento)}
+                    {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual = data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
-                    {formatForm("Proponente:", selectedSolicitacao.proponente?.descricao)}
-                    {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente)}
+                    {formatForm("Proponente:", selectedSolicitacao.proponente.descricao = proponente?.descricao)}
+                    {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente = cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Beneficiário:", selectedSolicitacao.pessoa?.descricao)}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario))}
-                    {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa)}
+                    {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
+                    {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
+                    {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
 
-                    {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento))}
-                    {formatForm("Itinerário:", selectedSolicitacao.trajeto)}
+                    {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
+                    {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
+                    {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
+
+
+                    
                     {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin === true ? 'Sim' : 'Não')}
                     {formatForm("Período:", selectedSolicitacao.periodoDe + " a " + selectedSolicitacao.periodoAte)}
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte))}
