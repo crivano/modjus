@@ -215,7 +215,7 @@ export default function ConclusaoDeslocamento() {
 
                 <div hidden={radioSelected == "nao"}>
                     <Frm.TextArea label="Justifique:" name="justificativa" width={12} />
-                    <h2>Dados do Proponente</h2>
+                    <h3>Dados do Proponente</h3>
                     <div className="row">
                         <Frm.Input
                             label="Código da Solicitação de Deslocamento:"
@@ -237,7 +237,7 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Input label="Cargo" name="cargoProponente" width={6} />
                     </div>
 
-                    <p></p><h2>Dados do Beneficiário</h2>
+                    <p></p><h3>Dados do Beneficiário</h3>
 
                     <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={6} />
                     <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
@@ -246,6 +246,8 @@ export default function ConclusaoDeslocamento() {
                         {/* <Frm.Input label="Função" name="funcaoBeneficiario" width={6} /> */}
                         <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
                     </div>
+
+                    <p></p><h3>Dados do Deslocamento</h3>
 
                     <Frm.Input label="Finalidade" name="finalidade" width={12} />
                     <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={tipoDeslocamentoOptions} />
