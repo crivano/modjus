@@ -111,9 +111,10 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
 
             {
                 (trechos || []).map((trecho, index) => (
-                    <div key={index} className="d-flex align-trechos-center mb-2">
+                    <div key={index} className="card my-2 p-2 d-flex align-trechos-center mb-2" style={{ backgroundColor: "AliceBlue" }}>
                         <div className="flex-grow-1">
-                            <div className="row">
+                            <label className="mb-2"><strong>Trecho {index + 1 + ": " + trecho.origem + "/" + trecho.destino}</strong></label>
+                            <div className="row flex flex-col">
                                 <Form.Group className="mb-2 col-md-6">
                                     <Form.Label>Origem</Form.Label>
                                     <Form.Control type="text" value={trecho.origem} readOnly />
@@ -152,7 +153,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                 <Form.Group className="mb-2 col-md-6">
                                     <div className="row d-flex align-items-end">
                                         <div className="col-6">
-                                            <Form.Label>Data do Trecho Inicial</Form.Label>
+                                            <Form.Label>Data do embarque</Form.Label>
                                             <Form.Control
                                                 type="date"
                                                 value={Frm.get(`${name}_trechos[${index}].dataTrechoInicial`)}
@@ -161,7 +162,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                         </div>
 
                                         <div className="col-6">
-                                            <Form.Label>Data do Trecho Final</Form.Label>
+                                            <Form.Label>Data anterior ao próximo embarque</Form.Label>
                                             <Form.Control
                                                 type="date"
                                                 value={Frm.get(`${name}_trechos[${index}].dataTrechoFinal`)}
@@ -189,7 +190,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
 
                                 {/* Campo de Hospedagem */}
 
-                                <Form.Group className="mb-2 col-md-6 d-flex flex-column">
+                                <Form.Group className="mb-2 col-md-6 d-flex flex-column mt-auto">
                                     <Form.Label>Hospedagem custeada/fornecida por órgão da administração pública</Form.Label>
                                     {(index === trechos.length - 1)
                                         ? <Form.Select
@@ -219,7 +220,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                     </div>
                 ))
             }
-        </div>
+        </div >
     ) : null;
 };
 
