@@ -390,21 +390,19 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
-
-
                     
                     {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin === true ? 'Sim' : 'Não')}
-                    {formatForm("Período:", selectedSolicitacao.periodoDe + " a " + selectedSolicitacao.periodoAte)}
+                    {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias?.totalDeDiariasBruto) || '0,00')}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento) || '0,00')}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao) || '0,00')}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte) || '0,00')}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto) || '0,00')}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido) || '0,00')}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total) || '0,00')}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto = valorBrutoDiarias) || '0,00')}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento = valorAdicionalDeslocamento) || '0,00')}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao = valorDescontoAlimentacao) || '0,00')}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte = valorDescontoTransporte) || '0,00')}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto = totalDeDescontoDeTeto) || '0,00')}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido = valorLiquidoDiarias) || '0,00')}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total = resultadoCalculo) || '0,00')}
                 </>
             )}
         </>
