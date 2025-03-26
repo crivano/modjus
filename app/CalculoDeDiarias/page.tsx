@@ -259,25 +259,25 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     }
   }
 
-  function handleAuxiliosChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  function handleAuxiliosChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
     const selectedAuxilio = event.target.value;
-    Frm.update({ ...formData, auxilios: selectedAuxilio }, setFormData);
+    const valorAuxilioTransportealimentacao = obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria);
+    Frm.set('valorAuxilioAlimentacao', valorAuxilioTransportealimentacao);
 
-    if (selectedAuxilio === '1' && selectedSolicitacao) {
-      const faixa = getOptionName(faixaOptions, selectedSolicitacao.faixa);
-      const tipoDiaria = getOptionName(tipoDiariaOptions, selectedSolicitacao.tipoDiaria);
-
-      fetchAuxilioTransporte(selectedSolicitacao.pessoa.sigla).then(auxilioTransporte => {
-        const diasDeslocamento = (new Date(selectedSolicitacao.periodoAte).getTime() - new Date(selectedSolicitacao.periodoDe).getTime()) / (1000 * 3600 * 24) + 1;
-        const valorTotalAuxilioTransporte = auxilioTransporte * diasDeslocamento;
-
-        Frm.update({
-          ...formData,
-          valorAuxilioAlimentacao: valorUnitarioDoAuxilioAlimentacao,
-          valorAuxilioTransporte: valorTotalAuxilioTransporte
-        }, setFormData);
+    if (selectedAuxilio === '1') {
+      fetchAuxilioTransporte(Frm.data.pessoa.sigla).then(auxilioTransporte => {
+        Frm.set('valorAuxilioTransporte', auxilioTransporte);
       });
     }
+  }
+
+  function obterValorDiaria(faixaId, isInternacional, tipoDiariaParam) {
+    const faixa = faixaOptions.find(f => f.id === faixaId);
+    if (!faixa || !faixa.name) return 0; // Retorna 0 se a faixa não for encontrada
+  
+    const tipoDiaria = isInternacional ? 'exterior' : tipoDiariaParam === '1' ? 'nacional' : tipoDiariaParam === '2' ? 'meia' : 'Sem Diária';
+    
+    return tabelaDeDiariasAuxilioAlimentacao[faixa.name]?.[tipoDiaria] || 0;
   }
 
   const handleCalcularDiarias = (Frm: FormHelper) => {
@@ -325,16 +325,6 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   //    Frm.data.feriados || [],
   //    Frm.data.diasSemDiaria || []
   //  );
-
-  function obterValorDiaria(faixaId, isInternacional, tipoDiariaParam) {
-    const faixa = faixaOptions.find(f => f.id === faixaId);
-    if (!faixa || !faixa.name) return 0; // Retorna 0 se a faixa não for encontrada
-  
-    const tipoDiaria = isInternacional ? 'exterior' : tipoDiariaParam === '1' ? 'nacional' : tipoDiariaParam === '2' ? 'meia' : 'Sem Diária';
-    
-    return tabelaDeDiariasAuxilioAlimentacao[faixa.name]?.[tipoDiaria] || 0;
-  }
-
  
   const parseDate = (dateStr: string) => {
     if (!dateStr) return new Date();
@@ -389,9 +379,13 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
           if (Frm.data.solicitacaoDeslocamento) {
             handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
           }
+          if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
+            handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+          }
           setDataFetched(true);
         });
       }
+      
     });
 
     return <>
@@ -474,7 +468,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
               </div>
             )} 
 
-            {Frm.get('resultadoCalculo') === '2' && ( 
+            {Frm.get('resultadoCalculo') === '2' && (
               <>
               <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
               <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
@@ -488,7 +482,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             )} 
 
             {Frm.get('resultadoCalculo') === '1' && (
-              <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={handleAuxiliosChange} width={12} />
+              <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={(event) =>  handleAuxiliosChange(event, Frm)} width={12} />
             )}
 
             {Frm.get('auxilios') === '2' && (
@@ -706,15 +700,12 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
         )}
         {data.resultadoCalculo === '1' && (
           <>
-          <h4 style={{ textAlign: 'center' }}>CÁLCULO DE DIÁRIAS</h4>
-          <p><strong>Obter automaticamente o resultado do cálculo de diária:</strong> {getOptionName(resultadoCalculoOptions, data.resultadoCalculo)}</p>
+          <h4><strong>Parâmetros de Cálculo</strong></h4>
           <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
-          <p><strong>Quantidade de feriados durante o deslocamento:</strong> {data.quantidadeFeriados || 'Não informado'}</p>
-          <p><strong>Quantidade de dias em que não será paga a diária durante o deslocamento:</strong> {data.quantidadeDiasSemDiaria || 'Não informado'}</p>
-          {data.auxilios === '2' && (
+          {data.resultadoCalculo === '1' && (
             <>
-              <p><strong>Valor do auxílio alimentação:</strong> {data.valorAuxilioAlimentacao || '0'}</p>
-              <p><strong>Valor do auxílio transporte:</strong> {data.valorAuxilioTransporte || '0'}</p>
+              <p><strong>Valor do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
+              <p><strong>Valor do auxílio transporte:</strong> {formatFloatValue(data.valorAuxilioTransporte || 0)}</p>
             </>
           )}
           </>
@@ -730,12 +721,6 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto || 0)}</p>
             <p><strong>Desconto de teto:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || 0)}</p>
             <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido || 0)}</p>
-          </>
-        )}
-        {data.auxilios === '2' && (
-          <>
-            <p><strong>Valor do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
-            <p><strong>Valor do auxílio transporte:</strong> {formatFloatValue(data.valorAuxilioTransporte || 0)}</p>
           </>
         )}
         {data.resultadoCalculo === '1' && (
