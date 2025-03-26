@@ -2,7 +2,7 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState, useEffect, ChangeEvent } from "react"
+import { useState, useEffect, ChangeEvent , useMemo} from "react"
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
@@ -86,7 +86,7 @@ export default function CalculoDeDiarias() {
     valorUnitatioDaDiaria?: string;
     valorUnitarioDaDiariaParaCalculoDoDeslocamento?: string;
     faixa?: string;
-    deslocamentoConjunto?: boolean;
+    deslocamentoConjunto?: string;
     internacional?: string;
     cotacaoDoDolar?: string;
     tipoDiaria?: string;
@@ -160,19 +160,19 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   return acc;
 }, {} as Record<string, TipoDeDiariaEnum>);
   
-  const Frm = new FormHelper();
+const Frm = useMemo(() => new FormHelper(), []);
 
   useEffect(() => {
     if (Frm.data && Frm.data.solicitacaoDeslocamento) {
       fetchProcessData(Frm.data.processo);
     }
-  }, []);
+  }, [Frm.data]);
 
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste'},
-        /* params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'}, */
+        // params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste'},
+        params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'},
      
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
@@ -201,6 +201,19 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
       return 0;
     }
   }
+
+  const calcularFaixa = (benefAcrescimo, calcCargoFuncao) => {
+    if (benefAcrescimo !== "Nenhum") {
+      if (benefAcrescimo === "Equipe de Trabalho") {
+        return "Maior Faixa na Equipe de Trabalho";
+      }
+      if (benefAcrescimo === "Segurança de Magistrado") {
+        return "Faixa do Magistrado";
+      }
+      return "Faixa da Autoridade";
+    }
+    return calcCargoFuncao || "";
+  };
 
   function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
     try {
@@ -261,7 +274,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
 
   function handleAuxiliosChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
     const selectedAuxilio = event.target.value;
-    const valorAuxilioTransportealimentacao = obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria);
+    const valorAuxilioTransportealimentacao = valorUnitarioDoAuxilioAlimentacao;
     Frm.set('valorAuxilioAlimentacao', valorAuxilioTransportealimentacao);
 
     if (selectedAuxilio === '1') {
@@ -335,15 +348,15 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
   const result = calcularDiarias(
      // Pass the necessary parameters from formData
     parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
-    parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
-    Frm.data.faixa as unknown as FaixaEnum,
-    Frm.data.deslocamentoConjunto ? DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO : DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO,
+    parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
+    calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixa),
+    Frm.data.deslocamentoConjunto,
     Frm.data.internacional === '1',
     parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
     tipoDiariaMap[Frm.data.tipoDiaria],
     Frm.data.prorrogacao === '1',
     parseFloat(Number(Frm.data.valorJaRecebidoPreviamente || '0').toFixed(2)),
-    valorUnitarioDoAuxilioAlimentacao,
+    Frm.data.valorAuxilioAlimentacao,
     parseFloat(Number(Frm.data.valorUnitarioDoAuxilioTransporte || '0').toFixed(2)),
     valorTetoDiariaNacionalAuxilioAlimentacao,
     valorTetoMeiaDiariaNacionalAuxilioAlimentacao,
@@ -371,7 +384,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     }
   }
 
-  function interview(Frm: FormHelper) {
+  function Interview(Frm: FormHelper) {
     
     useEffect(() => {
       if (Frm.data && Frm.data.numeroProcesso && !dataFetched) {
@@ -800,7 +813,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     </>
   }
 
-  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'CalculoDeDiarias' })
+  return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'CalculoDeDiarias' })
 }
 function getOptionName(options: { id: string, name: string }[], id: string) {
   return options.find(opt => opt.id === id)?.name || 'Não informado';
