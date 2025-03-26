@@ -92,7 +92,7 @@ export default function CalculoDeDiarias() {
     tipoDiaria?: string;
     tipoDeslocamento?: string;
     prorrogacao?: string;
-    valorJaRecebido?: string;
+    valorJaRecebidoPreviamente?: string;
     valorUnitarioDoAuxilioAlimentacao?: string;
     valorUnitarioDoAuxilioTransporte?: string;
     tetoDiaria?: string;
@@ -242,6 +242,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
       Frm.set('acrescimo', solicitacaoData.acrescimo || '');
       Frm.set('tipoDiaria', solicitacaoData.tipoDiaria || '');
       Frm.set('prorrogacao', solicitacaoData.prorrogacao || '');
+      Frm.set('valorJaRecebidoPreviamente', solicitacaoData.valorJaRecebidoPreviamente || '');
       Frm.set('servicoAtividade', solicitacaoData.servicoAtividade || '');
       Frm.set('periodoDe', solicitacaoData.periodoDe || '');
       Frm.set('periodoAte', solicitacaoData.periodoAte || '');
@@ -351,7 +352,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
     tipoDiariaMap[Frm.data.tipoDiaria],
     Frm.data.prorrogacao === '1',
-    parseFloat(Number(Frm.data.valorJaRecebido || '0').toFixed(2)),
+    parseFloat(Number(Frm.data.valorJaRecebidoPreviamente || '0').toFixed(2)),
     valorUnitarioDoAuxilioAlimentacao,
     parseFloat(Number(Frm.data.valorUnitarioDoAuxilioTransporte || '0').toFixed(2)),
     valorTetoDiariaNacionalAuxilioAlimentacao,
@@ -429,6 +430,8 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
                   <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
                   <div className="row">
               <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
+              {(Frm.get('prorrogacao') === '1') && <Frm.MoneyInput label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
+   
                   </div>
                   <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local:" name="servicoAtividade" width={12} />
 
@@ -727,7 +730,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
           <>
             <h4>Informação manual de cálculo</h4>
             <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
-            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0' || '0')}</p>
+            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</p>
             <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</p>
             <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || '0')}</p>
             <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || '0')}</p>
@@ -781,9 +784,38 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
             <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
             <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
               </tr>
+
             </tbody>
           </table>
+
         )}
+        {data.resultadoCalculo === '1' && (
+               <> <br>
+               </br>
+               <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}> 
+                    <tbody>
+                            <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
+                            <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor Líquido</td>
+                            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
+                   
+                             </tr>
+                           
+                  {(data.resultadoCalculo === '1' && data?.prorrogacao === '1' && data?.valorJaRecebidoPreviamente) && (    
+                     <>
+                      <tr style={{ backgroundColor: "#f9f9f9", fontWeight: "bold" }}>
+                        <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor já recebido</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.valorJaRecebido) || '0'}</td>
+       
+                       </tr>
+                       <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
+                        <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.total) || '0'}</td>
+       
+                       </tr>      
+                     </>
+                     
+        )} </tbody>
+        </table> </>)}
         {// JSON.stringify(data)
         }
       </div>
