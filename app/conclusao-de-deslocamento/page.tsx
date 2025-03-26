@@ -75,8 +75,10 @@ export default function ConclusaoDeslocamento() {
     }
 
     const formatCurrency = (value: number | string | undefined) => {
+        
         if (value === undefined) return '0,00';
         if (typeof value === 'string') {
+            value = limparNumeros(value); 
             value = parseFloat(value);
             value /= 100;
         }
@@ -125,13 +127,13 @@ export default function ConclusaoDeslocamento() {
             Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
 
             // CÁLCULO DE DIÁRIAS
-            Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias.totalDeDiariasBruto || '');
-            Frm.set('valorAdicionalDeslocamento', solicitacaoData.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento || '');
-            Frm.set('valorDescontoAlimentacao', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao || '');
-            Frm.set('valorDescontoTransporte', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte || '');
-            Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias.totalDeDescontoDeTeto || '');
-            Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias.subtotalLiquido || '');
-            Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias.total || '');
+            Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias?.totalDeDiariasBruto || '');
+            Frm.set('valorAdicionalDeslocamento', solicitacaoData.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '');
+            Frm.set('valorDescontoAlimentacao', solicitacaoData.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || '');
+            Frm.set('valorDescontoTransporte', solicitacaoData.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || '');
+            Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '');
+            Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias?.subtotalLiquido || '');
+            Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias?.total || '');
         }
     }
 
@@ -158,6 +160,11 @@ export default function ConclusaoDeslocamento() {
         </>
     }
 
+    // FUNÇÃO PARA FORMATAR O CAMPO DE DINHEIRO
+    function limparNumeros(valor: string): string {
+        return valor.replace(/\D/g, ''); // Remove todos os caracteres que não são números
+    }
+    
     // INTERVEIW - ÁREA DA ENTREVISTA
     function interview(Frm: FormHelper) {
         return <>
@@ -260,13 +267,13 @@ export default function ConclusaoDeslocamento() {
 
                     {/* Dados dos cálculos */}
                     <div className="row">
-                        <Frm.Input label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
-                        <Frm.Input label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
-                        <Frm.Input label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
-                        <Frm.Input label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
-                        <Frm.Input label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
-                        <Frm.Input label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
-                        <Frm.Input label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
+                        <Frm.MoneyInput label="Valor Bruto das Diárias" name="valorBrutoDiarias" width={6} />
+                        <Frm.MoneyInput label="Adicional de Deslocamento" name="valorAdicionalDeslocamento" width={6} />
+                        <Frm.MoneyInput label="Desconto de Auxílio Alimentação" name="valorDescontoAlimentacao" width={6} />
+                        <Frm.MoneyInput label="Desconto de Auxílio Transporte" name="valorDescontoTransporte" width={6} />
+                        <Frm.MoneyInput label="Desconto de Teto" name="totalDeDescontoDeTeto" width={6} />
+                        <Frm.MoneyInput label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
+                        <Frm.MoneyInput label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
                     </div>
                 </div>
             </div>
@@ -391,7 +398,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto) || '0,00')}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias?.totalDeDiariasBruto) || '0,00')}
                     {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento) || '0,00')}
                     {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao) || '0,00')}
                     {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte) || '0,00')}
