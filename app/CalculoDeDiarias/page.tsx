@@ -79,7 +79,7 @@ const tabelaDeDiariasAuxilioAlimentacao = {
 
 const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
-const valorUnitarioDoAuxilioAlimentacao = 63.32;
+const valorUnitarioDoAuxilioAlimentacao = 66.38;
 
 export default function CalculoDeDiarias() {
   interface FormData {
@@ -334,6 +334,12 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     return tabelaDeDiariasAuxilioAlimentacao[faixa.name]?.[tipoDiaria] || 0;
   }
 
+ 
+  const parseDate = (dateStr: string) => {
+    if (!dateStr) return new Date();
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day); // Garantindo fuso local sem ajustes inesperados
+  };
 
   const result = calcularDiarias(
      // Pass the necessary parameters from formData
@@ -351,8 +357,8 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
     valorTetoDiariaNacionalAuxilioAlimentacao,
     valorTetoMeiaDiariaNacionalAuxilioAlimentacao,
     trechos_para_calcular || [],
-    Frm.data.feriados || [],
-    Frm.data.diasSemDiaria || []
+    Frm.data.feriados?.map(parseDate) || [],
+    Frm.data.diasSemDiaria?.map(parseDate) || []
   );
 
     Frm.set('resultadoCalculoDiarias', result || {});
@@ -493,7 +499,7 @@ const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
               <>
               <Frm.FeriadosInput label="Quantidade de feriados durante o deslocamento" name="feriados" width={12} />
               <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-              <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="DiasSemDiaria" width={12} />
+              <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="diasSemDiaria" width={12} />
               <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
               {Frm.data.tipoDeslocamento === '2' && (
                 <Frm.MoneyInput label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
