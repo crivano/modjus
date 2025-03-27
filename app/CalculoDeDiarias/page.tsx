@@ -279,8 +279,9 @@ const Frm = useMemo(() => new FormHelper(), []);
 
     if (selectedAuxilio === '1') {
       fetchAuxilioTransporte(Frm.data.pessoa.sigla).then(auxilioTransporte => {
-        Frm.set('valorAuxilioTransporte', auxilioTransporte);
+        Frm.set('valorAuxilioTransporte', auxilioTransporte );
       });
+      Frm.data.valorAuxilioTransporte = parseFloat(Frm.data.valorAuxilioTransporte); 
     }
   }
 
@@ -351,15 +352,15 @@ const Frm = useMemo(() => new FormHelper(), []);
     parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
     calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixa),
     Frm.data.deslocamentoConjunto,
-    Frm.data.internacional === '1',
+    Frm.data.tipoDeslocamento === '2',
     parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
     tipoDiariaMap[Frm.data.tipoDiaria],
     Frm.data.prorrogacao === '1',
     parseFloat(Number(Frm.data.valorJaRecebidoPreviamente || '0').toFixed(2)),
-    Frm.data.valorAuxilioAlimentacao,
-    Frm.data.valorAuxilioTransporte,
-    valorTetoDiariaNacionalAuxilioAlimentacao,
-    valorTetoMeiaDiariaNacionalAuxilioAlimentacao,
+    parseFloat(Number(Frm.data.valorAuxilioAlimentacao || '0').toFixed(2)),
+    parseFloat(Number(Frm.data.valorAuxilioTransporte || '0').toFixed(2)),
+    parseFloat(Number(valorTetoDiariaNacionalAuxilioAlimentacao || '0').toFixed(2)),
+    parseFloat(Number(valorTetoMeiaDiariaNacionalAuxilioAlimentacao || '0').toFixed(2)),
     trechos_para_calcular || [],
     Frm.data.feriados?.map(parseDate) || [],
     Frm.data.diasSemDiaria?.map(parseDate) || []
