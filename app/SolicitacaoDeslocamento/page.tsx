@@ -163,7 +163,7 @@ export default function SolicitacaoDeslocamento() {
           <div>
             <div className="row">
               <Frm.Input label="Nome" name="nomePessoa" width={6} />
-              <Frm.Input label="CPF (somente algarismos)" name="cpfPessoa" width={6} />
+              <Frm.CPFInput label="CPF (somente algarismos)" name="cpfPessoa" width={6} />
               <Frm.MoneyInputFloat label="Valor Diário do Aux. Alimentação" name="valorDiarioAuxAlimentacao" width={6} />
               <Frm.MoneyInputFloat label="Valor Diário do Aux. Transporte" name="valorDiarioAuxTransporte" width={6} />
               <Frm.Input label="Banco" name="bancoColaborador" width={4} />
@@ -271,6 +271,15 @@ export default function SolicitacaoDeslocamento() {
       return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     };
 
+    const formatCPF = (value: string) => {
+      const numericValue = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+      return numericValue
+          .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+          .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+          .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+          .slice(0, 14); // Limita o tamanho ao formato de CPF
+  };
+
     return <>
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
@@ -285,7 +294,7 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         {data.tipoBeneficiario > '1' && <p>
           <p><strong>Nome:</strong> {data.nomePessoa || 'Não informado'}</p>
-          <p><strong>CPF:</strong> {data.cpfPessoa || 'Não informado'}</p>
+          <p><strong>CPF:</strong> {formatCPF(data.cpfPessoa) || 'Não informado'}</p>
           <p><strong>Valor Diário do Aux. Alimentação:</strong> {formatFloatValue(data.valorDiarioAuxAlimentacao || 0)}</p>
           <p><strong>Valor Diário do Aux. Transporte:</strong> {formatFloatValue(data.valorDiarioAuxTransporte || 0)}</p>
           <p><strong>Banco:</strong> {data.bancoColaborador || 'Não informado'}</p>

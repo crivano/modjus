@@ -392,6 +392,43 @@ export class FormHelper {
         )
     }
 
+    public CPFInput = ({ label, name, width }: { label: string; name: string; width?: number | string }) => {
+        const formatCPF = (value: string) => {
+            const numericValue = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+            return numericValue
+                .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+                .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+                .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+                .slice(0, 14); // Limita o tamanho ao formato de CPF
+        };
+    
+        const parseCPF = (value: string) => {
+            return value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        };
+    
+        const value = this.get(name) || ''; // Obtém o valor atual do campo
+    
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="text"
+                    value={formatCPF(value)} // Formata o CPF para exibição no campo
+                    onChange={(e) => this.set(name, parseCPF(e.target.value))} // Remove formatação ao salvar
+                    placeholder="000.000.000-00"
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{formatCPF(value)}</strong></p> {/* Formata o CPF no preview */}
+            </div>
+        );
+    };
+
     public MoneyInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         const formatCurrency = (value: string) => {
             const numericValue = value.replace(/\D/g, '');
