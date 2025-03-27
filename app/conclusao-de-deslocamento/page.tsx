@@ -210,11 +210,16 @@ export default function ConclusaoDeslocamento() {
                     )}
                 </div>
                 <div>
-                    Deseja editar os dados da conclusão de deslocamento manualmente?<br />
-
-                    {radioButtonEditForm("Sim")}
-                    <br />
-                    {radioButtonEditForm("Não")}
+                    {(selectedSolicitacao) ?
+                        <>
+                            Deseja editar os dados da conclusão de deslocamento manualmente?<br />
+                            {radioButtonEditForm("Sim")}
+                            < br />
+                            {radioButtonEditForm("Não")}
+                        </>
+                        :
+                        <></>
+                    }
                 </div>
 
                 <div hidden={radioSelected == "não"}>
@@ -334,7 +339,7 @@ export default function ConclusaoDeslocamento() {
         return <>
 
             {!selectedSolicitacao && (
-                <div className="scrollableContainer">
+                <div hidden className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", solicitacaoDeslocamento)}
