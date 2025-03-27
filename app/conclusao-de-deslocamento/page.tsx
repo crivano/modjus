@@ -45,7 +45,7 @@ export default function ConclusaoDeslocamento() {
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const [selectedCode, setSelectedCode] = useState(null);
-    const [radioSelected, setRadioSelected] = useState("nao"); // "Não" como padrão
+    const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const handleDateChange = (date: Date | null) => {
         setStartDate(date);
