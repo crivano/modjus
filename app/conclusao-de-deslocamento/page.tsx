@@ -55,7 +55,7 @@ export default function ConclusaoDeslocamento() {
     async function fetchProcessData(numeroProcesso: string) {
         try {
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                params: { num_processo: numeroProcesso, nome_documento: process.env.NEXT_PUBLIC_FORM_DAILY_CALCULATION },
+                params: { num_processo: numeroProcesso, nome_documento: 'Cálculo de Diárias de Deslocamento (modjus)' },
                 headers: {
                     'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
                     'x-forwarded-for': '127.0.0.1'
@@ -273,6 +273,7 @@ export default function ConclusaoDeslocamento() {
                         <Frm.MoneyInputTemp label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
                         <Frm.MoneyInputTemp label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
                     </div>
+                    </> )}
                 </div>
             </div>
         </>
@@ -405,5 +406,5 @@ export default function ConclusaoDeslocamento() {
         </>
     }
 
-    return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
+    return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'ConclusaoDeDeslocamento' })
 }

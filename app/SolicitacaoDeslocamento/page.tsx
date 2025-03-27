@@ -2,8 +2,9 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
+import DynamicListTrajetoV1 from "@/components/sei/DynamicListTrajetoV1"
 import ErrorPopup from "@/components/ErrorPopup"
 import axios from 'axios';
 
@@ -63,7 +64,7 @@ const meioTransporteOptions = [
 export default function SolicitacaoDeslocamento() {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({});
-  const Frm = new FormHelper();
+  const Frm = useMemo(() => new FormHelper(), []);
 
   const [dataAtual, setDataAtual] = useState('');
   // ...existing state variables...
@@ -94,6 +95,9 @@ export default function SolicitacaoDeslocamento() {
 
   function handlePessoaChange(pessoa: any, Frm: FormHelper) {
     if (pessoa && pessoa.sigla) {
+      Frm.set('funcaoPessoa', pessoa.funcao || '');
+      Frm.set('cargoPessoa', pessoa.cargo || '');
+      // Frm.set('cpfPessoa', pessoa.cpf || '');
       fetchDadosBancarios(pessoa.sigla, Frm);
     }
   }
@@ -115,7 +119,8 @@ export default function SolicitacaoDeslocamento() {
           transporteAteEmbarque: '1',
           transporteAposDesembarque: '1',
           hospedagem: '1',
-          dataTrecho: ''
+          dataTrechoInicial: '',
+          dataTrechoFinal: ''
         };
         const newData = [...items, newItem];
         this.set(name, newData);
@@ -140,7 +145,7 @@ export default function SolicitacaoDeslocamento() {
       <div className="scrollableContainer">
 
         <h2>Dados do Proponente</h2>
-        <Frm.Input label="Data da Solicitação" name="dataAtual" width={4} />
+        <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={6} />
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
           <Frm.Input label="Função" name="funcaoProponente" width={6} />
@@ -152,6 +157,12 @@ export default function SolicitacaoDeslocamento() {
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
         <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
+        {/* <Frm.Input label="CPF" name="cpfPessoa" width={6} />  */}
+        <div className="row">
+          <Frm.Input label="Função" name="funcaoPessoa" width={6} />
+          <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
+        </div>
+
         <div className="row">
           <Frm.Input label="Banco" name="banco" width={4} />
           <Frm.Input label="Agência" name="agencia" width={4} />
@@ -169,25 +180,41 @@ export default function SolicitacaoDeslocamento() {
         <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
         <div className="row">
           <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
+          {(Frm.get('prorrogacao') === '1') && <Frm.MoneyInputFloat label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
         </div>
-        <Frm.TextArea label="Serviço ou atividade a ser desenvolvida" name="servicoAtividade" width={12} />
-        <Frm.TextArea label="Órgão" name="orgao" width={12} />
-        <Frm.TextArea label="Local" name="local" width={12} />
+        <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local" name="servicoAtividade" width={12} />
+
 
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
 
         <h2>Dados do Deslocamento</h2>
         <div className="row">
           <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
-          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+          <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} onChange={e => {
+            try {
+              const dataInicial = Frm.get(`periodoDe`);
+              const dataFinal = e.target.value;
+
+              if (dataInicial && dataFinal < dataInicial) {
+                throw new Error("Data Final do afastamento não pode ser menor que Data Inicial do afastamento");
+              }
+
+
+              setError(""); // Clear any previous error
+            } catch (error: any) {
+              setError(error.message);
+            }
+
+          }} />
         </div>
         <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
         <div className="row">
           <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
           <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
-          <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} />
+          {/* <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={[{ id: 'Sim', name: 'Sim' }, { id: 'Não', name: 'Não' }]} width={12} /> */}
         </div>
-        <Frm.DynamicListTrajeto label="Trajeto" name="trajeto" width={12} />
+        <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
+        <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
@@ -221,11 +248,15 @@ export default function SolicitacaoDeslocamento() {
       return options.find(opt => opt.id === id)?.name || 'Não informado';
     };
 
+    const formatFloatValue = (value: number): string => {
+      return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    };
+
     return <>
       <div className="scrollableContainer">
         <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
         <h4>Dados do Proponente</h4>
-        <p style={{display:'none'}}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
+        <p style={{ display: 'none' }}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
         <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
         <p><strong>Função:</strong> {data.funcaoProponente || 'Não informado'}</p>
@@ -235,6 +266,9 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
         <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
+        {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
+        <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
+        <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
         <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
 
@@ -242,37 +276,40 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
         <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
         <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
-        <p><strong>Serviço ou atividade a ser desenvolvida:</strong> {data.servicoAtividade || 'Não informado'}</p>
-        <p><strong>Órgão:</strong> {data.orgao || 'Não informado'}</p>
-        <p><strong>Local:</strong> {data.local || 'Não informado'}</p>
+        {(data.prorrogacao === '1') && <p><strong>Valor já recebido previamente :</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || 0)}</p>}
+ 
+        <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
 
         <h4>Dados do Deslocamento</h4>
-        <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
+        <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte} - Retorno à Origem: {data.trajeto_returnToOrigin ? "Sim" : "Não"}</p>
         <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
         <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
         <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, data.meioTransporte)}</p>
+        <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
 
-        {data.trajeto?.length > 0 && (
+        {data.trajeto_trechos?.length > 0 && (
           <>
             <h4>Trechos</h4>
-            <table className="table table-bordered">
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
               <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Trecho</th>
-                  <th>Transporte até o embarque</th>
-                  <th>Transporte até o destino</th>
-                  <th>Hospedagem fornecida</th>
+                <tr style={{ backgroundColor: "#f2f2f2" }}>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data inicial</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data final</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Transporte até o embarque</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Transporte até o destino</th>
+                  <th style={{ border: "1px solid #ddd", padding: "8px" }}>Hospedagem fornecida</th>
                 </tr>
               </thead>
               <tbody>
-                {data.trajeto.map((trajeto: any, i: number) => (
-                  <tr key={i}>
-                    <td>{formatDateToBrazilian(trajeto.dataTrecho)}</td>
-                    <td>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
-                    <td>{getOptionName(transporteOptions, trajeto.transporteAteEmbarque)}</td>
-                    <td>{getOptionName(transporteOptions, trajeto.transporteAposDesembarque)}</td>
-                    <td>{getOptionName(hospedagemOptions, trajeto.hospedagem)}</td>
+                {data.trajeto_trechos?.map((trecho: any, i: number) => (
+                  <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f9f9f9" }}>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trecho.dataTrechoInicial)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trecho.dataTrechoFinal)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{trecho.origem || 'Não informado'} / {trecho.destino || 'Não informado'}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(transporteOptions, trecho.transporteAteEmbarque)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(transporteOptions, trecho.transporteAposDesembarque)}</td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(hospedagemOptions, trecho.hospedagem)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -283,5 +320,5 @@ export default function SolicitacaoDeslocamento() {
     </>
   }
 
-  return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'SolicitacaoDeslocamento' })
+  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'SolicitacaoDeslocamento' })
 }

@@ -14,9 +14,11 @@ export async function GET(req: NextRequest) {
     let orgao;
 
     if (matriculaPrefix === 'T2') {
-        orgao = 1;
-    } else if (matriculaPrefix === 'RJ') {
         orgao = 2;
+    } else if (matriculaPrefix === 'RJ') {
+        orgao = 1;
+    } else if (matriculaPrefix === 'ES') {
+        orgao = 3;
     } else {
         return NextResponse.json({ error: 'Não foi possível pegar os valores de diaria de transporte' }, { status: 400 });
     }
