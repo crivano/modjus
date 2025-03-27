@@ -164,8 +164,8 @@ export default function SolicitacaoDeslocamento() {
             <div className="row">
               <Frm.Input label="Nome" name="nomePessoa" width={6} />
               <Frm.Input label="CPF (somente algarismos)" name="cpfPessoa" width={6} />
-              <Frm.Input label="Valor Diário do Aux. Alimentação" name="valorDiarioAuxAlimentacao" width={6} />
-              <Frm.Input label="Valor Diário do Aux. Transporte" name="valorDiarioAuxTransporte" width={6} />
+              <Frm.MoneyInputFloat label="Valor Diário do Aux. Alimentação" name="valorDiarioAuxAlimentacao" width={6} />
+              <Frm.MoneyInputFloat label="Valor Diário do Aux. Transporte" name="valorDiarioAuxTransporte" width={6} />
               <Frm.Input label="Banco" name="bancoColaborador" width={4} />
               <Frm.Input label="Agência" name="agenciaColaborador" width={4} />
               <Frm.Input label="Conta" name="contaColaborador" width={4} />
