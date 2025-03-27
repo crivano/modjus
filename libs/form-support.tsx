@@ -429,6 +429,38 @@ export class FormHelper {
         );
     };
 
+    public NameInput = ({ label, name, width }: { label: string; name: string; width?: number | string }) => {
+        const formatName = (value: string) => {
+            return value.toUpperCase(); // Converte todo o texto para maiúsculas
+        };
+    
+        const parseName = (value: string) => {
+            return value.replace(/[^a-zA-ZÀ-ÿ\s]/g, ''); // Remove caracteres inválidos (apenas letras e espaços)
+        };
+    
+        const value = this.get(name) || ''; // Obtém o valor atual do campo
+    
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="text"
+                    value={formatName(value)} // Formata o nome para exibição no campo
+                    onChange={(e) => this.set(name, parseName(e.target.value))} // Remove caracteres inválidos ao salvar
+                    placeholder="DIGITE O NOME COMPLETO"
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{formatName(value)}</strong></p> {/* Formata o nome no preview */}
+            </div>
+        );
+    };
+
     public MoneyInput = ({ label, name, width }: { label: string, name: string, width?: number | string }) => {
         const formatCurrency = (value: string) => {
             const numericValue = value.replace(/\D/g, '');

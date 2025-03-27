@@ -142,6 +142,10 @@ export default function SolicitacaoDeslocamento() {
     return `${day}/${month}/${year}`
   }
 
+  const formatName = (value: string) => {
+    return value.toUpperCase();
+};
+
   function interview(Frm: FormHelper) {
     return <>
       <div className="scrollableContainer">
@@ -162,7 +166,7 @@ export default function SolicitacaoDeslocamento() {
         {colaboradores.includes(Frm.get('tipoBeneficiario')) &&
           <div>
             <div className="row">
-              <Frm.Input label="Nome" name="nomePessoa" width={6} />
+              <Frm.NameInput label="Nome" name="nomePessoa" width={6} />
               <Frm.CPFInput label="CPF (somente algarismos)" name="cpfPessoa" width={6} />
               <Frm.MoneyInputFloat label="Valor Diário do Aux. Alimentação" name="valorDiarioAuxAlimentacao" width={6} />
               <Frm.MoneyInputFloat label="Valor Diário do Aux. Transporte" name="valorDiarioAuxTransporte" width={6} />
@@ -293,7 +297,7 @@ export default function SolicitacaoDeslocamento() {
         <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         {data.tipoBeneficiario > '1' && <p>
-          <p><strong>Nome:</strong> {data.nomePessoa || 'Não informado'}</p>
+          <p><strong>Nome:</strong> {formatName(data.nomePessoa) || 'Não informado'}</p>
           <p><strong>CPF:</strong> {formatCPF(data.cpfPessoa) || 'Não informado'}</p>
           <p><strong>Valor Diário do Aux. Alimentação:</strong> {formatFloatValue(data.valorDiarioAuxAlimentacao || 0)}</p>
           <p><strong>Valor Diário do Aux. Transporte:</strong> {formatFloatValue(data.valorDiarioAuxTransporte || 0)}</p>
