@@ -273,7 +273,6 @@ export default function ConclusaoDeslocamento() {
                         <Frm.MoneyInputTemp label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
                         <Frm.MoneyInputTemp label="Valor Total das Passagens" name="resultadoCalculo" width={6} />
                     </div>
-                    </> )}
                 </div>
             </div>
         </>
