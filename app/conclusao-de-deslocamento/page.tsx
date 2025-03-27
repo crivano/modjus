@@ -334,7 +334,7 @@ export default function ConclusaoDeslocamento() {
         return <>
 
             {!selectedSolicitacao && (
-                <div hidden className="scrollableContainer">
+                <div className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", solicitacaoDeslocamento)}
@@ -400,6 +400,9 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto = totalDeDescontoDeTeto))}
                     {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido = valorLiquidoDiarias))}
                     {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total = resultadoCalculo))}
+
+                    {/* JUSTIFICATIVA */}
+                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
                 </>
             )}
         </>
