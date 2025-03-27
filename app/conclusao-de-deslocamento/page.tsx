@@ -156,6 +156,7 @@ export default function ConclusaoDeslocamento() {
         return valor.replace(/\D/g, ''); // Remove todos os caracteres que não são números
     }
 
+    // FUNÇÃO UTILIZADA PARA PERMITIR QUE O USUARIO EDITE O FORMULÁRIO MANUALMENTE 
     function radioButtonEditForm(resposta: string) {
         return (
             <label style={{
