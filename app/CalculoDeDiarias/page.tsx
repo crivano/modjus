@@ -352,7 +352,7 @@ const Frm = useMemo(() => new FormHelper(), []);
     parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
     calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixa),
     Frm.data.deslocamentoConjunto,
-    Frm.data.internacional === '1',
+    Frm.data.tipoDeslocamento === '2',
     parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
     tipoDiariaMap[Frm.data.tipoDiaria],
     Frm.data.prorrogacao === '1',
