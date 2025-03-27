@@ -37,7 +37,6 @@ const getOptionName = (options: { id: string, name: string }[], id: string) => {
     return options.find(opt => opt.id === id)?.name || 'Não informado';
 };
 
-
 export default function ConclusaoDeslocamento() {
     const Frm = new FormHelper();
     const [formData, setFormData] = useState({});
@@ -113,7 +112,7 @@ export default function ConclusaoDeslocamento() {
             Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
             Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
             Frm.set('origemDestino', solicitacaoData.trajeto || '');
-            Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? '1' : '0');
+            Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? '1' : '2');
             Frm.set('periodoDe', solicitacaoData.periodoDe || '');
             Frm.set('periodoAte', solicitacaoData.periodoAte || '');
             Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
@@ -384,8 +383,10 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
+
+                    {console.log(retorno_a_origem + ' ' + selectedSolicitacao.return_to_origin)}
                     
-                    {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === true ? 'Sim' : 'Não')}
+                    {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === '1' ? 'Sim' : 'Não')}
                     {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
 
