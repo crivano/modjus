@@ -61,6 +61,8 @@ const meioTransporteOptions = [
   { id: '5', name: 'Sem Passagens' }
 ]
 
+const colaboradores = ['2', '3']
+
 export default function SolicitacaoDeslocamento() {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({});
@@ -156,18 +158,35 @@ export default function SolicitacaoDeslocamento() {
 
         <h2>Dados do Beneficiário</h2>
         <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
-        <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
-        {/* <Frm.Input label="CPF" name="cpfPessoa" width={6} />  */}
-        <div className="row">
-          <Frm.Input label="Função" name="funcaoPessoa" width={6} />
-          <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
-        </div>
 
-        <div className="row">
-          <Frm.Input label="Banco" name="banco" width={4} />
-          <Frm.Input label="Agência" name="agencia" width={4} />
-          <Frm.Input label="Conta" name="conta" width={4} />
-        </div>
+        {colaboradores.includes(Frm.get('tipoBeneficiario')) &&
+          <div>
+            <div className="row">
+              <Frm.Input label="Nome" name="nomePessoa" width={6} />
+              <Frm.Input label="CPF (somente algarismos)" name="cpfPessoa" width={6} />
+              <Frm.Input label="Valor Diário do Aux. Alimentação" name="valorDiarioAuxAlimentacao" width={6} />
+              <Frm.Input label="Valor Diário do Aux. Transporte" name="valorDiarioAuxTransporte" width={6} />
+              <Frm.Input label="Banco" name="bancoColaborador" width={4} />
+              <Frm.Input label="Agência" name="agenciaColaborador" width={4} />
+              <Frm.Input label="Conta" name="contaColaborador" width={4} />
+            </div>
+          </div>}
+
+        {Frm.get('tipoBeneficiario') === '1' &&
+          <div>
+            <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
+            <div className="row">
+              <Frm.Input label="Função" name="funcaoPessoa" width={6} />
+              <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
+            </div>
+
+            <div className="row">
+              <Frm.Input label="Banco" name="banco" width={4} />
+              <Frm.Input label="Agência" name="agencia" width={4} />
+              <Frm.Input label="Conta" name="conta" width={4} />
+            </div>
+          </div>
+        }
         <Frm.Select label="Faixa" name="faixa" options={faixaOptions} width={12} />
 
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
@@ -217,7 +236,7 @@ export default function SolicitacaoDeslocamento() {
         <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
-      </div>
+      </div >
     </>
   }
 
@@ -264,12 +283,25 @@ export default function SolicitacaoDeslocamento() {
 
         <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
-        <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
-        <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
-        {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
-        <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
-        <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
-        <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
+        {data.tipoBeneficiario > '1' && <p>
+          <p><strong>Nome:</strong> {data.nomePessoa || 'Não informado'}</p>
+          <p><strong>CPF:</strong> {data.cpfPessoa || 'Não informado'}</p>
+          <p><strong>Valor Diário do Aux. Alimentação:</strong> {formatFloatValue(data.valorDiarioAuxAlimentacao || 0)}</p>
+          <p><strong>Valor Diário do Aux. Transporte:</strong> {formatFloatValue(data.valorDiarioAuxTransporte || 0)}</p>
+          <p><strong>Banco:</strong> {data.bancoColaborador || 'Não informado'}</p>
+          <p><strong>Agência:</strong> {data.agenciaColaborador || 'Não informado'}</p>
+          <p><strong>C/C nº:</strong> {data.contaColaborador || 'Não informado'}</p>
+        </p>}
+
+        {data.tipoBeneficiario === '1' && <p>
+          <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
+          <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
+          {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
+          <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
+          <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
+          <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
+        </p>}
+
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
 
         <h4>Dados da Atividade</h4>
@@ -277,7 +309,7 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
         <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
         {(data.prorrogacao === '1') && <p><strong>Valor já recebido previamente :</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || 0)}</p>}
- 
+
         <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
 
         <h4>Dados do Deslocamento</h4>
