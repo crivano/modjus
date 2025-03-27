@@ -74,10 +74,10 @@ export default function ConclusaoDeslocamento() {
     }
 
     const formatCurrency = (value: number | string | undefined) => {
-        
+
         if (value === undefined || value === '') return '0,00';
         if (typeof value === 'string') {
-            value = limparNumeros(value); 
+            value = limparNumeros(value);
             value = parseFloat(value);
             value /= 100;
         }
@@ -155,7 +155,29 @@ export default function ConclusaoDeslocamento() {
     function limparNumeros(valor: string): string {
         return valor.replace(/\D/g, ''); // Remove todos os caracteres que não são números
     }
-    
+
+    function radioButtonEditForm(resposta: string) {
+        return (
+            <label style={{
+                display: 'inline-block',
+                marginRight: '1em',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+            }}>
+                <input
+                    type="radio"
+                    name="opcao"
+                    value={resposta.toLowerCase()}
+                    checked={radioSelected === resposta.toLowerCase()}
+                    onChange={(e) => setRadioSelected(e.target.value)}
+                />
+                {' '} {/* Adiciona um espaço */}
+                {resposta}
+            </label>
+        )
+    }
+
     // INTERVEIW - ÁREA DA ENTREVISTA
     function interview(Frm: FormHelper) {
         return <>
@@ -186,33 +208,15 @@ export default function ConclusaoDeslocamento() {
                         />
                     )}
                 </div>
-
-                Deseja editar os dados da conclusão de deslocamento manualmente?
                 <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="opcao"
-                            value="sim"
-                            checked={radioSelected === "sim"}
-                            onChange={(e) => setRadioSelected(e.target.value)}
-                        />
-                        Sim
-                    </label>
+                    Deseja editar os dados da conclusão de deslocamento manualmente?<br />
+
+                    {radioButtonEditForm("Sim")}
                     <br />
-                    <label>
-                        <input
-                            type="radio"
-                            name="opcao"
-                            value="nao"
-                            checked={radioSelected === "nao"}
-                            onChange={(e) => setRadioSelected(e.target.value)}
-                        />
-                        Não
-                    </label>
+                    {radioButtonEditForm("Não")}
                 </div>
 
-                <div hidden={radioSelected == "nao"}>
+                <div hidden={radioSelected == "não"}>
                     <Frm.TextArea label="Justifique:" name="justificativa" width={12} />
                     <h3>Dados do Proponente</h3>
                     <div className="row">
@@ -361,7 +365,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Valor Total das Passagens:", formatCurrency(resultadoCalculo || '0,00'))}
 
                     {/* JUSTIFICATIVA */}
-                    {radioSelected == "sim"? formatForm("Justificativa:", justificativa || "Não informado"): ''}
+                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
                 </div>
             )}
 
@@ -383,9 +387,6 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
-
-                    {console.log(retorno_a_origem + ' ' + selectedSolicitacao.return_to_origin)}
-                    
                     {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === '1' ? 'Sim' : 'Não')}
                     {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
