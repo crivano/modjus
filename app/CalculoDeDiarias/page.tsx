@@ -2,13 +2,14 @@
 
 import Model from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
-import { useState, useEffect, ChangeEvent , useMemo} from "react"
+import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import Pessoa from "@/components/sei/Pessoa"
 import DynamicListTrajetoV1 from "@/components/sei/DynamicListTrajetoV1"
 import ErrorPopup from '@/components/ErrorPopup' // Adjust the import path as necessary
 import { calcularDiarias, DeslocamentoConjuntoEnum, FaixaEnum, TipoDeDiariaEnum } from '@/components/utils/calculaDiarias' // Adjust the import path as necessary
+import { upperCase } from "lodash"
 
 const tipoBeneficiarioOptions = [
   { id: '', name: '' },
@@ -70,11 +71,11 @@ const auxiliosOptions = [
 ]
 
 const tabelaDeDiariasAuxilioAlimentacao = {
-  "Membro do Conselho": {"exterior": 727.00, "nacional": 1388.36, "meia": 694.18},
-  "Desembargador Federal": {"exterior": 691.00, "nacional": 1318.95, "meia": 659.48},
-  "Juiz Federal de 1º Grau/Juiz Federal Substituto": {"exterior": 656.00, "nacional": 1253.00, "meia": 626.50},
-  "Analista Judiciário/Cargo em Comissão": {"exterior": 400.00, "nacional": 763.60, "meia": 381.80},
-  "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": {"exterior": 327.00, "nacional": 624.76, "meia": 312.38}
+  "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
+  "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
+  "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
+  "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
+  "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
 };
 
 const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
@@ -103,32 +104,32 @@ export default function CalculoDeDiarias() {
   }
 
   interface DiariasDaJusticaFederalParametroTrecho {
-      dataTrechoInicial: Date;
-      dataTrechoFinal: Date;
-      trecho: string;
-      transporteEmbarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
-      transporteDesembarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
-      semDespesasDeHospedagem: boolean;
+    dataTrechoInicial: Date;
+    dataTrechoFinal: Date;
+    trecho: string;
+    transporteEmbarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
+    transporteDesembarque: TipoDeTransporteParaEmbarqueEDestinoEnum;
+    semDespesasDeHospedagem: boolean;
   }
 
   enum TipoDeTransporteParaEmbarqueEDestinoEnum {
     COM_ADICIONAL_DE_DESLOCAMENTO = "Com Adicional de Deslocamento",
     SEM_ADICIONAL_DE_DESLOCAMENTO = "Sem Adicional de Deslocamento",
     VEICULO_OFICIAL = "Veículo Oficial"
-}
+  }
 
-enum TipoDeDiariaEnum {
-  PADRAO = "Padrão",
-  MEIA_DIARIA_A_PEDIDO = "Meia Diária a Pedido",
-  SEM_DIARIA = "Sem Diária"
-}
+  enum TipoDeDiariaEnum {
+    PADRAO = "Padrão",
+    MEIA_DIARIA_A_PEDIDO = "Meia Diária a Pedido",
+    SEM_DIARIA = "Sem Diária"
+  }
 
   const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
   const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
   const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
-  const [dataFetched, setDataFetched] = useState(false); 
+  const [dataFetched, setDataFetched] = useState(false);
 
   const tipoDiariaOptions = [
     { id: '', name: '' },
@@ -147,20 +148,20 @@ enum TipoDeDiariaEnum {
   ];
 
   // Criando um mapeamento de ID para Enum
-const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
-  if (name) {
+  const tipoDiariaMap = tipoDiariaOptions.reduce((acc, { id, name }) => {
+    if (name) {
       const enumKey = Object.keys(TipoDeDiariaEnum).find(
-          key => TipoDeDiariaEnum[key as keyof typeof TipoDeDiariaEnum] === name
+        key => TipoDeDiariaEnum[key as keyof typeof TipoDeDiariaEnum] === name
       );
 
       if (enumKey) {
-          acc[id] = TipoDeDiariaEnum[enumKey as keyof typeof TipoDeDiariaEnum];
+        acc[id] = TipoDeDiariaEnum[enumKey as keyof typeof TipoDeDiariaEnum];
       }
-  }
-  return acc;
-}, {} as Record<string, TipoDeDiariaEnum>);
-  
-const Frm = useMemo(() => new FormHelper(), []);
+    }
+    return acc;
+  }, {} as Record<string, TipoDeDiariaEnum>);
+
+  const Frm = useMemo(() => new FormHelper(), []);
 
   useEffect(() => {
     if (Frm.data && Frm.data.solicitacaoDeslocamento) {
@@ -171,9 +172,9 @@ const Frm = useMemo(() => new FormHelper(), []);
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        // params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste'},
-        params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'},
-     
+        params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste' },
+        // params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)' },
+
         headers: {
           'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
           'x-forwarded-for': '127.0.0.1'
@@ -217,55 +218,61 @@ const Frm = useMemo(() => new FormHelper(), []);
 
   function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
     try {
-    if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.solicitacaoDeslocamento) {
-      setSelectedSolicitacao(Frm.data.solicitacaoDeslocamento);
-    } else if (!event.target.value || event.target.value == '') {
-      setSelectedSolicitacao(null);
-      new Error('Solicitação de deslocamento não encontrada');
-    } 
-      
+      if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.solicitacaoDeslocamento) {
+        setSelectedSolicitacao(Frm.data.solicitacaoDeslocamento);
+      } else if (!event.target.value || event.target.value == '') {
+        setSelectedSolicitacao(null);
+        new Error('Solicitação de deslocamento não encontrada');
+      }
+
       setError('');
     } catch (error) {
       setError(error.message);
       return
     }
     try {
-    const selectedId = event.target.value;
-    const selected = solicitacaoOptions.find(option => option.name === selectedId);
-    setSelectedSolicitacao(selected ? selected.data : null);
+      const selectedId = event.target.value;
+      const selected = solicitacaoOptions.find(option => option.name === selectedId);
+      setSelectedSolicitacao(selected ? selected.data : null);
 
-    if (selected) {
-      const solicitacaoData = selected.data;
-      Frm.set('dataAtual',solicitacaoData.dataAtual || '');
-      Frm.set('proponente', {
-        descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
-      });
-      Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
-      Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
-      Frm.set('pessoa', {
-        descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
-      });
-      Frm.set('funcaoPessoa', solicitacaoData.funcaoPessoa || '');
-      Frm.set('cargoPessoa', solicitacaoData.cargoPessoa || '');
-      Frm.set('banco', solicitacaoData.banco || '');
-      Frm.set('agencia', solicitacaoData.agencia || '');
-      Frm.set('conta', solicitacaoData.conta || '');
-      Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-      Frm.set('faixa', solicitacaoData.faixa || '');
-      Frm.set('acrescimo', solicitacaoData.acrescimo || '');
-      Frm.set('tipoDiaria', solicitacaoData.tipoDiaria || '');
-      Frm.set('prorrogacao', solicitacaoData.prorrogacao || '');
-      Frm.set('valorJaRecebidoPreviamente', solicitacaoData.valorJaRecebidoPreviamente || '');
-      Frm.set('servicoAtividade', solicitacaoData.servicoAtividade || '');
-      Frm.set('periodoDe', solicitacaoData.periodoDe || '');
-      Frm.set('periodoAte', solicitacaoData.periodoAte || '');
-      Frm.set('justificativa', solicitacaoData.justificativa || '');
-      Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
-      Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
-      Frm.set('trajeto', solicitacaoData.trajeto || '');
-      Frm.set('trechos', solicitacaoData.trajeto_trechos || []);
-      Frm.set('return_to_origin', solicitacaoData.trajeto_returnToOrigin || false);
-    }
+      if (selected) {
+        const solicitacaoData = selected.data;
+        Frm.set('dataAtual', solicitacaoData.dataAtual || '');
+        Frm.set('proponente', {
+          descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
+        });
+        Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
+        Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
+        // Se o beneficiário for Ccolaborador ou Colaborador Eventual, habilita os campos de valor diário
+        if (solicitacaoData.tipoBeneficiario > '1') {
+          Frm.set('valorDiarioAuxAlimentacao', solicitacaoData.valorDiarioAuxAlimentacao || '')
+          Frm.set('valorDiarioAuxTransporte', solicitacaoData.valorDiarioAuxTransporte || '')
+          Frm.set('nome', solicitacaoData.nomePessoa || '')
+          Frm.set('CPF', solicitacaoData.cpfPessoa || '');
+        } else {
+          Frm.set('funcaoPessoa', solicitacaoData.funcaoPessoa || '');
+          Frm.set('cargoPessoa', solicitacaoData.cargoPessoa || '');
+        }
+        Frm.set('banco', solicitacaoData.banco || '');
+        Frm.set('agencia', solicitacaoData.agencia || '');
+        Frm.set('conta', solicitacaoData.conta || '');
+        Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '')
+
+        Frm.set('faixa', solicitacaoData.faixa || '');
+        Frm.set('acrescimo', solicitacaoData.acrescimo || '');
+        Frm.set('tipoDiaria', solicitacaoData.tipoDiaria || '');
+        Frm.set('prorrogacao', solicitacaoData.prorrogacao || '');
+        Frm.set('valorJaRecebidoPreviamente', solicitacaoData.valorJaRecebidoPreviamente || '');
+        Frm.set('servicoAtividade', solicitacaoData.servicoAtividade || '');
+        Frm.set('periodoDe', solicitacaoData.periodoDe || '');
+        Frm.set('periodoAte', solicitacaoData.periodoAte || '');
+        Frm.set('justificativa', solicitacaoData.justificativa || '');
+        Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
+        Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
+        Frm.set('trajeto', solicitacaoData.trajeto || '');
+        Frm.set('trechos', solicitacaoData.trajeto_trechos || []);
+        Frm.set('return_to_origin', solicitacaoData.trajeto_returnToOrigin || false);
+      }
       setError('');
     } catch (error) {
       setError(error.message);
@@ -273,24 +280,29 @@ const Frm = useMemo(() => new FormHelper(), []);
   }
 
   function handleAuxiliosChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
-    const selectedAuxilio = event.target.value;
-    const valorAuxilioTransportealimentacao = valorUnitarioDoAuxilioAlimentacao;
-    Frm.set('valorAuxilioAlimentacao', valorAuxilioTransportealimentacao);
+    if (Frm.get('tipoBeneficiario') > 1) {
+      Frm.set('valorAuxilioAlimentacao', Frm.get('valorDiarioAuxAlimentacao'))
+      Frm.set('valorAuxilioTransporte', Frm.get('valorDiarioAuxTransporte'))
+    } else {
+      const selectedAuxilio = event.target.value;
+      const valorAuxilioTransportealimentacao = valorUnitarioDoAuxilioAlimentacao;
+      Frm.set('valorAuxilioAlimentacao', valorAuxilioTransportealimentacao);
 
-    if (selectedAuxilio === '1') {
-      fetchAuxilioTransporte(Frm.data.pessoa.sigla).then(auxilioTransporte => {
-        Frm.set('valorAuxilioTransporte', auxilioTransporte );
-      });
-      Frm.data.valorAuxilioTransporte = parseFloat(Frm.data.valorAuxilioTransporte); 
+      if (selectedAuxilio === '1') {
+        fetchAuxilioTransporte(Frm.data.pessoa.sigla).then(auxilioTransporte => {
+          Frm.set('valorAuxilioTransporte', auxilioTransporte);
+        });
+        Frm.data.valorAuxilioTransporte = parseFloat(Frm.data.valorAuxilioTransporte);
+      }
     }
   }
 
   function obterValorDiaria(faixaId, isInternacional, tipoDiariaParam) {
     const faixa = faixaOptions.find(f => f.id === faixaId);
     if (!faixa || !faixa.name) return 0; // Retorna 0 se a faixa não for encontrada
-  
+
     const tipoDiaria = isInternacional ? 'exterior' : tipoDiariaParam === '1' ? 'nacional' : tipoDiariaParam === '2' ? 'meia' : 'Sem Diária';
-    
+
     return tabelaDeDiariasAuxilioAlimentacao[faixa.name]?.[tipoDiaria] || 0;
   }
 
@@ -299,72 +311,72 @@ const Frm = useMemo(() => new FormHelper(), []);
 
     const trechos_para_calcular: DiariasDaJusticaFederalParametroTrecho[] = Frm.data.trechos.map(trecho => {
       const parseDate = (dateStr: string) => {
-          if (!dateStr) return new Date();
-          const [year, month, day] = dateStr.split('-').map(Number);
-          return new Date(year, month - 1, day); // Garantindo fuso local sem ajustes inesperados
+        if (!dateStr) return new Date();
+        const [year, month, day] = dateStr.split('-').map(Number);
+        return new Date(year, month - 1, day); // Garantindo fuso local sem ajustes inesperados
       };
-  
+
       return {
-          dataTrechoInicial: parseDate(trecho.dataTrechoInicial),
-          dataTrechoFinal: parseDate(trecho.dataTrechoFinal),
-          trecho: `${trecho.origem || 'Origem Desconhecida'} / ${trecho.destino || 'Destino Desconhecido'}`,
-          transporteEmbarque: trecho.transporteAteEmbarque === '1' 
-    ? TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO 
-    : (trecho.transporteAteEmbarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
-    transporteDesembarque: trecho.transporteAposDesembarque === '1' 
-    ? TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO 
-    : (trecho.transporteAposDesembarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
-         semDespesasDeHospedagem: trecho.hospedagem ? false : true
+        dataTrechoInicial: parseDate(trecho.dataTrechoInicial),
+        dataTrechoFinal: parseDate(trecho.dataTrechoFinal),
+        trecho: `${trecho.origem || 'Origem Desconhecida'} / ${trecho.destino || 'Destino Desconhecido'}`,
+        transporteEmbarque: trecho.transporteAteEmbarque === '1'
+          ? TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO
+          : (trecho.transporteAteEmbarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
+        transporteDesembarque: trecho.transporteAposDesembarque === '1'
+          ? TipoDeTransporteParaEmbarqueEDestinoEnum.COM_ADICIONAL_DE_DESLOCAMENTO
+          : (trecho.transporteAposDesembarque as TipoDeTransporteParaEmbarqueEDestinoEnum) || TipoDeTransporteParaEmbarqueEDestinoEnum.SEM_ADICIONAL_DE_DESLOCAMENTO,
+        semDespesasDeHospedagem: trecho.hospedagem ? false : true
       };
-  });
+    });
 
     console.log(Frm.data);
-  //   const result = calcularDiarias(
-  //     // Pass the necessary parameters from formData
-     
-  //    parseFloat('763.6'),
-  //    parseFloat('763.6'),
-  //    null,
-  //    null,
-  //    false,
-  //    parseFloat('0.00'),
-  //    TipoDeDiariaEnum.PADRAO,
-  //    false,
-  //    parseFloat('0.00'),
-  //    parseFloat('63.32'),
-  //    parseFloat('0.00'),
-  //    parseFloat('1106.2'),
-  //    parseFloat('1106.2'),
-  //    trechos_para_calcular || [],
-  //    Frm.data.feriados || [],
-  //    Frm.data.diasSemDiaria || []
-  //  );
- 
-  const parseDate = (dateStr: string) => {
-    if (!dateStr) return new Date();
-    const [year, month, day] = dateStr.split('-').map(Number);
-    return new Date(year, month - 1, day); // Garantindo fuso local sem ajustes inesperados
-  };
+    //   const result = calcularDiarias(
+    //     // Pass the necessary parameters from formData
 
-  const result = calcularDiarias(
-     // Pass the necessary parameters from formData
-    parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
-    parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1',Frm.data.tipoDiaria)  || '0').toFixed(2)),
-    calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixa),
-    Frm.data.deslocamentoConjunto,
-    Frm.data.tipoDeslocamento === '2',
-    parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
-    tipoDiariaMap[Frm.data.tipoDiaria],
-    Frm.data.prorrogacao === '1',
-    parseFloat(Number(Frm.data.valorJaRecebidoPreviamente || '0').toFixed(2)),
-    parseFloat(Number(Frm.data.valorAuxilioAlimentacao || '0').toFixed(2)),
-    parseFloat(Number(Frm.data.valorAuxilioTransporte || '0').toFixed(2)),
-    parseFloat(Number(valorTetoDiariaNacionalAuxilioAlimentacao || '0').toFixed(2)),
-    parseFloat(Number(valorTetoMeiaDiariaNacionalAuxilioAlimentacao || '0').toFixed(2)),
-    trechos_para_calcular || [],
-    Frm.data.feriados?.map(parseDate) || [],
-    Frm.data.diasSemDiaria?.map(parseDate) || []
-  );
+    //    parseFloat('763.6'),
+    //    parseFloat('763.6'),
+    //    null,
+    //    null,
+    //    false,
+    //    parseFloat('0.00'),
+    //    TipoDeDiariaEnum.PADRAO,
+    //    false,
+    //    parseFloat('0.00'),
+    //    parseFloat('63.32'),
+    //    parseFloat('0.00'),
+    //    parseFloat('1106.2'),
+    //    parseFloat('1106.2'),
+    //    trechos_para_calcular || [],
+    //    Frm.data.feriados || [],
+    //    Frm.data.diasSemDiaria || []
+    //  );
+
+    const parseDate = (dateStr: string) => {
+      if (!dateStr) return new Date();
+      const [year, month, day] = dateStr.split('-').map(Number);
+      return new Date(year, month - 1, day); // Garantindo fuso local sem ajustes inesperados
+    };
+
+    const result = calcularDiarias(
+      // Pass the necessary parameters from formData
+      parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
+      parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
+      calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixa),
+      Frm.data.deslocamentoConjunto,
+      Frm.data.tipoDeslocamento === '2',
+      parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
+      tipoDiariaMap[Frm.data.tipoDiaria],
+      Frm.data.prorrogacao === '1',
+      parseFloat(Number(Frm.data.valorJaRecebidoPreviamente || '0').toFixed(2)),
+      parseFloat(Number(Frm.data.valorAuxilioAlimentacao || '0').toFixed(2)),
+      parseFloat(Number(Frm.data.valorAuxilioTransporte || '0').toFixed(2)),
+      parseFloat(Number(valorTetoDiariaNacionalAuxilioAlimentacao || '0').toFixed(2)),
+      parseFloat(Number(valorTetoMeiaDiariaNacionalAuxilioAlimentacao || '0').toFixed(2)),
+      trechos_para_calcular || [],
+      Frm.data.feriados?.map(parseDate) || [],
+      Frm.data.diasSemDiaria?.map(parseDate) || []
+    );
 
     Frm.set('resultadoCalculoDiarias', result || {});
     console.log(result);
@@ -381,12 +393,12 @@ const Frm = useMemo(() => new FormHelper(), []);
       Frm.set('totalDescontoTeto', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeTeto).toFixed(2));;
       Frm.set('total', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalLiquido).toFixed(2));;
 
-     Frm.update({ ...formData, resultadoCalculo: selectedOption }, setFormData);
+      Frm.update({ ...formData, resultadoCalculo: selectedOption }, setFormData);
     }
   }
 
   function Interview(Frm: FormHelper) {
-    
+
     useEffect(() => {
       if (Frm.data && Frm.data.numeroProcesso && !dataFetched) {
         fetchProcessData(Frm.data.numeroProcesso).then(() => {
@@ -399,66 +411,66 @@ const Frm = useMemo(() => new FormHelper(), []);
           setDataFetched(true);
         });
       }
-      
+
     });
 
     return <>
       <div className="scrollableContainer">
         {
-        // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
+          // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
-          <div style={{ display: 'none' }}>
-              <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={6} />
-                  <h2>Dados do Proponente</h2>
-                  <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome"  />
-                  <div className="row">
-              <Frm.Input label="Função" name="funcaoProponente" width={6} />
-              <Frm.Input label="Cargo" name="cargoProponente" width={6} />
-                  </div>
-
-                  <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
-
-                  <h2>Dados do Beneficiário</h2>
-                  <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
-                  <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome"  />
-                  <div className="row">
-              <Frm.Input label="Banco" name="banco" width={4} />
-              <Frm.Input label="Agência" name="agencia" width={4} />
-              <Frm.Input label="Conta" name="conta" width={4} />
-                  </div>
-                  <Frm.Select label="Faixa" name="faixa" options={faixaOptions} width={12} />
-
-                  <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
-
-                  <h2>Dados da Atividade</h2>
-                  <div className="row">
-              <Frm.Select label="Acréscimo (art. 10, V)" name="acrescimo" options={acrescimoOptions} width={12} />
-              <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
-                  </div>
-                  <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
-                  <div className="row">
-              <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
-              {(Frm.get('prorrogacao') === '1') && <Frm.Input label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
-   
-                  </div>
-                  <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local:" name="servicoAtividade" width={12} />
-
-                  <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
-
-                  <h2>Dados do Deslocamento</h2>
-                  <div className="row">
-              <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
-              <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
-                  </div>
-                  <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
-                  <div className="row">
-              <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
-              <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
-                  </div>
-                  <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
+        <div style={{ display: 'none' }}>
+          <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={6} />
+          <h2>Dados do Proponente</h2>
+          <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" />
+          <div className="row">
+            <Frm.Input label="Função" name="funcaoProponente" width={6} />
+            <Frm.Input label="Cargo" name="cargoProponente" width={6} />
           </div>
+
+          <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+
+          <h2>Dados do Beneficiário</h2>
+          <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={12} />
+          <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" />
+          <div className="row">
+            <Frm.Input label="Banco" name="banco" width={4} />
+            <Frm.Input label="Agência" name="agencia" width={4} />
+            <Frm.Input label="Conta" name="conta" width={4} />
+          </div>
+          <Frm.Select label="Faixa" name="faixa" options={faixaOptions} width={12} />
+
+          <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+
+          <h2>Dados da Atividade</h2>
+          <div className="row">
+            <Frm.Select label="Acréscimo (art. 10, V)" name="acrescimo" options={acrescimoOptions} width={12} />
+            <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
+          </div>
+          <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
+          <div className="row">
+            <Frm.RadioButtons label="É prorrogação?" name="prorrogacao" options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]} width={12} />
+            {(Frm.get('prorrogacao') === '1') && <Frm.Input label="Valor já recebido previamente : " name="valorJaRecebidoPreviamente" width={12} />}
+
+          </div>
+          <Frm.TextArea label="Serviço ou atividade a ser desenvolvida, Órgão e Local:" name="servicoAtividade" width={12} />
+
+          <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
+
+          <h2>Dados do Deslocamento</h2>
+          <div className="row">
+            <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
+            <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
+          </div>
+          <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
+          <div className="row">
+            <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
+            <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
+          </div>
+          <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
+        </div>
         {
-        // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
+          // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
 
         <h2>Cálculo de Diárias</h2>
@@ -467,63 +479,63 @@ const Frm = useMemo(() => new FormHelper(), []);
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
         )}
         {Frm.data && Frm.data.solicitacaoDeslocamento && (
-            <>
-            <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions}  onChange={(event) =>  handleFormaDeCalculo(event, Frm)} width={12}/>
-            {Frm.get('resultadoCalculo') != '2' && ( 
-            <div style={{ display: 'none' }}>
-              <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
-              <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
-              <Frm.MoneyInputFloat label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
-              <Frm.MoneyInputFloat label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
-              <Frm.MoneyInputFloat label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
-              <Frm.MoneyInputFloat label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
-              <Frm.MoneyInputFloat label="Desconto de teto" name="totalDescontoTeto" width={12} />
-              <Frm.MoneyInputFloat label="Valor líquido das diárias" name="total" width={12} />
+          <>
+            <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions} onChange={(event) => handleFormaDeCalculo(event, Frm)} width={12} />
+            {Frm.get('resultadoCalculo') != '2' && (
+              <div style={{ display: 'none' }}>
+                <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
+                <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
+                <Frm.MoneyInputFloat label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
+                <Frm.MoneyInputFloat label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
+                <Frm.MoneyInputFloat label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
+                <Frm.MoneyInputFloat label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
+                <Frm.MoneyInputFloat label="Desconto de teto" name="totalDescontoTeto" width={12} />
+                <Frm.MoneyInputFloat label="Valor líquido das diárias" name="total" width={12} />
               </div>
-            )} 
+            )}
 
             {Frm.get('resultadoCalculo') === '2' && (
               <>
-              <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
-              <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
-              <Frm.MoneyInputFloat label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
-              <Frm.MoneyInputFloat label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
-              <Frm.MoneyInputFloat label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
-              <Frm.MoneyInputFloat label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
-              <Frm.MoneyInputFloat label="Desconto de teto" name="totalDescontoTeto" width={12} />
-              <Frm.MoneyInputFloat label="Valor líquido das diárias" name="total" width={12} />
+                <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
+                <Frm.MoneyInputFloat label="Valor bruto das diárias" name="totalDiaria" width={12} />
+                <Frm.MoneyInputFloat label="Valor adicional de deslocamento" name="totalAdicionalDeslocamento" width={12} />
+                <Frm.MoneyInputFloat label="Valor do desconto de auxílio alimentação" name="totalDescontoAlimentacao" width={12} />
+                <Frm.MoneyInputFloat label="Valor do desconto de auxílio transporte" name="totalDescontoTransporte" width={12} />
+                <Frm.MoneyInputFloat label="Subtotal bruto das diárias" name="totalSubtotal" width={12} />
+                <Frm.MoneyInputFloat label="Desconto de teto" name="totalDescontoTeto" width={12} />
+                <Frm.MoneyInputFloat label="Valor líquido das diárias" name="total" width={12} />
               </>
-            )} 
+            )}
 
             {Frm.get('resultadoCalculo') === '1' && (
-              <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={(event) =>  handleAuxiliosChange(event, Frm)} width={12} />
+              <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={(event) => handleAuxiliosChange(event, Frm)} width={12} />
             )}
 
             {Frm.get('auxilios') === '2' && (
               <>
-              <Frm.MoneyInputFloat label="Valor diário do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
-              <Frm.MoneyInputFloat label="Valor diário do auxílio transporte" name="valorAuxilioTransporte" width={12} />
+                <Frm.MoneyInputFloat label="Valor diário do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
+                <Frm.MoneyInputFloat label="Valor diário do auxílio transporte" name="valorAuxilioTransporte" width={12} />
               </>
             )}
-            
+
             {Frm.get('resultadoCalculo') === '1' && (
               <>
-              <Frm.FeriadosInput label="Quantidade de feriados durante o deslocamento" name="feriados" width={12} />
-              <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-              <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="diasSemDiaria" width={12} />
-              <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
-              {Frm.data.tipoDeslocamento === '2' && (
-                <Frm.MoneyInputFloat label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
-              )}
-              <div>
-                <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
-              </div>
+                <Frm.FeriadosInput label="Quantidade de feriados durante o deslocamento" name="feriados" width={12} />
+                <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos feriados, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
+                <Frm.FeriadosInput label="Quantidade de dias em que não será paga a diária durante o deslocamento" name="diasSemDiaria" width={12} />
+                <p style={{ marginTop: '1px', marginBottom: '0' }}>Nos dias em que não for paga a diária, assim como nos fins de semana, não serão descontados o auxílio alimentação e o auxílio transporte</p>
+                {Frm.data.tipoDeslocamento === '2' && (
+                  <Frm.MoneyInputFloat label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
+                )}
+                <div>
+                  <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
+                </div>
               </>
             )}
-            </>
+          </>
         )}
-        
-        
+
+
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
     </>
@@ -586,10 +598,10 @@ const Frm = useMemo(() => new FormHelper(), []);
       { id: '4', name: 'Veículo Próprio' },
       { id: '5', name: 'Sem Passagens' }]
 
-      const hospedagemOptions = [
-        { id: '1', name: 'Sim' },
-        { id: '2', name: 'Não' }
-      ];
+    const hospedagemOptions = [
+      { id: '1', name: 'Sim' },
+      { id: '2', name: 'Não' }
+    ];
 
     const calculateTotals = (data: any) => {
       let totalDiaria = 0;
@@ -599,9 +611,9 @@ const Frm = useMemo(() => new FormHelper(), []);
       let totalSubtotal = 0;
       let totalDescontoTeto = 0;
       let total = 0;
-  
+
       const diasDeslocamento = (new Date(data.periodoAte).getTime() - new Date(data.periodoDe).getTime()) / (1000 * 3600 * 24) + 1;
-  
+
       for (let i = 0; i < diasDeslocamento; i++) {
         totalDiaria += parseFloat(data.valorBrutoDiarias || '0');
         totalAdicionalDeslocamento += parseFloat(data.valorAdicionalDeslocamento || '0');
@@ -619,7 +631,7 @@ const Frm = useMemo(() => new FormHelper(), []);
       Frm.set('totalSubtotal', Number(totalSubtotal).toFixed(2));
       Frm.set('totalDescontoTeto', Number(totalDescontoTeto).toFixed(2));
       Frm.set('total', Number(total).toFixed(2));
-      
+
 
       return {
         totalDiaria,
@@ -631,11 +643,11 @@ const Frm = useMemo(() => new FormHelper(), []);
         total
       };
     };
-  
+
     const totals = calculateTotals(data);
-  
+
     const diasDeslocamento = (new Date(data.periodoAte).getTime() - new Date(data.periodoDe).getTime()) / (1000 * 3600 * 24) + 1;
-  
+
     const dadosTabelaCalculoDiarias = Array.from({ length: diasDeslocamento }).map((_, i) => {
       const currentDate = new Date(new Date(data.periodoDe).getTime() + i * 1000 * 3600 * 24);
       const trajeto = data.trechos?.find((t: any) => new Date(t.dataTrecho).getTime() === currentDate.getTime());
@@ -652,7 +664,7 @@ const Frm = useMemo(() => new FormHelper(), []);
         valorLiquidoDiarias: data.valorLiquidoDiarias || '0'
       };
     });
-  
+
     const formatFloatValue = (value: number): string => {
       return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
@@ -666,10 +678,20 @@ const Frm = useMemo(() => new FormHelper(), []);
             <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
             <p><strong>Matrícula:</strong> {data.proponente?.sigla || 'Não informado'}</p>
             <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
-            <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
-            <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
-            <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
-            <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
+
+            {data.tipoBeneficiario > '1' && <>
+              <p><strong>Beneficiário:</strong> {data.nome || 'Não informado'}</p>
+              <p><strong>CPF:</strong> {data.CPF || 'Não informado'}</p>
+            </>
+            }
+            {data.tipoBeneficiario === '1' &&
+              <>
+                <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
+                <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
+                <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
+                <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
+              </>
+            }
             <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
             <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
             <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
@@ -686,7 +708,7 @@ const Frm = useMemo(() => new FormHelper(), []);
                 <h4>Trechos</h4>
                 <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
                   <thead>
-                     <tr style={{ backgroundColor: "#f2f2f2" }}>
+                    <tr style={{ backgroundColor: "#f2f2f2" }}>
                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data Inicial</th>
                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data Final</th>
                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
@@ -714,14 +736,14 @@ const Frm = useMemo(() => new FormHelper(), []);
         )}
         {data.resultadoCalculo === '1' && (
           <>
-          <h4><strong>Parâmetros de Cálculo</strong></h4>
-          <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
-          {data.resultadoCalculo === '1' && (
-            <>
-              <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
-              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0)}</p>
-            </>
-          )}
+            <h4><strong>Parâmetros de Cálculo</strong></h4>
+            <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
+            {data.resultadoCalculo === '1' && (
+              <>
+                <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
+                <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0)}</p>
+              </>
+            )}
           </>
         )}
         {data.resultadoCalculo === '2' && (
@@ -738,43 +760,43 @@ const Frm = useMemo(() => new FormHelper(), []);
           </>
         )}
         {data.resultadoCalculo === '1' && (
-          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}> 
-          <thead>
-            <tr style={{ backgroundColor: "#f2f2f2" }}>
-            <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Valor da Diária</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Adicional de Deslocamento</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Auxílio Alimentação</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Auxílio Transporte</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Subtotal</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Teto</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Total</th>
+          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
+            <thead>
+              <tr style={{ backgroundColor: "#f2f2f2" }}>
+                <th style={{ border: "1px solid #ddd", padding: "8px" }}>Data</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px" }}>Trecho</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Valor da Diária</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Adicional de Deslocamento</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Auxílio Alimentação</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Auxílio Transporte</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Subtotal</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Desconto Teto</th>
+                <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>Total</th>
               </tr>
             </thead>
             <tbody>
               {data.resultadoCalculoDiarias?.dias?.map((dia, i) => (
-            <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f9f9f9" }}>
-            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{dia.data}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px" }}>{dia.trecho}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.diaria)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.acrescimoDeDeslocamento)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeAuxilioAlimentacao)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeAuxilioTransporte)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalBruto)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeTeto)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalLiquido)}</td>
-          </tr>
+                <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#f9f9f9" }}>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>{dia.data}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>{dia.trecho}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.diaria)}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.acrescimoDeDeslocamento)}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeAuxilioAlimentacao)}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeAuxilioTransporte)}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalBruto)}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.descontoDeTeto)}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalLiquido)}</td>
+                </tr>
               ))}
-            <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
-            <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
+              <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
+                <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
               </tr>
 
             </tbody>
@@ -782,32 +804,32 @@ const Frm = useMemo(() => new FormHelper(), []);
 
         )}
         {data.resultadoCalculo === '1' && (
-               <> <br>
-               </br>
-               <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}> 
-                    <tbody>
-                            <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
-                            <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor Líquido</td>
-                            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
-                   
-                             </tr>
-                           
-                  {(data.resultadoCalculo === '1' && data?.prorrogacao === '1' && data?.valorJaRecebidoPreviamente) && (    
-                     <>
-                      <tr style={{ backgroundColor: "#f9f9f9", fontWeight: "bold" }}>
-                        <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor já recebido</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.valorJaRecebido) || '0'}</td>
-       
-                       </tr>
-                       <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
-                        <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.total) || '0'}</td>
-       
-                       </tr>      
-                     </>
-                     
-        )} </tbody>
-        </table> </>)}
+          <> <br>
+          </br>
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
+              <tbody>
+                <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
+                  <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor Líquido</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
+
+                </tr>
+
+                {(data.resultadoCalculo === '1' && data?.prorrogacao === '1' && data?.valorJaRecebidoPreviamente) && (
+                  <>
+                    <tr style={{ backgroundColor: "#f9f9f9", fontWeight: "bold" }}>
+                      <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor já recebido</td>
+                      <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.valorJaRecebido) || '0'}</td>
+
+                    </tr>
+                    <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
+                      <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
+                      <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.total) || '0'}</td>
+
+                    </tr>
+                  </>
+
+                )} </tbody>
+            </table> </>)}
         {// JSON.stringify(data)
         }
       </div>
