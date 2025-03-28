@@ -144,7 +144,7 @@ export default function SolicitacaoDeslocamento() {
 
   const formatName = (value: string) => {
     return value.toUpperCase();
-};
+  };
 
   function interview(Frm: FormHelper) {
     return <>
@@ -278,15 +278,14 @@ export default function SolicitacaoDeslocamento() {
     const formatCPF = (value: string) => {
       const numericValue = value.replace(/\D/g, ''); // Remove caracteres não numéricos
       return numericValue
-          .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
-          .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
-          .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
-          .slice(0, 14); // Limita o tamanho ao formato de CPF
-  };
+        .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+        .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+        .slice(0, 14); // Limita o tamanho ao formato de CPF
+    };
 
     return <>
       <div className="scrollableContainer">
-        <h4 style={{ textAlign: 'center' }}>SOLICITAÇÃO DE DESLOCAMENTO</h4>
         <h4>Dados do Proponente</h4>
         <p style={{ display: 'none' }}><strong>Data da Solicitação:</strong> {data.dataAtual || 'Não informado'}</p>
         <p><strong>Proponente:</strong> {data.proponente?.descricao || 'Não informado'}</p>
@@ -296,6 +295,14 @@ export default function SolicitacaoDeslocamento() {
 
         <h4>Dados do Beneficiário</h4>
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
+        {data.tipoBeneficiario === '1' && <p>
+          <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
+          <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
+          {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
+          <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
+          <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
+          <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
+        </p>}
         {data.tipoBeneficiario > '1' && <p>
           <p><strong>Nome:</strong> {formatName(data.nomePessoa) || 'Não informado'}</p>
           <p><strong>CPF:</strong> {formatCPF(data.cpfPessoa) || 'Não informado'}</p>
@@ -304,15 +311,6 @@ export default function SolicitacaoDeslocamento() {
           <p><strong>Banco:</strong> {data.bancoColaborador || 'Não informado'}</p>
           <p><strong>Agência:</strong> {data.agenciaColaborador || 'Não informado'}</p>
           <p><strong>C/C nº:</strong> {data.contaColaborador || 'Não informado'}</p>
-        </p>}
-
-        {data.tipoBeneficiario === '1' && <p>
-          <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
-          <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
-          {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
-          <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>
-          <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
-          <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>
         </p>}
 
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
