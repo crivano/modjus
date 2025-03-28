@@ -590,6 +590,12 @@ const Frm = useMemo(() => new FormHelper(), []);
         { id: '1', name: 'Sim' },
         { id: '2', name: 'Não' }
       ];
+      
+      const transporteOptions = [
+        { id: '1', name: 'Com adicional de deslocamento' },
+        { id: '2', name: 'Sem adicional de deslocamento' },
+        { id: '3', name: 'Veículo oficial' }
+      ];
 
     const calculateTotals = (data: any) => {
       let totalDiaria = 0;
@@ -701,8 +707,8 @@ const Frm = useMemo(() => new FormHelper(), []);
                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trajeto.dataTrechoInicial)}</td>
                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>{formatDateToBrazilian(trajeto.dataTrechoFinal)}</td>
                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>{trajeto.origem || 'Não informado'} / {trajeto.destino || 'Não informado'}</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(meioTransporteOptions, trajeto.transporteAteEmbarque)}</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(meioTransporteOptions, trajeto.transporteAposDesembarque)}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(transporteOptions, trajeto.transporteAteEmbarque)}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(transporteOptions, trajeto.transporteAposDesembarque)}</td>
                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>{getOptionName(hospedagemOptions, trajeto.hospedagem)}</td>
                       </tr>
                     ))}
