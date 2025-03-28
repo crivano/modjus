@@ -719,7 +719,7 @@ const Frm = useMemo(() => new FormHelper(), []);
           {data.resultadoCalculo === '1' && (
             <>
               <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
-              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(data.valorAuxilioTransporte || 0)}</p>
+              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0)}</p>
             </>
           )}
           </>
