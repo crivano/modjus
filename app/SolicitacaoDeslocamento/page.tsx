@@ -198,7 +198,7 @@ export default function SolicitacaoDeslocamento() {
         <h2>Dados da Atividade</h2>
         <div className="row">
           <Frm.Select label="Acréscimo (art. 10 § 1, 3 ou 5 CJF-RES-2015/00340)" name="acrescimo" options={acrescimoOptions} width={12} />
-          <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
+          <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no mesmo processo que solicitou as diárias.</p>
         </div>
         <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
         <div className="row">

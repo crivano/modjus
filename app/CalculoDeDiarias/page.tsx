@@ -433,7 +433,7 @@ const Frm = useMemo(() => new FormHelper(), []);
                   <h2>Dados da Atividade</h2>
                   <div className="row">
               <Frm.Select label="Acréscimo (art. 10, V)" name="acrescimo" options={acrescimoOptions} width={12} />
-              <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
+              <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no mesmo processo que solicitou as diárias.</p>
                   </div>
                   <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
                   <div className="row">
@@ -590,7 +590,7 @@ const Frm = useMemo(() => new FormHelper(), []);
         { id: '1', name: 'Sim' },
         { id: '2', name: 'Não' }
       ];
-      
+
       const transporteOptions = [
         { id: '1', name: 'Com adicional de deslocamento' },
         { id: '2', name: 'Sem adicional de deslocamento' },
