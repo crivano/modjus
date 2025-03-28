@@ -197,7 +197,7 @@ export default function SolicitacaoDeslocamento() {
 
         <h2>Dados da Atividade</h2>
         <div className="row">
-          <Frm.Select label="Acréscimo (art. 10, V)" name="acrescimo" options={acrescimoOptions} width={12} />
+          <Frm.Select label="Acréscimo (art. 10 § 1, 3 ou 5 CJF-RES-2015/00340)" name="acrescimo" options={acrescimoOptions} width={12} />
           <p style={{ marginTop: '1px', marginBottom: '0' }}>O acréscimo deve ser previamente autorizado - incluído no ofício ou memorando que solicitou diárias.</p>
         </div>
         <Frm.Select label="Tipo de Diária" name="tipoDiaria" options={tipoDiariaOptions} width={12} />
@@ -318,7 +318,7 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Faixa:</strong> {getOptionName(faixaOptions, data.faixa)}</p>
 
         <h4>Dados da Atividade</h4>
-        <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
+        <p><strong>Acréscimo (art. 10 § 1, 3 ou 5 CJF-RES-2015/00340):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
         <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
         <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
         {(data.prorrogacao === '1') && <p><strong>Valor já recebido previamente :</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || 0)}</p>}
