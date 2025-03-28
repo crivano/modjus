@@ -669,6 +669,21 @@ export default function CalculoDeDiarias() {
       return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    const formatCPF = (value: string) => {
+      const numericValue = value?.replace(/\D/g, ''); // Remove caracteres não numéricos
+      if (value) {
+        return numericValue
+        .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+        .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+        .slice(0, 14); // Limita o tamanho ao formato de CPF
+      }
+    };
+
+    const formatName = (value: string) => {
+      return value?.toUpperCase();
+    };
+
     return <>
       <div className="scrollableContainer">
         {data.solicitacaoDeslocamento && (
@@ -680,8 +695,8 @@ export default function CalculoDeDiarias() {
             <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
 
             {data.tipoBeneficiario > '1' && <>
-              <p><strong>Beneficiário:</strong> {data.nome || 'Não informado'}</p>
-              <p><strong>CPF:</strong> {data.CPF || 'Não informado'}</p>
+              <p><strong>Beneficiário:</strong> {formatName(data.nome) || 'Não informado'}</p>
+              <p><strong>CPF:</strong> {formatCPF(data.CPF) || 'Não informado'}</p>
             </>
             }
             {data.tipoBeneficiario === '1' &&
