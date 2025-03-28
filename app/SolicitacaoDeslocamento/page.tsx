@@ -143,7 +143,7 @@ export default function SolicitacaoDeslocamento() {
   }
 
   const formatName = (value: string) => {
-    return value.toUpperCase();
+    return value?.toUpperCase();
   };
 
   function interview(Frm: FormHelper) {
@@ -276,12 +276,14 @@ export default function SolicitacaoDeslocamento() {
     };
 
     const formatCPF = (value: string) => {
-      const numericValue = value.replace(/\D/g, ''); // Remove caracteres não numéricos
-      return numericValue
+      const numericValue = value?.replace(/\D/g, ''); // Remove caracteres não numéricos
+      if (value) {
+        return numericValue
         .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
         .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
         .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
         .slice(0, 14); // Limita o tamanho ao formato de CPF
+      }
     };
 
     return <>
