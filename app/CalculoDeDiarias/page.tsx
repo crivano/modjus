@@ -501,8 +501,8 @@ const Frm = useMemo(() => new FormHelper(), []);
 
             {Frm.get('auxilios') === '2' && (
               <>
-              <Frm.MoneyInputFloat label="Valor do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
-              <Frm.MoneyInputFloat label="Valor do auxílio transporte" name="valorAuxilioTransporte" width={12} />
+              <Frm.MoneyInputFloat label="Valor diário do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
+              <Frm.MoneyInputFloat label="Valor diário do auxílio transporte" name="valorAuxilioTransporte" width={12} />
               </>
             )}
             
@@ -718,8 +718,8 @@ const Frm = useMemo(() => new FormHelper(), []);
           <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
           {data.resultadoCalculo === '1' && (
             <>
-              <p><strong>Valor do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
-              <p><strong>Valor do auxílio transporte:</strong> {formatFloatValue(data.valorAuxilioTransporte || 0)}</p>
+              <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
+              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(data.valorAuxilioTransporte || 0)}</p>
             </>
           )}
           </>
