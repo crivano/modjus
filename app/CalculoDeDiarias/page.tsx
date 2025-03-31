@@ -243,19 +243,26 @@ export default function CalculoDeDiarias() {
         });
         Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
         Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
-        // Se o beneficiário for Ccolaborador ou Colaborador Eventual, habilita os campos de valor diário
+        // Se o beneficiário for Colaborador ou Colaborador Eventual, habilita os campos de valor diário
         if (solicitacaoData.tipoBeneficiario > '1') {
           Frm.set('valorDiarioAuxAlimentacao', solicitacaoData.valorDiarioAuxAlimentacao || '')
           Frm.set('valorDiarioAuxTransporte', solicitacaoData.valorDiarioAuxTransporte || '')
           Frm.set('nome', solicitacaoData.nomePessoa || '')
           Frm.set('CPF', solicitacaoData.cpfPessoa || '');
+          Frm.set('banco', solicitacaoData.bancoColaborador || '');
+          Frm.set('agencia', solicitacaoData.agenciaColaborador || '');
+          Frm.set('conta', solicitacaoData.contaColaborador || '');
         } else {
+          Frm.set('pessoa', {
+            descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
+          });
           Frm.set('funcaoPessoa', solicitacaoData.funcaoPessoa || '');
           Frm.set('cargoPessoa', solicitacaoData.cargoPessoa || '');
+          Frm.set('banco', solicitacaoData.banco || '');
+          Frm.set('agencia', solicitacaoData.agencia || '');
+          Frm.set('conta', solicitacaoData.conta || '');
         }
-        Frm.set('banco', solicitacaoData.banco || '');
-        Frm.set('agencia', solicitacaoData.agencia || '');
-        Frm.set('conta', solicitacaoData.conta || '');
+        
         Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '')
 
         Frm.set('faixa', solicitacaoData.faixa || '');
@@ -281,8 +288,8 @@ export default function CalculoDeDiarias() {
 
   function handleAuxiliosChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
     if (Frm.get('tipoBeneficiario') > 1) {
-      Frm.set('valorAuxilioAlimentacao', Frm.get('valorDiarioAuxAlimentacao'))
-      Frm.set('valorAuxilioTransporte', Frm.get('valorDiarioAuxTransporte'))
+      Frm.set('valorAuxilioAlimentacao', 0)
+      Frm.set('valorAuxilioTransporte', 0)
     } else {
       const selectedAuxilio = event.target.value;
       const valorAuxilioTransportealimentacao = valorUnitarioDoAuxilioAlimentacao;
@@ -511,7 +518,7 @@ export default function CalculoDeDiarias() {
               <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={(event) => handleAuxiliosChange(event, Frm)} width={12} />
             )}
 
-            {Frm.get('auxilios') === '2' && (
+            {Frm.get('auxilios') === '2' && Frm.get('tipoBeneficiario') === '1' && (
               <>
                 <Frm.MoneyInputFloat label="Valor diário do auxílio alimentação" name="valorAuxilioAlimentacao" width={12} />
                 <Frm.MoneyInputFloat label="Valor diário do auxílio transporte" name="valorAuxilioTransporte" width={12} />
@@ -699,6 +706,7 @@ export default function CalculoDeDiarias() {
               <p><strong>CPF:</strong> {formatCPF(data.CPF) || 'Não informado'}</p>
             </>
             }
+            {console.log(data.pessoa?.descricao)}
             {data.tipoBeneficiario === '1' &&
               <>
                 <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
