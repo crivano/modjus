@@ -199,10 +199,9 @@ export default function ConclusaoDeslocamento() {
                         onButtonClick={fetchProcessData}
                         width={6}
                     />
-
                     {fetchedData && (
                         <Frm.Select label="Selecione o código do cálculo de diárias"
-                            name="solicitacaoDeslocamento"
+                            name="calculoDiarias"
                             options={solicitacaoOptions}
                             onChange={(event) => handleSolicitacaoChange(event, Frm)}
                             width={8}
@@ -228,7 +227,7 @@ export default function ConclusaoDeslocamento() {
                     <div className="row">
                         <Frm.Input
                             label="Código da Solicitação de Deslocamento:"
-                            name="solicitacaoDeslocamento"
+                            name="calculoDiarias"
                             width={6}
                         />
                         <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
@@ -289,7 +288,7 @@ export default function ConclusaoDeslocamento() {
         Frm.update(data);
         const {
             data_solicitacao,
-            solicitacaoDeslocamento,
+            calculoDiarias,
             proponente,
             cargoProponente,
             pessoa,
@@ -342,7 +341,7 @@ export default function ConclusaoDeslocamento() {
                 <div hidden className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Código da Solicitação de Deslocamento:", solicitacaoDeslocamento)}
+                    {formatForm("Código da Solicitação de Deslocamento:", calculoDiarias)}
                     {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -378,7 +377,7 @@ export default function ConclusaoDeslocamento() {
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = solicitacaoDeslocamento)}
+                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = calculoDiarias)}
                     {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual = data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
