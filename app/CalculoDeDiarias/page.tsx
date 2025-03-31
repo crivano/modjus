@@ -704,6 +704,8 @@ export default function CalculoDeDiarias() {
             {data.tipoBeneficiario > '1' && <>
               <p><strong>Beneficiário:</strong> {formatName(data.nome) || 'Não informado'}</p>
               <p><strong>CPF:</strong> {formatCPF(data.CPF) || 'Não informado'}</p>
+              <p><strong>Valor Diário do Aux. Alimentação:</strong> { formatFloatValue(data.valorDiarioAuxAlimentacao)  || 'Não informado'}</p>
+              <p><strong>Valor Diário do Aux. Transporte:</strong> { formatFloatValue(data.valorDiarioAuxTransporte) || 'Não informado'}</p>
             </>
             }
             {console.log(data.pessoa?.descricao)}
