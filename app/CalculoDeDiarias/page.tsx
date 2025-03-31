@@ -775,7 +775,7 @@ const Frm = useMemo(() => new FormHelper(), []);
             <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
             <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
             <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '0')}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento) || 0)}</td>
             <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
             <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
             <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
