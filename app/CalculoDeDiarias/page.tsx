@@ -171,7 +171,7 @@ const Frm = useMemo(() => new FormHelper(), []);
   async function fetchProcessData(numeroProcesso: string) {
     try {
       const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-        // params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste'},
+        //params: { num_processo: numeroProcesso, nome_documento: 'TRF2 - Solicitacao Deslocamento (modjus) modelo teste'},
         params: { num_processo: numeroProcesso, nome_documento: 'Solicitação de Deslocamento (modjus)'},
      
         headers: {
@@ -734,15 +734,16 @@ const Frm = useMemo(() => new FormHelper(), []);
           <>
             <h4>Informação manual de cálculo</h4>
             <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
-            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || 0)}</p>
-            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || 0)}</p>
-            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || 0)}</p>
-            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || 0)}</p>
-            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto || 0)}</p>
-            <p><strong>Desconto de teto:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || 0)}</p>
-            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido || 0)}</p>
+            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.totalDiaria || 0)}</p>
+            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.totalAdicionalDeslocamento || 0)}</p>
+            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.totalDescontoAlimentacao || 0)}</p>
+            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.totalDescontoTransporte || 0)}</p>
+            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.totalSubtotal || 0)}</p>
+            <p><strong>Desconto de teto:</strong> {formatFloatValue(data.totalDescontoTeto || 0)}</p>
+            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.total || 0)}</p>
           </>
         )}
+
         {data.resultadoCalculo === '1' && (
           <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}> 
           <thead>
