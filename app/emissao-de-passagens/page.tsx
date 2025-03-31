@@ -50,9 +50,9 @@ function document(data: any) {
 
     return (
         <div className='scrollableContainer'>
-            <div style={{ textAlign: 'center', marginBottom: '0.3em', marginTop: '1em', fontWeight: 'bold', fontSize: '120%' }}>
+            {/* <div style={{ textAlign: 'center', marginBottom: '0.3em', marginTop: '1em', fontWeight: 'bold', fontSize: '120%' }}>
                 EMISSÃO DE PASSAGENS
-            </div>
+            </div> */}
 
             <span style={{ fontWeight: 'bold' }}>Passagens</span>
 
