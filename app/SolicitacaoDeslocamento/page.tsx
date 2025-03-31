@@ -180,8 +180,8 @@ export default function SolicitacaoDeslocamento() {
           <div>
             <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
             <div className="row">
-              <Frm.Input label="Função" name="funcaoPessoa" width={6} />
-              <Frm.Input label="Cargo" name="cargoPessoa" width={6} />
+              {/* <Frm.Input label="Função" name="funcaoPessoa" width={6} /> */}
+              <Frm.Input label="Cargo" name="cargoPessoa" width={12} />
             </div>
 
             <div className="row">
