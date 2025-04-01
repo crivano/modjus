@@ -90,7 +90,6 @@ export default function ConclusaoDeslocamento() {
         setSelectedSolicitacao(selected ? selected.data : null);
 
         if (selected.id !== '') {
-            
             const solicitacaoData = selected.data;
             Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
             Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
@@ -193,7 +192,6 @@ export default function ConclusaoDeslocamento() {
                 <p><strong>Dados para o relatório de deslocamentos</strong></p>
                 <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
                     <h6>Dados da Solicitação de Deslocamento</h6>
-
                     <Frm.InputWithButton
                         label="Número do Processo"
                         name="numeroProcesso"
@@ -203,7 +201,7 @@ export default function ConclusaoDeslocamento() {
                     />
                     {fetchedData && (
                         <Frm.Select label="Selecione o código do cálculo de diárias"
-                            name="codigoCalculoDiarias"
+                            name="calculoDiarias"
                             options={solicitacaoOptions}
                             onChange={(event) => handleSolicitacaoChange(event, Frm)}
                             width={8}
@@ -229,7 +227,7 @@ export default function ConclusaoDeslocamento() {
                     <div className="row">
                         <Frm.Input
                             label="Código da Solicitação de Deslocamento:"
-                            name="codigoCalculoDiarias"
+                            name="calculoDiarias"
                             width={6}
                         />
                         <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
@@ -290,7 +288,7 @@ export default function ConclusaoDeslocamento() {
         Frm.update(data);
         const {
             data_solicitacao,
-            codigoCalculoDiarias,
+            calculoDiarias,
             proponente,
             cargoProponente,
             pessoa,
@@ -343,7 +341,7 @@ export default function ConclusaoDeslocamento() {
                 <div hidden className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Código da Solicitação de Deslocamento:", codigoCalculoDiarias)}
+                    {formatForm("Código da Solicitação de Deslocamento:", calculoDiarias)}
                     {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -379,7 +377,7 @@ export default function ConclusaoDeslocamento() {
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = codigoCalculoDiarias)}
+                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = calculoDiarias)}
                     {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual = data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -399,13 +397,13 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.totalDiaria = valorBrutoDiarias))}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.totalAdicionalDeslocamento = valorAdicionalDeslocamento))}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.totalDescontoAlimentacao = valorDescontoAlimentacao))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.totalDescontoTransporte = valorDescontoTransporte))}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.totalDescontoTeto = totalDeDescontoDeTeto))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.totalSubtotal = valorLiquidoDiarias))}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.total = resultadoCalculo))}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto = valorBrutoDiarias))}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento = valorAdicionalDeslocamento))}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao = valorDescontoAlimentacao))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte = valorDescontoTransporte))}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto = totalDeDescontoDeTeto))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido = valorLiquidoDiarias))}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total = resultadoCalculo))}
 
                     {/* JUSTIFICATIVA */}
                     {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
