@@ -487,16 +487,15 @@ export default function CalculoDeDiarias() {
         )}
         {Frm.data && Frm.data.solicitacaoDeslocamento && (
           <>
-            {Frm.data.tipoBeneficiario === '1' ?
-              <Frm.Select
-                label="Obter automaticamente o resultado do cálculo de diária"
-                name="resultadoCalculo"
-                options={resultadoCalculoOptions}
-                onChange={(event) => handleFormaDeCalculo(event, Frm)}
-                width={12}
-              />
-              : ''
-            }
+
+            <Frm.Select
+              label="Obter automaticamente o resultado do cálculo de diária"
+              name="resultadoCalculo"
+              options={resultadoCalculoOptions}
+              onChange={(event) => handleFormaDeCalculo(event, Frm)}
+              width={12}
+            />
+
             {Frm.get('resultadoCalculo') != '2' && (
               <div style={{ display: 'none' }}>
                 <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
@@ -523,7 +522,7 @@ export default function CalculoDeDiarias() {
               </>
             )}
 
-            {Frm.get('resultadoCalculo') === '1' && (
+            {Frm.get('resultadoCalculo') === '1' && Frm.data.tipoBeneficiario === '1' && (
               <Frm.Select label="Obter automaticamente auxílios alimentação e transporte" name="auxilios" options={auxiliosOptions} onChange={(event) => handleAuxiliosChange(event, Frm)} width={12} />
             )}
 
