@@ -6,32 +6,28 @@ import Model from "@/libs/model"
 import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
 
-const tipoBeneficiarioOptions = [
-    { id: '', name: '' },
-    { id: '1', name: 'TRF2/SJRJ/SJES' },
-    { id: '2', name: 'Colaborador' },
-    { id: '3', name: 'Colaborador Eventual' }
-]
-
-const tipoDeslocamentoOptions = [
-    { id: '', name: '' },
-    { id: '1', name: 'Nacional' },
-    { id: '2', name: 'Internacional' }
-]
-
-const meioTransporteOptions = [
-    { id: '', name: '' },
-    { id: '1', name: 'Aéreo' },
-    { id: '2', name: 'Rodoviário' },
-    { id: '3', name: 'Hidroviário' },
-    { id: '4', name: 'Veículo Próprio' },
-    { id: '5', name: 'Sem Passagens' }
-]
-
-const retornoAOrigem = [
-    { id: '1', name: 'Sim' },
-    { id: '2', name: 'Não' },
-]
+const options = {
+    tipoBeneficiarioOptions: [
+        { id: '1', name: 'Colaborador' },
+        { id: '2', name: 'Colaborador Eventual' },
+        { id: '3', name: 'Outro' }
+    ],
+    tipoDeslocamentoOptions: [
+        { id: '1', name: 'Nacional' },
+        { id: '2', name: 'Internacional' }
+    ],
+    meioTransporteOptions: [
+        { id: '1', name: 'Aéreo' },
+        { id: '2', name: 'Rodoviário' },
+        { id: '3', name: 'Hidroviário' },
+        { id: '4', name: 'Veículo Próprio' },
+        { id: '5', name: 'Sem Passagens' }
+    ],
+    retornoAOrigem: [
+        { id: '1', name: 'Sim' },
+        { id: '2', name: 'Não' },
+    ]
+};
 
 const getOptionName = (options: { id: string, name: string }[], id: string) => {
     return options.find(opt => opt.id === id)?.name || 'Não informado';
@@ -39,17 +35,11 @@ const getOptionName = (options: { id: string, name: string }[], id: string) => {
 
 export default function ConclusaoDeslocamento() {
     const Frm = new FormHelper();
-    const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
     const [fetchedData, setFetchedData] = useState(null);
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
-    const [selectedCode, setSelectedCode] = useState(null);
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
-    const [startDate, setStartDate] = useState<Date | null>(new Date());
-    const handleDateChange = (date: Date | null) => {
-        setStartDate(date);
-    };
 
     // TODO: Criar um componente com essa função para reutilizar
     async function fetchProcessData(numeroProcesso: string) {
@@ -247,7 +237,7 @@ export default function ConclusaoDeslocamento() {
 
                     <p></p><h3>Dados do Beneficiário</h3>
 
-                    <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={tipoBeneficiarioOptions} width={6} />
+                    <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={options.tipoBeneficiarioOptions} width={6} />
                     <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
 
                     <div className="row">
@@ -258,14 +248,14 @@ export default function ConclusaoDeslocamento() {
                     <p></p><h3>Dados do Deslocamento</h3>
 
                     <Frm.Input label="Finalidade" name="finalidade" width={12} />
-                    <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={tipoDeslocamentoOptions} />
+                    <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={options.tipoDeslocamentoOptions} />
                     <Frm.Input label="Itinerário" name="origemDestino" width={6} />
-                    <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={retornoAOrigem} width={12} />
+                    <Frm.RadioButtons label="Retorno a Origem?" name="retorno_a_origem" options={options.retornoAOrigem} width={12} />
                     <div className="row">
                         <Frm.dateInput label="Período (De)" name="periodoDe" width={6} />
                         <Frm.dateInput label="Período (Até)" name="periodoAte" width={6} />
                     </div>
-                    <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={4} />
+                    <Frm.Select label="Meio de Transporte" name="meioTransporte" options={options.meioTransporteOptions} width={4} />
 
                     {/* Dados dos cálculos */}
                     <div className="row">
@@ -311,30 +301,6 @@ export default function ConclusaoDeslocamento() {
             justificativa
         } = Frm.data;
 
-        // const formatDateToBrazilian = (date: string) => {
-        //     if (!date) return 'Não informado';
-        //     return date;
-        // };
-
-        function fetchFieldFromJsonObject(jsonObject, fieldName) {
-            try {
-                // Validar se a entrada é um objeto JSON válido
-                if (typeof jsonObject !== 'object' || jsonObject === null || Array.isArray(jsonObject)) {
-                    throw new Error("Entrada inválida. Deve ser um objeto JSON válido.");
-                }
-
-                // Verificar se o campo existe no objeto
-                if (!(fieldName in jsonObject)) {
-                    throw new Error(`Campo "${fieldName}" não encontrado no JSON.`);
-                }
-
-                return jsonObject[fieldName][0];
-            } catch (error) {
-                console.error("Erro ao buscar o campo:", error);
-                return null;
-            }
-        }
-
         return <>
 
             {!selectedSolicitacao && (
@@ -349,16 +315,16 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Cargo do Proponente:", cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, tipoBeneficiario))}
+                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, tipoBeneficiario))}
                     {formatForm("Beneficiário:", pessoa?.descricao)}
                     {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
 
                     {formatForm("Finalidade:", finalidade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, tipoDeslocamento))}
+                    {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
-                    {formatForm("Retorno à Origem:", getOptionName(retornoAOrigem, retorno_a_origem))}
+                    {formatForm("Retorno à Origem:", getOptionName(options.retornoAOrigem, retorno_a_origem))}
                     {formatForm("Período:", (periodoDe + " a " + periodoAte))}
-                    {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, meioTransporte))}
+                    {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias) || '0,00')}
@@ -374,8 +340,6 @@ export default function ConclusaoDeslocamento() {
                 </div>
             )}
 
-            {console.log(selectedSolicitacao)}
-
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
@@ -388,15 +352,15 @@ export default function ConclusaoDeslocamento() {
 
                     {/* DADOS DO BENEFICIÁRIO */}
                     {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
+                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
                     {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
 
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
+                    {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
                     {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === '1' ? 'Sim' : 'Não')}
                     {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
-                    {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
+                    {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
                     {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.totalDiaria = valorBrutoDiarias))}
