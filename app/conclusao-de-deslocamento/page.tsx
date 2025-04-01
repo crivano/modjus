@@ -89,7 +89,8 @@ export default function ConclusaoDeslocamento() {
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
         setSelectedSolicitacao(selected ? selected.data : null);
 
-        if (selected) {
+        if (selected.id !== '') {
+            
             const solicitacaoData = selected.data;
             Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
             Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
@@ -192,6 +193,7 @@ export default function ConclusaoDeslocamento() {
                 <p><strong>Dados para o relatório de deslocamentos</strong></p>
                 <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
                     <h6>Dados da Solicitação de Deslocamento</h6>
+
                     <Frm.InputWithButton
                         label="Número do Processo"
                         name="numeroProcesso"
@@ -201,7 +203,7 @@ export default function ConclusaoDeslocamento() {
                     />
                     {fetchedData && (
                         <Frm.Select label="Selecione o código do cálculo de diárias"
-                            name="calculoDiarias"
+                            name="codigoCalculoDiarias"
                             options={solicitacaoOptions}
                             onChange={(event) => handleSolicitacaoChange(event, Frm)}
                             width={8}
@@ -227,7 +229,7 @@ export default function ConclusaoDeslocamento() {
                     <div className="row">
                         <Frm.Input
                             label="Código da Solicitação de Deslocamento:"
-                            name="calculoDiarias"
+                            name="codigoCalculoDiarias"
                             width={6}
                         />
                         <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
@@ -288,7 +290,7 @@ export default function ConclusaoDeslocamento() {
         Frm.update(data);
         const {
             data_solicitacao,
-            calculoDiarias,
+            codigoCalculoDiarias,
             proponente,
             cargoProponente,
             pessoa,
@@ -341,7 +343,7 @@ export default function ConclusaoDeslocamento() {
                 <div hidden className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Código da Solicitação de Deslocamento:", calculoDiarias)}
+                    {formatForm("Código da Solicitação de Deslocamento:", codigoCalculoDiarias)}
                     {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -377,7 +379,7 @@ export default function ConclusaoDeslocamento() {
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = calculoDiarias)}
+                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = codigoCalculoDiarias)}
                     {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual = data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
