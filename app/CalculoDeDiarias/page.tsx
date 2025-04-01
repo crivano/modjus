@@ -673,7 +673,7 @@ const Frm = useMemo(() => new FormHelper(), []);
             <h4>Informação manual de cálculo</h4>
             <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
             <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(parseFloat(data.totalDiaria || 0.00))}</p>
-            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(parseFloat(data.totalAdicionalDeslocamento || 0))}</p>
+            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(parseFloat(data.totalAdicionalDeslocamento || 0.00))}</p>
             <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(parseFloat(data.totalDescontoAlimentacao || 0.00))}</p>
             <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(parseFloat(data.totalDescontoTransporte || 0.00))}</p>
             <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(parseFloat(data.totalSubtotal || 0.00))}</p>
