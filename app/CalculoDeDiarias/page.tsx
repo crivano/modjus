@@ -596,68 +596,6 @@ const Frm = useMemo(() => new FormHelper(), []);
         { id: '2', name: 'Sem adicional de deslocamento' },
         { id: '3', name: 'Veículo oficial' }
       ];
-
-    const calculateTotals = (data: any) => {
-      let totalDiaria = 0;
-      let totalAdicionalDeslocamento = 0;
-      let totalDescontoAlimentacao = 0;
-      let totalDescontoTransporte = 0;
-      let totalSubtotal = 0;
-      let totalDescontoTeto = 0;
-      let total = 0;
-  
-      const diasDeslocamento = (new Date(data.periodoAte).getTime() - new Date(data.periodoDe).getTime()) / (1000 * 3600 * 24) + 1;
-  
-      for (let i = 0; i < diasDeslocamento; i++) {
-        totalDiaria += parseFloat(data.valorBrutoDiarias || '0');
-        totalAdicionalDeslocamento += parseFloat(data.valorAdicionalDeslocamento || '0');
-        totalDescontoAlimentacao += parseFloat(data.valorDescontoAlimentacao || '0');
-        totalDescontoTransporte += parseFloat(data.valorDescontoTransporte || '0');
-        totalSubtotal += parseFloat(data.subtotalBrutoDiarias || '0');
-        totalDescontoTeto += parseFloat(data.descontoTeto || '0');
-        total += parseFloat(data.valorLiquidoDiarias || '0');
-      }
-
-      Frm.set('totalDiaria', Number(totalDiaria.toFixed(2)).toString());
-      Frm.set('totalAdicionalDeslocamento', Number(totalAdicionalDeslocamento.toFixed(2)).toString());
-      Frm.set('totalDescontoAlimentacao', Number(totalDescontoAlimentacao.toFixed(2)).toString());
-      Frm.set('totalDescontoTransporte', Number(totalDescontoTransporte).toFixed(2));
-      Frm.set('totalSubtotal', Number(totalSubtotal).toFixed(2));
-      Frm.set('totalDescontoTeto', Number(totalDescontoTeto).toFixed(2));
-      Frm.set('total', Number(total).toFixed(2));
-      
-
-      return {
-        totalDiaria,
-        totalAdicionalDeslocamento,
-        totalDescontoAlimentacao,
-        totalDescontoTransporte,
-        totalSubtotal,
-        totalDescontoTeto,
-        total
-      };
-    };
-  
-    const totals = calculateTotals(data);
-  
-    const diasDeslocamento = (new Date(data.periodoAte).getTime() - new Date(data.periodoDe).getTime()) / (1000 * 3600 * 24) + 1;
-  
-    const dadosTabelaCalculoDiarias = Array.from({ length: diasDeslocamento }).map((_, i) => {
-      const currentDate = new Date(new Date(data.periodoDe).getTime() + i * 1000 * 3600 * 24);
-      const trajeto = data.trechos?.find((t: any) => new Date(t.dataTrecho).getTime() === currentDate.getTime());
-      console.log(trajeto);
-      return {
-        data: formatDateToBrazilian(currentDate.toISOString().split('T')[0]),
-        trecho: trajeto ? `${trajeto.origem || 'Não informado'} / ${trajeto.destino || 'Não informado'}` : '-',
-        valorBrutoDiarias: data.valorBrutoDiarias || '0',
-        valorAdicionalDeslocamento: data.valorAdicionalDeslocamento || '0',
-        valorDescontoAlimentacao: data.valorDescontoAlimentacao || '0',
-        valorDescontoTransporte: data.valorDescontoTransporte || '0',
-        subtotalBrutoDiarias: data.subtotalBrutoDiarias || '0',
-        descontoTeto: data.descontoTeto || '0',
-        valorLiquidoDiarias: data.valorLiquidoDiarias || '0'
-      };
-    });
   
     const formatFloatValue = (value: number): string => {
       return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -681,7 +619,7 @@ const Frm = useMemo(() => new FormHelper(), []);
             <p><strong>Acréscimo (art. 10, V):</strong> {getOptionName(acrescimoOptions, data.acrescimo)}</p>
             <p><strong>Tipo de Diária:</strong> {getOptionName(tipoDiariaOptions, data.tipoDiaria)}</p>
             <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
-            {data.prorrogacao === '1' && <p><strong>Valor já recebido previamente:</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || '0')}</p>}
+            {data.prorrogacao === '1' && <p><strong>Valor já recebido previamente:</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || 0.00)}</p>}
             <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
             <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte}</p>
             <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
@@ -724,8 +662,8 @@ const Frm = useMemo(() => new FormHelper(), []);
           <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
           {data.resultadoCalculo === '1' && (
             <>
-              <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0)}</p>
-              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0)}</p>
+              <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0.00)}</p>
+              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0.00)}</p>
             </>
           )}
           </>
@@ -734,13 +672,13 @@ const Frm = useMemo(() => new FormHelper(), []);
           <>
             <h4>Informação manual de cálculo</h4>
             <p><strong>Justificativa para informar manualmente o resultado do cálculo:</strong> {data.justificativaManual || 'Não informado'}</p>
-            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(data.totalDiaria || 0)}</p>
-            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(data.totalAdicionalDeslocamento || 0)}</p>
-            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(data.totalDescontoAlimentacao || 0)}</p>
-            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(data.totalDescontoTransporte || 0)}</p>
-            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(data.totalSubtotal || 0)}</p>
-            <p><strong>Desconto de teto:</strong> {formatFloatValue(data.totalDescontoTeto || 0)}</p>
-            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(data.total || 0)}</p>
+            <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(parseFloat(data.totalDiaria || 0.00))}</p>
+            <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(parseFloat(data.totalAdicionalDeslocamento || 0))}</p>
+            <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(parseFloat(data.totalDescontoAlimentacao || 0.00))}</p>
+            <p><strong>Valor do desconto de auxílio transporte:</strong> {formatFloatValue(parseFloat(data.totalDescontoTransporte || 0.00))}</p>
+            <p><strong>Subtotal bruto das diárias:</strong> {formatFloatValue(parseFloat(data.totalSubtotal || 0.00))}</p>
+            <p><strong>Desconto de teto:</strong> {formatFloatValue(parseFloat(data.totalDescontoTeto || 0.00))}</p>
+            <p><strong>Valor líquido das diárias:</strong> {formatFloatValue(parseFloat(data.total || 0.00))}</p>
           </>
         )}
 
@@ -775,13 +713,13 @@ const Frm = useMemo(() => new FormHelper(), []);
               ))}
             <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
             <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDiariasBruto || '0')}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento) || 0)}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao) || '0'}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte) || '0'}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalBruto) || '0'} </td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '0')}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDiariasBruto || 0.00))}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || 0.00))}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || 0.00))}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || 0.00))}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalBruto || 0.00))} </td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || 0.00))}</td>
+            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalLiquido || 0.00))}</td>
               </tr>
 
             </tbody>
@@ -795,7 +733,7 @@ const Frm = useMemo(() => new FormHelper(), []);
                     <tbody>
                             <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
                             <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor Líquido</td>
-                            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.subtotalLiquido) || '0'}</td>
+                            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalLiquido || 0.00))}</td>
                    
                              </tr>
                            
@@ -803,12 +741,12 @@ const Frm = useMemo(() => new FormHelper(), []);
                      <>
                       <tr style={{ backgroundColor: "#f9f9f9", fontWeight: "bold" }}>
                         <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor já recebido</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.valorJaRecebido) || '0'}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.valorJaRecebido || 0.00))}</td>
        
                        </tr>
                        <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
                         <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(data.resultadoCalculoDiarias?.total) || '0'}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.total || 0.00))}</td>
        
                        </tr>      
                      </>
