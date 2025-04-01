@@ -262,7 +262,7 @@ export default function CalculoDeDiarias() {
           Frm.set('agencia', solicitacaoData.agencia || '');
           Frm.set('conta', solicitacaoData.conta || '');
         }
-        
+
         Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '')
 
         Frm.set('faixa', solicitacaoData.faixa || '');
@@ -487,7 +487,16 @@ export default function CalculoDeDiarias() {
         )}
         {Frm.data && Frm.data.solicitacaoDeslocamento && (
           <>
-            <Frm.Select label="Obter automaticamente o resultado do cálculo de diária" name="resultadoCalculo" options={resultadoCalculoOptions} onChange={(event) => handleFormaDeCalculo(event, Frm)} width={12} />
+            {Frm.data.tipoBeneficiario === '1' ?
+              <Frm.Select
+                label="Obter automaticamente o resultado do cálculo de diária"
+                name="resultadoCalculo"
+                options={resultadoCalculoOptions}
+                onChange={(event) => handleFormaDeCalculo(event, Frm)}
+                width={12}
+              />
+              : ''
+            }
             {Frm.get('resultadoCalculo') != '2' && (
               <div style={{ display: 'none' }}>
                 <Frm.TextArea label="Justificativa para informar manualmente o resultado do cálculo" name="justificativaManual" width={12} />
@@ -610,12 +619,12 @@ export default function CalculoDeDiarias() {
       { id: '2', name: 'Não' }
     ];
 
-      const transporteOptions = [
-        { id: '1', name: 'Com adicional de deslocamento' },
-        { id: '2', name: 'Sem adicional de deslocamento' },
-        { id: '3', name: 'Veículo oficial' }
-      ];
-  
+    const transporteOptions = [
+      { id: '1', name: 'Com adicional de deslocamento' },
+      { id: '2', name: 'Sem adicional de deslocamento' },
+      { id: '3', name: 'Veículo oficial' }
+    ];
+
     const calculateTotals = (data: any) => {
       let totalDiaria = 0;
       let totalAdicionalDeslocamento = 0;
@@ -686,10 +695,10 @@ export default function CalculoDeDiarias() {
       const numericValue = value?.replace(/\D/g, ''); // Remove caracteres não numéricos
       if (value) {
         return numericValue
-        .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
-        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
-        .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
-        .slice(0, 14); // Limita o tamanho ao formato de CPF
+          .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+          .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+          .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+          .slice(0, 14); // Limita o tamanho ao formato de CPF
       }
     };
 
@@ -710,8 +719,8 @@ export default function CalculoDeDiarias() {
             {data.tipoBeneficiario > '1' && <>
               <p><strong>Beneficiário:</strong> {formatName(data.nome) || 'Não informado'}</p>
               <p><strong>CPF:</strong> {formatCPF(data.CPF) || 'Não informado'}</p>
-              <p><strong>Valor Diário do Aux. Alimentação:</strong> { formatFloatValue(data.valorDiarioAuxAlimentacao)  || 'Não informado'}</p>
-              <p><strong>Valor Diário do Aux. Transporte:</strong> { formatFloatValue(data.valorDiarioAuxTransporte) || 'Não informado'}</p>
+              {/* <p><strong>Valor Diário do Aux. Alimentação:</strong> {formatFloatValue(data.valorDiarioAuxAlimentacao) || 'Não informado'}</p>
+              <p><strong>Valor Diário do Aux. Transporte:</strong> {formatFloatValue(data.valorDiarioAuxTransporte) || 'Não informado'}</p> */}
             </>
             }
             {console.log(data.pessoa?.descricao)}
@@ -767,14 +776,14 @@ export default function CalculoDeDiarias() {
         )}
         {data.resultadoCalculo === '1' && (
           <>
-          <h4><strong>Parâmetros de Cálculo</strong></h4>
-          <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
-          {data.resultadoCalculo === '1' && (
-            <>
-              <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0.00)}</p>
-              <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0.00)}</p>
-            </>
-          )}
+            <h4><strong>Parâmetros de Cálculo</strong></h4>
+            <p><strong>Obter automaticamente auxílios alimentação e transporte:</strong> {getOptionName(auxiliosOptions, data.auxilios)}</p>
+            {data.resultadoCalculo === '1' && (
+              <>
+                <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0.00)}</p>
+                <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0.00)}</p>
+              </>
+            )}
           </>
         )}
         {data.resultadoCalculo === '2' && (
@@ -820,15 +829,15 @@ export default function CalculoDeDiarias() {
                   <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(dia.subtotalLiquido)}</td>
                 </tr>
               ))}
-            <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
-            <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDiariasBruto || 0.00))}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || 0.00))}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || 0.00))}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || 0.00))}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalBruto || 0.00))} </td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || 0.00))}</td>
-            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalLiquido || 0.00))}</td>
+              <tr style={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}>
+                <td colSpan={2} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDiariasBruto || 0.00))}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || 0.00))}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || 0.00))}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || 0.00))}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalBruto || 0.00))} </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.totalDeDescontoDeTeto || 0.00))}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalLiquido || 0.00))}</td>
               </tr>
 
             </tbody>
@@ -836,32 +845,32 @@ export default function CalculoDeDiarias() {
 
         )}
         {data.resultadoCalculo === '1' && (
-               <> <br>
-               </br>
-               <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}> 
-                    <tbody>
-                            <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
-                            <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor Líquido</td>
-                            <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalLiquido || 0.00))}</td>
-                   
-                             </tr>
-                           
-                  {(data.resultadoCalculo === '1' && data?.prorrogacao === '1' && data?.valorJaRecebidoPreviamente) && (    
-                     <>
-                      <tr style={{ backgroundColor: "#f9f9f9", fontWeight: "bold" }}>
-                        <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor já recebido</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.valorJaRecebido || 0.00))}</td>
-       
-                       </tr>
-                       <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
-                        <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
-                        <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.total || 0.00))}</td>
-       
-                       </tr>      
-                     </>
-                     
-        )} </tbody>
-        </table> </>)}
+          <> <br>
+          </br>
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center", border: "1px solid #ddd" }}>
+              <tbody>
+                <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
+                  <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor Líquido</td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.subtotalLiquido || 0.00))}</td>
+
+                </tr>
+
+                {(data.resultadoCalculo === '1' && data?.prorrogacao === '1' && data?.valorJaRecebidoPreviamente) && (
+                  <>
+                    <tr style={{ backgroundColor: "#f9f9f9", fontWeight: "bold" }}>
+                      <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Valor já recebido</td>
+                      <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.valorJaRecebido || 0.00))}</td>
+
+                    </tr>
+                    <tr style={{ backgroundColor: "#ffffff", fontWeight: "bold" }}>
+                      <td colSpan={6} style={{ border: "1px solid #ddd", padding: "8px" }}>Total</td>
+                      <td style={{ border: "1px solid #ddd", padding: "8px", textAlign: "right" }}>{formatFloatValue(parseFloat(data.resultadoCalculoDiarias?.total || 0.00))}</td>
+
+                    </tr>
+                  </>
+
+                )} </tbody>
+            </table> </>)}
         {// JSON.stringify(data)
         }
       </div>
