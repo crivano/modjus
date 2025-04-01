@@ -388,8 +388,8 @@ const Frm = useMemo(() => new FormHelper(), []);
   function Interview(Frm: FormHelper) {
     
     useEffect(() => {
-      if (Frm.data && Frm.data.numeroProcesso && !dataFetched) {
-        fetchProcessData(Frm.data.numeroProcesso).then(() => {
+      if (Frm.data && Frm.data.processo && !dataFetched) {
+        fetchProcessData(Frm.data.processo).then(() => {
           if (Frm.data.solicitacaoDeslocamento) {
             handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
           }
@@ -456,13 +456,14 @@ const Frm = useMemo(() => new FormHelper(), []);
               <Frm.Select label="Meio de Transporte" name="meioTransporte" options={meioTransporteOptions} width={6} />
                   </div>
                   <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
+                  <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
           </div>
         {
         // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
 
         <h2>Cálculo de Diárias</h2>
-        <Frm.InputWithButton label="Número do Processo" name="numeroProcesso" buttonText="Buscar" onButtonClick={fetchProcessData} width={12} />
+        
         {fetchedData && (
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
         )}
