@@ -118,13 +118,13 @@ export default function ConclusaoDeslocamento() {
             Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
 
             // CÁLCULO DE DIÁRIAS
-            Frm.set('valorBrutoDiarias', solicitacaoData.resultadoCalculoDiarias?.totalDeDiariasBruto || '');
-            Frm.set('valorAdicionalDeslocamento', solicitacaoData.resultadoCalculoDiarias?.totalDeAcrescimoDeDeslocamento || '');
-            Frm.set('valorDescontoAlimentacao', solicitacaoData.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao || '');
-            Frm.set('valorDescontoTransporte', solicitacaoData.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte || '');
-            Frm.set('totalDeDescontoDeTeto', solicitacaoData.resultadoCalculoDiarias?.totalDeDescontoDeTeto || '');
-            Frm.set('valorLiquidoDiarias', solicitacaoData.resultadoCalculoDiarias?.subtotalLiquido || '');
-            Frm.set('resultadoCalculo', solicitacaoData.resultadoCalculoDiarias?.total || '');
+            Frm.set('valorBrutoDiarias', solicitacaoData?.totalDiaria || '');
+            Frm.set('valorAdicionalDeslocamento', solicitacaoData?.totalAdicionalDeslocamento || '');
+            Frm.set('valorDescontoAlimentacao', solicitacaoData?.totalDescontoAlimentacao || '');
+            Frm.set('valorDescontoTransporte', solicitacaoData?.totalDescontoTransporte || '');
+            Frm.set('totalDeDescontoDeTeto', solicitacaoData?.totalDescontoTeto || '');
+            Frm.set('valorLiquidoDiarias', solicitacaoData?.totalSubtotal || '');
+            Frm.set('resultadoCalculo', solicitacaoData?.total || '');
         }
     }
 
@@ -374,6 +374,8 @@ export default function ConclusaoDeslocamento() {
                 </div>
             )}
 
+            {console.log(selectedSolicitacao)}
+
             {selectedSolicitacao && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
@@ -397,13 +399,13 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Meio de Transporte:", getOptionName(meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDiariasBruto = valorBrutoDiarias))}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeAcrescimoDeDeslocamento = valorAdicionalDeslocamento))}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioAlimentacao = valorDescontoAlimentacao))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeAuxilioTransporte = valorDescontoTransporte))}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.totalDeDescontoDeTeto = totalDeDescontoDeTeto))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.subtotalLiquido = valorLiquidoDiarias))}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.resultadoCalculoDiarias.total = resultadoCalculo))}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.totalDiaria = valorBrutoDiarias))}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.totalAdicionalDeslocamento = valorAdicionalDeslocamento))}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.totalDescontoAlimentacao = valorDescontoAlimentacao))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.totalDescontoTransporte = valorDescontoTransporte))}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.totalDescontoTeto = totalDeDescontoDeTeto))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.totalSubtotal = valorLiquidoDiarias))}
+                    {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacao.total = resultadoCalculo))}
 
                     {/* JUSTIFICATIVA */}
                     {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
