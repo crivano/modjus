@@ -41,7 +41,7 @@ export default function ConclusaoDeslocamento() {
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
 
-    async function fetchProcessData(numeroProcesso: string, tipoDocumento: "SOL" | "CAL") {
+    async function fetchProcessData(numeroProcesso: string) {
         try {
             // 🔹 Faz a requisição para o backend Next.js
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
