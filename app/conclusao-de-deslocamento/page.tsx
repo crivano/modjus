@@ -41,27 +41,34 @@ export default function ConclusaoDeslocamento() {
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
 
-    // TODO: Criar um componente com essa função para reutilizar
-    async function fetchProcessData(numeroProcesso: string) {
+    async function fetchProcessData(numeroProcesso: string, tipoDocumento: "SOL" | "CAL") {
         try {
-            const response = await axios.get<{ modjusData: any, numero_documento: string }[]>('/api/getmodjusdocsprocess', {
-                params: { num_processo: numeroProcesso, nome_documento: process.env.NEXT_PUBLIC_FORM_DAILY_CALCULATION },
-                headers: {
-                    'Authorization': 'Basic YWRtaW46c2VuaGExMjM=',
-                    'x-forwarded-for': '127.0.0.1'
+            // 🔹 Faz a requisição para o backend Next.js
+            const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
+                '/api/getmodjus', {
+                    params: { 
+                        num_processo: numeroProcesso,
+                        tipo_documento: "CAL" // Novo parâmetro
+                    }
                 }
-            });
-
+            );
+    
+            // 🔹 Atualiza os estados com os dados recebidos
             setFetchedData(response.data);
-            setSolicitacaoOptions([{ id: '', name: '' }, ...response.data.map((item: { modjusData: any, numero_documento: string }) => ({
-                id: item.modjusData.id,
-                name: item.numero_documento,
-                data: item.modjusData // Store the entire data
-            }))]);
+            setSolicitacaoOptions([
+                { id: '', name: '' }, 
+                ...response.data.map((item) => ({
+                    id: item.modjusData.id,
+                    name: item.numero_documento,
+                    data: item.modjusData // Armazena os dados completos
+                }))
+            ]);
         } catch (error) {
+            console.error("Erro ao buscar os dados:", error);
             alert('Não foi possível encontrar os dados adicionais');
         }
     }
+    
 
     const formatCurrency = (value: number | string | undefined) => {
 

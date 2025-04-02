@@ -62,6 +62,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   // Obter parâmetros de query da URL
   const num_processo = req.nextUrl.searchParams.get('num_processo');
   const nome_documento = decodeURIComponent(req.nextUrl.searchParams.get('nome_documento'));
+  console.log("Nome Documento Decodificado:", nome_documento);
 
   // Verificar se os parâmetros são válidos
   if (!num_processo || !nome_documento) {
