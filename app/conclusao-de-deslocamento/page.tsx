@@ -379,7 +379,7 @@ export default function ConclusaoDeslocamento() {
                         <Frm.MoneyInputFloat label="Valor Líquido das Diárias" name="valorLiquidoDiarias" width={6} />
                     </div>
                     {/* Valor das passagens */}
-                    <Frm.MoneyInput label="Valor Total das Passagens" name="valor_passagens" width={6} />
+                    <Frm.MoneyInputFloat label="Valor Total das Passagens" name="valor_passagens" width={6} />
                 </div>
             </div>
         </>

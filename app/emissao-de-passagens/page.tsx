@@ -31,19 +31,19 @@ export default function EmissaoPassagens() {
     function document(data: any) {
         Frm.update(data);
         const {
-            rpa_passagens,
-            valor_passagens,
             dadosEmbarque,
         } = Frm.data;
+
+        // alert("teste")
 
         // const formatDateToBrazilian = (date: string) => {
         //     if (!date) return 'Não informado';
         //     return date;
         // };
 
-        // const formatFloatValue = (value: number): string => {
-        //     return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        // }
+        const formatFloatValue = (value: number): string => {
+            return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
 
         return (
             <div className='scrollableContainer'>
@@ -73,11 +73,11 @@ export default function EmissaoPassagens() {
                 
                 <div>
                     <strong>Reserva</strong>
-                    <p>Número do RPA: <span style={{ color: 'blue' }}>{rpa_passagens || 'Não informado'}</span></p>
+                    <p>Número do RPA: <span style={{ color: 'blue' }}>{data.rpa_passagens || 'Não informado'}</span></p>
                 </div>
                 <div>
                     <strong>Custos</strong>
-                    <p>Valor Total das Passagens: <span style={{ color: 'blue' }}>{ parseFloat(valor_passagens || '0').toFixed(2)}</span></p>      
+                    <p>Valor Total das Passagens: <span style={{ color: 'blue' }}>{formatFloatValue(data.valor_passagens || '0')}</span></p>      
                 </div>
             </div>
         );
