@@ -33,11 +33,8 @@ export default function EmissaoPassagens() {
         const {
             rpa_passagens,
             valor_passagens,
-            valor_pass,
             dadosEmbarque,
         } = Frm.data;
-
-        Frm.set('valor_pass', parseFloat(valor_passagens).toFixed(2));
 
         // const formatDateToBrazilian = (date: string) => {
         //     if (!date) return 'Não informado';
@@ -50,12 +47,7 @@ export default function EmissaoPassagens() {
 
         return (
             <div className='scrollableContainer'>
-                {/* <div style={{ textAlign: 'center', marginBottom: '0.3em', marginTop: '1em', fontWeight: 'bold', fontSize: '120%' }}>
-                EMISSÃO DE PASSAGENS
-            </div> */}
-
                 <span style={{ fontWeight: 'bold' }}>Passagens</span>
-
                 <div style={{ marginTop: '1rem', marginBottom: '1rem', width: '100%' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
                         <thead>
@@ -81,16 +73,15 @@ export default function EmissaoPassagens() {
                 
                 <div>
                     <strong>Reserva</strong>
-                    <p>Número do RPA: <span style={{ color: 'blue' }}>{data.rpa_passagens || 'Não informado'}</span></p>
+                    <p>Número do RPA: <span style={{ color: 'blue' }}>{rpa_passagens || 'Não informado'}</span></p>
                 </div>
                 <div>
                     <strong>Custos</strong>
-                    <p>Valor Total das Passagens: <span style={{ color: 'blue' }}>{ parseFloat(data.valor_passagens || '0').toFixed(2)}</span></p>      
+                    <p>Valor Total das Passagens: <span style={{ color: 'blue' }}>{ parseFloat(valor_passagens || '0').toFixed(2)}</span></p>      
                 </div>
             </div>
         );
     }
-    
 
     return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'EmissaoPassagens' });
 }
