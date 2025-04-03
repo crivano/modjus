@@ -31,6 +31,29 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
         updatetrechos(trajetoSalvo, returnToOriginSalvo, trechosSalvos);
     }, [Frm, name, trajeto, returnToOrigin, trechos]);
 
+    useEffect(() => {
+        const updatedTrechos = trechos.map((trecho, index) => {
+            const nextTrecho = trechos[index + 1];
+            if (nextTrecho) {
+                return {
+                    ...trecho,
+                    dataTrechoFinal: nextTrecho.dataTrechoInicial 
+                        ? new Date(new Date(nextTrecho.dataTrechoInicial).getTime() - 86400000).toISOString().split('T')[0] 
+                        : trecho.dataTrechoFinal
+                };
+            } else {
+                return {
+                    ...trecho,
+                    dataTrechoFinal: trecho.dataTrechoInicial
+                };
+            }
+        });
+
+        if (JSON.stringify(updatedTrechos) !== JSON.stringify(trechos)) {
+            setTrechos(updatedTrechos);
+            Frm.set(`${name}_trechos`, updatedTrechos);
+        }
+    }, [Frm.data]);
 
     const handleTrajetoChange = (e) => {
         const newTrajeto = e.target.value;
@@ -51,7 +74,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
             return;
         }
 
-        const cidades = trajetoStr.split(" / ").map(c => c.trim());
+        const cidades = trajetoStr.split("/").map(c => c.trim());
 
         if (!trechosSalvos) {
 
@@ -166,6 +189,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                             <Form.Control
                                                 type="date"
                                                 value={Frm.get(`${name}_trechos[${index}].dataTrechoFinal`)}
+                                                readOnly
                                                 onChange={e => {
                                                     try {
                                                         const dataInicial = Frm.get(`${name}_trechos[${index}].dataTrechoInicial`);
