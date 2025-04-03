@@ -71,8 +71,9 @@ export async function GET(req: NextRequest) {
             passagens_liquido: item.modjusData.valor_passagem || "0.00", // Adjust as needed
             finalidade: item.modjusData.finalidade
         }));
-
-        const csv = parse(data);
+        
+        const csvOptions = { delimiter: '^' };
+        const csv = parse(data, csvOptions);
 
          return new NextResponse(csv, {
             headers: {
