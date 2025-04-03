@@ -17,7 +17,12 @@ export async function GET(req: NextRequest) {
 
         // 🔥 Variáveis de ambiente sempre lidas no runtime!
        
-        const nome_documento = (tipo_documento == 'SOL' ? process.env.FORM_DAILY_SOLICITATION : process.env.FORM_DAILY_CALCULATION);
+        const nome_documento = (
+            tipo_documento == 'SOL' ? process.env.FORM_DAILY_SOLICITATION 
+            : tipo_documento == 'CAL'? process.env.FORM_DAILY_CALCULATION
+            : tipo_documento == 'REQ'? process.env.FORM_TICKET_ISSUANCE
+            : ''
+        );
         const apiBaseUrl = process.env.EXTERNAL_API_BASE_URL;
         const apiAuth = process.env.API_AUTH;
 
