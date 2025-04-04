@@ -185,11 +185,12 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                                         </div>
 
                                         <div className="col-6">
-                                            <Form.Label>Data anterior ao próximo embarque</Form.Label>
+                                            <Form.Label style={{ display: "none" }}> Data anterior ao próximo embarque</Form.Label>
                                             <Form.Control
                                                 type="date"
                                                 value={Frm.get(`${name}_trechos[${index}].dataTrechoFinal`)}
                                                 readOnly
+                                                style={{ display: "none" }}
                                                 onChange={e => {
                                                     try {
                                                         const dataInicial = Frm.get(`${name}_trechos[${index}].dataTrechoInicial`);
