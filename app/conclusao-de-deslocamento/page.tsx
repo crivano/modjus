@@ -403,7 +403,7 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {Frm.get('tipoBeneficiario') > '1' && (
                         <>
-                            <Frm.Input label="Beneficiário" name="nomePessoa" width={6} />
+                            <Frm.NameInput label="Beneficiário" name="nomePessoa" width={6} />
                             <Frm.CPFInput label="CPF" name="cpf" width={6} />
                         </>
                     )}
@@ -473,7 +473,9 @@ export default function ConclusaoDeslocamento() {
             valorDescontoAlimentacao,
             valorLiquidoDiarias,
             valor_passagens,
-            justificativa
+            justificativa,
+            nome,
+            CPF
         } = Frm.data;
 
         return <>
@@ -502,7 +504,7 @@ export default function ConclusaoDeslocamento() {
                         <>
                             {formatForm("Beneficiário:", selectedSolicitacao?.nome)}
                             {formatForm("CPF:", selectedSolicitacao?.CPF)}
-                            {/* Incluir os dados de banco */}
+                            {/* Incluir os dados de banco ? */}
                         </>
                     )}
 
@@ -550,8 +552,8 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {tipoBeneficiario > '1' && (
                         <>
-                            {formatForm("Beneficiário:", selectedSolicitacao?.nome)}
-                            {formatForm("CPF:", formatCPF(selectedSolicitacao?.CPF))}
+                            {formatForm("Beneficiário:", selectedSolicitacao.nome)}
+                            {formatForm("CPF:", formatCPF(selectedSolicitacao.CPF))}
                             {/* Incluir os dados de banco */}
                         </>
                     )}
