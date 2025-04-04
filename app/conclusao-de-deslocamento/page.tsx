@@ -191,6 +191,10 @@ export default function ConclusaoDeslocamento() {
             Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
             Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
 
+            // COLABORADOR
+            Frm.set('nomePessoa', solicitacaoData.nome || '');
+            Frm.set('cpf', solicitacaoData.CPF || '');
+
             Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
             Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
             Frm.set('origemDestino', solicitacaoData.trajeto || '');
@@ -399,8 +403,8 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {Frm.get('tipoBeneficiario') > '1' && (
                         <>
-                            <Frm.Input label="Beneficiário" name="nome" width={6} />
-                            <Frm.Input label="CPF" name="cpf" width={6} />
+                            <Frm.Input label="Beneficiário" name="nomePessoa" width={6} />
+                            <Frm.CPFInput label="CPF" name="cpf" width={6} />
                         </>
                     )}
 
