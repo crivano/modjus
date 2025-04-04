@@ -474,8 +474,8 @@ export default function ConclusaoDeslocamento() {
             valorLiquidoDiarias,
             valor_passagens,
             justificativa,
-            nome,
-            CPF
+            nomePessoa,
+            cpf
         } = Frm.data;
 
         return <>
@@ -502,8 +502,8 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {tipoBeneficiario > '1' && (
                         <>
-                            {formatForm("Beneficiário:", selectedSolicitacao?.nome)}
-                            {formatForm("CPF:", selectedSolicitacao?.CPF)}
+                            {formatForm("Beneficiário:", nomePessoa)}
+                            {formatForm("CPF:", cpf)}
                             {/* Incluir os dados de banco ? */}
                         </>
                     )}
@@ -552,8 +552,8 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {tipoBeneficiario > '1' && (
                         <>
-                            {formatForm("Beneficiário:", selectedSolicitacao.nome.toUpperCase())}
-                            {formatForm("CPF:", formatCPF(selectedSolicitacao.CPF))}
+                            {formatForm("Beneficiário:", (selectedSolicitacao.nome = nomePessoa).toUpperCase())}
+                            {formatForm("CPF:", formatCPF(selectedSolicitacao.CPF = cpf))}
                             {/* Incluir os dados de banco */}
                         </>
                     )}
