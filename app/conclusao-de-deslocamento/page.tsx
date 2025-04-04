@@ -8,9 +8,9 @@ import axios from 'axios'
 
 const options = {
     tipoBeneficiarioOptions: [
-        { id: '1', name: 'Colaborador' },
-        { id: '2', name: 'Colaborador Eventual' },
-        { id: '3', name: 'Outro' }
+        { id: '1', name: 'TRF2/SJRJ/SJES' },
+        { id: '2', name: 'Colaborador' },
+        { id: '3', name: 'Colaborador Eventual' }
     ],
     tipoDeslocamentoOptions: [
         { id: '1', name: 'Nacional' },
@@ -210,6 +210,17 @@ export default function ConclusaoDeslocamento() {
             // VALOR DAS PASSAGENS
             // Frm.set('valor_passagens', solicitacaoData?.valor_passagens || '');
         }
+        // if (selected && selected.id !== '') {
+        //     const solicitacaoData = selected.data;
+
+        //     // BENEFICIARIO
+        //     Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+        //     Frm.set('pessoa', {
+        //         descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
+        //     });
+        //     Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+        //     Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
+        // }
     }
 
     function handleSolicitacaoChangePassagens(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
@@ -276,20 +287,20 @@ export default function ConclusaoDeslocamento() {
 
     // INTERVEIW - ÁREA DA ENTREVISTA
     function interview(Frm: FormHelper) {
-        useEffect(() => {
-            if (Frm.data && Frm.data.processo && !dataFetched) {
-                fetchProcessData(Frm.data.processo).then(() => {
-                    if (Frm.data.solicitacaoDeslocamento) {
-                        handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-                    }
-                    if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
-                        handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-                    }
-                    setDataFetched(true);
-                });
-            }
+        // useEffect(() => {
+        //     if (Frm.data && Frm.data.processo && !dataFetched) {
+        //         fetchProcessData(Frm.data.processo).then(() => {
+        //             if (Frm.data.solicitacaoDeslocamento) {
+        //                 handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+        //             }
+        //             if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
+        //                 handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+        //             }
+        //             setDataFetched(true);
+        //         });
+        //     }
 
-        });
+        // });
         return <>
             <div className="scrollableContainer">
                 <div className="margin-bottom: 0.3em;
@@ -373,13 +384,25 @@ export default function ConclusaoDeslocamento() {
 
                     <p></p><h3>Dados do Beneficiário</h3>
 
-                    <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={options.tipoBeneficiarioOptions} width={6} />
-                    <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
 
-                    <div className="row">
-                        {/* <Frm.Input label="Função" name="funcaoBeneficiario" width={6} /> */}
-                        <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
-                    </div>
+                    <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={options.tipoBeneficiarioOptions} width={6} />
+
+                    {Frm.get('tipoBeneficiario') == '1' && (
+                        <>
+                            <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handleBeneficiarioChange(pessoa, Frm)} />
+
+                            <div className="row">
+                                {/* <Frm.Input label="Função" name="funcaoBeneficiario" width={6} /> */}
+                                <Frm.Input label="Cargo" name="cargoBeneficiario" width={6} />
+                            </div>
+                        </>
+                    )}
+                    {Frm.get('tipoBeneficiario') > '1' && (
+                        <>
+                            <Frm.Input label="Beneficiário" name="nome" width={6} />
+                            <Frm.Input label="CPF" name="cpf" width={6} />
+                        </>
+                    )}
 
                     <p></p><h3>Dados do Deslocamento</h3>
 
@@ -412,13 +435,13 @@ export default function ConclusaoDeslocamento() {
     const formatCPF = (value: string) => {
         const numericValue = value?.replace(/\D/g, ''); // Remove caracteres não numéricos
         if (value) {
-          return numericValue
-          .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
-          .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
-          .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
-          .slice(0, 14); // Limita o tamanho ao formato de CPF
+            return numericValue
+                .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+                .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+                .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+                .slice(0, 14); // Limita o tamanho ao formato de CPF
         }
-      };
+    };
 
     function document(data: any) {
 
@@ -514,9 +537,7 @@ export default function ConclusaoDeslocamento() {
 
                     {/* DADOS DO BENEFICIÁRIO */}
                     {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
-                    {tipoBeneficiario == '1' &&
-                        formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)
-                    }
+
                     {tipoBeneficiario == '1' && (
                         <>
                             {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
