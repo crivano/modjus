@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
 import Pessoa from "@/components/sei/Pessoa"
@@ -34,7 +34,7 @@ const getOptionName = (options: { id: string, name: string }[], id: string) => {
 };
 
 export default function ConclusaoDeslocamento() {
-    const Frm = new FormHelper();
+    //const Frm = new FormHelper();
     const [error, setError] = useState("");
 
     const [fetchedData, setFetchedData] = useState(null);
@@ -44,8 +44,17 @@ export default function ConclusaoDeslocamento() {
     const [fetchedDataPassagens, setFetchedDataPassagens] = useState(null);
     const [solicitacaoOptionsPassagens, setSolicitacaoOptionsPassagens] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacaoPassagens, setSelectedSolicitacaoPassagens] = useState(null);
+    const [dataFetched, setDataFetched] = useState(false);
 
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
+
+    const Frm = useMemo(() => new FormHelper(), []);
+    
+      useEffect(() => {
+        if (Frm.data && Frm.data.conclusaoDeslocamento) {
+          fetchProcessData(Frm.data.processo);
+        }
+      }, [Frm.data]);
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -161,7 +170,8 @@ export default function ConclusaoDeslocamento() {
         const selected = solicitacaoOptions.find(option => option.name === selectedId);
         setSelectedSolicitacao(selected ? selected.data : null);
 
-        if (selected.id !== '') {
+
+        if (selected && selected.id !== '') {
             const solicitacaoData = selected.data;
             Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
             Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
@@ -266,6 +276,20 @@ export default function ConclusaoDeslocamento() {
 
     // INTERVEIW - ÁREA DA ENTREVISTA
     function interview(Frm: FormHelper) {
+        useEffect(() => {
+            if (Frm.data && Frm.data.processo && !dataFetched) {
+              fetchProcessData(Frm.data.processo).then(() => {
+                if (Frm.data.solicitacaoDeslocamento) {
+                  handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                }
+                if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
+                  handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                }
+                setDataFetched(true);
+              });
+            }
+      
+          });
         return <>
             <div className="scrollableContainer">
                 <div className="margin-bottom: 0.3em;
