@@ -71,7 +71,7 @@ export default function RequisicaoPassagemAerea() {
         }
       }
 
-    function interview(Frm: FormHelper) {
+    function Interview(Frm: FormHelper) {
         useEffect(() => {
             if (Frm.data && Frm.data.processo && !dataFetched) {
               fetchProcessData(Frm.data.processo).then(() => {
@@ -107,5 +107,5 @@ export default function RequisicaoPassagemAerea() {
         );
     }
 
-    return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'RequisicaoPassagemAerea' });
+    return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'RequisicaoPassagemAerea' });
 }

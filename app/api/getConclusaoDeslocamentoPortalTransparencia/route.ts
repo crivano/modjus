@@ -5,14 +5,14 @@ import { parse } from 'json2csv';
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
-        const num_processo = searchParams.get('num_processo');
+  //    const num_processo = searchParams.get('num_processo');
 
-        if (!num_processo) {
-            return NextResponse.json(
-                { error: 'Parâmetros num_processo são obrigatórios' },
-                { status: 400 }
-            );
-        }
+        // if (!num_processo) {
+        //     return NextResponse.json(
+        //         { error: 'Parâmetros num_processo são obrigatórios' },
+        //         { status: 400 }
+        //     );
+        // }
 
         const nome_documento = process.env.FORM_CONCLUSAO_DESLOCAMENTO;
         const apiBaseUrl = process.env.EXTERNAL_API_BASE_URL;
@@ -22,8 +22,8 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'Configuração inválida no ambiente' }, { status: 500 });
         }
 
-        const response = await axios.get(`${apiBaseUrl}/getmodjusdocsprocess`, {
-            params: { num_processo, nome_documento },
+        const response = await axios.get(`${apiBaseUrl}/getmodjusdocs`, {
+            params: { nome_documento },
             headers: {
                 'Authorization': `Basic ${apiAuth}`,
                 'x-forwarded-for': '127.0.0.1'
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
 
         const data = (response.data as any[]).map((item: any) => ({
             numero_conclusao: item.numero_documento,
-            data_assinatura_conclusao: "00/00/0000", // TODO ajustar com a data de assinatura do documento
+            data_assinatura_conclusao: item.data_assinatura, // TODO ajustar com a data de assinatura do documento
             solicitacao_de_deslocamento: item.modjusData.solicitacaoDeslocamento,
             solicitacao_de_deslocamento_data: item.modjusData.data_solicitacao, // TODO data de assinatura do documento de deslocamento
             prop_cargo_funcao: item.modjusData.funcaoProponente,

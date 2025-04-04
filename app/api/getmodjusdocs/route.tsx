@@ -65,16 +65,15 @@ const checkAuth = (req: NextRequest): boolean => {
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     // Obter parâmetros de query da URL
-    const num_processo = req.nextUrl.searchParams.get("num_processo");
-    const nome_documento = decodeURIComponent(
+      const nome_documento = decodeURIComponent(
       req.nextUrl.searchParams.get("nome_documento")
     );
     console.log("Nome Documento Decodificado:", nome_documento);
 
     // Verificar se os parâmetros são válidos
-    if (!num_processo || !nome_documento) {
+    if ( !nome_documento) {
       return NextResponse.json(
-        { error: "Parâmetros num_processo e nome_documento são obrigatórios." },
+        { error: "Parâmetros nome_documento são obrigatórios." },
         { status: 400 }
       );
     }
@@ -121,14 +120,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             JOIN sei.atividade a2 ON a.id_atividade = a2.id_atividade
             JOIN sei.tarefa t ON t.id_tarefa = a2.id_tarefa
             JOIN (SELECT max(versao) as versao ,id_documento from sei.versao_secao_documento vsd
-            			JOIN sei.secao_documento sd ON sd.id_secao_documento = vsd.id_secao_documento
-            			group by id_documento 
+                        JOIN sei.secao_documento sd ON sd.id_secao_documento = vsd.id_secao_documento
+                        group by id_documento 
             ) v on v.id_documento = d.id_documento 
-            WHERE p.protocolo_formatado = ? AND UPPER(s.nome) = UPPER(?) 
+            WHERE  UPPER(s.nome) = UPPER(?) 
             AND a.sin_ativo = 'S'  
             AND t.id_tarefa = 5`,
 
-          [num_processo, nome_documento],
+          [nome_documento],
           (err, results) => {
             if (err) reject(err);
             resolve([results as DocumentoConteudo[]]);
@@ -179,8 +178,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           });
         }
   //      console.log("modjusData", modjusData);
-          console.log("numero_documento", numero_documento); // Log para depuração
-          console.log("versao", versao); // Log para depuração
+  //      console.log("numero_documento", numero_documento); // Log para depuração
       });
 
       // Verificar se algum dado foi encontrado

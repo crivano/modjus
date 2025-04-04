@@ -8,7 +8,7 @@ import styles from './emissao-de-passagens.module.css'; // Import the CSS module
 export default function EmissaoPassagens() {
     const Frm = new FormHelper();
 
-    function interview(Frm: FormHelper) {
+    function Interview(Frm: FormHelper) {
         const [startDate, setStartDate] = useState<Date | null>(new Date());
         const handleDateChange = (date: Date | null) => {
             setStartDate(date);
@@ -83,5 +83,5 @@ export default function EmissaoPassagens() {
         );
     }
 
-    return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'EmissaoPassagens' });
+    return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'EmissaoPassagens' });
 }

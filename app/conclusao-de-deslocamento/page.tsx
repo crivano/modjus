@@ -290,7 +290,7 @@ export default function ConclusaoDeslocamento() {
     }
 
     // INTERVEIW - ÁREA DA ENTREVISTA
-    function interview(Frm: FormHelper) {
+    function Interview(Frm: FormHelper) {
         useEffect(() => {
             if (Frm.data && Frm.data.processo && !dataFetched) {
                 fetchProcessData(Frm.data.processo).then(() => {
@@ -594,5 +594,5 @@ export default function ConclusaoDeslocamento() {
         </>
     }
 
-    return Model(interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
+    return Model(InputEventterview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
 }
