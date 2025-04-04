@@ -294,12 +294,22 @@ export default function ConclusaoDeslocamento() {
         useEffect(() => {
             if (Frm.data && Frm.data.processo && !dataFetched) {
                 fetchProcessData(Frm.data.processo).then(() => {
-                    if (Frm.data.conclusaoDeslocamento) {
-                        handleSolicitacaoChange({ target: { value: Frm.data.conclusaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    if (Frm.data.calculoDiarias) {
+                        handleSolicitacaoChange({ target: { value: Frm.data.calculoDiarias } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
-                    // if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
-                    //     handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-                    // }
+                    if (Frm.data.emissaoPassagens) {
+                        handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    }
+                    setDataFetched(true);
+                });
+            }
+        });
+        useEffect(() => {
+            if (Frm.data && Frm.data.processo && !dataFetched) {
+                fetchProcessDataPassagens(Frm.data.processo).then(() => {
+                    if (Frm.data.emissaoPassagens) {
+                        handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    }
                     setDataFetched(true);
                 });
             }
@@ -332,13 +342,13 @@ export default function ConclusaoDeslocamento() {
                     )}
 
                     {/* BUSCAR DADOS DA EMISSÃO DE PASSAGENS */}
-                    <Frm.InputWithButton
+                    {/* <Frm.InputWithButton
                         label="Número do Processo"
                         name="numeroProcesso"
                         buttonText="Buscar"
                         onButtonClick={fetchProcessDataPassagens}
                         width={6}
-                    />
+                    /> */}
                     {fetchedDataPassagens && (
                         <Frm.Select label="Selecione o código da emissão de passagens"
                             name="emissaoPassagens"
