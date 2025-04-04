@@ -552,7 +552,7 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {tipoBeneficiario > '1' && (
                         <>
-                            {formatForm("Beneficiário:", selectedSolicitacao.nome)}
+                            {formatForm("Beneficiário:", selectedSolicitacao.nome.toUpperCase())}
                             {formatForm("CPF:", formatCPF(selectedSolicitacao.CPF))}
                             {/* Incluir os dados de banco */}
                         </>
