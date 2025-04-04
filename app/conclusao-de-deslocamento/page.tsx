@@ -49,12 +49,12 @@ export default function ConclusaoDeslocamento() {
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
 
     const Frm = useMemo(() => new FormHelper(), []);
-    
-      useEffect(() => {
+
+    useEffect(() => {
         if (Frm.data && Frm.data.conclusaoDeslocamento) {
-          fetchProcessData(Frm.data.processo);
+            fetchProcessData(Frm.data.processo);
         }
-      }, [Frm.data]);
+    }, [Frm.data]);
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -278,18 +278,18 @@ export default function ConclusaoDeslocamento() {
     function interview(Frm: FormHelper) {
         useEffect(() => {
             if (Frm.data && Frm.data.processo && !dataFetched) {
-              fetchProcessData(Frm.data.processo).then(() => {
-                if (Frm.data.solicitacaoDeslocamento) {
-                  handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-                }
-                if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
-                  handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-                }
-                setDataFetched(true);
-              });
+                fetchProcessData(Frm.data.processo).then(() => {
+                    if (Frm.data.solicitacaoDeslocamento) {
+                        handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    }
+                    if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
+                        handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    }
+                    setDataFetched(true);
+                });
             }
-      
-          });
+
+        });
         return <>
             <div className="scrollableContainer">
                 <div className="margin-bottom: 0.3em;
@@ -452,7 +452,10 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Cargo do Proponente:", cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, tipoBeneficiario))}
+                    {tipoBeneficiario == '1' &&
+                        formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, tipoBeneficiario))}
+                    {tipoBeneficiario > '1' &&
+                        formatForm("Beneficiário:", selectedSolicitacao.nome)}
                     {formatForm("Beneficiário:", pessoa?.descricao)}
                     {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
 
@@ -490,7 +493,11 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente = cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
+                    {tipoBeneficiario == '1' &&
+                        formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
+                    {tipoBeneficiario > '1' &&
+                        formatForm("Beneficiário:", selectedSolicitacao.nome)}
+
                     {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
                     {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
 
