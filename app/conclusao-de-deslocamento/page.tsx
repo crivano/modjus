@@ -409,6 +409,17 @@ export default function ConclusaoDeslocamento() {
         </>
     }
 
+    const formatCPF = (value: string) => {
+        const numericValue = value?.replace(/\D/g, ''); // Remove caracteres não numéricos
+        if (value) {
+          return numericValue
+          .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
+          .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
+          .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
+          .slice(0, 14); // Limita o tamanho ao formato de CPF
+        }
+      };
+
     function document(data: any) {
 
         const Frm = new FormHelper();
@@ -451,13 +462,22 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Proponente:", proponente?.descricao)}
                     {formatForm("Cargo do Proponente:", cargoProponente)}
 
+                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, tipoBeneficiario))}
+
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {tipoBeneficiario == '1' &&
-                        formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, tipoBeneficiario))}
-                    {tipoBeneficiario > '1' &&
-                        formatForm("Beneficiário:", selectedSolicitacao.nome)}
-                    {formatForm("Beneficiário:", pessoa?.descricao)}
-                    {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
+                    {tipoBeneficiario == '1' && (
+                        <>
+                            {formatForm("Beneficiário:", pessoa?.descricao)}
+                            {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
+                        </>
+                    )}
+                    {tipoBeneficiario > '1' && (
+                        <>
+                            {formatForm("Beneficiário:", selectedSolicitacao?.nome)}
+                            {formatForm("CPF:", selectedSolicitacao?.CPF)}
+                            {/* Incluir os dados de banco */}
+                        </>
+                    )}
 
                     {formatForm("Finalidade:", finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, tipoDeslocamento))}
@@ -493,13 +513,23 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente = cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {tipoBeneficiario == '1' &&
-                        formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
-                    {tipoBeneficiario > '1' &&
-                        formatForm("Beneficiário:", selectedSolicitacao.nome)}
-
                     {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
-                    {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
+                    {tipoBeneficiario == '1' &&
+                        formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)
+                    }
+                    {tipoBeneficiario == '1' && (
+                        <>
+                            {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
+                            {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
+                        </>
+                    )}
+                    {tipoBeneficiario > '1' && (
+                        <>
+                            {formatForm("Beneficiário:", selectedSolicitacao?.nome)}
+                            {formatForm("CPF:", formatCPF(selectedSolicitacao?.CPF))}
+                            {/* Incluir os dados de banco */}
+                        </>
+                    )}
 
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
