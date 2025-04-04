@@ -291,20 +291,19 @@ export default function ConclusaoDeslocamento() {
 
     // INTERVEIW - ÁREA DA ENTREVISTA
     function interview(Frm: FormHelper) {
-        // useEffect(() => {
-        //     if (Frm.data && Frm.data.processo && !dataFetched) {
-        //         fetchProcessData(Frm.data.processo).then(() => {
-        //             if (Frm.data.solicitacaoDeslocamento) {
-        //                 handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-        //             }
-        //             if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
-        //                 handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-        //             }
-        //             setDataFetched(true);
-        //         });
-        //     }
-
-        // });
+        useEffect(() => {
+            if (Frm.data && Frm.data.processo && !dataFetched) {
+                fetchProcessData(Frm.data.processo).then(() => {
+                    if (Frm.data.conclusaoDeslocamento) {
+                        handleSolicitacaoChange({ target: { value: Frm.data.conclusaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    }
+                    // if (Frm.data && Frm.data.auxilios === '1' && !dataFetched) {
+                    //     handleAuxiliosChange({ target: { value: Frm.data.auxilios } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                    // }
+                    setDataFetched(true);
+                });
+            }
+        });
         return <>
             <div className="scrollableContainer">
                 <div className="margin-bottom: 0.3em;
@@ -316,13 +315,13 @@ export default function ConclusaoDeslocamento() {
                 <p><strong>Dados para o relatório de deslocamentos</strong></p>
                 <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
                     <h6>Dados da Solicitação de Deslocamento</h6>
-                    <Frm.InputWithButton
+                    {/* <Frm.InputWithButton
                         label="Número do Processo"
                         name="numeroProcesso"
                         buttonText="Buscar"
                         onButtonClick={fetchProcessData}
                         width={6}
-                    />
+                    /> */}
                     {fetchedData && (
                         <Frm.Select label="Selecione o código do cálculo de diárias"
                             name="calculoDiarias"
