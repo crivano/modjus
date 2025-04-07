@@ -445,11 +445,11 @@ export default function ConclusaoDeslocamento() {
         return <>
 
             {!selectedSolicitacao && (
-                <div hidden className="scrollableContainer">
+                <div className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", calculoDiarias)}
-                    {formatForm("Código da Emissão de Passagens:", emissaoPassagens)}
+                    {/* {formatForm("Código da Emissão de Passagens:", emissaoPassagens)} */}
                     {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -467,8 +467,8 @@ export default function ConclusaoDeslocamento() {
                     )}
                     {tipoBeneficiario > '1' && (
                         <>
-                            {formatForm("Beneficiário:", nomePessoa)}
-                            {formatForm("CPF:", cpf)}
+                            {formatForm("Beneficiário:", nomePessoa.toUpperCase())}
+                            {formatForm("CPF:", formatCPF(cpf))}
                             {/* Incluir os dados de banco ? */}
                         </>
                     )}
