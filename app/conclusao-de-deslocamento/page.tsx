@@ -321,7 +321,7 @@ export default function ConclusaoDeslocamento() {
                 </div>
 
                 <div hidden={radioSelected == "não"}>
-                    <Frm.TextArea label="Justifique:" name="justificativa" width={12} />
+                    {/* <Frm.TextArea label="Justifique:" name="justificativa" width={12} /> */}
                     <h3>Dados do Proponente</h3>
                     <div className="row">
                         <Frm.Input
@@ -492,7 +492,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Valor Total das Passagens:", formatCurrency(valor_passagens || '0,00'))}
 
                     {/* JUSTIFICATIVA */}
-                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
+                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
                 </div>
             )}
 
