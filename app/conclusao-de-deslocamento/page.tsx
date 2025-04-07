@@ -308,7 +308,7 @@ export default function ConclusaoDeslocamento() {
                     )}
                 </div>
                 <div>
-                    {(selectedSolicitacao) ?
+                    {/* {(selectedSolicitacao) ?
                         <>
                             Deseja editar os dados da conclusão de deslocamento manualmente?<br />
                             {radioButtonEditForm("Sim")}
@@ -317,7 +317,7 @@ export default function ConclusaoDeslocamento() {
                         </>
                         :
                         <></>
-                    }
+                    } */}
                 </div>
 
                 <div hidden={radioSelected == "não"}>
