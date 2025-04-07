@@ -418,6 +418,7 @@ export default function ConclusaoDeslocamento() {
             data_solicitacao,
             calculoDiarias,
             emissaoPassagens,
+            solicitacaoDeslocamento,
             proponente,
             cargoProponente,
             pessoa,
@@ -448,7 +449,7 @@ export default function ConclusaoDeslocamento() {
                 <div className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
-                    {formatForm("Código da Solicitação de Deslocamento:", calculoDiarias)}
+                    {formatForm("Código da Solicitação de Deslocamento:", solicitacaoDeslocamento)}
                     {/* {formatForm("Código da Emissão de Passagens:", emissaoPassagens)} */}
                     {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
