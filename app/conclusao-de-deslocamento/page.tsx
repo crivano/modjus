@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, ChangeEvent, useMemo } from "react"
-import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
+import { FormHelper } from "@/libs/form-support"
+import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
 import emissaoPassagens from "../emissao-de-passagens/page";
@@ -57,11 +57,11 @@ export default function ConclusaoDeslocamento() {
         }
     }, [Frm.data]);
 
-    useEffect(() => {
-        if (Frm.data && Frm.data.emissaoPassagens) {
-            fetchProcessDataPassagens(Frm.data.processo);
-        }
-    }, [Frm.data]);
+    // useEffect(() => {
+    //     if (Frm.data && Frm.data.emissaoPassagens) {
+    //         fetchProcessDataPassagens(Frm.data.processo);
+    //     }
+    // }, [Frm.data]);
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -134,7 +134,7 @@ export default function ConclusaoDeslocamento() {
                 setSelectedSolicitacao(Frm.data.calculoDiarias);
             } else if (!event.target.value || event.target.value == '') {
                 setSelectedSolicitacao(null);
-                new Error('Solicitação de deslocamento não encontrada');
+                new Error('Documento "Cálculo de Diárias" não encontrado');
             }
 
             setError('');
@@ -267,21 +267,9 @@ export default function ConclusaoDeslocamento() {
                     setDataFetched(true);
                 });
             }
-        });
-        // useEffect(() => {
-        //     if (Frm.data && Frm.data.processo && !dataFetched) {
-        //         fetchProcessData(Frm.data.processo).then(() => {
-        //             if (Frm.data.solicitacaoDeslocamento) {
-        //                 handleSolicitacaoChange({ target: { value: Frm.data.solicitacaoDeslocamento } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-        //             }
-        //             setDataFetched(true);
-        //         });
-        //     }
-        // });
-        useEffect(() => {
             if (Frm.data && Frm.data.processo && !dataFetchedPassagens) {
                 fetchProcessDataPassagens(Frm.data.processo).then(() => {
-                    if (Frm.data.emissaoPassagens) {
+                    if (Frm.data) {
                         handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
                     setDataFetchedPassagens(true);
@@ -337,7 +325,7 @@ export default function ConclusaoDeslocamento() {
                     <h3>Dados do Proponente</h3>
                     <div className="row">
                         <Frm.Input
-                            label="Código da Solicitação de Deslocamento:"
+                            label="Código do Cálculo de Diárias:"
                             name="calculoDiarias"
                             width={6}
                         />
