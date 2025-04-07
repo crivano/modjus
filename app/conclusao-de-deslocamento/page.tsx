@@ -476,7 +476,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
-                    {formatForm("Retorno à Origem:", getOptionName(options.retornoAOrigem, retorno_a_origem))}
+                    {formatForm("Retorno à Origem:", retorno_a_origem === '1' ? 'Sim' : 'Não')}
                     {formatForm("Período:", (periodoDe + " a " + periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, meioTransporte))}
 
