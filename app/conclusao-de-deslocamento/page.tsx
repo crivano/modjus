@@ -329,11 +329,11 @@ export default function ConclusaoDeslocamento() {
                             name="calculoDiarias"
                             width={6}
                         />
-                        <Frm.Input
+                        {/* <Frm.Input
                             label="Código da Emissão de Passagens:"
                             name="emissaoPassagens"
                             width={6}
-                        />
+                        /> */}
                         <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
                     </div>
 
