@@ -51,6 +51,7 @@ export async function GET(req: NextRequest) {
             data_assinatura_conclusao: item.data_assinatura, // TODO ajustar com a data de assinatura do documento
             solicitacao_de_deslocamento: item.modjusData.solicitacaoDeslocamento,
             solicitacao_de_deslocamento_data: item.modjusData.data_solicitacao, // TODO data de assinatura do documento de deslocamento
+            proponente: item.modjusData.proponente.descricao,
             prop_cargo_funcao: item.modjusData.funcaoProponente,
             beneficiario: item.modjusData.pessoa.descricao,
             beneficiario_tipo: tipoBeneficiarioOptions.find(option => option.id === item.modjusData.tipoBeneficiario)?.name || "Outro",
