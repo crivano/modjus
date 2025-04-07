@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect, ChangeEvent, useMemo } from "react"
-import { FormHelper } from "@/libs/form-support";
 import Model from "@/libs/model"
+import { FormHelper } from "@/libs/form-support"
+import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
+import emissaoPassagens from "../emissao-de-passagens/page";
 
 const options = {
     tipoBeneficiarioOptions: [
@@ -36,25 +37,31 @@ const getOptionName = (options: { id: string, name: string }[], id: string) => {
 export default function ConclusaoDeslocamento() {
     //const Frm = new FormHelper();
     const [error, setError] = useState("");
+    const Frm = useMemo(() => new FormHelper(), []);
 
     const [fetchedData, setFetchedData] = useState(null);
     const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
+    const [dataFetched, setDataFetched] = useState(false);
 
     const [fetchedDataPassagens, setFetchedDataPassagens] = useState(null);
     const [solicitacaoOptionsPassagens, setSolicitacaoOptionsPassagens] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedSolicitacaoPassagens, setSelectedSolicitacaoPassagens] = useState(null);
-    const [dataFetched, setDataFetched] = useState(false);
+    const [dataFetchedPassagens, setDataFetchedPassagens] = useState(false);
 
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
 
-    const Frm = useMemo(() => new FormHelper(), []);
-
     useEffect(() => {
-        if (Frm.data && Frm.data.conclusaoDeslocamento) {
+        if (Frm.data && Frm.data.calculoDiarias) {
             fetchProcessData(Frm.data.processo);
         }
     }, [Frm.data]);
+
+    // useEffect(() => {
+    //     if (Frm.data && Frm.data.emissaoPassagens) {
+    //         fetchProcessDataPassagens(Frm.data.processo);
+    //     }
+    // }, [Frm.data]);
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
@@ -78,27 +85,6 @@ export default function ConclusaoDeslocamento() {
                     data: item.modjusData // Armazena os dados completos
                 }))
             ]);
-
-            // const responsePassagens = await axios.get<{ modjusData: any, numero_documento: string }[]>(
-            //     '/api/getmodjus', {
-            //     params: {
-            //         num_processo: numeroProcesso,
-            //         tipo_documento: "REQ" // Novo parâmetro
-            //     }
-            // }
-            // );
-
-            // // 🔹 Atualiza os estados com os dados recebidos
-            // setFetchedDataPassagens(responsePassagens.data);
-            // setSolicitacaoOptionsPassagens([
-            //     { id: '', name: '' },
-            //     ...responsePassagens.data.map((item) => ({
-            //         id: item.modjusData.id,
-            //         name: item.numero_documento,
-            //         data: item.modjusData // Armazena os dados completos
-            //     }))
-            // ]);
-
         } catch (error) {
             console.error("Erro ao buscar os dados:", error);
             alert('Não foi possível encontrar os dados adicionais');
@@ -107,27 +93,6 @@ export default function ConclusaoDeslocamento() {
 
     async function fetchProcessDataPassagens(numeroProcesso: string) {
         try {
-            // 🔹 Faz a requisição para o backend Next.js
-            // const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
-            //     '/api/getmodjus', {
-            //     params: {
-            //         num_processo: numeroProcesso,
-            //         tipo_documento: "CAL" // Novo parâmetro
-            //     }
-            // }
-            // );
-
-            // // 🔹 Atualiza os estados com os dados recebidos
-            // setFetchedData(response.data);
-            // setSolicitacaoOptions([
-            //     { id: '', name: '' },
-            //     ...response.data.map((item) => ({
-            //         id: item.modjusData.id,
-            //         name: item.numero_documento,
-            //         data: item.modjusData // Armazena os dados completos
-            //     }))
-            // ]);
-
             const responsePassagens = await axios.get<{ modjusData: any, numero_documento: string }[]>(
                 '/api/getmodjus', {
                 params: {
@@ -136,7 +101,6 @@ export default function ConclusaoDeslocamento() {
                 }
             }
             );
-
             // 🔹 Atualiza os estados com os dados recebidos
             setFetchedDataPassagens(responsePassagens.data);
             setSolicitacaoOptionsPassagens([
@@ -147,7 +111,6 @@ export default function ConclusaoDeslocamento() {
                     data: item.modjusData // Armazena os dados completos
                 }))
             ]);
-
         } catch (error) {
             console.error("Erro ao buscar os dados:", error);
             alert('Não foi possível encontrar os dados adicionais');
@@ -166,75 +129,79 @@ export default function ConclusaoDeslocamento() {
     };
 
     function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
-        const selectedId = event.target.value;
-        const selected = solicitacaoOptions.find(option => option.name === selectedId);
-        setSelectedSolicitacao(selected ? selected.data : null);
+        try {
+            if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.calculoDiarias) {
+                setSelectedSolicitacao(Frm.data.calculoDiarias);
+            } else if (!event.target.value || event.target.value == '') {
+                setSelectedSolicitacao(null);
+                new Error('Documento "Cálculo de Diárias" não encontrado');
+            }
 
-
-        if (selected && selected.id !== '') {
-            const solicitacaoData = selected.data;
-            Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
-            Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
-
-            // PROPONENTE
-            Frm.set('proponente', {
-                descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
-            });
-            Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
-            Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
-
-            // BENEFICIARIO
-            Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-            Frm.set('pessoa', {
-                descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
-            });
-            Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-            Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
-
-            // COLABORADOR
-            Frm.set('nomePessoa', solicitacaoData.nome || '');
-            Frm.set('cpf', solicitacaoData.CPF || '');
-
-            Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
-            Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
-            Frm.set('origemDestino', solicitacaoData.trajeto || '');
-            Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? '1' : '2');
-            Frm.set('periodoDe', solicitacaoData.periodoDe || '');
-            Frm.set('periodoAte', solicitacaoData.periodoAte || '');
-            Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
-
-            // CÁLCULO DE DIÁRIAS
-            Frm.set('valorBrutoDiarias', solicitacaoData?.totalDiaria || '');
-            Frm.set('valorAdicionalDeslocamento', solicitacaoData?.totalAdicionalDeslocamento || '');
-            Frm.set('valorDescontoAlimentacao', solicitacaoData?.totalDescontoAlimentacao || '');
-            Frm.set('valorDescontoTransporte', solicitacaoData?.totalDescontoTransporte || '');
-            Frm.set('totalDeDescontoDeTeto', solicitacaoData?.totalDescontoTeto || '');
-            Frm.set('valorLiquidoDiarias', solicitacaoData?.totalSubtotal || '');
-
-            // VALOR DAS PASSAGENS
-            // Frm.set('valor_passagens', solicitacaoData?.valor_passagens || '');
+            setError('');
+        } catch (error) {
+            setError(error.message);
+            return
         }
-        // if (selected && selected.id !== '') {
-        //     const solicitacaoData = selected.data;
+        try {
+            const selectedId = event.target.value;
+            const selected = solicitacaoOptions.find(option => option.name === selectedId);
+            setSelectedSolicitacao(selected ? selected.data : null);
 
-        //     // BENEFICIARIO
-        //     Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-        //     Frm.set('pessoa', {
-        //         descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
-        //     });
-        //     Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-        //     Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
-        // }
+
+            if (selected && selected.id !== '') {
+                const solicitacaoData = selected.data;
+                Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
+                Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
+
+                // PROPONENTE
+                Frm.set('proponente', {
+                    descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
+                });
+                Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
+                Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
+
+                // BENEFICIARIO
+                Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+                Frm.set('pessoa', {
+                    descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
+                });
+                Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+                Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
+
+                // COLABORADOR
+                Frm.set('nomePessoa', solicitacaoData.nome || '');
+                Frm.set('cpf', solicitacaoData.CPF || '');
+
+                Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
+                Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
+                Frm.set('origemDestino', solicitacaoData.trajeto || '');
+                Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? '1' : '2');
+                Frm.set('periodoDe', solicitacaoData.periodoDe || '');
+                Frm.set('periodoAte', solicitacaoData.periodoAte || '');
+                Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
+
+                // CÁLCULO DE DIÁRIAS
+                Frm.set('valorBrutoDiarias', solicitacaoData?.totalDiaria || '');
+                Frm.set('valorAdicionalDeslocamento', solicitacaoData?.totalAdicionalDeslocamento || '');
+                Frm.set('valorDescontoAlimentacao', solicitacaoData?.totalDescontoAlimentacao || '');
+                Frm.set('valorDescontoTransporte', solicitacaoData?.totalDescontoTransporte || '');
+                Frm.set('totalDeDescontoDeTeto', solicitacaoData?.totalDescontoTeto || '');
+                Frm.set('valorLiquidoDiarias', solicitacaoData?.totalSubtotal || '');
+            }
+            setError('');
+        } catch (error) {
+            setError(error.message);
+        }
     }
 
-    function handleSolicitacaoChangePassagens(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
-        const selectedIdPassagens = event.target.value;
+    function handleSolicitacaoChangePassagens(eventPassagens: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
+        const selectedIdPassagens = eventPassagens.target.value;
         const selectedPassagens = solicitacaoOptionsPassagens.find(option => option.name === selectedIdPassagens);
         setSelectedSolicitacaoPassagens(selectedPassagens ? selectedPassagens.data : null);
 
-        if (selectedPassagens.id !== '') {
-            const solicitacaoData = selectedPassagens.data;
-            Frm.set('valor_passagens', solicitacaoData?.valor_passagens || '');
+        if (selectedPassagens && selectedPassagens.id !== '') {
+            const solicitacaoDataPassagens = selectedPassagens.data;
+            Frm.set('valor_passagens', solicitacaoDataPassagens?.valor_passagens || '');
         }
     }
 
@@ -297,20 +264,15 @@ export default function ConclusaoDeslocamento() {
                     if (Frm.data.calculoDiarias) {
                         handleSolicitacaoChange({ target: { value: Frm.data.calculoDiarias } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
-                    if (Frm.data.emissaoPassagens) {
-                        handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
-                    }
                     setDataFetched(true);
                 });
             }
-        });
-        useEffect(() => {
-            if (Frm.data && Frm.data.processo && !dataFetched) {
+            if (Frm.data && Frm.data.processo && !dataFetchedPassagens) {
                 fetchProcessDataPassagens(Frm.data.processo).then(() => {
-                    if (Frm.data.emissaoPassagens) {
+                    if (Frm.data) {
                         handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
-                    setDataFetched(true);
+                    setDataFetchedPassagens(true);
                 });
             }
         });
@@ -325,15 +287,9 @@ export default function ConclusaoDeslocamento() {
                 <p><strong>Dados para o relatório de deslocamentos</strong></p>
                 <div className='card my-2 p-2 ' style={{ backgroundColor: '#edf7fe' }}>
                     <h6>Dados da Solicitação de Deslocamento</h6>
-                    {/* <Frm.InputWithButton
-                        label="Número do Processo"
-                        name="numeroProcesso"
-                        buttonText="Buscar"
-                        onButtonClick={fetchProcessData}
-                        width={6}
-                    /> */}
                     {fetchedData && (
-                        <Frm.Select label="Selecione o código do cálculo de diárias"
+                        <Frm.Select
+                            label="Selecione o código do cálculo de diárias"
                             name="calculoDiarias"
                             options={solicitacaoOptions}
                             onChange={(event) => handleSolicitacaoChange(event, Frm)}
@@ -342,18 +298,11 @@ export default function ConclusaoDeslocamento() {
                     )}
 
                     {/* BUSCAR DADOS DA EMISSÃO DE PASSAGENS */}
-                    {/* <Frm.InputWithButton
-                        label="Número do Processo"
-                        name="numeroProcesso"
-                        buttonText="Buscar"
-                        onButtonClick={fetchProcessDataPassagens}
-                        width={6}
-                    /> */}
                     {fetchedDataPassagens && (
                         <Frm.Select label="Selecione o código da emissão de passagens"
                             name="emissaoPassagens"
                             options={solicitacaoOptionsPassagens}
-                            onChange={(event) => handleSolicitacaoChangePassagens(event, Frm)}
+                            onChange={(eventPassagens) => handleSolicitacaoChangePassagens(eventPassagens, Frm)}
                             width={8}
                         />
                     )}
@@ -372,14 +321,19 @@ export default function ConclusaoDeslocamento() {
                 </div>
 
                 <div hidden={radioSelected == "não"}>
-                    <Frm.TextArea label="Justifique:" name="justificativa" width={12} />
+                    {/* <Frm.TextArea label="Justifique:" name="justificativa" width={12} /> */}
                     <h3>Dados do Proponente</h3>
                     <div className="row">
                         <Frm.Input
-                            label="Código da Solicitação de Deslocamento:"
+                            label="Código do Cálculo de Diárias:"
                             name="calculoDiarias"
                             width={6}
                         />
+                        {/* <Frm.Input
+                            label="Código da Emissão de Passagens:"
+                            name="emissaoPassagens"
+                            width={6}
+                        /> */}
                         <Frm.dateInput label="Data da Solicitação de Deslocamento" name="data_solicitacao" width={6} />
                     </div>
 
@@ -463,6 +417,7 @@ export default function ConclusaoDeslocamento() {
         const {
             data_solicitacao,
             calculoDiarias,
+            emissaoPassagens,
             proponente,
             cargoProponente,
             pessoa,
@@ -494,6 +449,7 @@ export default function ConclusaoDeslocamento() {
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
                     {formatForm("Código da Solicitação de Deslocamento:", calculoDiarias)}
+                    {formatForm("Código da Emissão de Passagens:", emissaoPassagens)}
                     {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
@@ -536,7 +492,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Valor Total das Passagens:", formatCurrency(valor_passagens || '0,00'))}
 
                     {/* JUSTIFICATIVA */}
-                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
+                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
                 </div>
             )}
 
@@ -588,11 +544,11 @@ export default function ConclusaoDeslocamento() {
                     )}
 
                     {/* JUSTIFICATIVA */}
-                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
+                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
                 </>
             )}
         </>
     }
 
-    return Model(Interview, document, { saveButton: true, pdfButton: true, pdfFileName: 'ConclusaoDeDeslocamento' })
+    return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'ConclusaoDeDeslocamento' })
 }
