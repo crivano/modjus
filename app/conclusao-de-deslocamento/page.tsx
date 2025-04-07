@@ -544,7 +544,7 @@ export default function ConclusaoDeslocamento() {
                     )}
 
                     {/* JUSTIFICATIVA */}
-                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
+                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
                 </>
             )}
         </>
