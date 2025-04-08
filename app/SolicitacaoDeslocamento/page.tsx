@@ -68,17 +68,8 @@ export default function SolicitacaoDeslocamento() {
   const [formData, setFormData] = useState({});
   const Frm = useMemo(() => new FormHelper(), []);
 
-  const [dataAtual, setDataAtual] = useState('');
-  // ...existing state variables...
 
-  useEffect(() => {
-    const today = new Date();
-    const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const year = today.getFullYear();
-    setDataAtual(`${day}/${month}/${year}`);
-    Frm.set('dataAtual', `${day}/${month}/${year}`); // Garante que o FormHelper também tenha a data
-  }, [Frm]);
+  
 
   async function fetchDadosBancarios(matricula: string, Frm: FormHelper) {
     try {
@@ -147,11 +138,22 @@ export default function SolicitacaoDeslocamento() {
   };
 
   function interview(Frm: FormHelper) {
+    useEffect(() => {
+      if (!Frm.get('dataAtual')) {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const year = today.getFullYear();
+        const dataAtual = `${day}/${month}/${year}`;
+        Frm.set('dataAtual', dataAtual);
+      }
+    });
+
     return <>
       <div className="scrollableContainer">
 
         <h2>Dados do Proponente</h2>
-        <Frm.dateInput label="Data da Solicitação" name="dataAtual" width={6} />
+        <Frm.dateInput label="Data da Solicitação" name="dataAtual"  width={6} />
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
           <Frm.Input label="Função" name="funcaoProponente" width={6} />
@@ -238,7 +240,7 @@ export default function SolicitacaoDeslocamento() {
         </div>
         <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
         <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
-        
+        {JSON.stringify(Frm.data)}
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div >
