@@ -240,7 +240,6 @@ export default function SolicitacaoDeslocamento() {
         </div>
         <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>
         <DynamicListTrajetoV1 Frm={Frm} label="Trajeto" name="trajeto" width={12} />
-        {JSON.stringify(Frm.data)}
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div >
