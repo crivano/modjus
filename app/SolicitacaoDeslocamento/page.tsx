@@ -137,7 +137,7 @@ export default function SolicitacaoDeslocamento() {
     return value?.toUpperCase();
   };
 
-  function interview(Frm: FormHelper) {
+  function Interview(Frm: FormHelper) {
     useEffect(() => {
       if (!Frm.get('dataAtual')) {
         const today = new Date();
@@ -368,5 +368,5 @@ export default function SolicitacaoDeslocamento() {
     </>
   }
 
-  return Model(interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'SolicitacaoDeslocamento' })
+  return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'SolicitacaoDeslocamento' })
 }
