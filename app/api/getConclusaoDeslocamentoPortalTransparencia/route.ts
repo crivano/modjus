@@ -73,7 +73,10 @@ export async function GET(req: NextRequest) {
             finalidade: item.modjusData.finalidade
         }));
         
-        const csvOptions = { delimiter: '^' };
+        const csvOptions = {
+            delimiter: '^',
+            quote: ''
+        };
         const csv = parse(data, csvOptions);
 
          return new NextResponse(csv, {
