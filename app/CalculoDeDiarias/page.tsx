@@ -386,6 +386,13 @@ export default function CalculoDeDiarias() {
     );
 
     Frm.set('resultadoCalculoDiarias', result || {});
+    Frm.set('totalDiaria', result.totalDeDiariasBruto);
+    Frm.set('totalAdicionalDeslocamento', result.totalDeAcrescimoDeDeslocamento);
+    Frm.set('totalDescontoAlimentacao', result.totalDeDescontoDeAuxilioAlimentacao);
+    Frm.set('totalDescontoTransporte', result.totalDeDescontoDeAuxilioTransporte);
+    Frm.set('totalSubtotal', result.subtotalBruto);
+    Frm.set('totalDescontoTeto', result.totalDeDescontoDeTeto);
+    Frm.set('total', result.subtotalLiquido);
     console.log(result);
   };
 
@@ -397,8 +404,8 @@ export default function CalculoDeDiarias() {
       Frm.set('totalDescontoAlimentacao', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioAlimentacao).toFixed(2));
       Frm.set('totalDescontoTransporte', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeAuxilioTransporte).toFixed(2));
       Frm.set('totalSubtotal', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalBruto).toFixed(2));
-      Frm.set('totalDescontoTeto', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeTeto).toFixed(2));;
-      Frm.set('total', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalLiquido).toFixed(2));;
+      Frm.set('totalDescontoTeto', parseFloat(Frm.data.resultadoCalculoDiarias?.totalDeDescontoDeTeto).toFixed(2));
+      Frm.set('total', parseFloat(Frm.data.resultadoCalculoDiarias?.subtotalLiquido).toFixed(2));
 
       Frm.update({ ...formData, resultadoCalculo: selectedOption }, setFormData);
     }
@@ -549,7 +556,7 @@ export default function CalculoDeDiarias() {
             )}
           </>
         )}
-
+{JSON.stringify(Frm.data)}
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
