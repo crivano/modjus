@@ -556,7 +556,6 @@ export default function CalculoDeDiarias() {
             )}
           </>
         )}
-{JSON.stringify(Frm.data)}
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
       </div>
