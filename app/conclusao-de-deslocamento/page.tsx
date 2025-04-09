@@ -71,7 +71,10 @@ export default function ConclusaoDeslocamento() {
                 params: {
                     num_processo: numeroProcesso,
                     tipo_documento: "CAL" // Novo parâmetro
-                }
+                },
+                headers: {
+                    Authorization: `Bearer ${process.env.API_AUTH}`,
+                },
             }
             );
 
@@ -98,7 +101,10 @@ export default function ConclusaoDeslocamento() {
                 params: {
                     num_processo: numeroProcesso,
                     tipo_documento: "REQ" // Novo parâmetro
-                }
+                },
+                headers: {
+                    Authorization: `Bearer ${process.env.API_AUTH}`,
+                },
             }
             );
             // 🔹 Atualiza os estados com os dados recebidos

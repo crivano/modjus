@@ -177,7 +177,10 @@ export default function CalculoDeDiarias() {
              params: { 
                  num_processo: numeroProcesso,
                  tipo_documento: "SOL" // Novo parâmetro
-             }
+                },
+                headers: {
+                    Authorization: `Bearer ${process.env.API_AUTH}`,
+                },
         }
       );
       setFetchedData(response.data);
