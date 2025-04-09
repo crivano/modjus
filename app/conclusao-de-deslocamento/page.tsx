@@ -6,6 +6,8 @@ import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
 import emissaoPassagens from "../emissao-de-passagens/page";
+import { formatCPF, formatCurrency, formatForm } from "./formatInputs"
+import { getOptionName } from "./getData"
 
 const options = {
     tipoBeneficiarioOptions: [
@@ -30,23 +32,19 @@ const options = {
     ]
 };
 
-const getOptionName = (options: { id: string, name: string }[], id: string) => {
-    return options.find(opt => opt.id === id)?.name || 'Não informado';
-};
-
 export default function ConclusaoDeslocamento() {
     //const Frm = new FormHelper();
     const [error, setError] = useState("");
     const Frm = useMemo(() => new FormHelper(), []);
 
     const [fetchedData, setFetchedData] = useState(null);
-    const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
-    const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
+    const [calculoDiariasOptions, setCalculoDiariasOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
+    const [selectedCalculoDiarias, setSelectedCalculoDiarias] = useState(null);
     const [dataFetched, setDataFetched] = useState(false);
 
     const [fetchedDataPassagens, setFetchedDataPassagens] = useState(null);
-    const [solicitacaoOptionsPassagens, setSolicitacaoOptionsPassagens] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
-    const [selectedSolicitacaoPassagens, setSelectedSolicitacaoPassagens] = useState(null);
+    const [passagensOptions, setPassagensOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
+    const [selectedPassagens, setSelectedPassagens] = useState(null);
     const [dataFetchedPassagens, setDataFetchedPassagens] = useState(false);
 
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
@@ -77,7 +75,7 @@ export default function ConclusaoDeslocamento() {
 
             // 🔹 Atualiza os estados com os dados recebidos
             setFetchedData(response.data);
-            setSolicitacaoOptions([
+            setCalculoDiariasOptions([
                 { id: '', name: '' },
                 ...response.data.map((item) => ({
                     id: item.modjusData.id,
@@ -103,7 +101,7 @@ export default function ConclusaoDeslocamento() {
             );
             // 🔹 Atualiza os estados com os dados recebidos
             setFetchedDataPassagens(responsePassagens.data);
-            setSolicitacaoOptionsPassagens([
+            setPassagensOptions([
                 { id: '', name: '' },
                 ...responsePassagens.data.map((item) => ({
                     id: item.modjusData.id,
@@ -117,23 +115,12 @@ export default function ConclusaoDeslocamento() {
         }
     }
 
-    const formatCurrency = (value: number | string | undefined) => {
-
-        if (value === undefined || value === '') return '0,00';
-        if (typeof value === 'string') {
-            value = limparNumeros(value);
-            value = parseFloat(value);
-            value /= 100;
-        }
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    };
-
-    function handleSolicitacaoChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
+    function handleCalculoDiariasChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
         try {
             if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.calculoDiarias) {
-                setSelectedSolicitacao(Frm.data.calculoDiarias);
+                setSelectedCalculoDiarias(Frm.data.calculoDiarias);
             } else if (!event.target.value || event.target.value == '') {
-                setSelectedSolicitacao(null);
+                setSelectedCalculoDiarias(null);
                 new Error('Documento "Cálculo de Diárias" não encontrado');
             }
 
@@ -144,49 +131,49 @@ export default function ConclusaoDeslocamento() {
         }
         try {
             const selectedId = event.target.value;
-            const selected = solicitacaoOptions.find(option => option.name === selectedId);
-            setSelectedSolicitacao(selected ? selected.data : null);
+            const selected = calculoDiariasOptions.find(option => option.name === selectedId);
+            setSelectedCalculoDiarias(selected ? selected.data : null);
 
 
             if (selected && selected.id !== '') {
-                const solicitacaoData = selected.data;
-                Frm.set('solicitacaoDeslocamento', solicitacaoData.solicitacaoDeslocamento || '');
-                Frm.set('data_solicitacao', solicitacaoData.dataAtual || '');
+                const calculoDiariasData = selected.data;
+                Frm.set('solicitacaoDeslocamento', calculoDiariasData.solicitacaoDeslocamento || '');
+                Frm.set('data_solicitacao', calculoDiariasData.dataAtual || '');
 
                 // PROPONENTE
                 Frm.set('proponente', {
-                    descricao: solicitacaoData.proponente?.descricao || '', sigla: solicitacaoData.proponente?.sigla || ''
+                    descricao: calculoDiariasData.proponente?.descricao || '', sigla: calculoDiariasData.proponente?.sigla || ''
                 });
-                Frm.set('funcaoProponente', solicitacaoData.funcaoProponente || '');
-                Frm.set('cargoProponente', solicitacaoData.cargoProponente || '');
+                Frm.set('funcaoProponente', calculoDiariasData.funcaoProponente || '');
+                Frm.set('cargoProponente', calculoDiariasData.cargoProponente || '');
 
                 // BENEFICIARIO
-                Frm.set('tipoBeneficiario', solicitacaoData.tipoBeneficiario || '');
+                Frm.set('tipoBeneficiario', calculoDiariasData.tipoBeneficiario || '');
                 Frm.set('pessoa', {
-                    descricao: solicitacaoData.pessoa?.descricao || '', sigla: solicitacaoData.pessoa?.sigla || ''
+                    descricao: calculoDiariasData.pessoa?.descricao || '', sigla: calculoDiariasData.pessoa?.sigla || ''
                 });
-                Frm.set('funcaoBeneficiario', solicitacaoData.tipoBeneficiario || '');
-                Frm.set('cargoBeneficiario', solicitacaoData.cargoPessoa || '');
+                Frm.set('funcaoBeneficiario', calculoDiariasData.tipoBeneficiario || '');
+                Frm.set('cargoBeneficiario', calculoDiariasData.cargoPessoa || '');
 
                 // COLABORADOR
-                Frm.set('nomePessoa', solicitacaoData.nome || '');
-                Frm.set('cpf', solicitacaoData.CPF || '');
+                Frm.set('nomePessoa', calculoDiariasData.nome || '');
+                Frm.set('cpf', calculoDiariasData.CPF || '');
 
-                Frm.set('finalidade', solicitacaoData.servicoAtividade || '');
-                Frm.set('tipoDeslocamento', solicitacaoData.tipoDeslocamento || '');
-                Frm.set('origemDestino', solicitacaoData.trajeto || '');
-                Frm.set('return_to_origin', solicitacaoData.return_to_origin === true ? '1' : '2');
-                Frm.set('periodoDe', solicitacaoData.periodoDe || '');
-                Frm.set('periodoAte', solicitacaoData.periodoAte || '');
-                Frm.set('meioTransporte', solicitacaoData.meioTransporte || '');
+                Frm.set('finalidade', calculoDiariasData.servicoAtividade || '');
+                Frm.set('tipoDeslocamento', calculoDiariasData.tipoDeslocamento || '');
+                Frm.set('origemDestino', calculoDiariasData.trajeto || '');
+                Frm.set('return_to_origin', calculoDiariasData.return_to_origin === true ? '1' : '2');
+                Frm.set('periodoDe', calculoDiariasData.periodoDe || '');
+                Frm.set('periodoAte', calculoDiariasData.periodoAte || '');
+                Frm.set('meioTransporte', calculoDiariasData.meioTransporte || '');
 
                 // CÁLCULO DE DIÁRIAS
-                Frm.set('valorBrutoDiarias', solicitacaoData?.totalDiaria || '');
-                Frm.set('valorAdicionalDeslocamento', solicitacaoData?.totalAdicionalDeslocamento || '');
-                Frm.set('valorDescontoAlimentacao', solicitacaoData?.totalDescontoAlimentacao || '');
-                Frm.set('valorDescontoTransporte', solicitacaoData?.totalDescontoTransporte || '');
-                Frm.set('totalDeDescontoDeTeto', solicitacaoData?.totalDescontoTeto || '');
-                Frm.set('valorLiquidoDiarias', solicitacaoData?.totalSubtotal || '');
+                Frm.set('valorBrutoDiarias', calculoDiariasData?.totalDiaria || '');
+                Frm.set('valorAdicionalDeslocamento', calculoDiariasData?.totalAdicionalDeslocamento || '');
+                Frm.set('valorDescontoAlimentacao', calculoDiariasData?.totalDescontoAlimentacao || '');
+                Frm.set('valorDescontoTransporte', calculoDiariasData?.totalDescontoTransporte || '');
+                Frm.set('totalDeDescontoDeTeto', calculoDiariasData?.totalDescontoTeto || '');
+                Frm.set('valorLiquidoDiarias', calculoDiariasData?.totalSubtotal || '');
             }
             setError('');
         } catch (error) {
@@ -194,14 +181,14 @@ export default function ConclusaoDeslocamento() {
         }
     }
 
-    function handleSolicitacaoChangePassagens(eventPassagens: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
+    function handlePassagensChange(eventPassagens: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
         const selectedIdPassagens = eventPassagens.target.value;
-        const selectedPassagens = solicitacaoOptionsPassagens.find(option => option.name === selectedIdPassagens);
-        setSelectedSolicitacaoPassagens(selectedPassagens ? selectedPassagens.data : null);
+        const selectedPassagens = passagensOptions.find(option => option.name === selectedIdPassagens);
+        setSelectedPassagens(selectedPassagens ? selectedPassagens.data : null);
 
         if (selectedPassagens && selectedPassagens.id !== '') {
-            const solicitacaoDataPassagens = selectedPassagens.data;
-            Frm.set('valor_passagens', solicitacaoDataPassagens?.valor_passagens || '');
+            const PassagensData = selectedPassagens.data;
+            Frm.set('valor_passagens', PassagensData?.valor_passagens || '');
         }
     }
 
@@ -217,20 +204,6 @@ export default function ConclusaoDeslocamento() {
             Frm.set('funcaoBeneficiario', beneficiario.funcao || '');
             Frm.set('cargoBeneficiario', beneficiario.cargo || '');
         }
-    }
-
-    // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
-    function formatForm(name: string, field: any) {
-        return <>
-            <label>{name}</label>
-            <span style={{ color: 'blue' }}>{' ' + field || "0,00"}</span>
-            <br></br>
-        </>
-    }
-
-    // FUNÇÃO PARA FORMATAR O CAMPO DE DINHEIRO
-    function limparNumeros(valor: string): string {
-        return valor.replace(/\D/g, ''); // Remove todos os caracteres que não são números
     }
 
     // FUNÇÃO UTILIZADA PARA PERMITIR QUE O USUARIO EDITE O FORMULÁRIO MANUALMENTE
@@ -262,7 +235,7 @@ export default function ConclusaoDeslocamento() {
             if (Frm.data && Frm.data.processo && !dataFetched) {
                 fetchProcessData(Frm.data.processo).then(() => {
                     if (Frm.data.calculoDiarias) {
-                        handleSolicitacaoChange({ target: { value: Frm.data.calculoDiarias } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                        handleCalculoDiariasChange({ target: { value: Frm.data.calculoDiarias } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
                     setDataFetched(true);
                 });
@@ -270,7 +243,7 @@ export default function ConclusaoDeslocamento() {
             if (Frm.data && Frm.data.processo && !dataFetchedPassagens) {
                 fetchProcessDataPassagens(Frm.data.processo).then(() => {
                     if (Frm.data) {
-                        handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
+                        handlePassagensChange({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
                     setDataFetchedPassagens(true);
                 });
@@ -291,8 +264,8 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Select
                             label="Selecione o código do cálculo de diárias"
                             name="calculoDiarias"
-                            options={solicitacaoOptions}
-                            onChange={(event) => handleSolicitacaoChange(event, Frm)}
+                            options={calculoDiariasOptions}
+                            onChange={(event) => handleCalculoDiariasChange(event, Frm)}
                             width={8}
                         />
                     )}
@@ -301,23 +274,11 @@ export default function ConclusaoDeslocamento() {
                     {fetchedDataPassagens && (
                         <Frm.Select label="Selecione o código da emissão de passagens"
                             name="emissaoPassagens"
-                            options={solicitacaoOptionsPassagens}
-                            onChange={(eventPassagens) => handleSolicitacaoChangePassagens(eventPassagens, Frm)}
+                            options={passagensOptions}
+                            onChange={(eventPassagens) => handlePassagensChange(eventPassagens, Frm)}
                             width={8}
                         />
                     )}
-                </div>
-                <div>
-                    {/* {(selectedSolicitacao) ?
-                        <>
-                            Deseja editar os dados da conclusão de deslocamento manualmente?<br />
-                            {radioButtonEditForm("Sim")}
-                            < br />
-                            {radioButtonEditForm("Não")}
-                        </>
-                        :
-                        <></>
-                    } */}
                 </div>
 
                 <div hidden={radioSelected == "não"}>
@@ -349,8 +310,7 @@ export default function ConclusaoDeslocamento() {
                         <Frm.Input label="Cargo" name="cargoProponente" width={6} />
                     </div>
 
-                    <p></p><h3>Dados do Beneficiário</h3>
-
+                    <h3>Dados do Beneficiário</h3>
 
                     <Frm.Select label="Tipo de Beneficiário" name="tipoBeneficiario" options={options.tipoBeneficiarioOptions} width={6} />
 
@@ -371,7 +331,7 @@ export default function ConclusaoDeslocamento() {
                         </>
                     )}
 
-                    <p></p><h3>Dados do Deslocamento</h3>
+                    <h3>Dados do Deslocamento</h3>
 
                     <Frm.Input label="Finalidade" name="finalidade" width={12} />
                     <Frm.Select label="Tipo de Viagem" name="tipoDeslocamento" width={4} options={options.tipoDeslocamentoOptions} />
@@ -398,17 +358,6 @@ export default function ConclusaoDeslocamento() {
             </div>
         </>
     }
-
-    const formatCPF = (value: string) => {
-        const numericValue = value?.replace(/\D/g, ''); // Remove caracteres não numéricos
-        if (value) {
-            return numericValue
-                .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona o primeiro ponto
-                .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3') // Adiciona o segundo ponto
-                .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
-                .slice(0, 14); // Limita o tamanho ao formato de CPF
-        }
-    };
 
     function document(data: any) {
 
@@ -445,7 +394,7 @@ export default function ConclusaoDeslocamento() {
 
         return <>
 
-            {!selectedSolicitacao && (
+            {!selectedCalculoDiarias && (
                 <div className="scrollableContainer">
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
 
@@ -497,51 +446,51 @@ export default function ConclusaoDeslocamento() {
                 </div>
             )}
 
-            {selectedSolicitacao && (
+            {selectedCalculoDiarias && (
                 <>
                     <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = calculoDiarias)}
-                    {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual = data_solicitacao)}
+                    {formatForm("Código da Solicitação de Deslocamento:", selectedCalculoDiarias.solicitacaoDeslocamento = calculoDiarias)}
+                    {formatForm("Data da Solicitação de Deslocamento:", selectedCalculoDiarias.dataAtual = data_solicitacao)}
 
                     {/* DADOS DO PROPONENTE */}
-                    {formatForm("Proponente:", selectedSolicitacao.proponente.descricao = proponente?.descricao)}
-                    {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente = cargoProponente)}
+                    {formatForm("Proponente:", selectedCalculoDiarias.proponente.descricao = proponente?.descricao)}
+                    {formatForm("Cargo do Proponente:", selectedCalculoDiarias.cargoProponente = cargoProponente)}
 
                     {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
+                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedCalculoDiarias.tipoBeneficiario = tipoBeneficiario))}
 
                     {tipoBeneficiario == '1' && (
                         <>
-                            {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
-                            {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
+                            {formatForm("Beneficiário:", selectedCalculoDiarias.pessoa.descricao = pessoa?.descricao)}
+                            {formatForm("Cargo do Beneficiário:", selectedCalculoDiarias.cargoPessoa = cargoBeneficiario)}
                         </>
                     )}
                     {tipoBeneficiario > '1' && (
                         <>
-                            {formatForm("Beneficiário:", (selectedSolicitacao.nome = nomePessoa).toUpperCase())}
-                            {formatForm("CPF:", formatCPF(selectedSolicitacao.CPF = cpf))}
+                            {formatForm("Beneficiário:", (selectedCalculoDiarias.nome = nomePessoa).toUpperCase())}
+                            {formatForm("CPF:", formatCPF(selectedCalculoDiarias.CPF = cpf))}
                             {/* Incluir os dados de banco */}
                         </>
                     )}
 
-                    {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
-                    {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
-                    {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === '1' ? 'Sim' : 'Não')}
-                    {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
-                    {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
+                    {formatForm("Finalidade:", selectedCalculoDiarias.servicoAtividade = finalidade)}
+                    {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedCalculoDiarias.tipoDeslocamento = tipoDeslocamento))}
+                    {formatForm("Itinerário:", selectedCalculoDiarias.trajeto = origemDestino)}
+                    {formatForm("Retorno à Origem:", (selectedCalculoDiarias.return_to_origin = retorno_a_origem) === '1' ? 'Sim' : 'Não')}
+                    {formatForm("Período:", (selectedCalculoDiarias.periodoDe = periodoDe) + " a " + (selectedCalculoDiarias.periodoAte = periodoAte))}
+                    {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedCalculoDiarias.meioTransporte = meioTransporte))}
 
                     {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.totalDiaria = valorBrutoDiarias))}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.totalAdicionalDeslocamento = valorAdicionalDeslocamento))}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.totalDescontoAlimentacao = valorDescontoAlimentacao))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.totalDescontoTransporte = valorDescontoTransporte))}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.totalDescontoTeto = totalDeDescontoDeTeto))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.totalSubtotal = valorLiquidoDiarias))}
+                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedCalculoDiarias.totalDiaria = valorBrutoDiarias))}
+                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedCalculoDiarias.totalAdicionalDeslocamento = valorAdicionalDeslocamento))}
+                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedCalculoDiarias.totalDescontoAlimentacao = valorDescontoAlimentacao))}
+                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedCalculoDiarias.totalDescontoTransporte = valorDescontoTransporte))}
+                    {formatForm("Desconto de Teto:", formatCurrency(selectedCalculoDiarias.totalDescontoTeto = totalDeDescontoDeTeto))}
+                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedCalculoDiarias.totalSubtotal = valorLiquidoDiarias))}
 
                     {/* VALOR TOTAL DAS PASSAGENS */}
-                    {selectedSolicitacaoPassagens && (
-                        formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacaoPassagens.valor_passagens = valor_passagens) || 'Não informado')
+                    {selectedPassagens && (
+                        formatForm("Valor Total das Passagens:", formatCurrency(selectedPassagens.valor_passagens = valor_passagens) || 'Não informado')
                     )}
 
                     {/* JUSTIFICATIVA */}
