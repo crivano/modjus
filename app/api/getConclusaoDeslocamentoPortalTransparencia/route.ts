@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { parse } from 'json2csv';
 
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
-  //    const num_processo = searchParams.get('num_processo');
-
-        // if (!num_processo) {
-        //     return NextResponse.json(
-        //         { error: 'Parâmetros num_processo são obrigatórios' },
-        //         { status: 400 }
-        //     );
-        // }
 
         const nome_documento = process.env.FORM_CONCLUSAO_DESLOCAMENTO;
         const apiBaseUrl = process.env.EXTERNAL_API_BASE_URL;
@@ -44,13 +35,13 @@ export async function GET(req: NextRequest) {
             { id: '3', name: 'Hidroviário' },
             { id: '4', name: 'Veículo Próprio' },
             { id: '5', name: 'Sem Passagens' }
-          ]
+        ];
 
         const data = (response.data as any[]).map((item: any) => ({
             numero_conclusao: item.numero_documento,
-            data_assinatura_conclusao: item.data_assinatura, // TODO ajustar com a data de assinatura do documento
+            data_assinatura_conclusao: item.data_assinatura,
             solicitacao_de_deslocamento: item.modjusData.solicitacaoDeslocamento,
-            solicitacao_de_deslocamento_data: item.modjusData.data_solicitacao, // TODO data de assinatura do documento de deslocamento
+            solicitacao_de_deslocamento_data: item.modjusData.data_solicitacao,
             proponente: item.modjusData.proponente.descricao,
             prop_cargo_funcao: item.modjusData.funcaoProponente,
             beneficiario: item.modjusData.pessoa.descricao,
@@ -69,29 +60,30 @@ export async function GET(req: NextRequest) {
             subtotal_diarias_bruto: item.modjusData.totalDeDescontoDeTeto || "0.00",
             desc_teto: item.modjusData.totalDeDescontoDeTeto || "0.00",
             diarias_liquido: item.modjusData.valorLiquidoDiarias || "0.00",
-            passagens_liquido: item.modjusData.valor_passagem || "0.00", // Adjust as needed
+            passagens_liquido: item.modjusData.valor_passagem || "0.00",
             finalidade: item.modjusData.finalidade
         }));
-        
-        const csvOptions = {
-            delimiter: '^',
-            quote: ''
-        };
-        const csv = parse(data, csvOptions);
 
-         return new NextResponse(csv, {
+        // Geração manual do CSV sem aspas
+        const headers = Object.keys(data[0]).join('^');
+
+        const rows = data.map(row =>
+            Object.values(row).map(value => {
+                if (typeof value === 'string') {
+                    return value.replace(/['"]/g, '').replace(/\s+/g, ' ').trim();
+                }
+                return value;
+            }).join('^')
+        );
+
+        const csv = [headers, ...rows].join('\n');
+
+        return new NextResponse(csv, {
             headers: {
                 'Content-Type': 'text/csv',
                 'Content-Disposition': 'attachment; filename="conclusao_deslocamento.csv"'
             }
-        }); 
-
-        /* return NextResponse.json(data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Disposition': 'attachment; filename="conclusao_deslocamento.json"'
-            }
-        }); */
+        });
 
     } catch (error) {
         console.error('Erro na API:', error);
