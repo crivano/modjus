@@ -7,7 +7,8 @@ import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
 import emissaoPassagens from "../emissao-de-passagens/page";
 import { formatCPF, formatCurrency, formatForm } from "./formatInputs"
-import { getOptionName } from "./getData"
+import { fetchProcessData, getOptionName } from "./getData"
+import { log, point } from "./utils";
 
 const options = {
     tipoBeneficiarioOptions: [
@@ -42,6 +43,8 @@ export default function ConclusaoDeslocamento() {
     const [selectedCalculoDiarias, setSelectedCalculoDiarias] = useState(null);
     const [dataFetched, setDataFetched] = useState(false);
 
+    // log(calculoDiariasOptions)
+
     const [fetchedDataPassagens, setFetchedDataPassagens] = useState(null);
     const [passagensOptions, setPassagensOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
     const [selectedPassagens, setSelectedPassagens] = useState(null);
@@ -72,8 +75,7 @@ export default function ConclusaoDeslocamento() {
                 }
             }
             );
-
-            // 🔹 Atualiza os estados com os dados recebidos
+          // 🔹 Atualiza os estados com os dados recebidos
             setFetchedData(response.data);
             setCalculoDiariasOptions([
                 { id: '', name: '' },
