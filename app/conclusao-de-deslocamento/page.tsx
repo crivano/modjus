@@ -283,6 +283,19 @@ export default function ConclusaoDeslocamento() {
                     )}
                 </div>
 
+                <div>
+                    {/* {(selectedCalculoDiarias) ?
+                        <>
+                            Deseja editar os dados da conclusão de deslocamento manualmente?<br />
+                            {radioButtonEditForm("Sim")}
+                            < br />
+                            {radioButtonEditForm("Não")}
+                        </>
+                        :
+                        <></>
+                    } */}
+                </div>
+
                 <div hidden={radioSelected == "não"}>
                     {/* <Frm.TextArea label="Justifique:" name="justificativa" width={12} /> */}
                     <h3>Dados do Proponente</h3>
