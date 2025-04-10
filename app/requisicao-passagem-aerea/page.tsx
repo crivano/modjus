@@ -11,6 +11,7 @@ export default function RequisicaoPassagemAerea() {
     return <>
         <div className="scrollableContainer">
             <Frm.Input label="Itinerário" name="itinerario" />
+            <Frm.Input label="Número do despacho" name="despacho" />
             <Frm.Input label="Nome do beneficiário" name="interessado" />
             <Frm.Input label="Grupo" name="grupo" />
         </div>
@@ -21,7 +22,7 @@ export default function RequisicaoPassagemAerea() {
     return <>
       <div className="scrollableContainer">
         <p>Sr. agente da AIRES TURISMO LTDA,</p>
-        <p>De acordo com o disposto na Resolução nº 340/2015, do Conselho da Justiça Federal, requisito a V. Sª o fornecimento de passagens aéreas para o itinerário <strong>{data.itinerario || "Não informado"}</strong> em favor de <strong>{data.interessado || "Não informado"}</strong>, Grupo <strong>{data.grupo || "Não informado"}</strong>.</p>
+        <p>De acordo com o disposto na Resolução nº 340/2015, do Conselho da Justiça Federal, requisito a V. Sª o fornecimento de passagens aéreas para o itinerário <strong>{data.itinerario || "Não informado"}({data.despacho})</strong> em favor de <strong>{data.interessado || "Não informado"}</strong>, Grupo <strong>{data.grupo || "Não informado"}</strong>.</p>
       </div>
     </>
   }
