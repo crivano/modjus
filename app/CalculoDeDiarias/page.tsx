@@ -370,10 +370,10 @@ export default function CalculoDeDiarias() {
 
     const result = calcularDiarias(
       // Pass the necessary parameters from formData
-      parseFloat(Number(obterValorDiaria(Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
+      parseFloat(Number(obterValorDiaria(Frm.data.faixaCalcDiaria? Frm.data.faixaCalcDiaria : Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
       parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
-      calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixa),
-      Frm.data.deslocamentoConjunto,
+      calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixaCalcDiaria? Frm.data.faixaCalcDiaria : Frm.data.faixa),
+      Frm.data.acrescimo,
       Frm.data.tipoDeslocamento === '2',
       parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
       tipoDiariaMap[Frm.data.tipoDiaria],
@@ -505,6 +505,30 @@ export default function CalculoDeDiarias() {
               onChange={(event) => handleFormaDeCalculo(event, Frm)}
               width={12}
             />
+          {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') === '2' &&(
+            <Frm.Select
+              label="Maior Faixa na Equipe de Trabalho"
+              name="faixaCalcDiaria"
+              options={faixaOptions}
+              width={12}
+            />
+          )}
+          {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') === '5' &&(
+            <Frm.Select
+              label="Faixa do Magistrado"
+              name="faixaCalcDiaria"
+              options={faixaOptions}
+              width={12}
+            />
+          )}
+          {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') !== '5' && Frm.get('acrescimo') !== '2' &&(
+            <Frm.Select
+              label="Faixa da Autoridade"
+              name="faixaCalcDiaria"
+              options={faixaOptions}
+              width={12}
+            />
+          )}
 
             {Frm.get('resultadoCalculo') != '2' && (
               <div style={{ display: 'none' }}>
@@ -552,6 +576,7 @@ export default function CalculoDeDiarias() {
                 {Frm.data.tipoDeslocamento === '2' && (
                   <Frm.MoneyInputFloat label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
                 )}
+                
                 <div>
                   <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
                 </div>
@@ -791,6 +816,15 @@ export default function CalculoDeDiarias() {
                 <p><strong>Valor diário do auxílio alimentação:</strong> {formatFloatValue(data.valorAuxilioAlimentacao || 0.00)}</p>
                 <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0.00)}</p>
               </>
+            )}
+            {data.acrescimo !== '1' && data.acrescimo === '2' &&(
+              <p><strong>Maior Faixa na Equipe de Trabalho:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria? data.faixaCalcDiaria : data.faixa)}</p>
+            )}
+            {data.acrescimo !== '1' && data.acrescimo === '5' &&(
+              <p><strong>Faixa do Magistrado:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria? data.faixaCalcDiaria : data.faixa)}</p>
+            )}
+            {data.acrescimo !== '1' && data.acrescimo !== '5' && data.acrescimo !== '2' &&(
+              <p><strong>Faixa da Autoridade:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria? data.faixaCalcDiaria : data.faixa)}</p>
             )}
           </>
         )}

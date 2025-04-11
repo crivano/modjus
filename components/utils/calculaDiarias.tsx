@@ -82,7 +82,7 @@ function calcularDiarias(
     valorUnitatioDaDiaria: number,
     valorUnitarioDaDiariaParaCalculoDoDeslocamento: number,
     faixa: FaixaEnum,
-    deslocamentoConjunto: DeslocamentoConjuntoEnum,
+    deslocamentoConjunto: string,
     internacional: boolean,
     cotacaoDoDolar: number,
     tipoDeDiaria: TipoDeDiariaEnum,
@@ -129,16 +129,16 @@ function calcularDiarias(
             diaria = floor(valorUnitatioDaDiaria * cotacaoDoDolar);
         }
 
-        if (deslocamentoConjunto === DeslocamentoConjuntoEnum.EQUIPE_DE_TRABALHO) {
+        if (deslocamentoConjunto === '2') {
             diaria *= 1;
         }
 
-        if (deslocamentoConjunto === DeslocamentoConjuntoEnum.ASSESSORAMENTO_DE_AUTORIDADE ||
-            deslocamentoConjunto === DeslocamentoConjuntoEnum.ASSISTENCIA_DIRETA_A_AUTORIDADE) {
+        if (deslocamentoConjunto === '3' ||
+            deslocamentoConjunto === '4') {
             diaria = floor(diaria * 0.8);
         }
 
-        if (deslocamentoConjunto === DeslocamentoConjuntoEnum.SEGURANCA_DE_MAGISTRADO) {
+        if (deslocamentoConjunto === '5') {
             diaria = floor(diaria * 0.8);
         }
 
