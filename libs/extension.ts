@@ -21,3 +21,39 @@ export const handleSave = () => {
         window.parent.postMessage({ type: 'SAVE_DATA', payload: modjusDocument }, '*')
     }
 }
+
+export const handleSaveWithValidations = () => {
+    if (window.parent) {
+        const modjusDocument = document.getElementById('modjus-document')?.outerHTML;
+        //console.log(modjusDocument);
+        //console.log('Conteúdo do div #modjus-document:', modjusDocument);
+
+        // Obtendo o valor de justificativa pelo label
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(modjusDocument || '', 'text/html');
+        const labelElement = Array.from(doc.querySelectorAll('label')).find(label => label.textContent?.trim() === 'Justificativa:');
+        const labelElementEditar = Array.from(doc.querySelectorAll('label')).find(label => label.textContent?.trim() === 'editarConclusao:');
+
+        const justificativaValue = labelElement?.nextElementSibling?.textContent?.trim();
+
+        const editarConclusao = labelElementEditar?.nextElementSibling?.textContent?.trim();
+
+
+        const array =  [
+            'Não informado',
+            '',
+        ]
+
+        if (editarConclusao == "sim"){
+            if (justificativaValue && array.includes(justificativaValue)){
+                alert('Justificativa não preenchida!')
+            }
+            else {
+                window.parent.postMessage({ type: 'SAVE_DATA', payload: modjusDocument }, '*')  
+            }
+        } else {
+            window.parent.postMessage({ type: 'SAVE_DATA', payload: modjusDocument }, '*')  
+        }
+        
+    }
+}

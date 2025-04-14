@@ -1,6 +1,6 @@
 'use client'
 
-import Model from "@/libs/model"
+import Model, { AlternativeModel } from "@/libs/model"
 import { FormHelper } from "@/libs/form-support"
 import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
@@ -75,7 +75,7 @@ export default function ConclusaoDeslocamento() {
                 }
             }
             );
-          // 🔹 Atualiza os estados com os dados recebidos
+            // 🔹 Atualiza os estados com os dados recebidos
             setFetchedData(response.data);
             setCalculoDiariasOptions([
                 { id: '', name: '' },
@@ -176,6 +176,8 @@ export default function ConclusaoDeslocamento() {
                 Frm.set('valorDescontoTransporte', calculoDiariasData?.totalDescontoTransporte || '');
                 Frm.set('totalDeDescontoDeTeto', calculoDiariasData?.totalDescontoTeto || '');
                 Frm.set('valorLiquidoDiarias', calculoDiariasData?.totalSubtotal || '');
+
+                {Frm.set('editarConclusao', radioSelected)}
             }
             setError('');
         } catch (error) {
@@ -284,20 +286,26 @@ export default function ConclusaoDeslocamento() {
                 </div>
 
                 <div>
-                    {/* {(selectedCalculoDiarias) ?
-                        <>
-                            Deseja editar os dados da conclusão de deslocamento manualmente?<br />
-                            {radioButtonEditForm("Sim")}
-                            < br />
-                            {radioButtonEditForm("Não")}
-                        </>
+
+                    {(selectedCalculoDiarias)
+                        ?
+                            <>
+                                Deseja editar os dados da conclusão de deslocamento manualmente?<br />
+                                {radioButtonEditForm("Sim")}
+                                < br />
+                                {radioButtonEditForm("Não")}
+                            </>
                         :
                         <></>
-                    } */}
+                    }
                 </div>
+                
 
                 <div hidden={radioSelected == "não"}>
-                    {/* <Frm.TextArea label="Justifique:" name="justificativa" width={12} /> */}
+                    <Frm.TextArea label="Justifique:" name="justificativa" width={12} />
+
+                    <span hidden> <Frm.Input label="editarConclusao" name="editarConclusao" /> </span>
+
                     <h3>Dados do Proponente</h3>
                     <div className="row">
                         <Frm.Input
@@ -381,6 +389,7 @@ export default function ConclusaoDeslocamento() {
         const {
             data_solicitacao,
             calculoDiarias,
+            editarConclusao,
             emissaoPassagens,
             solicitacaoDeslocamento,
             proponente,
@@ -457,7 +466,9 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Valor Total das Passagens:", formatCurrency(valor_passagens || '0,00'))}
 
                     {/* JUSTIFICATIVA */}
-                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
+                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
+                    <div hidden> {radioSelected == "sim" ? formatForm("editarConclusao:", "sim") : formatForm("editarConclusao:", "não")}</div>
+                    
                 </div>
             )}
 
@@ -509,11 +520,13 @@ export default function ConclusaoDeslocamento() {
                     )}
 
                     {/* JUSTIFICATIVA */}
-                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
+                    {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''}
+                    <div hidden>{radioSelected == "sim" ? formatForm("editarConclusao:", "sim") : formatForm("editarConclusao:", "não")}</div>
+
                 </>
             )}
         </>
     }
 
-    return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'ConclusaoDeDeslocamento' })
+    return AlternativeModel(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'ConclusaoDeDeslocamento' })
 }

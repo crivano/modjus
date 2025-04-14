@@ -888,3 +888,7 @@ function getOptionName(options: { id: string, name: string }[], id: string) {
   return options.find(opt => opt.id === id)?.name || 'Não informado';
 }
 
+function removeQuotes(input: string): string {
+  return input.replace(/['"]+/g, '');
+}
+
