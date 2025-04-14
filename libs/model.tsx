@@ -30,6 +30,18 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                 })
         }
     }, [dataKey])
+
+    useEffect(() => {
+        if(process.env.NEXT_PUBLIC_VERCEL_URL != undefined && currentUrl != process.env.NEXT_PUBLIC_VERCEL_URL)
+        {
+            if (data) {
+                if (data.keypass != process.env.PUBLIC_KEY_ALLOWED) {
+                    return alert('Acesso negado');                
+                }
+            }
+        }
+
+    }, [data])
     
     return (<div>
         <div className="container-fluid">
