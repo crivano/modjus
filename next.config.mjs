@@ -4,22 +4,19 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
- 
 
   async headers() {
     return [
       {
-        source: '/(.*)', // Aplica para todas as rotas 
+        source: '/(.*)', // Aplica para todas as rotas
         headers: [
-       
           {
             key: 'X-Frame-Options',
-            value: 'ALLOW-FROM https://sei-apresentacao.trf2.jus.br' // Permite um domínio específico
+            value: 'SAMEORIGIN', // Use SAMEORIGIN para compatibilidade
           },
-          
           {
             key: 'Access-Control-Allow-Origin',
-            value: '*' // Substitua "*" por um domínio específico se possível https://sei-apresentacao.trf2.jus.br;http://localhost:3000
+            value: '*', // Substitua "*" por um domínio específico, se necessário
           },
           {
             key: 'Access-Control-Allow-Methods',
@@ -32,6 +29,10 @@ const nextConfig = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload', // Força o uso de HTTPS
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' http://sei-apresentacao.trf2.jus.br", // Substitui X-Frame-Options
           },
         ],
       },
