@@ -5,6 +5,7 @@ export function middleware(req: NextRequest) {
   const requestKey = req.headers.get("x-secret-key");
 
   if (requestKey !== internalKey) {
+    
     return new NextResponse(JSON.stringify({ error: "Acesso negado" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
