@@ -65,28 +65,26 @@ export default function ConclusaoDeslocamento() {
 
     async function fetchProcessData(numeroProcesso: string) {
         try {
-            // 🔹 Faz a requisição para o backend Next.js
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
                 '/api/getmodjus', {
                 params: {
                     num_processo: numeroProcesso,
-                    tipo_documento: "CAL" // Novo parâmetro
+                    tipo_documento: "CAL",
                 },
                 headers: {
                     Authorization: `Bearer ${process.env.API_AUTH}`,
+                    "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
                 },
-            }
-            );
-
-            // 🔹 Atualiza os estados com os dados recebidos
+            });
+    
             setFetchedData(response.data);
             setSolicitacaoOptions([
                 { id: '', name: '' },
                 ...response.data.map((item) => ({
                     id: item.modjusData.id,
                     name: item.numero_documento,
-                    data: item.modjusData // Armazena os dados completos
-                }))
+                    data: item.modjusData,
+                })),
             ]);
         } catch (error) {
             console.error("Erro ao buscar os dados:", error);
@@ -104,6 +102,7 @@ export default function ConclusaoDeslocamento() {
                 },
                 headers: {
                     Authorization: `Bearer ${process.env.API_AUTH}`,
+                    "x-secret-key": `${process.env.NEXT_PUBLIC_INTERNAL_SECRET}`, // Corrige o nome do cabeçalho
                 },
             }
             );
