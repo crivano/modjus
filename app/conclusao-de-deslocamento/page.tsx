@@ -477,7 +477,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, tipoDeslocamento))}
                     {formatForm("Itinerário:", origemDestino)}
-                    {formatForm("Retorno à Origem:", retorno_a_origem === '1' ? 'Sim' : 'Não')}
+                    {formatForm("Retorno à Origem:", retorno_a_origem == true ? 'Sim' : 'Não')}
                     {formatForm("Período:", (periodoDe + " a " + periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, meioTransporte))}
 
@@ -527,7 +527,7 @@ export default function ConclusaoDeslocamento() {
                     {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
                     {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
                     {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
-                    {formatForm("Retorno à Origem:", (selectedSolicitacao.return_to_origin = retorno_a_origem) === '1' ? 'Sim' : 'Não')}
+                    {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin ? 'Sim' : 'Não')}
                     {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
                     {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
 
