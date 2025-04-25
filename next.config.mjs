@@ -1,9 +1,12 @@
 /** @type {import('next').NextConfig} */
 
+const allowedOrigin = process.env.ALLOWED_ORIGIN;
 const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+
+  
 
   async headers() {
     return [
@@ -32,7 +35,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' http://sei-apresentacao.trf2.jus.br", // Substitui X-Frame-Options
+            value: `frame-ancestors 'self' ${allowedOrigin}`, // Substitui X-Frame-Options
           },
         ],
       },
