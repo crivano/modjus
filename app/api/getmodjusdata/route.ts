@@ -16,6 +16,8 @@ interface DocumentoConteudo {
   id_documento: number;
   id_serie: number;
   conteudo: string;
+  protocolo_formatado: string;
+  id_procedimento: number;
 }
 
 
@@ -91,7 +93,7 @@ export async function GET(req: NextRequest) {
     // Realizar a consulta SQL para pegar todos os registros
     const [rows] = await new Promise<[DocumentoConteudo[]]>((resolve, reject) => {
       connection.query(
-        `SELECT s.nome, dc.conteudo, d.numero, p1.protocolo_formatado
+        `SELECT s.nome, dc.conteudo, d.numero, p1.protocolo_formatado, d.id_procedimento, d.id_documento
         FROM protocolo p 
         JOIN documento d ON id_procedimento = p.id_protocolo 
         JOIN protocolo p1 ON p1.id_protocolo = d.id_documento
@@ -114,25 +116,45 @@ export async function GET(req: NextRequest) {
     // Verificar se o resultado foi encontrado
     if (rows.length > 0) {
       // Array para armazenar os dados extraídos
-      const modjusDataList: string[] = [];
+      const modjusDataList: {
+        modjusData: string;
+        num_documento: string;
+        id_procedimento: number;
+        id_documento: number;
+      }[] = [];
 
-      // Iterar sobre todos os registros e extrair o valor de 'modjus-data'
-      rows.forEach((row) => {
-        const htmlContent = row.conteudo; // Conteúdo HTML vindo do banco de dados
-
-        // Criar o JSDOM a partir do conteúdo HTML obtido do banco
-        const dom = new JSDOM(htmlContent);
-        const document = dom.window.document;
-
-        // Procurar o atributo 'modjus-data' na div com id 'modjus-document'
-        const modjusData = document.querySelector('#modjus-document')?.getAttribute('modjus-data');
-
-        // Adicionar o valor encontrado ao array, se existir
-        if (modjusData) {
-     //     const cleanModjusData = modjusData.replace(/\\"/g, '"'); // Remove as barras invertidas extras
-           modjusDataList.push(modjusData);
-        }
-      });
+        // Iterar sobre todos os registros e extrair o valor de 'modjus-data'
+        rows.forEach((row) => {
+          const htmlContent = row.conteudo; // Conteúdo HTML vindo do banco de dados
+  
+          // Criar o JSDOM a partir do conteúdo HTML obtido do banco
+          const dom = new JSDOM(htmlContent);
+          const document = dom.window.document;
+  
+          // Procurar o atributo 'modjus-data' na div com id 'modjus-document'
+          const modjusData = document
+            .querySelector("#modjus-document")
+            ?.getAttribute("modjus-data");
+  
+          const num_documento  = row.protocolo_formatado
+          const id_documento = row.id_documento;
+          const id_procedimento = row.id_procedimento;  
+  
+          // Adicionar o valor encontrado ao array, se existir
+          if (modjusData) {
+            modjusDataList.push({
+              modjusData,
+              num_documento,
+              id_procedimento,
+              id_documento,
+            });
+          }
+    //      console.log("modjusData", modjusData);
+            console.log("num_documento", num_documento); 
+            console.log("id_procedimento", id_procedimento);
+            console.log("id_documento",id_documento) // Log para depuração
+// Log para depuração
+        });
 
       // Verificar se algum dado foi encontrado
       if (modjusDataList.length > 0) {
