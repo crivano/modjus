@@ -91,7 +91,9 @@ export default function SolicitacaoDeslocamento() {
       Frm.set('funcaoPessoa', pessoa.funcao || '');
       Frm.set('cargoPessoa', pessoa.cargo || '');
       // Frm.set('cpfPessoa', pessoa.cpf || '');
-      fetchDadosBancarios(pessoa.sigla, Frm);
+      if (Frm.get('processo')) {
+        fetchDadosBancarios(pessoa.sigla, Frm);
+      }
     }
   }
 
@@ -148,6 +150,34 @@ export default function SolicitacaoDeslocamento() {
         Frm.set('dataAtual', dataAtual);
       }
     });
+
+    
+    // useEffect(() => {
+    //   const urlParams = new URLSearchParams(window.location.search);
+    //   const keypass = urlParams.get('keypass');
+
+    //   if (keypass) {
+    //     (async () => {
+    //         try {
+    //             const response = await axios.get(`/api/validate-keypass?keypass=${keypass}`);
+    //             if (!(response.data as { valid: boolean }).valid) {
+    //                 setError("Keypass inválida.");
+    //             }
+    //         } catch (err: any) {
+    //             console.error("Erro ao validar a keypass:", err);
+    //             setError("Erro ao validar a keypass.");
+    //         }
+    //     })();
+    // } else {
+    //     setError("Keypass não fornecida.");
+    // }
+    // }, []);
+
+    // if (error=="Keypass não fornecida." || error=="Keypass inválida." || error=="Erro ao validar a keypass.") { 
+    //   console.log("Keypass não fornecida ou inválida. Redirecionando para a página de acesso negado.");
+    //   window.location.href = '/acesso-negado'; 
+    // } 
+    
 
     return <>
       <div className="scrollableContainer">
