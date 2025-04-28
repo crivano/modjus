@@ -256,7 +256,7 @@ function Interview(Frm: FormHelper) {
       <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
 
       <h2>13. Boas práticas e dificuldades</h2>
-      <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t12JustificativaDoNaoCumprimento" width={12} />
+      <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t13JustificativaDoNaoCumprimento" width={12} />
 
   </div>
   )
@@ -377,6 +377,7 @@ function document(data: any) {
     t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento,
     t12RegularizacaoDasPendenciasDaUltimaCorreicao,
     t12JustificativaDoNaoCumprimento,
+    t13JustificativaDoNaoCumprimento,
   } = Frm.data;
   return <div className="scrollableContainer">
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -1310,7 +1311,7 @@ function document(data: any) {
             <div>
               Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos
             </div>
-            <p style={{ fontWeight: 'bold' }}>{t12JustificativaDoNaoCumprimento || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t13JustificativaDoNaoCumprimento || "Não informado"}</p>
           </label>
         </div>
 
