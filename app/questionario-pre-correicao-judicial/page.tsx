@@ -405,6 +405,10 @@ function document(data: any) {
         <p style={{ fontWeight: 'bold' }}>{dataEncerramento || "Não informado"}</p>
       </div>
 
+      Período de levantamento: 12 meses anteriores
+      Prazo de entrega: 10 (dez) dias antes do início da correição.
+      Nas perguntas que não se insiram na competência da unidade, deve responder "não se aplica".
+
       <h2 style={{ width: '100%' }}>1. Informações da Unidade</h2>
 
       <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
@@ -735,7 +739,7 @@ function document(data: any) {
                 <div style={{ marginTop: '1rem', width: '100%' }}>
                   <label style={{ display: 'block', fontWeight: 'bold' }}>
                     <div>Quantos e quais servidores exercem função de assessoria ao Juiz Federal Substituto?
-                        Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
+                      Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
                     </div>
                   </label>
                   <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não informado"}</p>
