@@ -562,7 +562,7 @@ function document(data: any) {
         </label>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Analistas Judiciários
@@ -570,7 +570,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Técnicos Judiciários
@@ -578,7 +578,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Técnicos Jud. de Segurança
@@ -586,7 +586,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Requisitados ou outros
@@ -594,7 +594,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Total de servidores
@@ -602,7 +602,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Quadro Previsto
@@ -615,7 +615,7 @@ function document(data: any) {
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Analistas Judiciários
@@ -623,7 +623,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Técnicos Judiciários
@@ -631,7 +631,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Técnicos Jud. de Segurança
@@ -639,7 +639,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Requisitados ou outros
@@ -647,7 +647,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Total de servidores
@@ -655,7 +655,7 @@ function document(data: any) {
             <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTotalDeServidores || "Não informado"}</p>
           </label>
         </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Quadro Previsto
