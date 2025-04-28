@@ -86,7 +86,7 @@ const DynamicListTrajetoV1 = ({ Frm, label, name, width }) => {
                     destino: cidades[i + 1],
                     transporteAteEmbarque: "1",
                     transporteAposDesembarque: "1",
-                    hospedagem: !returnToOrigin && i == cidades.length - 2 ? "2" : "1",
+                    hospedagem: !returnToOrigin && i == cidades.length - 2 ? "2" : "2",
                     dataTrechoInicial: "",
                     dataTrechoFinal: ""
                 });
