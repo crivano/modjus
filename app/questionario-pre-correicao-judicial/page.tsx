@@ -480,90 +480,26 @@ function document(data: any) {
       </div>
 
       <h2 style={{ width: '100%' }}>2. Magistrados</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Titular</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2Titular?.descricao || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Tempo de atuação na unidade</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2TitularTempoDeAtuacaoNaUnidade || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2TitularAfastamentos || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Períodos de substituição, em férias, de outro magistrado</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2TitularSubstituicoes || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2TitularModalidadeTrabalho || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t2TitularAtendimento || "Não informado"}</p>
-      </div>
+      {formatForm("Titular", t2Titular?.descricao)}
+      {formatForm("Tempo de atuação na unidade", t2TitularTempoDeAtuacaoNaUnidade)}
+      {formatForm("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2TitularAfastamentos)}
+      {formatForm("Períodos de substituição, em férias, de outro magistrado", t2TitularSubstituicoes)}
+      {formatForm("Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)", t2TitularModalidadeTrabalho)}
+      {formatForm("Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)", t2TitularAtendimento)}
+
       {(!turmaRecursal && (jef || criminal || execucaoFiscal)) && (
         <>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>Substituto</div>
-            </label>
-            <p style={{ fontWeight: 'bold' }}>{t2Substituto?.descricao || "Não informado"}</p>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>Tempo de atuação na unidade</div>
-            </label>
-            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoTempoDeAtuacaoNaUnidade || "Não informado"}</p>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento</div>
-            </label>
-            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoAfastamentos || "Não informado"}</p>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>Períodos de substituição, em férias, de outro magistrado</div>
-            </label>
-            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoSubstituicoes || "Não informado"}</p>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)</div>
-            </label>
-            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoModalidadeTrabalho || "Não informado"}</p>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)</div>
-            </label>
-            <p style={{ fontWeight: 'bold' }}>{t2SubstitutoAtendimento || "Não informado"}</p>
-          </div>
+          {formatForm("Substituto", t2Substituto?.descricao)}
+          {formatForm("Tempo de atuação na unidade", t2SubstitutoTempoDeAtuacaoNaUnidade)}
+          {formatForm("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2SubstitutoAfastamentos)}
+          {formatForm("Períodos de substituição, em férias, de outro magistrado", t2SubstitutoSubstituicoes)}
+          {formatForm("Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)", t2SubstitutoModalidadeTrabalho)}
+          {formatForm("Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)", t2SubstitutoAtendimento)}
         </>
       )}
 
       <h2 style={{ width: '100%' }}>3. Auxílios</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Auxílios prestados e recebidos nos últimos 12 meses</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t3Auxilios || "Não informado"}</p>
-      </div>
+      {formatForm("Auxílios prestados e recebidos nos últimos 12 meses", t3Auxilios)}
 
       {/* 4. Servidores */}
       <h2 style={{ width: '100%' }}>4. Servidores</h2>
@@ -686,15 +622,10 @@ function document(data: any) {
         </div>
       </div>
 
-
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresEmTeletrabalho || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm(
+        "Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução",
+        t4QuantidadeDeServidoresEmTeletrabalho
+      )}
       <div style={{ marginTop: '1rem', width: '100%' }}>
         {
           Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; numero: any }, i: number) => (
@@ -768,357 +699,72 @@ function document(data: any) {
 
       {/* 5. Estagiários */}
       <h2 style={{ width: '100%' }}>5. Estagiários</h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>Número de estagiários de nível superior previstos para unidade</div>
-            <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>Número de estagiários de nível médio previstos para unidade</div>
-            <p style={{ fontWeight: 'bold' }}>{t5NumeroPrevistoDeEstagiariosDeNivelMedio || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>Número de estagiários de nível superior lotados na unidade</div>
-            <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelSuperior || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>Número de estagiários de nível médio lotados na unidade</div>
-            <p style={{ fontWeight: 'bold' }}>{t5NumeroEfetivoDeEstagiariosDeNivelMedio || "Não informado"}</p>
-          </label>
-        </div>
-      </div>
+      {formatForm("Número de estagiários de nível superior previstos para unidade", t5NumeroPrevistoDeEstagiariosDeNivelSuperior)}
+      {formatForm("Número de estagiários de nível médio previstos para unidade", t5NumeroPrevistoDeEstagiariosDeNivelMedio)}
+      {formatForm("Número de estagiários de nível superior lotados na unidade", t5NumeroEfetivoDeEstagiariosDeNivelSuperior)}
+      {formatForm("Número de estagiários de nível médio lotados na unidade", t5NumeroEfetivoDeEstagiariosDeNivelMedio)}
 
       <h2 style={{ width: '100%' }}>6. Instalações Físicas e Infraestrutura</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t6InstalacoesFisicasEInfraestrutura || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm("Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO", t6InstalacoesFisicasEInfraestrutura)}
 
       <h2 style={{ width: '100%' }}>7. Livros e Pastas</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t7LivrosEPastasUtilizados || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t7LivrosEPastasSubstituidos || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t7LivrosEPastasExistentesNoSiga || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm("Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?", t7LivrosEPastasUtilizados)}
+      {formatForm("Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?", t7LivrosEPastasSubstituidos)}
+      {formatForm("Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda", t7LivrosEPastasExistentesNoSiga)}
 
       <h2 style={{ width: '100%' }}>8. Organização da Unidade e Setorização (todas as unidades)</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8FormaDeOrganizacao || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8SistematicaDePlanejamento || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8SistematicaDeAvaliacao || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8ProcessosIncluidosNasMetasDoCNJ || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Critérios de julgamento para os demais feitos
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8CriteriosDeJulgamentoParaOsDemaisFeitos || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8FluxoDeInformacoes || "Não informado"}</p>
-        </label>
-      </div>
-      {!turmaRecursal && (
-        <div style={{ marginTop: '1rem', width: '100%' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t8NumeroDeProcessosComPedidosUrgentes || "Não informado"}</p>
-          </label>
-        </div>
-      )}
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Há utilização de automação de localizadores (e-Proc) na unidade?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8UtilizacaoDeAutomacaoDosLocalizadores || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8PrazosDeSuspensao || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8RespeitoAPadronizacaoDoCNJ || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t8ProcessoSemAssuntoCorrespondente || "Não informado"}</p>
-        </label>
-      </div>
-      {jef && (
-        <div style={{ marginTop: '1rem', width: '100%' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t8AplicativoDeMensagens || "Não informado"}</p>
-          </label>
-        </div>
-      )}
+      {formatForm("Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores", t8FormaDeOrganizacao)}
+      {formatForm("Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso", t8SistematicaDePlanejamento)}
+      {formatForm("Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade", t8SistematicaDeAvaliacao)}
+      {formatForm("Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF", t8ProcessosIncluidosNasMetasDoCNJ)}
+      {formatForm("Critérios de julgamento para os demais feitos", t8CriteriosDeJulgamentoParaOsDemaisFeitos)}
+      {formatForm("Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças", t8FluxoDeInformacoes)}
+
+      {!turmaRecursal &&
+        <>
+          {formatForm("Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise", t8NumeroDeProcessosComPedidosUrgentes)}
+          {formatForm("Há utilização de automação de localizadores (e-Proc) na unidade?", t8UtilizacaoDeAutomacaoDosLocalizadores)}
+          {formatForm("Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?", t8PrazosDeSuspensao)}
+          {formatForm("A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?", t8RespeitoAPadronizacaoDoCNJ)}
+          {formatForm("A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?", t8ProcessoSemAssuntoCorrespondente)}
+        </>
+      }
+
+      {jef && (formatForm("O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?", t8AplicativoDeMensagens))}
+
       {criminal && (
         <>
           <h5>Criminal</h5>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Há quantos processos com réus presos? Apresente a listagem
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8NumeroDeProcessosComReusPresos || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Há anotação na autuação de réus presos?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8AnotacaoNaAutuacaoDeReusPresos || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                É dada prioridade de tramitação nos processos com réus presos?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8AtualizacaoImediataSituacaoDaParte || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8ControleDaIncidenciaDaPrescricaoPenal || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8AnexosFisicosNoEproc || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8SistemaDeAudienciaDeCustodia || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8SaneamentoBNMP2 || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8MedidasSaneamentoBNMP2 || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8ProcessosComAlvarasDeSoltura || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8ProcedimentoParaArmasEMunicoes || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8EntidadesParaServicosOuPrestacaoPecuniaria || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8LocalVirtualCESP || "Não informado"}</p>
-            </label>
-          </div>
+          {formatForm("Há quantos processos com réus presos? Apresente a listagem", t8NumeroDeProcessosComReusPresos)}
+          {formatForm("Há anotação na autuação de réus presos?", t8AnotacaoNaAutuacaoDeReusPresos)}
+          {formatForm("É dada prioridade de tramitação nos processos com réus presos?", t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos)}
+          {formatForm("Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?", t8AtualizacaoImediataSituacaoDaParte)}
+          {formatForm("Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)", t8ControleDaIncidenciaDaPrescricaoPenal)}
+          {formatForm("São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?", t8AnexosFisicosNoEproc)}
+          {formatForm("O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?", t8SistemaDeAudienciaDeCustodia)}
+          {formatForm("O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?", t8SaneamentoBNMP2)}
+          {formatForm("Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?", t8MedidasSaneamentoBNMP2)}
+          {formatForm("Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ", t8ProcessosComAlvarasDeSoltura)}
+          {formatForm("Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?", t8ProcedimentoParaArmasEMunicoes)}
+          {formatForm("Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades", t8EntidadesParaServicosOuPrestacaoPecuniaria)}
+          {formatForm("Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?", t8LocalVirtualCESP)}
         </>
       )}
       {execucaoFiscal && (
         <>
           <h5>Execução Fiscal</h5>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8ProcessosComGrandesDevedores || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR.
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8TratamentoDadoAosValoresExpressivos || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Detalhar a forma de controle da incidência da prescrição intercorrente
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8ControleDaPrescricaoIntercorrente || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8CriterioDeSelecaoDosLeiloeiros || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Quantos leilões ocorreram nos últimos 12 meses?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8QuantidadeDeLeiloes || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Há leilões designados?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t8LeiloesDesignados || "Não informado"}</p>
-            </label>
-          </div>
+          {formatForm("Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?", t8ProcessosComGrandesDevedores)}
+          {formatForm("Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR.", t8TratamentoDadoAosValoresExpressivos)}
+          {formatForm("Detalhar a forma de controle da incidência da prescrição intercorrente", t8ControleDaPrescricaoIntercorrente)}
+          {formatForm("Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?", t8CriterioDeSelecaoDosLeiloeiros)}
+          {formatForm("Quantos leilões ocorreram nos últimos 12 meses?", t8QuantidadeDeLeiloes)}
+          {formatForm("Há leilões designados?", t8LeiloesDesignados)}
         </>
       )}
       <h2 style={{ width: '100%' }}>9. Materiais Acautelados na Unidade</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9QuantidadeDeMateriaisAcautelados || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Indicar a quantidade de processos com bens acautelados/apreendidos na unidade
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9QuantidadeDeProcessosComBensAcautelados || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9BensAcauteladosCorrespondemComTermos || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm("Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)", t9QuantidadeDeMateriaisAcautelados)}
+      {formatForm("Indicar a quantidade de processos com bens acautelados/apreendidos na unidade", t9QuantidadeDeProcessosComBensAcautelados)}
+      {formatForm("Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?", t9BensAcauteladosCorrespondemComTermos)}
       {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos", t9DinheiroEmEspecieTitulosOuJoias)}
       {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)", t9BensCadastradosNoSNGB)}
       {formatForm("A unidade tem tido alguma dificuldade na utilização do SNGB?", t9DificuldadeNoUsoDoSNGB)}
@@ -1164,39 +810,14 @@ function document(data: any) {
         </>
       )}
       <h2 style={{ width: '100%' }}>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade cumpriu todas as metas estabelecidas na inspeção anterior?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t12JustificativaDoNaoCumprimento || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm("A unidade cumpriu todas as metas estabelecidas na inspeção anterior?", t12RegularizacaoDasPendenciasDaUltimaCorreicao)}
+      {formatForm("A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?", t12RegularizacaoDasPendenciasDaUltimaCorreicao)}
+      {formatForm("Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento", t12JustificativaDoNaoCumprimento)}
       <h2 style={{ width: '100%' }}>13. Boas práticas e dificuldades</h2>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t12JustificativaDoNaoCumprimento || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm(
+        "Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos",
+        t12JustificativaDoNaoCumprimento
+      )}
     </div>
   </div>
 }
