@@ -219,7 +219,12 @@ function Interview(Frm: FormHelper) {
       </ul>
 
       <h2>10. Processos Físicos em carga ou retirados</h2>
-      <Frm.Select label="Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?" name="t10ProcessosFisicosComCarga" options={oDe1a20} width={3} />
+      <Frm.RadioButtons 
+        label="Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?" 
+        name="t10ProcessosFisicosComCarga" 
+        options={[{ id: '1', name: 'Sim' }, { id: '2', name: 'Não' }]}
+        width={12} 
+      />
       <Frm.TextArea label="Identificar os processos extraviados, as datas da ocorrência e as providências"  name="t10ProcessosExtraviados" width={12} />
       <Frm.TextArea label="Identificar as ações de restauração de autos, no período do levantamento"  name="t10AcoesDeRestauracao" width={12} />
 
@@ -250,23 +255,13 @@ function Interview(Frm: FormHelper) {
       <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
       </div>
     )}
-
       <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" 
-        name="t12CumprimentoDasMetasDaInspecaoAnterior" 
-        width={12} 
-      />
-      <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  
-        name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" 
-        width={12} 
-      />
-      <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  
-        name="t12JustificativaDoNaoCumprimento" 
-        width={12} 
-      />
+      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t12CumprimentoDasMetasDaInspecaoAnterior" width={12} />
+      <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
+      <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
 
       <h2>13. Boas práticas e dificuldades</h2>
-      <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t13JustificativaDoNaoCumprimento" width={12} />
+      <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t12JustificativaDoNaoCumprimento" width={12} />
 
   </div>
   )
@@ -385,10 +380,8 @@ function document(data: any) {
     t11IntervaloDeTempo,
     t11RegistroVisualDeSessoesDeJulgamento,
     t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento,
-    t12CumprimentoDasMetasDaInspecaoAnterior,
     t12RegularizacaoDasPendenciasDaUltimaCorreicao,
     t12JustificativaDoNaoCumprimento,
-    t13JustificativaDoNaoCumprimento,
   } = Frm.data;
   return <div className="scrollableContainer">
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -1142,7 +1135,7 @@ function document(data: any) {
             <div>
               Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?
             </div>
-            <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga === '1' ? 'Sim' : t10ProcessosFisicosComCarga === '2' ? 'Não' : 'Não informado'} </p>
           </label>
         </div>
         <div style={{ marginTop: '1rem', width: '100%' }}>
@@ -1297,7 +1290,7 @@ function document(data: any) {
             <div>
               A unidade cumpriu todas as metas estabelecidas na inspeção anterior?
             </div>
-            <p style={{ fontWeight: 'bold' }}>{t12CumprimentoDasMetasDaInspecaoAnterior || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</p>
           </label>
         </div>
         <div style={{ marginTop: '1rem', width: '100%' }}>
@@ -1322,7 +1315,7 @@ function document(data: any) {
             <div>
               Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos
             </div>
-            <p style={{ fontWeight: 'bold' }}>{t13JustificativaDoNaoCumprimento || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t12JustificativaDoNaoCumprimento || "Não informado"}</p>
           </label>
         </div>
 
