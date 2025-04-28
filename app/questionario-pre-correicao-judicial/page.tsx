@@ -419,9 +419,12 @@ function document(data: any) {
         <p style={{ fontWeight: 'bold' }}>{dataEncerramento || "Não informado"}</p>
       </div>
 
-      Período de levantamento: 12 meses anteriores
-      Prazo de entrega: 10 (dez) dias antes do início da correição.
-      Nas perguntas que não se insiram na competência da unidade, deve responder "não se aplica".
+      {/* Texto fixo */}
+      <label style={{ display: 'block', fontWeight: 'bold' }}>
+        <p>Período de levantamento: 12 meses anteriores.</p>
+        <p>Prazo de entrega: 10 (dez) dias antes do início da correição.</p>
+        <p>Nas perguntas que não se insiram na competência da unidade, deve responder "não se aplica".</p>
+      </label>
 
       <h2 style={{ width: '100%' }}>1. Informações da Unidade</h2>
 
