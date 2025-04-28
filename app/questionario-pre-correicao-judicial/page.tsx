@@ -11,6 +11,20 @@ import { useState } from "react";
 import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresTeletrabalho";
 import Unidade from "@/components/sei/Unidade"
 
+// FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
+function formatForm(name: string, field: any) {
+  return (
+    <div style={{ marginTop: '1rem', width: '100%' }}>
+      <label style={{ display: 'block', fontWeight: 'bold' }}>
+        <div>
+          {name}
+        </div>
+        <p style={{ fontWeight: 'bold' }}>{field || "Não informado"}</p>
+      </label>
+    </div>
+  )
+}
+
 function Interview(Frm: FormHelper) {
   const oCaracteristicas = [
     { label: 'Turma Recursal', name: 'turmaRecursal' },
@@ -619,7 +633,7 @@ function document(data: any) {
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem', padding: '0 0.5rem' }}>
+        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>
             <div>
               Analistas Judiciários
@@ -1102,71 +1116,14 @@ function document(data: any) {
           <p style={{ fontWeight: 'bold' }}>{t9BensAcauteladosCorrespondemComTermos || "Não informado"}</p>
         </label>
       </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9DinheiroEmEspecieTitulosOuJoias || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9BensCadastradosNoSNGB || "Não informado"}</p>
-        </label>
-      </div>
-
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade tem tido alguma dificuldade na utilização do SNGB?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9DificuldadeNoUsoDoSNGB || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9RegistrosAtivosNoSNBA || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9MigracaoDoSNBAParaSNGB || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9CofreOuSalaDeAcautelados || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9ProvidenciasAdotadasParaAcautelamento || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Detalhar as providências adotadas para alienação antecipada de bens, quando necessário
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t9ProvidenciasDeAlienacaoAntecipada || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos", t9DinheiroEmEspecieTitulosOuJoias)}
+      {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)", t9BensCadastradosNoSNGB)}
+      {formatForm("A unidade tem tido alguma dificuldade na utilização do SNGB?", t9DificuldadeNoUsoDoSNGB)}
+      {formatForm("A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?", t9RegistrosAtivosNoSNBA)}
+      {formatForm("Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?", t9MigracaoDoSNBAParaSNGB)}
+      {formatForm("A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?", t9CofreOuSalaDeAcautelados)}
+      {formatForm("Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral", t9ProvidenciasAdotadasParaAcautelamento)}
+      {formatForm("Detalhar as providências adotadas para alienação antecipada de bens, quando necessário", t9ProvidenciasDeAlienacaoAntecipada)}
       <h2 style={{ width: '100%' }}>10. Processos Físicos em carga ou retirados</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -1176,150 +1133,31 @@ function document(data: any) {
           <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga === '1' ? 'Sim' : t10ProcessosFisicosComCarga === '2' ? 'Não' : 'Não informado'} </p>
         </label>
       </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Identificar os processos extraviados, as datas da ocorrência e as providências
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t10ProcessosExtraviados || "Não informado"}</p>
-        </label>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>
-            Identificar as ações de restauração de autos, no período do levantamento
-          </div>
-          <p style={{ fontWeight: 'bold' }}>{t10AcoesDeRestauracao || "Não informado"}</p>
-        </label>
-      </div>
+      {formatForm("Identificar os processos extraviados, as datas da ocorrência e as providências", t10ProcessosExtraviados)}
+      {formatForm("Identificar as ações de restauração de autos, no período do levantamento", t10AcoesDeRestauracao)}
       {!turmaRecursal && (
         <>
           <h2 style={{ width: '100%' }}>11. Audiências</h2>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11NumeroDeAudienciasAgendadasERealizadas || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Como é feito o controle das audiências canceladas/remarcadas?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11ControleDeAudienciasCanceladas || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11AudienciaDeConciliacao || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11AcompanhamentoDaMeta3DoCNJ || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11TempoMedioEntreDespachoDeDesignacaoEAudiencia || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11RegistroVisualDeAudiencias || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11FalhasNoRegistroAudiovisualDeAudiencias || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11AudienciaDeCustodia || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11AudienciaRemota || "Não informado"}</p>
-            </label>
-          </div>
+          {formatForm("Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)", t11NumeroDeAudienciasAgendadasERealizadas)}
+          {formatForm("Como é feito o controle das audiências canceladas/remarcadas?", t11ControleDeAudienciasCanceladas)}
+          {formatForm("É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?", t11AudienciaDeConciliacao)}
+          {formatForm("É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?", t11AcompanhamentoDaMeta3DoCNJ)}
+          {formatForm("Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?", t11TempoMedioEntreDespachoDeDesignacaoEAudiencia)}
+          {formatForm("A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?", t11RegistroVisualDeAudiencias)}
+          {formatForm("Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeAudiencias)}
+          {formatForm("Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades", t11AudienciaDeCustodia)}
+          {formatForm("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
         </>
       )}
       {turmaRecursal && (
         <>
           <h2 style={{ width: '100%' }}>11. Sessão de Julgamento/Audiências</h2>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Número de sessões de julgamento agendadas e realizadas
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11ControleDePauta || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11IntervaloDeTempo || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                A unidade utiliza o registro audiovisual de sessões de julgamento?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11RegistroVisualDeSessoesDeJulgamento || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento || "Não informado"}</p>
-            </label>
-          </div>
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>
-              <div>
-                Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)
-              </div>
-              <p style={{ fontWeight: 'bold' }}>{t11AudienciaRemota || "Não informado"}</p>
-            </label>
-          </div>
+          {formatForm("Número de sessões de julgamento agendadas e realizadas", t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas)}
+          {formatForm("Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?", t11ControleDePauta)}
+          {formatForm("Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?", t11IntervaloDeTempo)}
+          {formatForm("A unidade utiliza o registro audiovisual de sessões de julgamento?", t11RegistroVisualDeSessoesDeJulgamento)}
+          {formatForm("Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento)}
+          {formatForm("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
         </>
       )}
       <h2 style={{ width: '100%' }}>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
@@ -1356,7 +1194,6 @@ function document(data: any) {
           <p style={{ fontWeight: 'bold' }}>{t12JustificativaDoNaoCumprimento || "Não informado"}</p>
         </label>
       </div>
-
     </div>
   </div>
 }
