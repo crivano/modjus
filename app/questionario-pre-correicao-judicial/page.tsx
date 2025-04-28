@@ -250,10 +250,20 @@ function Interview(Frm: FormHelper) {
       <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)"  name="t11AudienciaRemota" width={12} />
       </div>
     )}
+
       <h2>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" name="t12CumprimentoDasMetasDaInspecaoAnterior" width={12} />
-      <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" width={12} />
-      <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  name="t12JustificativaDoNaoCumprimento" width={12} />
+      <Frm.TextArea label="A unidade cumpriu todas as metas estabelecidas na inspeção anterior?" 
+        name="t12CumprimentoDasMetasDaInspecaoAnterior" 
+        width={12} 
+      />
+      <Frm.TextArea label="A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?"  
+        name="t12RegularizacaoDasPendenciasDaUltimaCorreicao" 
+        width={12} 
+      />
+      <Frm.TextArea label="Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento"  
+        name="t12JustificativaDoNaoCumprimento" 
+        width={12} 
+      />
 
       <h2>13. Boas práticas e dificuldades</h2>
       <Frm.TextArea label="Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos "  name="t13JustificativaDoNaoCumprimento" width={12} />
@@ -375,6 +385,7 @@ function document(data: any) {
     t11IntervaloDeTempo,
     t11RegistroVisualDeSessoesDeJulgamento,
     t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento,
+    t12CumprimentoDasMetasDaInspecaoAnterior,
     t12RegularizacaoDasPendenciasDaUltimaCorreicao,
     t12JustificativaDoNaoCumprimento,
     t13JustificativaDoNaoCumprimento,
@@ -1286,7 +1297,7 @@ function document(data: any) {
             <div>
               A unidade cumpriu todas as metas estabelecidas na inspeção anterior?
             </div>
-            <p style={{ fontWeight: 'bold' }}>{t12RegularizacaoDasPendenciasDaUltimaCorreicao || "Não informado"}</p>
+            <p style={{ fontWeight: 'bold' }}>{t12CumprimentoDasMetasDaInspecaoAnterior || "Não informado"}</p>
           </label>
         </div>
         <div style={{ marginTop: '1rem', width: '100%' }}>
