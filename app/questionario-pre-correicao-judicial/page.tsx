@@ -61,7 +61,11 @@ function Interview(Frm: FormHelper) {
       <h2>2. Magistrados</h2>
       <h5>Titular</h5>
       {/* Trocar abaixo para algum componente pessoa */}
-      <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular" />
+      <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular"/>
+
+      <div className="row">
+        <Frm.Input label="Cargo" name={'t2Titular.cargo'} width={6} />
+      </div>
 
       <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
       <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2TitularAfastamentos" width={12} />
