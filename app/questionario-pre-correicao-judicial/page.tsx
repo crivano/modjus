@@ -142,7 +142,9 @@ function Interview(Frm: FormHelper) {
       <Frm.TextArea label="Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças" name="t8FluxoDeInformacoes" width={12} />
 
       {!Frm.data.turmaRecursal && (
-        <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
+        <>
+          <Frm.Input label="Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise" name="t8NumeroDeProcessosComPedidosUrgentes" width={12} />
+        </>
       )}
 
       <Frm.TextArea label="Há utilização de automação de localizadores (e-Proc) na unidade?" name="t8UtilizacaoDeAutomacaoDosLocalizadores" width={12} />
@@ -571,12 +573,13 @@ function document(data: any) {
       {!turmaRecursal &&
         <>
           {formatForm("Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise", t8NumeroDeProcessosComPedidosUrgentes)}
-          {formatForm("Há utilização de automação de localizadores (e-Proc) na unidade?", t8UtilizacaoDeAutomacaoDosLocalizadores)}
-          {formatForm("Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?", t8PrazosDeSuspensao)}
-          {formatForm("A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?", t8RespeitoAPadronizacaoDoCNJ)}
-          {formatForm("A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?", t8ProcessoSemAssuntoCorrespondente)}
         </>
       }
+
+      {formatForm("Há utilização de automação de localizadores (e-Proc) na unidade?", t8UtilizacaoDeAutomacaoDosLocalizadores)}
+      {formatForm("Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?", t8PrazosDeSuspensao)}
+      {formatForm("A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?", t8RespeitoAPadronizacaoDoCNJ)}
+      {formatForm("A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?", t8ProcessoSemAssuntoCorrespondente)}
 
       {jef && (
         <>
