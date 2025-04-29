@@ -62,6 +62,7 @@ function Interview(Frm: FormHelper) {
       <h5>Titular</h5>
       {/* Trocar abaixo para algum componente pessoa */}
       <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular" />
+
       <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
       <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2TitularAfastamentos" width={12} />
       <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2TitularSubstituicoes" width={12} />
@@ -455,6 +456,7 @@ function document(data: any) {
 
       <h2 style={{ width: '100%' }}>2. Magistrados</h2>
       {formatForm("Titular", t2Titular?.descricao)}
+      {formatForm("Cargo", t2Titular?.cargo)}
       {formatForm("Tempo de atuação na unidade", t2TitularTempoDeAtuacaoNaUnidade)}
       {formatForm("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2TitularAfastamentos)}
       {formatForm("Períodos de substituição, em férias, de outro magistrado", t2TitularSubstituicoes)}
