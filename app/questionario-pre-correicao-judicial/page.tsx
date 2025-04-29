@@ -12,14 +12,14 @@ import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresT
 import Unidade from "@/components/sei/Unidade"
 
 // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
-function formatForm(name: string, field: any) {
+function formatForm(name: string, field: any, maxWidth?: string) {
   return (
-    <div style={{ marginTop: '1rem', width: '100%' }}>
+    <div style={{ marginTop: '1rem', width: '100%', maxWidth: maxWidth || '100%' }}>
       <label style={{ display: 'block', fontWeight: 'bold' }}>
         <div>
           {name}
         </div>
-        <p style={{ fontWeight: 'bold' }}>{field || "Não informado"}</p>
+        <p style={{ fontWeight: 'bold' }}>{field || "Não se aplica"}</p>
       </label>
     </div>
   )
@@ -204,31 +204,17 @@ function Interview(Frm: FormHelper) {
       <Frm.TextArea label="Detalhar as providências adotadas para alienação antecipada de bens, quando necessário" name="t9ProvidenciasDeAlienacaoAntecipada" width={12} />
       <ul>
         <li>
-          <p>
-            Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:
-          </p>
+          <p>Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:</p>
           <ul>
-            <li>
-              1 (uma) foto por bem acautelado, onde se visualize, apenas externamente, o termo de acautelamento que nele se encontre afixado;
-            </li>
-            <li>
-              No termo de acautelamento deve constar a descrição do bem acautelado e a identificação precisa do local em que se encontra;
-            </li>
-            <li>
-              Caso o bem se encontre em local diverso da Secretaria por designação do Juízo, indicar o expediente no Siga criado para tal registro, na forma do art. 2º, §3º, da Portaria TRF2-PTC-2022/00071.
-            </li>
+            <li>1 (uma) foto por bem acautelado, onde se visualize, apenas externamente, o termo de acautelamento que nele se encontre afixado;</li>
+            <li>No termo de acautelamento deve constar a descrição do bem acautelado e a identificação precisa do local em que se encontra;</li>
+            <li>Caso o bem se encontre em local diverso da Secretaria por designação do Juízo, indicar o expediente no Siga criado para tal registro, na forma do art. 2º, §3º, da Portaria TRF2-PTC-2022/00071.</li>
           </ul>
         </li>
         <li>
-          <p>
-            Os bens acautelados devem estar registrados como “Anexo Físico” no E-Proc, em "Informações adicionais", de forma a possibilitar o seu controle por meio da extração de Relatório Geral no Sistema Processual.
-          </p>
-          <p>
-            No conteúdo da informação do “Anexo Físico”, deve constar a descrição do bem acautelado, a localização precisa em que se encontra e a indicação da existência de termo de acautelamento e do evento/folha correspondente no processo eletrônico (art. 2º, § 1º, da Portaria TRF2-PTC-2022/00071);
-          </p>
-          <p>
-            Devem ser excluídos/desativados os “Anexos Físicos” nas “Informações Adicionais” dos processos eletrônicos que não possuam bens acautelados (art. 2º, § 2º, da Portaria TRF2-PTC-2022/00071).
-          </p>
+          <p>Os bens acautelados devem estar registrados como “Anexo Físico” no E-Proc, em "Informações adicionais", de forma a possibilitar o seu controle por meio da extração de Relatório Geral no Sistema Processual.</p>
+          <p>No conteúdo da informação do “Anexo Físico”, deve constar a descrição do bem acautelado, a localização precisa em que se encontra e a indicação da existência de termo de acautelamento e do evento/folha correspondente no processo eletrônico (art. 2º, § 1º, da Portaria TRF2-PTC-2022/00071);</p>
+          <p>Devem ser excluídos/desativados os “Anexos Físicos” nas “Informações Adicionais” dos processos eletrônicos que não possuam bens acautelados (art. 2º, § 2º, da Portaria TRF2-PTC-2022/00071).</p>
         </li>
       </ul>
 
@@ -241,7 +227,6 @@ function Interview(Frm: FormHelper) {
       />
       <Frm.TextArea label="Identificar os processos extraviados, as datas da ocorrência e as providências" name="t10ProcessosExtraviados" width={12} />
       <Frm.TextArea label="Identificar as ações de restauração de autos, no período do levantamento" name="t10AcoesDeRestauracao" width={12} />
-
 
       {!Frm.data.turmaRecursal && (
         <div>
@@ -417,24 +402,9 @@ function document(data: any) {
   return <div className="scrollableContainer">
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       <h1 style={{ textAlign: 'center', width: '100%' }}>Relatório de Pré-correição Judicial</h1>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Número do Processo</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{numproc || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Data de Abertura</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{dataAbertura || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Data de Encerramento</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{dataEncerramento || "Não informado"}</p>
-      </div>
+      {formatForm("Número do Processo", numproc, "33.3333%")}
+      {formatForm("Data de Abertura", dataAbertura, "33.3333%")}
+      {formatForm("Data de Encerramento", dataEncerramento, "33.3333%")}
 
       {/* Texto fixo */}
       <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -445,24 +415,14 @@ function document(data: any) {
 
       <h2 style={{ width: '100%' }}>1. Informações da Unidade</h2>
 
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Unidade</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t1Unidade?.descricao || "Não informado"}</p>
-      </div>
-      <div style={{ marginTop: '1rem', width: '100%', maxWidth: '33.3333%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>
-          <div>Data da Instalação</div>
-        </label>
-        <p style={{ fontWeight: 'bold' }}>{t1DataDaInstalacao || "Não informado"}</p>
-      </div>
+      {formatForm("Unidade", t1Unidade?.descricao, "33.3333%")}
+      {formatForm("Data da Instalação", t1DataDaInstalacao, "33.3333%")}
 
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)
         </label>
-        <p style={{ fontWeight: 'bold' }}>{t1Competencias || "Não informado"}</p>
+        <p style={{ fontWeight: 'bold' }}>{t1Competencias || "Não se aplica"}</p>
       </div>
 
       <div style={{ marginTop: '1rem', width: '100%' }}>
@@ -491,10 +451,7 @@ function document(data: any) {
         </table>
       </div>
 
-      <div style={{ marginTop: '1rem', width: '100%' }}>
-        <label style={{ display: 'block', fontWeight: 'bold' }}>Houve redistribuição de processos?</label>
-        <p style={{ fontWeight: 'bold' }}>{t1RedistribuicaoDeProcessos || "Não informado"}</p>
-      </div>
+      {formatForm("Houve redistribuição de processos?", t1RedistribuicaoDeProcessos)}
 
       <h2 style={{ width: '100%' }}>2. Magistrados</h2>
       {formatForm("Titular", t2Titular?.descricao)}
@@ -528,115 +485,31 @@ function document(data: any) {
         </label>
       </div>
       <h4 style={{ width: '100%' }}>Última Correição</h4>
-      <div style={{ marginTop: '1rem', width: '100%' }}>
+      {/* <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           <div>
-            {/* ### calcular automaticamente o total de servidores */}
+            ### calcular automaticamente o total de servidores 
           </div>
         </label>
-      </div>
+      </div> */}
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Analistas Judiciários
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciarios || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Técnicos Judiciários
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTecnicosJudiciarios || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Técnicos Jud. de Segurança
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Requisitados ou outros
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoRequisitadosOuOutros || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Total de servidores
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoTotalDeServidores || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Quadro Previsto
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4UltimaCorreicaoQuadroPrevisto || "Não informado"}</p>
-          </label>
-        </div>
+        {formatForm("Analistas Judiciários", t4UltimaCorreicaoAnalistasJudiciarios, "16.6667%")}
+        {formatForm("Técnicos Judiciários", t4UltimaCorreicaoTecnicosJudiciarios, "16.6667%")}
+        {formatForm("Técnicos Jud. de Segurança", t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca, "16.6667%")}
+        {formatForm("Requisitados ou outros", t4UltimaCorreicaoRequisitadosOuOutros, "16.6667%")}
+        {formatForm("Total de servidores", t4UltimaCorreicaoTotalDeServidores, "16.6667%")}
+        {formatForm("Quadro Previsto", t4UltimaCorreicaoQuadroPrevisto, "16.6667%")}
       </div>
 
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Analistas Judiciários
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciarios || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Técnicos Judiciários
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTecnicosJudiciarios || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Técnicos Jud. de Segurança
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteAnalistasJudiciariosDeSeguranca || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Requisitados ou outros
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteRequisitadosOuOutros || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Total de servidores
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteTotalDeServidores || "Não informado"}</p>
-          </label>
-        </div>
-        <div style={{ marginTop: '1rem', width: '100%', maxWidth: '16.6667%', padding: '0 0.5rem' }}>
-          <label style={{ display: 'block', fontWeight: 'bold' }}>
-            <div>
-              Quadro Previsto
-            </div>
-            <p style={{ fontWeight: 'bold' }}>{t4AtualmenteQuadroPrevisto || "Não informado"}</p>
-          </label>
-        </div>
+        {formatForm("Analistas Judiciários", t4AtualmenteAnalistasJudiciarios, "16.6667%")}
+        {formatForm("Técnicos Judiciários", t4AtualmenteTecnicosJudiciarios, "16.6667%")}
+        {formatForm("Técnicos Jud. de Segurança", t4AtualmenteAnalistasJudiciariosDeSeguranca, "16.6667%")}
+        {formatForm("Requisitados ou outros", t4AtualmenteRequisitadosOuOutros, "16.6667%")}
+        {formatForm("Total de servidores", t4AtualmenteTotalDeServidores, "16.6667%")}
+        {formatForm("Quadro Previsto", t4AtualmenteQuadroPrevisto, "16.6667%")}
       </div>
 
       {formatForm(
@@ -647,58 +520,13 @@ function document(data: any) {
         {
           Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; numero: any }, i: number) => (
             <div key={i} style={{ display: 'flex', flexWrap: 'wrap' }}>
-              <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>
-                    Servidor {i + 1}
-                  </div>
-                  <p style={{ fontWeight: 'bold' }}>{servidor.nome || "Não informado"}</p>
-                </label>
-              </div>
-              <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>
-                    Período
-                  </div>
-                  <p style={{ fontWeight: 'bold' }}>{servidor.periodo || "Não informado"}</p>
-                </label>
-              </div>
-              <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>
-                    Data de Envio do Relatório
-                  </div>
-                  <p style={{ fontWeight: 'bold' }}>{servidor.dataEnvio || "Não informado"}</p>
-                </label>
-              </div>
-              <div style={{ marginTop: '1rem', width: '100%', maxWidth: '25%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>
-                    Número
-                  </div>
-                  <p style={{ fontWeight: 'bold' }}>{servidor.numero || "Não informado"}</p>
-                </label>
-              </div>
-              <div style={{ marginTop: '1rem', width: '100%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.),
-                    bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento
-                  </div>
-                </label>
-                <p style={{ fontWeight: 'bold' }}>{t4NomeDosServidoresLotadosCargosEChefias || "Não informado"}</p>
-              </div>
-              <div style={{ marginTop: '1rem', width: '100%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>Nome e número de servidores sem vínculo com o serviço público</div>
-                </label>
-                <p style={{ fontWeight: 'bold' }}>{t4NomeENumeroDeServidoresSemVinculo || "Não informado"}</p>
-              </div>
-              <div style={{ marginTop: '1rem', width: '100%' }}>
-                <label style={{ display: 'block', fontWeight: 'bold' }}>
-                  <div>Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):</div>
-                </label>
-                <p style={{ fontWeight: 'bold' }}>{t4NomeENumeroDeServidoresEmAuxilioOuRequisitados || "Não informado"}</p>
-              </div>
+                {formatForm(`Servidor ${i + 1}`, servidor.nome, "25%")}
+                {formatForm("Período", servidor.periodo, "25%")}
+                {formatForm("Data de Envio do Relatório", servidor.dataEnvio, "25%")}
+                {formatForm("Número", servidor.numero, "25%")}
+                {formatForm("Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento", t4NomeDosServidoresLotadosCargosEChefias)}
+                {formatForm("Nome e número de servidores sem vínculo com o serviço público", t4NomeENumeroDeServidoresSemVinculo)}
+                {formatForm("Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):", t4NomeENumeroDeServidoresEmAuxilioOuRequisitados)}
 
               {!Frm.data.turmaRecursal &&
                 <div style={{ marginTop: '1rem', width: '100%' }}>
@@ -707,7 +535,7 @@ function document(data: any) {
                       Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
                     </div>
                   </label>
-                  <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não informado"}</p>
+                  <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
                 </div>
               }
             </div>
@@ -796,7 +624,7 @@ function document(data: any) {
           <div>
             Há processos físicos com carga às partes ou retirados por auxiliares do juízo além do prazo legal?
           </div>
-          <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga === '1' ? 'Sim' : t10ProcessosFisicosComCarga === '2' ? 'Não' : 'Não informado'} </p>
+          <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga === '1' ? 'Sim' : t10ProcessosFisicosComCarga === '2' ? 'Não' : 'Não se aplica'} </p>
         </label>
       </div>
         {formatForm("Identificar os processos extraviados, as datas da ocorrência e as providências", t10ProcessosExtraviados)}
