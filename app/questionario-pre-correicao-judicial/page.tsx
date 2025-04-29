@@ -12,7 +12,7 @@ import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresT
 import Unidade from "@/components/sei/Unidade"
 
 // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
-function formatForm(name: string, field: any, maxWidth?: string, padding?: string)  {
+function formatForm(name: string, field: any, maxWidth?: string, padding?: string) {
   return (
     <div style={{ marginTop: '1rem', width: '100%', maxWidth: maxWidth || '100%', padding: padding || '0' }}>
       <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -578,7 +578,12 @@ function document(data: any) {
         </>
       }
 
-      {jef && (formatForm("O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?", t8AplicativoDeMensagens))}
+      {jef && (
+        <>
+          <h5>Juizado Especial Federal</h5>
+          {formatForm("O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?", t8AplicativoDeMensagens)}
+        </>
+      )}
 
       {criminal && (
         <>
