@@ -258,6 +258,7 @@ function Interview(Frm: FormHelper) {
           <Frm.TextArea label="Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?" name="t11IntervaloDeTempo" width={12} />
           <Frm.TextArea label="A unidade utiliza o registro audiovisual de sessões de julgamento?" name="t11RegistroVisualDeSessoesDeJulgamento" width={12} />
           <Frm.TextArea label="Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo?  Quais as falhas e quais as soluções adotadas para saná-las?" name="t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento" width={12} />
+          <Frm.TextArea label="Houve alguma audiência de custódia, realizada em plantão, nos últimos 12 meses? Quantas? Em caso positivo, indicar o número dos processos. É utilizado o Sistema de Audiência de Custódia (SISTAC), para gravar as audiências?" name="t11AudienciaDeCustodiaRealizadaEmPlantao" width={12} />
           <Frm.TextArea label="Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)" name="t11AudienciaRemota" width={12} />
         </div>
       )}
@@ -400,6 +401,7 @@ function document(data: any) {
     t11ControleDePauta,
     t11IntervaloDeTempo,
     t11RegistroVisualDeSessoesDeJulgamento,
+    t11AudienciaDeCustodiaRealizadaEmPlantao,
     t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento,
     t12CumprimentoDasMetasDaInspecaoAnterior,
     t12RegularizacaoDasPendenciasDaUltimaCorreicao,
@@ -666,6 +668,7 @@ function document(data: any) {
           {formatText("Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?", t11IntervaloDeTempo)}
           {formatText("A unidade utiliza o registro audiovisual de sessões de julgamento?", t11RegistroVisualDeSessoesDeJulgamento)}
           {formatText("Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento)}
+          {formatText("Houve alguma audiência de custódia, realizada em plantão, nos últimos 12 meses? Quantas? Em caso positivo, indicar o número dos processos. É utilizado o Sistema de Audiência de Custódia (SISTAC), para gravar as audiências?:", t11AudienciaDeCustodiaRealizadaEmPlantao)} 
           {formatText("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
         </>
       )}
