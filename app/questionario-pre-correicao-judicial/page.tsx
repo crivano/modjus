@@ -12,9 +12,9 @@ import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresT
 import Unidade from "@/components/sei/Unidade"
 
 // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
-function formatForm(name: string, field: any, maxWidth?: string) {
+function formatForm(name: string, field: any, maxWidth?: string, padding?: string)  {
   return (
-    <div style={{ marginTop: '1rem', width: '100%', maxWidth: maxWidth || '100%' }}>
+    <div style={{ marginTop: '1rem', width: '100%', maxWidth: maxWidth || '100%', padding: padding || '0' }}>
       <label style={{ display: 'block', fontWeight: 'bold' }}>
         <div>
           {name}
@@ -493,23 +493,23 @@ function document(data: any) {
         </label>
       </div> */}
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        {formatForm("Analistas Judiciários", t4UltimaCorreicaoAnalistasJudiciarios, "16.6667%")}
-        {formatForm("Técnicos Judiciários", t4UltimaCorreicaoTecnicosJudiciarios, "16.6667%")}
-        {formatForm("Técnicos Jud. de Segurança", t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca, "16.6667%")}
-        {formatForm("Requisitados ou outros", t4UltimaCorreicaoRequisitadosOuOutros, "16.6667%")}
-        {formatForm("Total de servidores", t4UltimaCorreicaoTotalDeServidores, "16.6667%")}
-        {formatForm("Quadro Previsto", t4UltimaCorreicaoQuadroPrevisto, "16.6667%")}
+        {formatForm("Analistas Judiciários", t4UltimaCorreicaoAnalistasJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatForm("Técnicos Judiciários", t4UltimaCorreicaoTecnicosJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatForm("Técnicos Jud. de Segurança", t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca, "16.6667%", '0 0.5rem')}
+        {formatForm("Requisitados ou outros", t4UltimaCorreicaoRequisitadosOuOutros, "16.6667%", '0 0.5rem')}
+        {formatForm("Total de servidores", t4UltimaCorreicaoTotalDeServidores, "16.6667%", '0 0.5rem')}
+        {formatForm("Quadro Previsto", t4UltimaCorreicaoQuadroPrevisto, "16.6667%", '0 0.5rem')}
       </div>
 
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        {formatForm("Analistas Judiciários", t4AtualmenteAnalistasJudiciarios, "16.6667%")}
-        {formatForm("Técnicos Judiciários", t4AtualmenteTecnicosJudiciarios, "16.6667%")}
-        {formatForm("Técnicos Jud. de Segurança", t4AtualmenteAnalistasJudiciariosDeSeguranca, "16.6667%")}
-        {formatForm("Requisitados ou outros", t4AtualmenteRequisitadosOuOutros, "16.6667%")}
-        {formatForm("Total de servidores", t4AtualmenteTotalDeServidores, "16.6667%")}
-        {formatForm("Quadro Previsto", t4AtualmenteQuadroPrevisto, "16.6667%")}
+        {formatForm("Analistas Judiciários", t4AtualmenteAnalistasJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatForm("Técnicos Judiciários", t4AtualmenteTecnicosJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatForm("Técnicos Jud. de Segurança", t4AtualmenteAnalistasJudiciariosDeSeguranca, "16.6667%", '0 0.5rem')}
+        {formatForm("Requisitados ou outros", t4AtualmenteRequisitadosOuOutros, "16.6667%", '0 0.5rem')}
+        {formatForm("Total de servidores", t4AtualmenteTotalDeServidores, "16.6667%", '0 0.5rem')}
+        {formatForm("Quadro Previsto", t4AtualmenteQuadroPrevisto, "16.6667%", '0 0.5rem')}
       </div>
 
       {formatForm(
