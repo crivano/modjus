@@ -520,26 +520,27 @@ function document(data: any) {
         {
           Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; numero: any }, i: number) => (
             <div key={i} style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {formatForm(`Servidor ${i + 1}`, servidor.nome, "25%")}
-                {formatForm("Período", servidor.periodo, "25%")}
-                {formatForm("Data de Envio do Relatório", servidor.dataEnvio, "25%")}
-                {formatForm("Número", servidor.numero, "25%")}
-                {formatForm("Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento", t4NomeDosServidoresLotadosCargosEChefias)}
-                {formatForm("Nome e número de servidores sem vínculo com o serviço público", t4NomeENumeroDeServidoresSemVinculo)}
-                {formatForm("Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):", t4NomeENumeroDeServidoresEmAuxilioOuRequisitados)}
-
-              {!Frm.data.turmaRecursal &&
-                <div style={{ marginTop: '1rem', width: '100%' }}>
-                  <label style={{ display: 'block', fontWeight: 'bold' }}>
-                    <div>Quantos e quais servidores exercem função de assessoria ao Juiz Federal Substituto?
-                      Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
-                    </div>
-                  </label>
-                  <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
-                </div>
-              }
+              {formatForm(`Servidor ${i + 1}`, servidor.nome, "25%")}
+              {formatForm("Período", servidor.periodo, "25%")}
+              {formatForm("Data de Envio do Relatório", servidor.dataEnvio, "25%")}
+              {formatForm("Número", servidor.numero, "25%")}
             </div>
           ))}
+
+        {formatForm("Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento", t4NomeDosServidoresLotadosCargosEChefias)}
+        {formatForm("Nome e número de servidores sem vínculo com o serviço público", t4NomeENumeroDeServidoresSemVinculo)}
+        {formatForm("Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):", t4NomeENumeroDeServidoresEmAuxilioOuRequisitados)}
+
+        {!Frm.data.turmaRecursal &&
+          <div style={{ marginTop: '1rem', width: '100%' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>
+              <div>Quantos e quais servidores exercem função de assessoria ao Juiz Federal Substituto?
+                Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
+              </div>
+            </label>
+            <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
+          </div>
+        }
       </div>
 
       {/* 5. Estagiários */}
@@ -607,17 +608,17 @@ function document(data: any) {
         </>
       )}
       <h2 style={{ width: '100%' }}>9. Materiais Acautelados na Unidade</h2>
-        {formatForm("Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)", t9QuantidadeDeMateriaisAcautelados)}
-        {formatForm("Indicar a quantidade de processos com bens acautelados/apreendidos na unidade", t9QuantidadeDeProcessosComBensAcautelados)}
-        {formatForm("Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?", t9BensAcauteladosCorrespondemComTermos)}
-        {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos", t9DinheiroEmEspecieTitulosOuJoias)}
-        {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)", t9BensCadastradosNoSNGB)}
-        {formatForm("A unidade tem tido alguma dificuldade na utilização do SNGB?", t9DificuldadeNoUsoDoSNGB)}
-        {formatForm("A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?", t9RegistrosAtivosNoSNBA)}
-        {formatForm("Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?", t9MigracaoDoSNBAParaSNGB)}
-        {formatForm("A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?", t9CofreOuSalaDeAcautelados)}
-        {formatForm("Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral", t9ProvidenciasAdotadasParaAcautelamento)}
-        {formatForm("Detalhar as providências adotadas para alienação antecipada de bens, quando necessário", t9ProvidenciasDeAlienacaoAntecipada)}
+      {formatForm("Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)", t9QuantidadeDeMateriaisAcautelados)}
+      {formatForm("Indicar a quantidade de processos com bens acautelados/apreendidos na unidade", t9QuantidadeDeProcessosComBensAcautelados)}
+      {formatForm("Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?", t9BensAcauteladosCorrespondemComTermos)}
+      {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos", t9DinheiroEmEspecieTitulosOuJoias)}
+      {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)", t9BensCadastradosNoSNGB)}
+      {formatForm("A unidade tem tido alguma dificuldade na utilização do SNGB?", t9DificuldadeNoUsoDoSNGB)}
+      {formatForm("A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?", t9RegistrosAtivosNoSNBA)}
+      {formatForm("Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?", t9MigracaoDoSNBAParaSNGB)}
+      {formatForm("A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?", t9CofreOuSalaDeAcautelados)}
+      {formatForm("Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral", t9ProvidenciasAdotadasParaAcautelamento)}
+      {formatForm("Detalhar as providências adotadas para alienação antecipada de bens, quando necessário", t9ProvidenciasDeAlienacaoAntecipada)}
       <h2 style={{ width: '100%' }}>10. Processos Físicos em carga ou retirados</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -627,8 +628,8 @@ function document(data: any) {
           <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga === '1' ? 'Sim' : t10ProcessosFisicosComCarga === '2' ? 'Não' : 'Não se aplica'} </p>
         </label>
       </div>
-        {formatForm("Identificar os processos extraviados, as datas da ocorrência e as providências", t10ProcessosExtraviados)}
-        {formatForm("Identificar as ações de restauração de autos, no período do levantamento", t10AcoesDeRestauracao)}
+      {formatForm("Identificar os processos extraviados, as datas da ocorrência e as providências", t10ProcessosExtraviados)}
+      {formatForm("Identificar as ações de restauração de autos, no período do levantamento", t10AcoesDeRestauracao)}
       {!turmaRecursal && (
         <>
           <h2 style={{ width: '100%' }}>11. Audiências</h2>
@@ -655,14 +656,14 @@ function document(data: any) {
         </>
       )}
       <h2 style={{ width: '100%' }}>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-        {formatForm("A unidade cumpriu todas as metas estabelecidas na inspeção anterior?", t12CumprimentoDasMetasDaInspecaoAnterior)}
-        {formatForm("A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?", t12RegularizacaoDasPendenciasDaUltimaCorreicao)}
-        {formatForm("Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento", t12JustificativaDoNaoCumprimento)}
+      {formatForm("A unidade cumpriu todas as metas estabelecidas na inspeção anterior?", t12CumprimentoDasMetasDaInspecaoAnterior)}
+      {formatForm("A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?", t12RegularizacaoDasPendenciasDaUltimaCorreicao)}
+      {formatForm("Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento", t12JustificativaDoNaoCumprimento)}
       <h2 style={{ width: '100%' }}>13. Boas práticas e dificuldades</h2>
-        {formatForm(
-          "Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos",
-          t13JustificativaDoNaoCumprimento
-        )}
+      {formatForm(
+        "Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos",
+        t13JustificativaDoNaoCumprimento
+      )}
     </div>
   </div>
 }
