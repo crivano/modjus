@@ -12,7 +12,7 @@ import QuantidadeServidoresTeletrabalho from "@/components/QuantidadeServidoresT
 import Unidade from "@/components/sei/Unidade"
 
 // FUNÇÃO PARA FORMATAR OS CAMPOS DO FORMULÁRIO
-function formatForm(name: string, field: any, maxWidth?: string, padding?: string) {
+function formatText(name: string, field: any, maxWidth?: string, padding?: string) {
   return (
     <div style={{ marginTop: '1rem', width: '100%', maxWidth: maxWidth || '100%', padding: padding || '0' }}>
       <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -405,9 +405,9 @@ function document(data: any) {
   return <div className="scrollableContainer">
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       <h1 style={{ textAlign: 'center', width: '100%' }}>Relatório de Pré-correição Judicial</h1>
-      {formatForm("Número do Processo", numproc, "33.3333%")}
-      {formatForm("Data de Abertura", dataAbertura, "33.3333%")}
-      {formatForm("Data de Encerramento", dataEncerramento, "33.3333%")}
+      {formatText("Número do Processo", numproc, "33.3333%")}
+      {formatText("Data de Abertura", dataAbertura, "33.3333%")}
+      {formatText("Data de Encerramento", dataEncerramento, "33.3333%")}
 
       {/* Texto fixo */}
       <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -418,8 +418,8 @@ function document(data: any) {
 
       <h2 style={{ width: '100%' }}>1. Informações da Unidade</h2>
 
-      {formatForm("Unidade", t1Unidade?.descricao, "33.3333%")}
-      {formatForm("Data da Instalação", t1DataDaInstalacao, "33.3333%")}
+      {formatText("Unidade", t1Unidade?.descricao, "33.3333%")}
+      {formatText("Data da Instalação", t1DataDaInstalacao, "33.3333%")}
 
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -454,30 +454,30 @@ function document(data: any) {
         </table>
       </div>
 
-      {formatForm("Houve redistribuição de processos?", t1RedistribuicaoDeProcessos)}
+      {formatText("Houve redistribuição de processos?", t1RedistribuicaoDeProcessos)}
 
       <h2 style={{ width: '100%' }}>2. Magistrados</h2>
-      {formatForm("Titular", t2Titular?.descricao)}
-      {formatForm("Cargo", t2Titular?.cargo)}
-      {formatForm("Tempo de atuação na unidade", t2TitularTempoDeAtuacaoNaUnidade)}
-      {formatForm("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2TitularAfastamentos)}
-      {formatForm("Períodos de substituição, em férias, de outro magistrado", t2TitularSubstituicoes)}
-      {formatForm("Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)", t2TitularModalidadeTrabalho)}
-      {formatForm("Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)", t2TitularAtendimento)}
+      {formatText("Titular", t2Titular?.descricao)}
+      {formatText("Cargo", t2Titular?.cargo)}
+      {formatText("Tempo de atuação na unidade", t2TitularTempoDeAtuacaoNaUnidade)}
+      {formatText("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2TitularAfastamentos)}
+      {formatText("Períodos de substituição, em férias, de outro magistrado", t2TitularSubstituicoes)}
+      {formatText("Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)", t2TitularModalidadeTrabalho)}
+      {formatText("Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)", t2TitularAtendimento)}
 
       {(!turmaRecursal && (jef || criminal || execucaoFiscal)) && (
         <>
-          {formatForm("Substituto", t2Substituto?.descricao)}
-          {formatForm("Tempo de atuação na unidade", t2SubstitutoTempoDeAtuacaoNaUnidade)}
-          {formatForm("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2SubstitutoAfastamentos)}
-          {formatForm("Períodos de substituição, em férias, de outro magistrado", t2SubstitutoSubstituicoes)}
-          {formatForm("Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)", t2SubstitutoModalidadeTrabalho)}
-          {formatForm("Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)", t2SubstitutoAtendimento)}
+          {formatText("Substituto", t2Substituto?.descricao)}
+          {formatText("Tempo de atuação na unidade", t2SubstitutoTempoDeAtuacaoNaUnidade)}
+          {formatText("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2SubstitutoAfastamentos)}
+          {formatText("Períodos de substituição, em férias, de outro magistrado", t2SubstitutoSubstituicoes)}
+          {formatText("Qual a modalidade de trabalho adotada pelo Magistrado no Juízo? (art. 2º, TRF2-PVC-2023/00002)", t2SubstitutoModalidadeTrabalho)}
+          {formatText("Como é realizado o atendimento aos advogados/procuradores? (art. 3º, TRF2-PVC-2023/00002)", t2SubstitutoAtendimento)}
         </>
       )}
 
       <h2 style={{ width: '100%' }}>3. Auxílios</h2>
-      {formatForm("Auxílios prestados e recebidos nos últimos 12 meses", t3Auxilios)}
+      {formatText("Auxílios prestados e recebidos nos últimos 12 meses", t3Auxilios)}
 
       {/* 4. Servidores */}
       <h2 style={{ width: '100%' }}>4. Servidores</h2>
@@ -497,26 +497,26 @@ function document(data: any) {
         </label>
       </div> */}
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        {formatForm("Analistas Judiciários", t4UltimaCorreicaoAnalistasJudiciarios, "16.6667%", '0 0.5rem')}
-        {formatForm("Técnicos Judiciários", t4UltimaCorreicaoTecnicosJudiciarios, "16.6667%", '0 0.5rem')}
-        {formatForm("Técnicos Jud. de Segurança", t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca, "16.6667%", '0 0.5rem')}
-        {formatForm("Requisitados ou outros", t4UltimaCorreicaoRequisitadosOuOutros, "16.6667%", '0 0.5rem')}
-        {formatForm("Total de servidores", t4UltimaCorreicaoTotalDeServidores, "16.6667%", '0 0.5rem')}
-        {formatForm("Quadro Previsto", t4UltimaCorreicaoQuadroPrevisto, "16.6667%", '0 0.5rem')}
+        {formatText("Analistas Judiciários", t4UltimaCorreicaoAnalistasJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatText("Técnicos Judiciários", t4UltimaCorreicaoTecnicosJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatText("Técnicos Jud. de Segurança", t4UltimaCorreicaoAnalistasJudiciariosDeSeguranca, "16.6667%", '0 0.5rem')}
+        {formatText("Requisitados ou outros", t4UltimaCorreicaoRequisitadosOuOutros, "16.6667%", '0 0.5rem')}
+        {formatText("Total de servidores", t4UltimaCorreicaoTotalDeServidores, "16.6667%", '0 0.5rem')}
+        {formatText("Quadro Previsto", t4UltimaCorreicaoQuadroPrevisto, "16.6667%", '0 0.5rem')}
       </div>
 
       <h2 style={{ width: '100%' }}>Atualmente</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-        {formatForm("Analistas Judiciários", t4AtualmenteAnalistasJudiciarios, "16.6667%", '0 0.5rem')}
-        {formatForm("Técnicos Judiciários", t4AtualmenteTecnicosJudiciarios, "16.6667%", '0 0.5rem')}
-        {formatForm("Técnicos Jud. de Segurança", t4AtualmenteAnalistasJudiciariosDeSeguranca, "16.6667%", '0 0.5rem')}
-        {formatForm("Requisitados ou outros", t4AtualmenteRequisitadosOuOutros, "16.6667%", '0 0.5rem')}
-        {formatForm("Total de servidores", t4AtualmenteTotalDeServidores, "16.6667%", '0 0.5rem')}
-        {formatForm("Quadro Previsto", t4AtualmenteQuadroPrevisto, "16.6667%", '0 0.5rem')}
+        {formatText("Analistas Judiciários", t4AtualmenteAnalistasJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatText("Técnicos Judiciários", t4AtualmenteTecnicosJudiciarios, "16.6667%", '0 0.5rem')}
+        {formatText("Técnicos Jud. de Segurança", t4AtualmenteAnalistasJudiciariosDeSeguranca, "16.6667%", '0 0.5rem')}
+        {formatText("Requisitados ou outros", t4AtualmenteRequisitadosOuOutros, "16.6667%", '0 0.5rem')}
+        {formatText("Total de servidores", t4AtualmenteTotalDeServidores, "16.6667%", '0 0.5rem')}
+        {formatText("Quadro Previsto", t4AtualmenteQuadroPrevisto, "16.6667%", '0 0.5rem')}
       </div>
 
-      {formatForm(
+      {formatText(
         "Quantidade de servidores em teletrabalho em observância do limite máximo previsto no art. 5º da Resolução nº TRF2-RSP-2019/00046, alterada pela Resolução n.º TRF2-RSP-2023/00002 (30% do quadro permanente), bem como se é encaminhado o relatório semestral de avaliação, previsto no art. 13, III, da referida Resolução",
         t4QuantidadeDeServidoresEmTeletrabalho
       )}
@@ -524,16 +524,16 @@ function document(data: any) {
         {
           Frm.data.t4ServidoresEmTeletrabalho?.map((servidor: { nome: any; periodo: any; dataEnvio: any; numero: any }, i: number) => (
             <div key={i} style={{ display: 'flex', flexWrap: 'wrap' }}>
-              {formatForm(`Servidor ${i + 1}`, servidor.nome, "25%")}
-              {formatForm("Período", servidor.periodo, "25%")}
-              {formatForm("Data de Envio do Relatório", servidor.dataEnvio, "25%")}
-              {formatForm("Número", servidor.numero, "25%")}
+              {formatText(`Servidor ${i + 1}`, servidor.nome, "25%")}
+              {formatText("Período", servidor.periodo, "25%")}
+              {formatText("Data de Envio do Relatório", servidor.dataEnvio, "25%")}
+              {formatText("Número", servidor.numero, "25%")}
             </div>
           ))}
 
-        {formatForm("Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento", t4NomeDosServidoresLotadosCargosEChefias)}
-        {formatForm("Nome e número de servidores sem vínculo com o serviço público", t4NomeENumeroDeServidoresSemVinculo)}
-        {formatForm("Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):", t4NomeENumeroDeServidoresEmAuxilioOuRequisitados)}
+        {formatText("Nome dos servidores lotados na unidade e respectivos cargos efetivos (analistas, técnicos, etc.), bem como se exercem cargo em comissão / função comissionada, exercício de chefia, direção ou assessoramento", t4NomeDosServidoresLotadosCargosEChefias)}
+        {formatText("Nome e número de servidores sem vínculo com o serviço público", t4NomeENumeroDeServidoresSemVinculo)}
+        {formatText("Nome e número de servidores em auxílio (cedidos por outros setores) ou requisitados (com vínculo com o serviço público):", t4NomeENumeroDeServidoresEmAuxilioOuRequisitados)}
 
         {!Frm.data.turmaRecursal &&
           <div style={{ marginTop: '1rem', width: '100%' }}>
@@ -549,86 +549,86 @@ function document(data: any) {
 
       {/* 5. Estagiários */}
       <h2 style={{ width: '100%' }}>5. Estagiários</h2>
-      {formatForm("Número de estagiários de nível superior previstos para unidade", t5NumeroPrevistoDeEstagiariosDeNivelSuperior)}
-      {formatForm("Número de estagiários de nível médio previstos para unidade", t5NumeroPrevistoDeEstagiariosDeNivelMedio)}
-      {formatForm("Número de estagiários de nível superior lotados na unidade", t5NumeroEfetivoDeEstagiariosDeNivelSuperior)}
-      {formatForm("Número de estagiários de nível médio lotados na unidade", t5NumeroEfetivoDeEstagiariosDeNivelMedio)}
+      {formatText("Número de estagiários de nível superior previstos para unidade", t5NumeroPrevistoDeEstagiariosDeNivelSuperior)}
+      {formatText("Número de estagiários de nível médio previstos para unidade", t5NumeroPrevistoDeEstagiariosDeNivelMedio)}
+      {formatText("Número de estagiários de nível superior lotados na unidade", t5NumeroEfetivoDeEstagiariosDeNivelSuperior)}
+      {formatText("Número de estagiários de nível médio lotados na unidade", t5NumeroEfetivoDeEstagiariosDeNivelMedio)}
 
       <h2 style={{ width: '100%' }}>6. Instalações Físicas e Infraestrutura</h2>
-      {formatForm("Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO", t6InstalacoesFisicasEInfraestrutura)}
+      {formatText("Relatar a situação das instalações físicas do setor (mobiliário, ar condicionado, etc.) e dos equipamentos de informática, informando eventuais problemas, dificuldades, bem como destacando se há mobiliário e/ou equipamentos de informática danificados/defeituosos sem previsão de reparo ou substituição já requerida à DIRFO", t6InstalacoesFisicasEInfraestrutura)}
 
       <h2 style={{ width: '100%' }}>7. Livros e Pastas</h2>
-      {formatForm("Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?", t7LivrosEPastasUtilizados)}
-      {formatForm("Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?", t7LivrosEPastasSubstituidos)}
-      {formatForm("Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda", t7LivrosEPastasExistentesNoSiga)}
+      {formatText("Quais os livros e pastas utilizados pela Vara Federal, Juizado Especial ou Turma Recursal?", t7LivrosEPastasUtilizados)}
+      {formatText("Algum livro ou pasta em papel foi substituído por registro informatizado (art. 132 da CNCR)? Quais?", t7LivrosEPastasSubstituidos)}
+      {formatText("Informar quais as Pastas/Livros Eletrônicos de controle obrigatório existentes no Siga, com a descrição dos expedientes que lhes corresponda", t7LivrosEPastasExistentesNoSiga)}
 
       <h2 style={{ width: '100%' }}>8. Organização da Unidade e Setorização (todas as unidades)</h2>
-      {formatForm("Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores", t8FormaDeOrganizacao)}
-      {formatForm("Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso", t8SistematicaDePlanejamento)}
-      {formatForm("Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade", t8SistematicaDeAvaliacao)}
-      {formatForm("Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF", t8ProcessosIncluidosNasMetasDoCNJ)}
-      {formatForm("Critérios de julgamento para os demais feitos", t8CriteriosDeJulgamentoParaOsDemaisFeitos)}
-      {formatForm("Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças", t8FluxoDeInformacoes)}
+      {formatText("Detalhar, sucintamente, a forma de organização da unidade, destacando as atribuições do Diretor (a) de Secretaria; Supervisores; e demais servidores", t8FormaDeOrganizacao)}
+      {formatText("Informar, sucintamente, sobre a sistemática de planejamento das atividades da unidade e a existência de metas internas, detalhando conforme o caso", t8SistematicaDePlanejamento)}
+      {formatText("Informar, sucintamente, sobre a sistemática de avaliação periódica dos resultados das atividades da unidade", t8SistematicaDeAvaliacao)}
+      {formatText("Detalhar o tratamento dado aos processos incluídos nas Metas do CNJ, feitos com prioridade legal e demais ações elencadas no art. 12, parágrafo único, da Resolução nº 496/2006 do CJF", t8ProcessosIncluidosNasMetasDoCNJ)}
+      {formatText("Critérios de julgamento para os demais feitos", t8CriteriosDeJulgamentoParaOsDemaisFeitos)}
+      {formatText("Informar, sucintamente, como ocorre o fluxo dos processos entre a secretaria e o gabinete, a abertura da conclusão e a forma de controle do prazo para prolação de sentenças", t8FluxoDeInformacoes)}
 
       {!turmaRecursal &&
         <>
-          {formatForm("Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise", t8NumeroDeProcessosComPedidosUrgentes)}
+          {formatText("Número de processos com pedidos urgentes (liminares, antecipações de tutela) pendentes de análise", t8NumeroDeProcessosComPedidosUrgentes)}
         </>
       }
 
-      {formatForm("Há utilização de automação de localizadores (e-Proc) na unidade?", t8UtilizacaoDeAutomacaoDosLocalizadores)}
-      {formatForm("Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?", t8PrazosDeSuspensao)}
-      {formatForm("A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?", t8RespeitoAPadronizacaoDoCNJ)}
-      {formatForm("A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?", t8ProcessoSemAssuntoCorrespondente)}
+      {formatText("Há utilização de automação de localizadores (e-Proc) na unidade?", t8UtilizacaoDeAutomacaoDosLocalizadores)}
+      {formatText("Como é feito o controle dos prazos de suspensão dos processos? Há inserção em local (físico ou virtual) específico, com a anotação do motivo de suspensão e a data do término?", t8PrazosDeSuspensao)}
+      {formatText("A unidade verifica a pertinência do assunto cadastrado no processo quando recebe novos processos, garantindo que todos os processos do acervo possuam assunto folha (último nível) ou de nível 3 ou mais, respeitando a padronização da terminologia de assuntos processuais imposta pelo CNJ?", t8RespeitoAPadronizacaoDoCNJ)}
+      {formatText("A unidade possui algum processo em que não há assunto correspondente disponível na Tabela Unificada? A situação foi informada à SAJ ou CORETAB?", t8ProcessoSemAssuntoCorrespondente)}
 
       {jef && (
         <>
           <h5>Juizado Especial Federal</h5>
-          {formatForm("O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?", t8AplicativoDeMensagens)}
+          {formatText("O JEF se utiliza do WhatsApp ou de outro aplicativo de mensagens para intimação das partes, nos termos dos artigos 158 e seguintes da CNCR?", t8AplicativoDeMensagens)}
         </>
       )}
 
       {criminal && (
         <>
           <h5>Criminal</h5>
-          {formatForm("Há quantos processos com réus presos? Apresente a listagem", t8NumeroDeProcessosComReusPresos)}
-          {formatForm("Há anotação na autuação de réus presos?", t8AnotacaoNaAutuacaoDeReusPresos)}
-          {formatForm("É dada prioridade de tramitação nos processos com réus presos?", t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos)}
-          {formatForm("Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?", t8AtualizacaoImediataSituacaoDaParte)}
-          {formatForm("Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)", t8ControleDaIncidenciaDaPrescricaoPenal)}
-          {formatForm("São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?", t8AnexosFisicosNoEproc)}
-          {formatForm("O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?", t8SistemaDeAudienciaDeCustodia)}
-          {formatForm("O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?", t8SaneamentoBNMP2)}
-          {formatForm("Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?", t8MedidasSaneamentoBNMP2)}
-          {formatForm("Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ", t8ProcessosComAlvarasDeSoltura)}
-          {formatForm("Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?", t8ProcedimentoParaArmasEMunicoes)}
-          {formatForm("Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades", t8EntidadesParaServicosOuPrestacaoPecuniaria)}
-          {formatForm("Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?", t8LocalVirtualCESP)}
+          {formatText("Há quantos processos com réus presos? Apresente a listagem", t8NumeroDeProcessosComReusPresos)}
+          {formatText("Há anotação na autuação de réus presos?", t8AnotacaoNaAutuacaoDeReusPresos)}
+          {formatText("É dada prioridade de tramitação nos processos com réus presos?", t8PrioridadeDeTramitacaoNosProcessosDeReusPrezos)}
+          {formatText("Há atualização imediata da situação da parte no e-Proc (solto, preso, PRD não convertida, condenado, sursis não revogado, condenado preso, etc.)?", t8AtualizacaoImediataSituacaoDaParte)}
+          {formatText("Detalhar a forma de controle da incidência da prescrição penal, inclusive nas execuções penais, se for o caso (arts. 236 e seguintes da CNCR e Resolução 112 de abril/2010 do CNJ)", t8ControleDaIncidenciaDaPrescricaoPenal)}
+          {formatText("São registrados no e-Proc os anexos físicos não suportados pelo referido sistema?", t8AnexosFisicosNoEproc)}
+          {formatText("O resultado das audiências de custódia é/era cadastrado no Sistema de Audiência de Custódia (SISTAC) enquanto se aguarda/aguardava a possibilidade de cadastro no BNMP 3.0?", t8SistemaDeAudienciaDeCustodia)}
+          {formatText("O BNMP 2.0 está devidamente saneado na unidade, para futura utilização do BNMP 3.0, a partir de maio de 2024?", t8SaneamentoBNMP2)}
+          {formatText("Em caso de resposta negativa, quais estão sendo as medidas implementadas para que isso ocorra até 02 de maio de 2024, prazo estabelecido pelo CNJ no Ofício Circular n. 44/DMF?", t8MedidasSaneamentoBNMP2)}
+          {formatText("Quais foram os processos em que foram expedidos alvarás de soltura nos 12 meses anteriores à correição e quais são os números desses alvarás? Ressalta-se que é obrigatório e de suma importância que o BNMP, atualmente em sua versão 2.0, e futuramente em sua versão 3.0, seja utilizado para emissão e gestão de todas as peças de que trata a Resolução n. 417/2021 do CNJ", t8ProcessosComAlvarasDeSoltura)}
+          {formatText("Qual é o procedimento que a unidade adota relativamente às armas e munições apreendidas e o respectivo envio ao Exército?", t8ProcedimentoParaArmasEMunicoes)}
+          {formatText("Apresentar a listagem de entidades cadastradas para prestação de serviços/prestação pecuniária e informar o método de seleção dessas entidades", t8EntidadesParaServicosOuPrestacaoPecuniaria)}
+          {formatText("Existe algum local virtual para processos aguardando expedição de carta de execução de sentença penal?", t8LocalVirtualCESP)}
         </>
       )}
       {execucaoFiscal && (
         <>
           <h5>Execução Fiscal</h5>
-          {formatForm("Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?", t8ProcessosComGrandesDevedores)}
-          {formatForm("Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR.", t8TratamentoDadoAosValoresExpressivos)}
-          {formatForm("Detalhar a forma de controle da incidência da prescrição intercorrente", t8ControleDaPrescricaoIntercorrente)}
-          {formatForm("Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?", t8CriterioDeSelecaoDosLeiloeiros)}
-          {formatForm("Quantos leilões ocorreram nos últimos 12 meses?", t8QuantidadeDeLeiloes)}
-          {formatForm("Há leilões designados?", t8LeiloesDesignados)}
+          {formatText("Quais as execuções fiscais consideradas como sendo de grandes devedores pela unidade (critério utilizado pela Vara)?", t8ProcessosComGrandesDevedores)}
+          {formatText("Informar, sucintamente, o tratamento dado às execuções fiscais de valores expressivos em juízo, bem como se são observados os procedimentos previstos no art. 258 da CNCR.", t8TratamentoDadoAosValoresExpressivos)}
+          {formatText("Detalhar a forma de controle da incidência da prescrição intercorrente", t8ControleDaPrescricaoIntercorrente)}
+          {formatText("Qual o critério de seleção de leiloeiros e realização de leilões unificados (art. 256 da CNCR)?", t8CriterioDeSelecaoDosLeiloeiros)}
+          {formatText("Quantos leilões ocorreram nos últimos 12 meses?", t8QuantidadeDeLeiloes)}
+          {formatText("Há leilões designados?", t8LeiloesDesignados)}
         </>
       )}
       <h2 style={{ width: '100%' }}>9. Materiais Acautelados na Unidade</h2>
-      {formatForm("Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)", t9QuantidadeDeMateriaisAcautelados)}
-      {formatForm("Indicar a quantidade de processos com bens acautelados/apreendidos na unidade", t9QuantidadeDeProcessosComBensAcautelados)}
-      {formatForm("Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?", t9BensAcauteladosCorrespondemComTermos)}
-      {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos", t9DinheiroEmEspecieTitulosOuJoias)}
-      {formatForm("Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)", t9BensCadastradosNoSNGB)}
-      {formatForm("A unidade tem tido alguma dificuldade na utilização do SNGB?", t9DificuldadeNoUsoDoSNGB)}
-      {formatForm("A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?", t9RegistrosAtivosNoSNBA)}
-      {formatForm("Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?", t9MigracaoDoSNBAParaSNGB)}
-      {formatForm("A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?", t9CofreOuSalaDeAcautelados)}
-      {formatForm("Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral", t9ProvidenciasAdotadasParaAcautelamento)}
-      {formatForm("Detalhar as providências adotadas para alienação antecipada de bens, quando necessário", t9ProvidenciasDeAlienacaoAntecipada)}
+      {formatText("Indicar a quantidade de materiais (bens e documentos) acautelados e apreendidos na unidade (separadamente)", t9QuantidadeDeMateriaisAcautelados)}
+      {formatText("Indicar a quantidade de processos com bens acautelados/apreendidos na unidade", t9QuantidadeDeProcessosComBensAcautelados)}
+      {formatText("Todos os bens acautelados apresentam exata correspondência com os termos de acautelamento mantidos pela Secretaria?", t9BensAcauteladosCorrespondemComTermos)}
+      {formatText("Dentre os bens acautelados/apreendidos na unidade, informar (i) quais possuem conteúdo econômico passível de perdimento ou expropriação; (ii) se há dinheiro em espécie, títulos de crédito, joias acauteladas ou moeda falsa; (iii) se a moeda falsa está devidamente identificada; e (iv) qual a localização desses bens e a situação atual dos respectivos processos", t9DinheiroEmEspecieTitulosOuJoias)}
+      {formatText("Dentre os bens acautelados/apreendidos na unidade, informar quais estão cadastrados no SNGB, por se tratarem de bens alcançados pelo cumprimento de decisões judiciais (art. 1º da Resolução nº 483/2022 do CNJ)", t9BensCadastradosNoSNGB)}
+      {formatText("A unidade tem tido alguma dificuldade na utilização do SNGB?", t9DificuldadeNoUsoDoSNGB)}
+      {formatText("A unidade possuía registros ativos no SNBA na data da implementação do SNGB (Resolução nº 483/2022 do CNJ)?", t9RegistrosAtivosNoSNBA)}
+      {formatText("Em caso positivo, a migração manual dos registros do SNBA para o SNGB foi finalizada? Se não, quais são as medidas que estão sendo implementadas para que isso ocorra e qual é o cronograma (detalhado) para regularização total dos cadastros?", t9MigracaoDoSNBAParaSNGB)}
+      {formatText("A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?", t9CofreOuSalaDeAcautelados)}
+      {formatText("Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral", t9ProvidenciasAdotadasParaAcautelamento)}
+      {formatText("Detalhar as providências adotadas para alienação antecipada de bens, quando necessário", t9ProvidenciasDeAlienacaoAntecipada)}
       <h2 style={{ width: '100%' }}>10. Processos Físicos em carga ou retirados</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -638,39 +638,39 @@ function document(data: any) {
           <p style={{ fontWeight: 'bold' }}>{t10ProcessosFisicosComCarga === '1' ? 'Sim' : t10ProcessosFisicosComCarga === '2' ? 'Não' : 'Não se aplica'} </p>
         </label>
       </div>
-      {formatForm("Identificar os processos extraviados, as datas da ocorrência e as providências", t10ProcessosExtraviados)}
-      {formatForm("Identificar as ações de restauração de autos, no período do levantamento", t10AcoesDeRestauracao)}
+      {formatText("Identificar os processos extraviados, as datas da ocorrência e as providências", t10ProcessosExtraviados)}
+      {formatText("Identificar as ações de restauração de autos, no período do levantamento", t10AcoesDeRestauracao)}
       {!turmaRecursal && (
         <>
           <h2 style={{ width: '100%' }}>11. Audiências</h2>
-          {formatForm("Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)", t11NumeroDeAudienciasAgendadasERealizadas)}
-          {formatForm("Como é feito o controle das audiências canceladas/remarcadas?", t11ControleDeAudienciasCanceladas)}
-          {formatForm("É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?", t11AudienciaDeConciliacao)}
-          {formatForm("É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?", t11AcompanhamentoDaMeta3DoCNJ)}
-          {formatForm("Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?", t11TempoMedioEntreDespachoDeDesignacaoEAudiencia)}
-          {formatForm("A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?", t11RegistroVisualDeAudiencias)}
-          {formatForm("Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeAudiencias)}
-          {formatForm("Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades", t11AudienciaDeCustodia)}
-          {formatForm("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
+          {formatText("Número de audiências agendadas e realizadas (indicar separadamente para o juiz titular e para o juiz substituto)", t11NumeroDeAudienciasAgendadasERealizadas)}
+          {formatText("Como é feito o controle das audiências canceladas/remarcadas?", t11ControleDeAudienciasCanceladas)}
+          {formatText("É realizada audiência de conciliação em todos os casos possíveis de autocomposição (art. 334 do CPC)?", t11AudienciaDeConciliacao)}
+          {formatText("É realizado o acompanhamento do cumprimento da Meta 3 do CNJ pela unidade?", t11AcompanhamentoDaMeta3DoCNJ)}
+          {formatText("Qual o intervalo de tempo médio entre o despacho de designação da audiência e a realização do ato?", t11TempoMedioEntreDespachoDeDesignacaoEAudiencia)}
+          {formatText("A unidade utiliza o registro audiovisual de audiências nos termos dos artigos 136 e seguintes da CNCR?", t11RegistroVisualDeAudiencias)}
+          {formatText("Foi detectada alguma falha no registro audiovisual de audiências nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeAudiencias)}
+          {formatText("Houve alguma audiência de custódia nos últimos 12 meses? Quantas? Em caso negativo, justifique. Em caso positivo, especifique eventuais problemas ou dificuldades", t11AudienciaDeCustodia)}
+          {formatText("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
         </>
       )}
       {turmaRecursal && (
         <>
           <h2 style={{ width: '100%' }}>11. Sessão de Julgamento/Audiências</h2>
-          {formatForm("Número de sessões de julgamento agendadas e realizadas", t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas)}
-          {formatForm("Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?", t11ControleDePauta)}
-          {formatForm("Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?", t11IntervaloDeTempo)}
-          {formatForm("A unidade utiliza o registro audiovisual de sessões de julgamento?", t11RegistroVisualDeSessoesDeJulgamento)}
-          {formatForm("Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento)}
-          {formatForm("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
+          {formatText("Número de sessões de julgamento agendadas e realizadas", t11NumeroDeSessoesDeJulgamentoAgendadasERealizadas)}
+          {formatText("Como é feito o controle da inclusão, adiamento e retirada de pauta de processos?", t11ControleDePauta)}
+          {formatText("Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?", t11IntervaloDeTempo)}
+          {formatText("A unidade utiliza o registro audiovisual de sessões de julgamento?", t11RegistroVisualDeSessoesDeJulgamento)}
+          {formatText("Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento)}
+          {formatText("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
         </>
       )}
       <h2 style={{ width: '100%' }}>12. Cumprimento de determinações de inspeções e Correições Anteriores</h2>
-      {formatForm("A unidade cumpriu todas as metas estabelecidas na inspeção anterior?", t12CumprimentoDasMetasDaInspecaoAnterior)}
-      {formatForm("A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?", t12RegularizacaoDasPendenciasDaUltimaCorreicao)}
-      {formatForm("Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento", t12JustificativaDoNaoCumprimento)}
+      {formatText("A unidade cumpriu todas as metas estabelecidas na inspeção anterior?", t12CumprimentoDasMetasDaInspecaoAnterior)}
+      {formatText("A unidade regularizou todas as pendências apontadas na última Correição ou Inspeção de Avaliação da Corregedoria?", t12RegularizacaoDasPendenciasDaUltimaCorreicao)}
+      {formatText("Em sendo negativa a resposta de algum dos itens acima, justificar o eventual não cumprimento", t12JustificativaDoNaoCumprimento)}
       <h2 style={{ width: '100%' }}>13. Boas práticas e dificuldades</h2>
-      {formatForm(
+      {formatText(
         "Relacionar as boas práticas, eventuais dificuldades vivenciadas na unidade, bem como demandas e soluções propostas, inclusive quanto aos setores administrativos",
         t13JustificativaDoNaoCumprimento
       )}
