@@ -61,7 +61,7 @@ function Interview(Frm: FormHelper) {
       <h2>2. Magistrados</h2>
       <h5>Titular</h5>
       {/* Trocar abaixo para algum componente pessoa */}
-      <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular"/>
+      <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular" />
 
       <div className="row">
         <Frm.Input label="Cargo" name={'t2Titular.cargo'} width={6} />
@@ -635,6 +635,23 @@ function document(data: any) {
       {formatText("A unidade possui cofre ou sala de acautelados e é examinada a regularidade dos bens ali guardados?", t9CofreOuSalaDeAcautelados)}
       {formatText("Detalhar as providências adotadas para o acautelamento/apreensão de bens em geral", t9ProvidenciasAdotadasParaAcautelamento)}
       {formatText("Detalhar as providências adotadas para alienação antecipada de bens, quando necessário", t9ProvidenciasDeAlienacaoAntecipada)}
+      <div style={{ fontWeight: 'bold' }}>
+        <ul>
+          <li>
+            <p>Juntar aos autos do processo de correção ordinária, no E-proc, as fotos dos bens acautelados, salvas em PDF, observando-se o seguinte:</p>
+            <ul>
+              <li>1 (uma) foto por bem acautelado, onde se visualize, apenas externamente, o termo de acautelamento que nele se encontre afixado;</li>
+              <li>No termo de acautelamento deve constar a descrição do bem acautelado e a identificação precisa do local em que se encontra;</li>
+              <li>Caso o bem se encontre em local diverso da Secretaria por designação do Juízo, indicar o expediente no Siga criado para tal registro, na forma do art. 2º, §3º, da Portaria TRF2-PTC-2022/00071.</li>
+            </ul>
+          </li>
+          <li>
+            <p>Os bens acautelados devem estar registrados como “Anexo Físico” no E-Proc, em "Informações adicionais", de forma a possibilitar o seu controle por meio da extração de Relatório Geral no Sistema Processual.</p>
+            <p>No conteúdo da informação do “Anexo Físico”, deve constar a descrição do bem acautelado, a localização precisa em que se encontra e a indicação da existência de termo de acautelamento e do evento/folha correspondente no processo eletrônico (art. 2º, § 1º, da Portaria TRF2-PTC-2022/00071);</p>
+            <p>Devem ser excluídos/desativados os “Anexos Físicos” nas “Informações Adicionais” dos processos eletrônicos que não possuam bens acautelados (art. 2º, § 2º, da Portaria TRF2-PTC-2022/00071).</p>
+          </li>
+        </ul>
+      </div>
       <h2 style={{ width: '100%' }}>10. Processos Físicos em carga ou retirados</h2>
       <div style={{ marginTop: '1rem', width: '100%' }}>
         <label style={{ display: 'block', fontWeight: 'bold' }}>
@@ -668,7 +685,7 @@ function document(data: any) {
           {formatText("Qual o intervalo de tempo médio entre o pedido de dia/inclusão em pauta e a realização da sessão de julgamento?", t11IntervaloDeTempo)}
           {formatText("A unidade utiliza o registro audiovisual de sessões de julgamento?", t11RegistroVisualDeSessoesDeJulgamento)}
           {formatText("Foi detectada alguma falha no registro audiovisual de sessões de julgamento nos últimos 12 meses comprometendo seu conteúdo? Quais as falhas e quais as soluções adotadas para saná-las?", t11FalhasNoRegistroAudiovisualDeSessoesDeJulgamento)}
-          {formatText("Houve alguma audiência de custódia, realizada em plantão, nos últimos 12 meses? Quantas? Em caso positivo, indicar o número dos processos. É utilizado o Sistema de Audiência de Custódia (SISTAC), para gravar as audiências?:", t11AudienciaDeCustodiaRealizadaEmPlantao)} 
+          {formatText("Houve alguma audiência de custódia, realizada em plantão, nos últimos 12 meses? Quantas? Em caso positivo, indicar o número dos processos. É utilizado o Sistema de Audiência de Custódia (SISTAC), para gravar as audiências?:", t11AudienciaDeCustodiaRealizadaEmPlantao)}
           {formatText("Foi realizada alguma audiência de forma remota nos últimos dois anos? Em quais processos? (art. 4º, TRF2-PVC-2023/00002)", t11AudienciaRemota)}
         </>
       )}
