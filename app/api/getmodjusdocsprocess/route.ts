@@ -62,6 +62,8 @@ const checkAuth = (req: NextRequest): boolean => {
   );
 };
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     // Obter parâmetros de query da URL

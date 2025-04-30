@@ -23,6 +23,8 @@ const filterUnidades = (unidades: any[], searchTerm: string) => {
   );
 }
 
+export const dynamic = 'force-dynamic';
+
 // Função para lidar com a requisição GET
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   const client = await getClient();

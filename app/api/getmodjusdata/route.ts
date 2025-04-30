@@ -57,6 +57,8 @@ const checkAuth = (req: NextRequest): boolean => {
   return username === process.env.AUTH_USER && password === process.env.AUTH_PASS;
 };
 
+export const dynamic = 'force-dynamic';
+
 // Função principal para lidar com GET requests
 export async function GET(req: NextRequest) {
   try {

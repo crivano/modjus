@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     const url = new URL(req.url)
     const texto = url.searchParams.get('texto')
