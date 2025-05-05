@@ -1,12 +1,45 @@
 /** @type {import('next').NextConfig} */
+import { writeFileSync } from 'fs';
+import { execSync } from 'child_process';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url'; // Adicione esta linha
+
+
+// Recria o comportamento de __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+if (process.env.NODE_ENV === 'production') {
+  const packageJson = JSON.parse(
+    readFileSync(new URL('./package.json', import.meta.url))
+  );
+
+  const gitCommitHash = execSync('git rev-parse --short HEAD').toString().trim();
+  const appVersion = packageJson.version;
+  const buildTime = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  // Cria um arquivo no diretório do projeto
+  const versionData = {
+    version: appVersion,
+    commit: gitCommitHash,
+    buildTime,
+  };
+
+  const versionFilePath = resolve(__dirname, './', 'version.ts');
+
+  writeFileSync(
+    versionFilePath,
+    `export const VERSION = ${JSON.stringify(versionData, null, 2)};\n`
+  );
+}
 
 const allowedOrigin = process.env.ALLOWED_ORIGIN;
+
 const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
-
-  
 
   async headers() {
     return [
