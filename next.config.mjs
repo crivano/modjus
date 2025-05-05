@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-import { execSync } from 'child_process';
-import { readFileSync } from 'fs';
 
 const allowedOrigin = process.env.ALLOWED_ORIGIN;
 
