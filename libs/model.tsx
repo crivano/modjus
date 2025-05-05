@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { decodeHtmlEntities, handleSave } from '@/libs/extension'
 import { EMPTY_FORM_STATE, FormHelper } from '@/libs/form-support'
 import Print from '@/components/print'
-import { VERSION } from "@/version"; // Ajuste o caminho conforme necessário
 
 const Frm = new FormHelper()
 
@@ -17,6 +16,17 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
     const dataKey = searchParams.get('dataKey')
     const [data, setData] = useState({})
     Frm.update(data, setData, EMPTY_FORM_STATE)
+
+    const [versionInfo, setVersionInfo] = useState<{ version: string; commit: string; buildTime: string } | null>(null);
+    console.log(versionInfo)
+
+
+    useEffect(() => {
+        fetch('/api/version')
+            .then((response) => response.json())
+            .then((data) => setVersionInfo(data))
+            .catch((error) => console.error('Error fetching version info:', error));
+    }, []);
 
     useEffect(() => {
         if (dataKey) {
@@ -31,14 +41,16 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                 })
         }
     }, [dataKey])
-
-    Build: {new Date(VERSION.buildTime).toLocaleString('pt-BR')}
-
     return (<div>
         <div className="container-fluid">
             <footer style={{ marginTop: "20px", textAlign: "right", fontSize: "12px", color: "#888" }}>
-                Versão: {VERSION.version} | Commit: {VERSION.commit} | Build: {VERSION.buildTime}
-            </footer>
+                {versionInfo ? (
+                    <>
+                        Versão: {versionInfo.version} | Commit: {versionInfo.commit} | Build: {versionInfo.buildTime}
+                    </>
+                ) : (
+                    'Carregando informações de versão...'
+                )}            </footer>
 
             <div className="row">
                 <div id="modjus-interview" className="col col-12 col-md-6">
