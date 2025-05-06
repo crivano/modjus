@@ -355,11 +355,23 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>É prorrogação?:</strong> {data.prorrogacao === '1' ? 'Sim' : 'Não'}</p>
         {(data.prorrogacao === '1') && <p><strong>Valor já recebido previamente :</strong> {formatFloatValue(data.valorJaRecebidoPreviamente || 0)}</p>}
 
-        <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong> {data.servicoAtividade || 'Não informado'}</p>
+        <div>
+          <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong></p>
+          <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0 }}>
+            {data.servicoAtividade || 'Não informado'}
+          </p>
+        </div>
 
         <h4>Dados do Deslocamento</h4>
         <p><strong>Período:</strong> De {data.periodoDe} até {data.periodoAte} - Retorno à Origem: {data.trajeto_returnToOrigin ? "Sim" : "Não"}</p>
-        <p><strong>Justificativa:</strong> {data.justificativa || 'Não informado'}</p>
+ 
+        <div>
+          <p><strong>Justificativa:</strong></p>
+          <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0 }}>
+            {data.justificativa || 'Não informado'}
+          </p>
+        </div>
+
         <p><strong>Tipo de Deslocamento:</strong> {getOptionName(tipoDeslocamentoOptions, data.tipoDeslocamento)}</p>
         <p><strong>Meio de Transporte:</strong> {getOptionName(meioTransporteOptions, data.meioTransporte)}</p>
         <p><strong>A não devolução dos cartões de embarque no prazo de 05 dias úteis do retorno à sede ensejará a restituição do valor pago a título de diárias (arts. 22 e 23 da CJF-RES-2015/00340)</strong></p>

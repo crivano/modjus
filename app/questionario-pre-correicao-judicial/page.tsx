@@ -19,7 +19,7 @@ function formatText(name: string, field: any, maxWidth?: string, padding?: strin
         <div>
           {name}
         </div>
-        <p style={{ fontWeight: 'bold' }}>{field || "Não se aplica"}</p>
+        <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>{field || "Não se aplica"}</p>
       </label>
     </div>
   )
@@ -434,7 +434,9 @@ function document(data: any) {
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)
         </label>
-        <p style={{ fontWeight: 'bold' }}>{t1Competencias || "Não se aplica"}</p>
+
+        <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>{t1Competencias || "Não se aplica"}</p>
+
       </div>
 
       <div style={{ marginTop: '1rem', width: '100%' }}>
