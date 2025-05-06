@@ -554,7 +554,10 @@ function document(data: any) {
                 Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
               </div>
             </label>
-            <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
+            <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>
+              {t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
+
+
           </div>
         }
       </div>
