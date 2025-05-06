@@ -64,7 +64,7 @@ function Interview(Frm: FormHelper) {
       <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular" />
 
       <div className="row">
-        <Frm.Input label="Cargo" name={'t2Titular.cargo'} width={6} />
+        <Frm.Input label="Cargo" name={'t2Titular.cargo'} width={6} readOnly disabled/>
       </div>
 
       <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
@@ -78,7 +78,7 @@ function Interview(Frm: FormHelper) {
           <h5>Substituto</h5>
           <Pessoa Frm={Frm} name="t2Substituto" label1="Matrícula do Substituto" label2="Nome do Substituto" />
           <div className="row">
-             <Frm.Input label="Cargo" name={'t2Substituto.cargo'} width={6} />
+             <Frm.Input label="Cargo" name={'t2Substituto.cargo'} width={6} readOnly disabled/>
           </div>
           <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
           <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
