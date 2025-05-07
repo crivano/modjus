@@ -5,6 +5,23 @@ import { FormHelper } from "@/libs/form-support"
 
 export default function AtualizaValoresDiarias() {
 
+  const faixaOptions = [
+    { id: '', name: '' },
+    { id: '1', name: 'Membro do Conselho' },
+    { id: '2', name: 'Desembargador Federal' },
+    { id: '3', name: 'Juiz Federal de 1º Grau/Juiz Federal Substituto' },
+    { id: '4', name: 'Analista Judiciário/Cargo em Comissão' },
+    { id: '5', name: 'Técnico Judiciário/Auxiliar Judiciário/Função Comissionada' }
+  ]
+
+  const getOptionName = (options: { id: string, name: string }[], id: string) => {
+    return options.find(opt => opt.id === id)?.name || 'Não informado';
+  };
+
+  const formatFloatValue = (value: number): string => {
+    return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
   function Interview(Frm: FormHelper) {
 
     return (
@@ -15,16 +32,17 @@ export default function AtualizaValoresDiarias() {
           <Frm.Input label="Número da Portaria do TRF2: " name="numero_portaria_trf2" width={6} />
 
           <h3>Tabela de Valores: </h3>
-          <Frm.Input label="Cargo/Função:" name="cargo_funcao" width={6} />
-          <Frm.Input label="Diária Exterior:" name="diaria_exterior" width={6} />
-          <Frm.Input label="Diária Nacional:" name="diaria_nacional" width={6} />
-          <Frm.Input label="Meia Diária:" name="meia_diaria" width={6} />
+          {/* <Frm.Input label="Cargo/Função:" name="cargo_funcao" width={6} /> */}
+          <Frm.Select label="Cargo/Função:" name="cargo_funcao" options={faixaOptions} width={6} />
+          <Frm.MoneyInputFloat label="Diária Exterior:" name="diaria_exterior" width={6} />
+          <Frm.MoneyInputFloat label="Diária Nacional:" name="diaria_nacional" width={6} />
+          <Frm.MoneyInputFloat label="Meia Diária:" name="meia_diaria" width={6} />
 
           <h3>Outros valores: </h3>
 
-          <Frm.Input label="Valor do Teto Diária Nacional: " name="valor_teto_diaria_nacional" width={6} />
-          <Frm.Input label="Valor do Teto Meia Diária Nacional: " name="valor_teto_meia_diaria_nacional" width={6} />
-          <Frm.Input label="Valor Unitário para desconto do Auxilío ALimentação:" name="valor_desconto_auxilio_alimentacao" width={6} />
+          <Frm.MoneyInputFloat label="Valor do Teto Diária Nacional: " name="valor_teto_diaria_nacional" width={6} />
+          <Frm.MoneyInputFloat label="Valor do Teto Meia Diária Nacional: " name="valor_teto_meia_diaria_nacional" width={6} />
+          <Frm.MoneyInputFloat label="Valor Unitário para desconto do Auxilío ALimentação:" name="valor_desconto_auxilio_alimentacao" width={6} />
         </div>
       </div>
     )
@@ -51,18 +69,18 @@ export default function AtualizaValoresDiarias() {
           </thead>
           <tbody>
             <tr style={{ textAlign: 'center' }}>
-              <td style={{ border: '1px solid black' }}>{data.cargo_funcao || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{data.diaria_exterior || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{data.diaria_nacional || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{data.meia_diaria || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black' }}>{getOptionName(faixaOptions, data.cargo_funcao) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.diaria_exterior) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.diaria_nacional) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.meia_diaria) || 'Não Informado'}</td>
             </tr>
           </tbody>
         </table>
 
         <h3>Outros valores: </h3>
-        <p><strong>Valor do Teto Diária Nacional:</strong> {data.valor_teto_diaria_nacional || 'Não informado'}</p>
-        <p><strong>Valor do Teto Meia Diária Nacional:</strong> {data.valor_teto_meia_diaria_nacional || 'Não informado'}</p>
-        <p><strong>Valor Unitário para desconto do Auxilío ALimentação:</strong> {data.valor_desconto_auxilio_alimentacao || 'Não informado'}</p>
+        <p><strong>Valor do Teto Diária Nacional:</strong> {formatFloatValue(data.valor_teto_diaria_nacional) || 'Não informado'}</p>
+        <p><strong>Valor do Teto Meia Diária Nacional:</strong> {formatFloatValue(data.valor_teto_meia_diaria_nacional) || 'Não informado'}</p>
+        <p><strong>Valor Unitário para desconto do Auxilío ALimentação:</strong> {formatFloatValue(data.valor_desconto_auxilio_alimentacao) || 'Não informado'}</p>
 
       </div>
     )
