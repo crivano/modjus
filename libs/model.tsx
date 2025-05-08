@@ -84,7 +84,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                         </div>
                     </div>
                     {!isSmallScreen && (
-                        <div className="d-flex justify-content-end mt-2">
+                        <div className="d-flex justify-content-end mt-2 mb-2">
                             {(!options || options.saveButton !== false) && (
                                 <button className="btn btn-primary" onClick={handleSave}>
                                     Transportar
