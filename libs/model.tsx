@@ -18,6 +18,26 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
     const [data, setData] = useState({})
     Frm.update(data, setData, EMPTY_FORM_STATE)
 
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    // Monitora o tamanho da janela
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerHeight < 900);
+        };
+
+        // Verifica o tamanho inicial
+        handleResize();
+
+        // Adiciona o listener para redimensionamento
+        window.addEventListener('resize', handleResize);
+
+        // Remove o listener ao desmontar o componente
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     useEffect(() => {
         if (dataKey) {
             fetch(`/api/data-store?key=${dataKey}`)
@@ -32,7 +52,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
         }
     }, [dataKey])
 
-    Build: {new Date(VERSION.buildTime).toLocaleString('pt-BR')}
+    Build: { new Date(VERSION.buildTime).toLocaleString('pt-BR') }
 
     return (<div>
         <div className="container-fluid">
@@ -42,15 +62,36 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
 
             <div className="row">
                 <div id="modjus-interview" className="col col-12 col-md-6">
-                    <h1 className="mt-3">Formulário</h1>
+                    <div className="row">
+                        <div className="col">
+                            <h1 className="mt-3">Formulário</h1>
+                        </div>
+                        <div className="col">
+                            {isSmallScreen && (
+                                <div className="d-flex justify-content-end mt-3">
+                                    {(!options || options.saveButton !== false) && (
+                                        <button className="btn btn-primary" onClick={handleSave}>
+                                            Transportar
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <div className="alert alert-info">
                         <div className="row">
                             {interview(Frm)}
                         </div>
                     </div>
-                    <div className="d-flex justify-content-end mt-2">
-                        {(!options || options.saveButton !== false) && <button className="btn btn-primary" onClick={handleSave}>Transportar</button>}
-                    </div>
+                    {!isSmallScreen && (
+                        <div className="d-flex justify-content-end mt-2">
+                            {(!options || options.saveButton !== false) && (
+                                <button className="btn btn-primary" onClick={handleSave}>
+                                    Transportar
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
                 <div className="col col-12 col-md-6">
                     <h1 className="mt-3">Previsão do Documento</h1>
