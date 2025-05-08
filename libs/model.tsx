@@ -64,11 +64,11 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                 <div id="modjus-interview" className="col col-12 col-md-6">
                     <div className="row">
                         <div className="col">
-                            <h1 className="mt-3">Formulário</h1>
+                            <h3 className="mt-3">Formulário</h3>
                         </div>
                         <div className="col">
                             {isSmallScreen && (
-                                <div className="d-flex justify-content-end mt-3">
+                                <div className="d-flex justify-content-end mt-2">
                                     {(!options || options.saveButton !== false) && (
                                         <button className="btn btn-primary" onClick={handleSave}>
                                             Transportar
@@ -94,7 +94,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                     )}
                 </div>
                 <div className="col col-12 col-md-6">
-                    <h1 className="mt-3">Previsão do Documento</h1>
+                    <h3 className="mt-3">Previsão do Documento</h3>
                     <div className="alert alert-warning">
                         <div id="modjus-document" modjus-data={JSON.stringify(data)} modjus-url={currentUrl}>
                             {document(data)}
