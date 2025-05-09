@@ -73,7 +73,7 @@ export default function ConclusaoDeslocamento() {
                 },
                 headers: {
                     Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
+                    "x-secret-key": '123456', // Certifique-se de que a variável está configurada
                 },
             });
     
@@ -102,7 +102,7 @@ export default function ConclusaoDeslocamento() {
                 },
                 headers: {
                     Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": `${process.env.NEXT_PUBLIC_INTERNAL_SECRET}`, // Corrige o nome do cabeçalho
+                    "x-secret-key": `123456`, // Corrige o nome do cabeçalho
                 },
             }
             );

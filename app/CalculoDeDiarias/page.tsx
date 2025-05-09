@@ -180,7 +180,7 @@ export default function CalculoDeDiarias() {
                 },
                 headers: {
                     Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
+                    "x-secret-key": '123456' , // Certifique-se de que a variável está configurada
                 },
         }
       );
