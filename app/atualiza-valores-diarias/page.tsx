@@ -125,7 +125,7 @@ export default function AtualizaValoresDiarias() {
 
         <h3>Tabela de Valores: </h3>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
+        <table style={{width: '100%', borderCollapse: 'collapse', border: '1px solid black', backgroundColor: 'white' }}>
           <thead>
             <tr style={{ textAlign: 'center', backgroundColor: 'lightgray' }}>
               <th style={{ border: '1px solid black' }}>Cargo/Função</th>
@@ -135,43 +135,43 @@ export default function AtualizaValoresDiarias() {
             </tr>
           </thead>
           <tbody>
-            <tr style={{ textAlign: 'center' }}>
-              <td style={{ border: '1px solid black' }}>{getOptionName(faixaOptions, '1') || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.membro_diaria_exterior) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.membro_diaria_nacional) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.membro_meia_diaria) || 'Não Informado'}</td>
+            <tr >
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{getOptionName(faixaOptions, '1')}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.membro_diaria_exterior) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.membro_diaria_nacional) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.membro_meia_diaria) || 'Não Informado'}</td>
             </tr>
           </tbody>
           <tbody>
-            <tr style={{ textAlign: 'center' }}>
-              <td style={{ border: '1px solid black' }}>{getOptionName(faixaOptions, '2') || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.desembargador_diaria_exterior) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.desembargador_diaria_nacional) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.desembargador_meia_diaria) || 'Não Informado'}</td>
+            <tr>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{getOptionName(faixaOptions, '2')}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.desembargador_diaria_exterior) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.desembargador_diaria_nacional) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.desembargador_meia_diaria) || 'Não Informado'}</td>
             </tr>
           </tbody>
           <tbody>
-            <tr style={{ textAlign: 'center' }}>
-              <td style={{ border: '1px solid black' }}>{getOptionName(faixaOptions, '3') || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.juiz_diaria_exterior) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.juiz_diaria_nacional) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.juiz_meia_diaria) || 'Não Informado'}</td>
+            <tr>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{getOptionName(faixaOptions, '3')}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.juiz_diaria_exterior) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.juiz_diaria_nacional) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.juiz_meia_diaria) || 'Não Informado'}</td>
             </tr>
           </tbody>
           <tbody>
-            <tr style={{ textAlign: 'center' }}>
-              <td style={{ border: '1px solid black' }}>{getOptionName(faixaOptions, '4') || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.analista_diaria_exterior) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.analista_diaria_nacional) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.analista_meia_diaria) || 'Não Informado'}</td>
+            <tr>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{getOptionName(faixaOptions, '4')}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.analista_diaria_exterior) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.analista_diaria_nacional) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.analista_meia_diaria) || 'Não Informado'}</td>
             </tr>
           </tbody>
           <tbody>
-            <tr style={{ textAlign: 'center' }}>
-              <td style={{ border: '1px solid black' }}>{getOptionName(faixaOptions, '5') || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.tecnico_diaria_exterior) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.tecnico_diaria_nacional) || 'Não Informado'}</td>
-              <td style={{ border: '1px solid black' }}>{formatFloatValue(data.tecnico_meia_diaria) || 'Não Informado'}</td>
+            <tr>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{getOptionName(faixaOptions, '5')}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.tecnico_diaria_exterior) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.tecnico_diaria_nacional) || 'Não Informado'}</td>
+              <td style={{ border: '1px solid black', padding: '0 10px' }}>{formatFloatValue(data.tecnico_meia_diaria) || 'Não Informado'}</td>
             </tr>
           </tbody>
         </table>
