@@ -136,12 +136,12 @@ export class FormHelper {
 
     public colClass = (width?: string | number) => `mt-3 col ${typeof width === 'string' ? width : `col-12 col-md-${width || 12}`}`
 
-    public Input = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
+public Input = ({ label, name, width, readOnly = false, disabled = false, }: { label: string, name: string, width?: number | string, readOnly?: boolean, disabled?: boolean, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         if (label === null) return null
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
-                <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} />
+                <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} readOnly={readOnly} disabled={disabled}/>
                 <FieldError formState={this.formState} name={name} />
             </Form.Group>
         ) : (
@@ -176,6 +176,75 @@ export class FormHelper {
         );
     }
 
+    public dateInputCorreicao = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
+        const formatDate = (date: string) => {
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
+
+        const parseDate = (date: string) => {
+            const [day, month, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        const value = this.get(name) || '';
+
+        const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const newValue = formatDate(e.target.value);
+            this.set(name, newValue);
+    
+            if (name === 'dataEncerramento') {
+                const dataAbertura = this.get('dataAbertura');
+                if (dataAbertura) {
+                    const dataAberturaDate = new Date(parseDate(dataAbertura));
+                    const dataEncerramentoDate = new Date(parseDate(newValue));
+    
+                    if (dataEncerramentoDate < dataAberturaDate) {
+                        alert('A Data de Encerramento não pode ser menor que a Data de Abertura.');
+                        //this.set(name, ''); // Limpa o campo de Data de Encerramento
+                        return;
+                    }
+                }
+            }
+
+            if (name === 't1DataDaInstalacao') {
+                const dataAbertura = this.get('dataAbertura');
+                if (dataAbertura) {
+                    const dataAberturaDate = new Date(parseDate(dataAbertura));
+                    const dataInstalacaoDate = new Date(parseDate(newValue));
+    
+                    if (dataInstalacaoDate > dataAberturaDate) {
+                        alert('A Data de Instalacao não pode ser maior que a Data de Abertura.');
+                        //this.set(name, ''); // Limpa o campo de Data de Encerramento
+                        return;
+                    }
+                }
+            }
+
+        };
+        
+
+        return this.setData ? (
+            <Form.Group className={this.colClass(width)} controlId={name} key={name}>
+                {label && <Form.Label>{label}</Form.Label>}
+                <Form.Control
+                    name={name}
+                    type="date"
+                    value={value ? parseDate(value) : ''}
+                    // onChange={e => this.set(name, formatDate(e.target.value))}
+                    onChange={handleDateChange} // Chama a função de validação
+                    placeholder=""
+                    key={name}
+                />
+                <FieldError formState={this.formState} name={name} />
+            </Form.Group>
+        ) : (
+            <div className={this.colClass(width)}>
+                {label && <Form.Label className="report-label"><div>{label}</div></Form.Label>}
+                <p className="report-field"><strong>{value}</strong></p>
+            </div>
+        );
+    }
 
     public dateInput = ({ label, name, width }: { label: string, name: string, width?: number | string, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         const formatDate = (date: string) => {
@@ -190,7 +259,7 @@ export class FormHelper {
 
         const value = this.get(name) || '';
 
-        return this.setData ? (
+                return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
                 <Form.Control

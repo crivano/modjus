@@ -19,7 +19,7 @@ function formatText(name: string, field: any, maxWidth?: string, padding?: strin
         <div>
           {name}
         </div>
-        <p style={{ fontWeight: 'bold' }}>{field || "Não se aplica"}</p>
+        <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>{field || "Não se aplica"}</p>
       </label>
     </div>
   )
@@ -47,13 +47,13 @@ function Interview(Frm: FormHelper) {
       </Head>
       <div className="row mb-3">
         <Frm.Input label="Número do Processo" name="numproc" width={4} />
-        <Frm.dateInput label="Data de Abertura" name="dataAbertura" width={4} />
-        <Frm.dateInput label="Data de Encerramento" name="dataEncerramento" width={4} />
+        <Frm.dateInputCorreicao label="Data de Abertura" name="dataAbertura" width={4} />
+        <Frm.dateInputCorreicao label="Data de Encerramento" name="dataEncerramento" width={4} />
       </div>
 
       <h2>1. Informações da Unidade</h2>
       <Unidade Frm={Frm} name="t1Unidade" />
-      <Frm.dateInput label="Data da Instalação" name="t1DataDaInstalacao" width={4} />
+      <Frm.dateInputCorreicao label="Data da Instalação" name="t1DataDaInstalacao" width={4} />
       <Frm.TextArea label="Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)" name="t1Competencias" width={12} />
       <Frm.CheckBoxes label="Assinale as Características da Unidade" labelsAndNames={oCaracteristicas} width={12} />
       <Frm.TextArea label="Houve redistribuição de processos?" name="t1RedistribuicaoDeProcessos" width={12} />
@@ -64,7 +64,7 @@ function Interview(Frm: FormHelper) {
       <Pessoa Frm={Frm} name="t2Titular" label1="Matrícula do Titular" label2="Nome do Titular" />
 
       <div className="row">
-        <Frm.Input label="Cargo" name={'t2Titular.cargo'} width={6} />
+        <Frm.Input label="Cargo" name={'t2Titular.cargo'} width={6} disabled/>
       </div>
 
       <Frm.Input label="Tempo de atuação na unidade" name="t2TitularTempoDeAtuacaoNaUnidade" width={12} />
@@ -77,6 +77,9 @@ function Interview(Frm: FormHelper) {
         <div>
           <h5>Substituto</h5>
           <Pessoa Frm={Frm} name="t2Substituto" label1="Matrícula do Substituto" label2="Nome do Substituto" />
+          <div className="row">
+             <Frm.Input label="Cargo" name={'t2Substituto.cargo'} width={6} disabled/>
+          </div>
           <Frm.Input label="Tempo de atuação na unidade" name="t2SubstitutoTempoDeAtuacaoNaUnidade" width={12} />
           <Frm.TextArea label="Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento" name="t2SubstitutoAfastamentos" width={12} />
           <Frm.TextArea label="Períodos de substituição, em férias, de outro magistrado" name="t2SubstitutoSubstituicoes" width={12} />
@@ -431,7 +434,9 @@ function document(data: any) {
         <label style={{ display: 'block', fontWeight: 'bold' }}>
           Competências (referir eventual alteração de competência ocorrida nos últimos 12 meses e respectivo ato normativo)
         </label>
-        <p style={{ fontWeight: 'bold' }}>{t1Competencias || "Não se aplica"}</p>
+
+        <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>{t1Competencias || "Não se aplica"}</p>
+
       </div>
 
       <div style={{ marginTop: '1rem', width: '100%' }}>
@@ -474,6 +479,7 @@ function document(data: any) {
       {(!turmaRecursal && (jef || criminal || execucaoFiscal)) && (
         <>
           {formatText("Substituto", t2Substituto?.descricao)}
+          {formatText("Cargo", t2Substituto?.cargo)}          
           {formatText("Tempo de atuação na unidade", t2SubstitutoTempoDeAtuacaoNaUnidade)}
           {formatText("Afastamentos superiores a 15 dias nos últimos 12 meses, especificando o período e o fundamento", t2SubstitutoAfastamentos)}
           {formatText("Períodos de substituição, em férias, de outro magistrado", t2SubstitutoSubstituicoes)}
@@ -548,7 +554,10 @@ function document(data: any) {
                 Quantos e quais servidores exercem função de assessoria ao Juiz Federal titular?
               </div>
             </label>
-            <p style={{ fontWeight: 'bold' }}>{t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
+            <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>
+              {t4QuantidadeDeServidoresAssessorandoJuizSubstitutoETitular || "Não se aplica"}</p>
+
+
           </div>
         }
       </div>
