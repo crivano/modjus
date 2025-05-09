@@ -110,7 +110,7 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
                 <div className="row">
                     <Frm.Input label={`${label1}`}   name={`${name}.sigla`} width={3}/>
                     <Frm.Button onClick={() => handleClick(Frm, name, setPopupData, setIsOpen, setError)} >...</Frm.Button>
-                    <Frm.Input label={`${label2}`} name={`${name}.descricao`} width={""} readOnly disabled/>
+                    <Frm.Input label={`${label2}`} name={`${name}.descricao`} width={""} disabled/>
                 </div>
                 <div>  {error && <ErrorPopup message={error} onClose={() => setError("")} />}</div>
 
