@@ -53,7 +53,7 @@ export default function ConclusaoDeslocamento() {
 
     useEffect(() => {
         if (Frm.data && Frm.data.calculoDiarias) {
-            fetchProcessData(Frm.data.processo);
+            fetchProcessData(Frm.data.processo, process.env.NEXT_PUBLIC_INTERNAL_SECRET, "CAL", setFetchedData, setSolicitacaoOptions)
         }
     }, [Frm.data]);
 
@@ -63,22 +63,22 @@ export default function ConclusaoDeslocamento() {
     //     }
     // }, [Frm.data]);
 
-    async function fetchProcessData(numeroProcesso: string) {
+    async function fetchProcessData(numeroProcesso: string, internalSecret: string, typeDocument: string, setFetchedDatas: any, setSolicitacaoOptionss: any) {
         try {
             const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
                 '/api/getmodjus', {
                 params: {
                     num_processo: numeroProcesso,
-                    tipo_documento: "CAL",
+                    tipo_documento: typeDocument,
                 },
                 headers: {
                     Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
+                    "x-secret-key": internalSecret || '', // Certifique-se de que a variável está configurada
                 },
             });
     
-            setFetchedData(response.data);
-            setSolicitacaoOptions([
+            setFetchedDatas(response.data);
+            setSolicitacaoOptionss([
                 { id: '', name: '' },
                 ...response.data.map((item) => ({
                     id: item.modjusData.id,
@@ -265,7 +265,7 @@ export default function ConclusaoDeslocamento() {
     function Interview(Frm: FormHelper) {
         useEffect(() => {
             if (Frm.data && Frm.data.processo && !dataFetched) {
-                fetchProcessData(Frm.data.processo).then(() => {
+                fetchProcessData(Frm.data.processo, process.env.NEXT_PUBLIC_INTERNAL_SECRET, "CAL", setFetchedData, setSolicitacaoOptions).then(() => {
                     if (Frm.data.calculoDiarias) {
                         handleSolicitacaoChange({ target: { value: Frm.data.calculoDiarias } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
@@ -273,7 +273,7 @@ export default function ConclusaoDeslocamento() {
                 });
             }
             if (Frm.data && Frm.data.processo && !dataFetchedPassagens) {
-                fetchProcessDataPassagens(Frm.data.processo).then(() => {
+                fetchProcessData(Frm.data.processo, process.env.NEXT_PUBLIC_INTERNAL_SECRET, "REQ", setFetchedDataPassagens, setSolicitacaoOptionsPassagens).then(() => {
                     if (Frm.data) {
                         handleSolicitacaoChangePassagens({ target: { value: Frm.data.emissaoPassagens } } as React.ChangeEvent<HTMLSelectElement>, Frm);
                     }
