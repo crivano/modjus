@@ -5,7 +5,6 @@ import { FormHelper } from "@/libs/form-support"
 import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
-import emissaoPassagens from "../emissao-de-passagens/page";
 
 const options = {
     tipoBeneficiarioOptions: [
@@ -391,8 +390,6 @@ export default function ConclusaoDeslocamento() {
         const {
             data_calculoDiarias,
             calculoDiarias,
-            emissaoPassagens,
-            calculoDiariasDeslocamento,
             proponente,
             cargoProponente,
             pessoa,
