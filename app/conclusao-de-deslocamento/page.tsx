@@ -401,7 +401,7 @@ export default function ConclusaoDeslocamento() {
             finalidade,
             tipoDeslocamento,
             origemDestino,
-            retorno_a_origem,
+            return_to_origin,
             periodoDe,
             periodoAte,
             meioTransporte,
@@ -446,7 +446,7 @@ export default function ConclusaoDeslocamento() {
             {formatForm("Finalidade:", selectedCalculoDiarias?.servicoAtividade || finalidade || 'Não informado')}
             {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedCalculoDiarias?.tipoDeslocamento || tipoDeslocamento || 'Não informado'))}
             {formatForm("Itinerário:", selectedCalculoDiarias?.trajeto || origemDestino || 'Não informado')}
-            {formatForm("Retorno à Origem:", selectedCalculoDiarias?.return_to_origin ? 'Sim' : 'Não')}
+            {formatForm("Retorno à Origem:", selectedCalculoDiarias?.return_to_origin === true ? 'Sim' : selectedCalculoDiarias?.return_to_origin === false? 'Não' : return_to_origin ? 'Sim' : 'Não informado')}
             {formatForm("Período:", (selectedCalculoDiarias?.periodoDe || periodoDe || 'Não informado') + " a " + (selectedCalculoDiarias?.periodoAte || periodoAte || 'Não informado'))}
             {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedCalculoDiarias?.meioTransporte || meioTransporte || 'Não informado'))}
 
