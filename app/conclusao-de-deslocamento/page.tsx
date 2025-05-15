@@ -76,7 +76,7 @@ export default function ConclusaoDeslocamento() {
                     "x-secret-key": internalSecret || '', // Certifique-se de que a variável está configurada
                 },
             });
-    
+
             setFetchedDatas(response.data);
             setSolicitacaoOptionss([
                 { id: '', name: '' },
@@ -419,110 +419,52 @@ export default function ConclusaoDeslocamento() {
         } = Frm.data;
 
         return <>
+            <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
+            {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao?.solicitacaoDeslocamento || calculoDiarias || 'Não informado')}
+            {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao?.dataAtual || data_solicitacao || 'Não informado')}
 
-            {!selectedSolicitacao && (
-                <div className="scrollableContainer">
-                    <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
+            {/* DADOS DO PROPONENTE */}
+            {formatForm("Proponente:", selectedSolicitacao?.proponente.descricao || proponente?.descricao || 'Não informado')}
+            {formatForm("Cargo do Proponente:", selectedSolicitacao?.cargoProponente || cargoProponente || 'Não informado')}
 
-                    {formatForm("Código da Solicitação de Deslocamento:", solicitacaoDeslocamento)}
-                    {/* {formatForm("Código da Emissão de Passagens:", emissaoPassagens)} */}
-                    {formatForm("Data da Solicitação de Deslocamento:", data_solicitacao)}
+            {/* DADOS DO BENEFICIÁRIO */}
+            {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao?.tipoBeneficiario || tipoBeneficiario || 'Não informado'))}
 
-                    {/* DADOS DO PROPONENTE */}
-                    {formatForm("Proponente:", proponente?.descricao)}
-                    {formatForm("Cargo do Proponente:", cargoProponente)}
-
-                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, tipoBeneficiario))}
-
-                    {/* DADOS DO BENEFICIÁRIO */}
-                    {tipoBeneficiario == '1' && (
-                        <>
-                            {formatForm("Beneficiário:", pessoa?.descricao)}
-                            {formatForm("Cargo do Beneficiário:", cargoBeneficiario)}
-                        </>
-                    )}
-                    {tipoBeneficiario > '1' && (
-                        <>
-                            {formatForm("Beneficiário:", nomePessoa.toUpperCase())}
-                            {formatForm("CPF:", formatCPF(cpf))}
-                            {/* Incluir os dados de banco ? */}
-                        </>
-                    )}
-
-                    {formatForm("Finalidade:", finalidade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, tipoDeslocamento))}
-                    {formatForm("Itinerário:", origemDestino)}
-                    {formatForm("Retorno à Origem:", retorno_a_origem == true ? 'Sim' : 'Não')}
-                    {formatForm("Período:", (periodoDe + " a " + periodoAte))}
-                    {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, meioTransporte))}
-
-                    {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(valorBrutoDiarias) || '0,00')}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(valorAdicionalDeslocamento) || '0,00')}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(valorDescontoAlimentacao || '0,00'))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(valorDescontoTransporte || '0,00'))}
-                    {formatForm("Desconto de Teto:", formatCurrency(totalDeDescontoDeTeto || '0,00'))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(valorLiquidoDiarias || '0,00'))}
-
-                    {/* VALOR DAS PASSAGENS */}
-                    {formatForm("Valor Total das Passagens:", formatCurrency(valor_passagens || '0,00'))}
-
-                    {/* JUSTIFICATIVA */}
-                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
-                </div>
-            )}
-
-            {selectedSolicitacao && (
+            {tipoBeneficiario == '1' && (
                 <>
-                    <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-                    {formatForm("Código da Solicitação de Deslocamento:", selectedSolicitacao.solicitacaoDeslocamento = calculoDiarias)}
-                    {formatForm("Data da Solicitação de Deslocamento:", selectedSolicitacao.dataAtual = data_solicitacao)}
-
-                    {/* DADOS DO PROPONENTE */}
-                    {formatForm("Proponente:", selectedSolicitacao.proponente.descricao = proponente?.descricao)}
-                    {formatForm("Cargo do Proponente:", selectedSolicitacao.cargoProponente = cargoProponente)}
-
-                    {/* DADOS DO BENEFICIÁRIO */}
-                    {formatForm("Tipo de Beneficiário:", getOptionName(options.tipoBeneficiarioOptions, selectedSolicitacao.tipoBeneficiario = tipoBeneficiario))}
-
-                    {tipoBeneficiario == '1' && (
-                        <>
-                            {formatForm("Beneficiário:", selectedSolicitacao.pessoa.descricao = pessoa?.descricao)}
-                            {formatForm("Cargo do Beneficiário:", selectedSolicitacao.cargoPessoa = cargoBeneficiario)}
-                        </>
-                    )}
-                    {tipoBeneficiario > '1' && (
-                        <>
-                            {formatForm("Beneficiário:", (selectedSolicitacao.nome = nomePessoa).toUpperCase())}
-                            {formatForm("CPF:", formatCPF(selectedSolicitacao.CPF = cpf))}
-                            {/* Incluir os dados de banco */}
-                        </>
-                    )}
-
-                    {formatForm("Finalidade:", selectedSolicitacao.servicoAtividade = finalidade)}
-                    {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedSolicitacao.tipoDeslocamento = tipoDeslocamento))}
-                    {formatForm("Itinerário:", selectedSolicitacao.trajeto = origemDestino)}
-                    {formatForm("Retorno à Origem:", selectedSolicitacao.return_to_origin ? 'Sim' : 'Não')}
-                    {formatForm("Período:", (selectedSolicitacao.periodoDe = periodoDe) + " a " + (selectedSolicitacao.periodoAte = periodoAte))}
-                    {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedSolicitacao.meioTransporte = meioTransporte))}
-
-                    {/* VALORES DAS DIÁRIAS */}
-                    {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao.totalDiaria = valorBrutoDiarias))}
-                    {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao.totalAdicionalDeslocamento = valorAdicionalDeslocamento))}
-                    {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao.totalDescontoAlimentacao = valorDescontoAlimentacao))}
-                    {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao.totalDescontoTransporte = valorDescontoTransporte))}
-                    {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao.totalDescontoTeto = totalDeDescontoDeTeto))}
-                    {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao.totalSubtotal = valorLiquidoDiarias))}
-
-                    {/* VALOR TOTAL DAS PASSAGENS */}
-                    {selectedSolicitacaoPassagens && (
-                        formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacaoPassagens.valor_passagens = valor_passagens) || 'Não informado')
-                    )}
-
-                    {/* JUSTIFICATIVA */}
-                    {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
+                    {formatForm("Beneficiário:", selectedSolicitacao?.pessoa.descricao || pessoa?.descricao || 'Não informado')}
+                    {formatForm("Cargo do Beneficiário:", selectedSolicitacao?.cargoPessoa || cargoBeneficiario || 'Não informado')}
                 </>
             )}
+            {tipoBeneficiario > '1' && (
+                <>
+                    {formatForm("Beneficiário:", (selectedSolicitacao?.nome || nomePessoa).toUpperCase())}
+                    {formatForm("CPF:", formatCPF(selectedSolicitacao?.CPF || cpf))}
+                    {/* Incluir os dados de banco */}
+                </>
+            )}
+
+            {formatForm("Finalidade:", selectedSolicitacao?.servicoAtividade || finalidade || 'Não informado')}
+            {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedSolicitacao?.tipoDeslocamento || tipoDeslocamento || 'Não informado'))}
+            {formatForm("Itinerário:", selectedSolicitacao?.trajeto || origemDestino || 'Não informado')}
+            {formatForm("Retorno à Origem:", selectedSolicitacao?.return_to_origin ? 'Sim' : 'Não')}
+            {formatForm("Período:", (selectedSolicitacao?.periodoDe || periodoDe || 'Não informado') + " a " + (selectedSolicitacao?.periodoAte || periodoAte || 'Não informado'))}
+            {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedSolicitacao?.meioTransporte || meioTransporte || 'Não informado'))}
+
+            {/* VALORES DAS DIÁRIAS */}
+            {formatForm("Valor Bruto das Diárias:", formatCurrency(selectedSolicitacao?.totalDiaria || valorBrutoDiarias))}
+            {formatForm("Adicional de Deslocamento:", formatCurrency(selectedSolicitacao?.totalAdicionalDeslocamento || valorAdicionalDeslocamento))}
+            {formatForm("Desconto de Auxílio Alimentação:", formatCurrency(selectedSolicitacao?.totalDescontoAlimentacao || valorDescontoAlimentacao))}
+            {formatForm("Desconto de Auxílio Transporte:", formatCurrency(selectedSolicitacao?.totalDescontoTransporte || valorDescontoTransporte))}
+            {formatForm("Desconto de Teto:", formatCurrency(selectedSolicitacao?.totalDescontoTeto || totalDeDescontoDeTeto))}
+            {formatForm("Valor Líquido das Diárias:", formatCurrency(selectedSolicitacao?.totalSubtotal || valorLiquidoDiarias))}
+
+            {/* VALOR TOTAL DAS PASSAGENS */}
+            {formatForm("Valor Total das Passagens:", formatCurrency(selectedSolicitacaoPassagens?.valor_passagens || valor_passagens))}
+
+            {/* JUSTIFICATIVA */}
+            {/* {radioSelected == "sim" ? formatForm("Justificativa:", justificativa || "Não informado") : ''} */}
+
         </>
     }
 
