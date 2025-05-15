@@ -92,36 +92,6 @@ export default function ConclusaoDeslocamento() {
         }
     }
 
-    async function fetchProcessDataPassagens(numeroProcesso: string) {
-        try {
-            const responsePassagens = await axios.get<{ modjusData: any, numero_documento: string }[]>(
-                '/api/getmodjus', {
-                params: {
-                    num_processo: numeroProcesso,
-                    tipo_documento: "REQ" // Novo parâmetro
-                },
-                headers: {
-                    Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": `${process.env.NEXT_PUBLIC_INTERNAL_SECRET}`, // Corrige o nome do cabeçalho
-                },
-            }
-            );
-            // 🔹 Atualiza os estados com os dados recebidos
-            setFetchedDataPassagens(responsePassagens.data);
-            setSolicitacaoOptionsPassagens([
-                { id: '', name: '' },
-                ...responsePassagens.data.map((item) => ({
-                    id: item.modjusData.id,
-                    name: item.numero_documento,
-                    data: item.modjusData // Armazena os dados completos
-                }))
-            ]);
-        } catch (error) {
-            console.error("Erro ao buscar os dados:", error);
-            alert('Não foi possível encontrar os dados adicionais');
-        }
-    }
-
     const formatCurrency = (value: number | string | undefined) => {
 
         if (value === undefined || value === '') return '0,00';
