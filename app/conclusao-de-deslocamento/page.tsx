@@ -51,7 +51,7 @@ export default function ConclusaoDeslocamento() {
     const [radioSelected, setRadioSelected] = useState("não"); // "Não" como padrão
 
     useEffect(() => {
-        if (Frm.data && Frm.data.calculoDiarias) {
+        if (Frm.data && Frm.data.codigoCalculoDiarias) {
             fetchProcessData(Frm.data.processo, process.env.NEXT_PUBLIC_INTERNAL_SECRET, "CAL", setFetchedData, setCalculoDiariasOptions)
         }
     }, [Frm.data]);
@@ -104,14 +104,13 @@ export default function ConclusaoDeslocamento() {
 
     function handleCalculoDiariasChange(event: React.ChangeEvent<HTMLSelectElement>, Frm: FormHelper) {
         try {
-            if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.calculoDiarias) {
-                setSelectedCalculoDiarias(Frm.data.calculoDiarias);
+            if ((!event.target.value || event.target.value == '') && Frm.data && Frm.data.codigoCalculoDiarias) {
+                setSelectedCalculoDiarias(Frm.data.codigoCalculoDiarias);
             } else if (!event.target.value || event.target.value == '') {
                 setSelectedCalculoDiarias(null);
                 new Error('Documento "Cálculo de Diárias" não encontrado');
             }
-
-            setError('');
+          setError('');
         } catch (error) {
             setError(error.message);
             return
@@ -121,10 +120,10 @@ export default function ConclusaoDeslocamento() {
             const selected = calculoDiariasOptions.find(option => option.name === selectedId);
             setSelectedCalculoDiarias(selected ? selected.data : null);
 
-
             if (selected && selected.id !== '') {
                 const calculoDiariasData = selected.data;
-                Frm.set('calculoDiariasDeslocamento', calculoDiariasData.calculoDiariasDeslocamento || '');
+
+                Frm.set('codigoCalculoDiarias', calculoDiariasData?.codigoCalculoDiarias || selectedId ||'');
                 Frm.set('data_calculoDiarias', calculoDiariasData.dataAtual || '');
 
                 // PROPONENTE
@@ -174,8 +173,8 @@ export default function ConclusaoDeslocamento() {
         setSelectedEmissaoPassagens(selectedPassagens ? selectedPassagens.data : null);
 
         if (selectedPassagens && selectedPassagens.id !== '') {
-            const calculoDiariasDataPassagens = selectedPassagens.data;
-            Frm.set('valor_passagens', calculoDiariasDataPassagens?.valor_passagens || '');
+            const emissaoPassagensData = selectedPassagens.data;
+            Frm.set('valor_passagens', emissaoPassagensData?.valor_passagens || '');
         }
     }
 
@@ -299,7 +298,7 @@ export default function ConclusaoDeslocamento() {
                     <div className="row">
                         <Frm.Input
                             label="Código do Cálculo de Diárias:"
-                            name="calculoDiarias"
+                            name="codigoCalculoDiarias"
                             width={6}
                         />
                         {/* <Frm.Input
@@ -389,7 +388,7 @@ export default function ConclusaoDeslocamento() {
         Frm.update(data);
         const {
             data_calculoDiarias,
-            calculoDiarias,
+            codigoCalculoDiarias,
             proponente,
             cargoProponente,
             pessoa,
@@ -416,7 +415,7 @@ export default function ConclusaoDeslocamento() {
 
         return <>
             <strong>Dados Para o Relatório de Deslocamentos</strong><br></br>
-            {formatForm("Código da Solicitação de Deslocamento:", selectedCalculoDiarias?.calculoDiariasDeslocamento || calculoDiarias || 'Não informado')}
+            {formatForm("Código da Solicitação de Deslocamento:", selectedCalculoDiarias?.codigoCalculoDiarias || codigoCalculoDiarias || 'Não informado')}
             {formatForm("Data da Solicitação de Deslocamento:", selectedCalculoDiarias?.dataAtual || data_calculoDiarias || 'Não informado')}
 
             {/* DADOS DO PROPONENTE */}
