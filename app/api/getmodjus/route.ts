@@ -10,21 +10,25 @@ export async function GET(req: NextRequest) {
         const num_processo = searchParams.get('num_processo');
         const tipo_documento = searchParams.get('tipo_documento'); // Novo parâmetro
 
-        if (!num_processo || !tipo_documento) {
+        // 🔥 Variáveis de ambiente sempre lidas no runtime!
+       
+        const nome_documento = (
+              tipo_documento == 'SOL'? process.env.FORM_DAILY_SOLICITATION 
+            : tipo_documento == 'CAL'? process.env.FORM_DAILY_CALCULATION
+            : tipo_documento == 'REQ'? process.env.FORM_TICKET_ISSUANCE
+            : tipo_documento == 'AVD'? process.env.FORM_UPDATE_OF_DAILY_RATES
+            : ''
+        );
+
+        if (tipo_documento == 'AVD') {
+
+        } else if (!num_processo || !tipo_documento) {
             return NextResponse.json(
                 { error: 'Parâmetros num_processo e tipo_documento são obrigatórios' },
                 { status: 400 }
             );
         }
-
-        // 🔥 Variáveis de ambiente sempre lidas no runtime!
-       
-        const nome_documento = (
-            tipo_documento == 'SOL' ? process.env.FORM_DAILY_SOLICITATION 
-            : tipo_documento == 'CAL'? process.env.FORM_DAILY_CALCULATION
-            : tipo_documento == 'REQ'? process.env.FORM_TICKET_ISSUANCE
-            : ''
-        );
+        
         const apiBaseUrl = process.env.EXTERNAL_API_BASE_URL;
         const apiAuth = process.env.API_AUTH;
 
