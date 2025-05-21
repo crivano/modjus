@@ -10,6 +10,9 @@ import DynamicListTrajetoV1 from "@/components/sei/DynamicListTrajetoV1"
 import ErrorPopup from '@/components/ErrorPopup' // Adjust the import path as necessary
 import { calcularDiarias, DeslocamentoConjuntoEnum, FaixaEnum, TipoDeDiariaEnum } from '@/components/utils/calculaDiarias' // Adjust the import path as necessary
 import { upperCase } from "lodash"
+import { stringify } from "querystring"
+
+
 
 const tipoBeneficiarioOptions = [
   { id: '', name: '' },
@@ -70,13 +73,13 @@ const auxiliosOptions = [
   { id: '2', name: 'Não' }
 ]
 
-const tabelaDeDiariasAuxilioAlimentacao = {
-  "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
-  "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
-  "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
-  "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
-  "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
-};
+// const tabelaDeDiariasAuxilioAlimentacao = {
+//   "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
+//   "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
+//   "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
+//   "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
+//   "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
+// };
 
 const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
@@ -127,6 +130,7 @@ export default function CalculoDeDiarias() {
   const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState("");
   const [fetchedData, setFetchedData] = useState(null);
+  const [fetchedDataAVD, setFetchedDataAVD] = useState(null);
   const [solicitacaoOptions, setSolicitacaoOptions] = useState<{ id: string; name: string; data?: any }[]>([{ id: '', name: '' }]);
   const [selectedSolicitacao, setSelectedSolicitacao] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
@@ -169,20 +173,99 @@ export default function CalculoDeDiarias() {
     }
   }, [Frm.data]);
 
+  async function fetchProcessDataAVD(numeroProcesso: string) {
+    try {
+      // 🔹 Faz a requisição para o backend Next.js
+      const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
+        '/api/getmodjus', {
+        params: {
+          num_processo: numeroProcesso,
+          tipo_documento: "AVD" // Novo parâmetro
+        },
+        headers: {
+          Authorization: `Bearer ${process.env.API_AUTH}`,
+          "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
+        },
+      }
+      );
+      console.log(response.data);
+      setFetchedDataAVD(response.data);
+      // setSolicitacaoOptions([{ id: '', name: '' }, ...response.data.map((item: { modjusData: any, numero_documento: string }) => ({
+      //   id: item.modjusData.id,
+      //   name: item.numero_documento,
+      //   data: item.modjusData // Store the entire data
+      // }))]);
+    } catch (error) {
+      setError('Não foi possível encontrar os dados adicionais');
+    }
+  }
+
+
+  useEffect(() => {
+    fetchProcessDataAVD("#");
+  }, []);
+
+  {
+    fetchedDataAVD && (
+      <div className="text-danger">
+        "Dados da AVD Exibir em tabela e Definir em que posição ficará a tabela"
+
+      </div>
+      // Se não fetchedDataAVD retornar um erro
+    )
+  }
+
+  const avd = fetchedDataAVD ? fetchedDataAVD[0]: "";
+
+  const membro_exterior = avd.modjusData?.membro_diaria_exterior || 727.00;
+  const membro_nacional = avd.modjusData?.membro_diaria_nacional || 1388.36;
+  const membro_meia = avd.modjusData?.membro_meia_diaria || 694.18;
+
+  const desembargador_exterior = avd.modjusData?.desembargador_diaria_exterior || 691.00;
+  const desembargador_nacional = avd.modjusData?.desembargador_diaria_nacional || 1318.95;
+  const desembargador_meia = avd.modjusData?.desembargador_meia_diaria || 659.48;
+
+  const juiz_exterior = avd.modjusData?.juiz_diaria_exterior || 656.00;
+  const juiz_nacional = avd.modjusData?.juiz_diaria_nacional || 1253.00;
+  const juiz_meia = avd.modjusData?.juiz_meia_diaria || 626.50;
+
+  const analista_exterior = avd.modjusData?.analista_diaria_exterior || 400.00;
+  const analista_nacional = avd.modjusData?.analista_diaria_nacional || 763.60;
+  const analista_meia = avd.modjusData?.analista_diaria_meia || 381.80;
+
+  const tecnico_exterior = avd.modjusData?.tecnico_diaria_exterior || 327.00;
+  const tecnico_nacional = avd.modjusData?.tecnico_diaria_nacional || 624.76;
+  const tecnico_meia = avd.modjusData?.tecnico_meia_diaria || 312.38;
+
+  const processo = avd.modjusData?.processo || "";
+
+  // OUTROS VALORES
+  const valor_teto_diaria_nacional = avd.modjusData?.valor_teto_diaria_nacional || 0;
+  const valor_teto_meia_diaria_nacional = avd.modjusData?.valor_teto_meia_diaria_nacional || 0;
+  const valor_teto_diaria_exterior = avd.modjusData?.valor_teto_diaria_exterior || 0;
+
+  const tabelaDeDiariasAuxilioAlimentacao = {
+    "Membro do Conselho": { "exterior": {membro_exterior}, "nacional": {membro_nacional}, "meia": {membro_meia} },
+    "Desembargador Federal": { "exterior": {desembargador_exterior}, "nacional": {desembargador_nacional}, "meia": {desembargador_meia} },
+    "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": {juiz_exterior}, "nacional": {juiz_nacional}, "meia":{juiz_meia} },
+    "Analista Judiciário/Cargo em Comissão": { "exterior": { analista_exterior }, "nacional": { analista_nacional }, "meia": { analista_meia } },
+    "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": { tecnico_exterior }, "nacional":{ tecnico_nacional }, "meia": { tecnico_meia }}
+  };
+
   async function fetchProcessData(numeroProcesso: string) {
     try {
       // 🔹 Faz a requisição para o backend Next.js
-        const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
-            '/api/getmodjus', {
-             params: { 
-                 num_processo: numeroProcesso,
-                 tipo_documento: "SOL" // Novo parâmetro
-                },
-                headers: {
-                    Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
-                },
-        }
+      const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
+        '/api/getmodjus', {
+        params: {
+          num_processo: numeroProcesso,
+          tipo_documento: "SOL" // Novo parâmetro
+        },
+        headers: {
+          Authorization: `Bearer ${process.env.API_AUTH}`,
+          "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
+        },
+      }
       );
       setFetchedData(response.data);
       setSolicitacaoOptions([{ id: '', name: '' }, ...response.data.map((item: { modjusData: any, numero_documento: string }) => ({
@@ -371,9 +454,9 @@ export default function CalculoDeDiarias() {
 
     const result = calcularDiarias(
       // Pass the necessary parameters from formData
-      parseFloat(Number(obterValorDiaria(Frm.data.faixaCalcDiaria? Frm.data.faixaCalcDiaria : Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
+      parseFloat(Number(obterValorDiaria(Frm.data.faixaCalcDiaria ? Frm.data.faixaCalcDiaria : Frm.data.faixa, Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
       parseFloat(Number(obterValorDiaria('4', Frm.data.internacional === '1', Frm.data.tipoDiaria) || '0').toFixed(2)),
-      calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixaCalcDiaria? Frm.data.faixaCalcDiaria : Frm.data.faixa),
+      calcularFaixa(Frm.data.deslocamentoConjunto, Frm.data.faixaCalcDiaria ? Frm.data.faixaCalcDiaria : Frm.data.faixa),
       Frm.data.acrescimo,
       Frm.data.tipoDeslocamento === '2',
       parseFloat(Number(Frm.data.cotacaoDoDolar || '0').toFixed(2)),
@@ -492,13 +575,19 @@ export default function CalculoDeDiarias() {
         }
 
         <h2>Cálculo de Diárias</h2>
-        
+
         {fetchedData && (
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
         )}
+        {fetchedDataAVD && (
+          <div className="text-danger">
+            "Dados da AVD Exibir em tabela e Definir em que posição ficará a tabela "
+          </div>
+          // Se não fetchedDataAVD retornar um erro
+        )}
+
         {Frm.data && Frm.data.solicitacaoDeslocamento && (
           <>
-
             <Frm.Select
               label="Obter automaticamente o resultado do cálculo de diária"
               name="resultadoCalculo"
@@ -506,30 +595,30 @@ export default function CalculoDeDiarias() {
               onChange={(event) => handleFormaDeCalculo(event, Frm)}
               width={12}
             />
-          {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') === '2' &&(
-            <Frm.Select
-              label="Maior Faixa na Equipe de Trabalho"
-              name="faixaCalcDiaria"
-              options={faixaOptions}
-              width={12}
-            />
-          )}
-          {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') === '5' &&(
-            <Frm.Select
-              label="Faixa do Magistrado"
-              name="faixaCalcDiaria"
-              options={faixaOptions}
-              width={12}
-            />
-          )}
-          {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') !== '5' && Frm.get('acrescimo') !== '2' &&(
-            <Frm.Select
-              label="Faixa da Autoridade"
-              name="faixaCalcDiaria"
-              options={faixaOptions}
-              width={12}
-            />
-          )}
+            {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') === '2' && (
+              <Frm.Select
+                label="Maior Faixa na Equipe de Trabalho"
+                name="faixaCalcDiaria"
+                options={faixaOptions}
+                width={12}
+              />
+            )}
+            {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') === '5' && (
+              <Frm.Select
+                label="Faixa do Magistrado"
+                name="faixaCalcDiaria"
+                options={faixaOptions}
+                width={12}
+              />
+            )}
+            {Frm.get('acrescimo') !== '1' && Frm.get('acrescimo') !== '5' && Frm.get('acrescimo') !== '2' && (
+              <Frm.Select
+                label="Faixa da Autoridade"
+                name="faixaCalcDiaria"
+                options={faixaOptions}
+                width={12}
+              />
+            )}
 
             {Frm.get('resultadoCalculo') != '2' && (
               <div style={{ display: 'none' }}>
@@ -577,7 +666,7 @@ export default function CalculoDeDiarias() {
                 {Frm.data.tipoDeslocamento === '2' && (
                   <Frm.MoneyInputFloat label="Cotação do Dólar" name="cotacaoDoDolar" width={12} />
                 )}
-                
+
                 <div>
                   <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
                 </div>
@@ -818,14 +907,14 @@ export default function CalculoDeDiarias() {
                 <p><strong>Valor diário do auxílio transporte:</strong> {formatFloatValue(parseFloat(data.valorAuxilioTransporte) || 0.00)}</p>
               </>
             )}
-            {data.acrescimo !== '1' && data.acrescimo === '2' &&(
-              <p><strong>Maior Faixa na Equipe de Trabalho:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria? data.faixaCalcDiaria : data.faixa)}</p>
+            {data.acrescimo !== '1' && data.acrescimo === '2' && (
+              <p><strong>Maior Faixa na Equipe de Trabalho:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria ? data.faixaCalcDiaria : data.faixa)}</p>
             )}
-            {data.acrescimo !== '1' && data.acrescimo === '5' &&(
-              <p><strong>Faixa do Magistrado:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria? data.faixaCalcDiaria : data.faixa)}</p>
+            {data.acrescimo !== '1' && data.acrescimo === '5' && (
+              <p><strong>Faixa do Magistrado:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria ? data.faixaCalcDiaria : data.faixa)}</p>
             )}
-            {data.acrescimo !== '1' && data.acrescimo !== '5' && data.acrescimo !== '2' &&(
-              <p><strong>Faixa da Autoridade:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria? data.faixaCalcDiaria : data.faixa)}</p>
+            {data.acrescimo !== '1' && data.acrescimo !== '5' && data.acrescimo !== '2' && (
+              <p><strong>Faixa da Autoridade:</strong> {getOptionName(faixaOptions, data.faixaCalcDiaria ? data.faixaCalcDiaria : data.faixa)}</p>
             )}
           </>
         )}
