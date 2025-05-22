@@ -73,19 +73,15 @@ const auxiliosOptions = [
   { id: '2', name: 'Não' }
 ]
 
-// const tabelaDeDiariasAuxilioAlimentacao = {
-//   "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
-//   "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
-//   "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
-//   "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
-//   "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
-// };
+
+
 
 const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorUnitarioDoAuxilioAlimentacao = 66.38;
 
 export default function CalculoDeDiarias() {
+
   interface FormData {
     valorUnitatioDaDiaria?: string;
     valorUnitarioDaDiariaParaCalculoDoDeslocamento?: string;
@@ -200,42 +196,31 @@ export default function CalculoDeDiarias() {
     }
   }
 
-
   useEffect(() => {
     fetchProcessDataAVD("#");
   }, []);
 
-  {
-    fetchedDataAVD && (
-      <div className="text-danger">
-        "Dados da AVD Exibir em tabela e Definir em que posição ficará a tabela"
+  const avd = fetchedDataAVD ? fetchedDataAVD[0] : "";
 
-      </div>
-      // Se não fetchedDataAVD retornar um erro
-    )
-  }
+  const membro_exterior = avd.modjusData?.membro_diaria_exterior.toFixed(2);
+  const membro_nacional = avd.modjusData?.membro_diaria_nacional.toFixed(2);
+  const membro_meia = avd.modjusData?.membro_meia_diaria.toFixed(2);
 
-  const avd = fetchedDataAVD ? fetchedDataAVD[0]: "";
+  const desembargador_exterior = avd.modjusData?.desembargador_diaria_exterior.toFixed(2);
+  const desembargador_nacional = avd.modjusData?.desembargador_diaria_nacional.toFixed(2);
+  const desembargador_meia = avd.modjusData?.desembargador_meia_diaria.toFixed(2);
 
-  const membro_exterior = avd.modjusData?.membro_diaria_exterior || 727.00;
-  const membro_nacional = avd.modjusData?.membro_diaria_nacional || 1388.36;
-  const membro_meia = avd.modjusData?.membro_meia_diaria || 694.18;
+  const juiz_exterior = avd.modjusData?.juiz_diaria_exterior.toFixed(2);
+  const juiz_nacional = avd.modjusData?.juiz_diaria_nacional.toFixed(2);
+  const juiz_meia = avd.modjusData?.juiz_meia_diaria.toFixed(2);
 
-  const desembargador_exterior = avd.modjusData?.desembargador_diaria_exterior || 691.00;
-  const desembargador_nacional = avd.modjusData?.desembargador_diaria_nacional || 1318.95;
-  const desembargador_meia = avd.modjusData?.desembargador_meia_diaria || 659.48;
+  const analista_exterior = avd.modjusData?.analista_diaria_exterior.toFixed(2);
+  const analista_nacional = avd.modjusData?.analista_diaria_nacional.toFixed(2);
+  const analista_meia = avd.modjusData?.analista_meia_diaria.toFixed(2);
 
-  const juiz_exterior = avd.modjusData?.juiz_diaria_exterior || 656.00;
-  const juiz_nacional = avd.modjusData?.juiz_diaria_nacional || 1253.00;
-  const juiz_meia = avd.modjusData?.juiz_meia_diaria || 626.50;
-
-  const analista_exterior = avd.modjusData?.analista_diaria_exterior || 400.00;
-  const analista_nacional = avd.modjusData?.analista_diaria_nacional || 763.60;
-  const analista_meia = avd.modjusData?.analista_diaria_meia || 381.80;
-
-  const tecnico_exterior = avd.modjusData?.tecnico_diaria_exterior || 327.00;
-  const tecnico_nacional = avd.modjusData?.tecnico_diaria_nacional || 624.76;
-  const tecnico_meia = avd.modjusData?.tecnico_meia_diaria || 312.38;
+  const tecnico_exterior = avd.modjusData?.tecnico_diaria_exterior.toFixed(2);
+  const tecnico_nacional = avd.modjusData?.tecnico_diaria_nacional.toFixed(2);
+  const tecnico_meia = avd.modjusData?.tecnico_meia_diaria.toFixed(2);
 
   const processo = avd.modjusData?.processo || "";
 
@@ -244,12 +229,20 @@ export default function CalculoDeDiarias() {
   const valor_teto_meia_diaria_nacional = avd.modjusData?.valor_teto_meia_diaria_nacional || 0;
   const valor_teto_diaria_exterior = avd.modjusData?.valor_teto_diaria_exterior || 0;
 
+  const tabelaDeDiariasAuxilioAlimentacaoteste = {
+    "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
+    "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
+    "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
+    "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
+    "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
+  }
+
   const tabelaDeDiariasAuxilioAlimentacao = {
-    "Membro do Conselho": { "exterior": {membro_exterior}, "nacional": {membro_nacional}, "meia": {membro_meia} },
-    "Desembargador Federal": { "exterior": {desembargador_exterior}, "nacional": {desembargador_nacional}, "meia": {desembargador_meia} },
-    "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": {juiz_exterior}, "nacional": {juiz_nacional}, "meia":{juiz_meia} },
-    "Analista Judiciário/Cargo em Comissão": { "exterior": { analista_exterior }, "nacional": { analista_nacional }, "meia": { analista_meia } },
-    "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": { tecnico_exterior }, "nacional":{ tecnico_nacional }, "meia": { tecnico_meia }}
+    "Membro do Conselho": { "exterior": membro_exterior, "nacional": membro_nacional, "meia": membro_meia },
+    "Desembargador Federal": { "exterior": desembargador_exterior, "nacional": desembargador_nacional, "meia": desembargador_meia },
+    "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": juiz_exterior, "nacional": juiz_nacional, "meia": juiz_meia },
+    "Analista Judiciário/Cargo em Comissão": { "exterior": analista_exterior, "nacional": analista_nacional, "meia": analista_meia },
+    "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": tecnico_exterior, "nacional": tecnico_nacional, "meia": tecnico_meia }
   };
 
   async function fetchProcessData(numeroProcesso: string) {
@@ -393,6 +386,7 @@ export default function CalculoDeDiarias() {
 
   function obterValorDiaria(faixaId, isInternacional, tipoDiariaParam) {
     const faixa = faixaOptions.find(f => f.id === faixaId);
+    console.log(faixa.name);
     if (!faixa || !faixa.name) return 0; // Retorna 0 se a faixa não for encontrada
 
     const tipoDiaria = isInternacional ? 'exterior' : tipoDiariaParam === '1' ? 'nacional' : tipoDiariaParam === '2' ? 'meia' : 'Sem Diária';
@@ -471,6 +465,8 @@ export default function CalculoDeDiarias() {
       Frm.data.feriados?.map(parseDate) || [],
       Frm.data.diasSemDiaria?.map(parseDate) || []
     );
+
+    console.log('Resultado do cálculo:', result);
 
     Frm.set('resultadoCalculoDiarias', result || {});
     Frm.set('totalDiaria', result.totalDeDiariasBruto);
@@ -574,16 +570,68 @@ export default function CalculoDeDiarias() {
           // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
 
+        {fetchedDataAVD && (
+          <div style={{ margin: "16px 0" }}>
+            <h4 style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Tabela de Valores referente ao processo: {processo}
+            </h4>
+            <table style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              background: "#fafafa",
+              fontSize: "0.85rem",
+              color: "#666",
+              border: "1px solid #eee"
+            }}>
+              <thead>
+                <tr style={{ background: "#f5f5f5" }}>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Cargo/Função</th>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Diária Exterior</th>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Diária Nacional</th>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Meia Diária</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Membro do Conselho</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{membro_exterior}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{membro_nacional}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{membro_meia}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Desembargador Federal</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{desembargador_exterior}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{desembargador_nacional}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{desembargador_meia}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Juiz Federal de 1º Grau/Juiz Federal Substituto</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{juiz_exterior}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{juiz_nacional}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{juiz_meia}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Analista Judiciário/Cargo em Comissão</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{analista_exterior}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{analista_nacional}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{analista_meia}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Técnico Judiciário/Auxiliar Judiciário/Função Comissionada</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{tecnico_exterior}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{tecnico_nacional}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{tecnico_meia}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
+
         <h2>Cálculo de Diárias</h2>
 
         {fetchedData && (
           <Frm.Select label="Selecione a solicitação de deslocamento para o cálculo" name="solicitacaoDeslocamento" options={solicitacaoOptions} onChange={(event) => handleSolicitacaoChange(event, Frm)} width={12} />
-        )}
-        {fetchedDataAVD && (
-          <div className="text-danger">
-            "Dados da AVD Exibir em tabela e Definir em que posição ficará a tabela "
-          </div>
-          // Se não fetchedDataAVD retornar um erro
         )}
 
         {Frm.data && Frm.data.solicitacaoDeslocamento && (
