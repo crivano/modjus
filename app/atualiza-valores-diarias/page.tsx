@@ -107,9 +107,9 @@ export default function AtualizaValoresDiarias() {
           <p></p>
           <h4>Outros valores: </h4>
 
-          <Frm.MoneyInputFloat label="Valor do Teto Diária Nacional: " name="valor_teto_diaria_nacional" width={6} />
-          <Frm.MoneyInputFloat label="Valor do Teto Meia Diária Nacional: " name="valor_teto_meia_diaria_nacional" width={6} />
-          <Frm.MoneyInputFloat label="Valor Unitário para desconto do Auxilío ALimentação:" name="valor_desconto_auxilio_alimentacao" width={6} />
+          <Frm.MoneyInputFloat label="Valor do Teto Diária Nacional: " name="valorTetoDiariaNacionalAuxilioAlimentacao" width={6} />
+          <Frm.MoneyInputFloat label="Valor do Teto Meia Diária Nacional: " name="valorTetoMeiaDiariaNacionalAuxilioAlimentacao" width={6} />
+          <Frm.MoneyInputFloat label="Valor unitário para desconto do Auxilío Alimentação:" name="valorUnitarioDoAuxilioAlimentacao" width={6} />
         </div>
       </div>
     )
@@ -179,9 +179,9 @@ export default function AtualizaValoresDiarias() {
         <p></p>
 
         <h3>Outros valores: </h3>
-        <p><strong>Valor do Teto Diária Nacional:</strong> {formatFloatValue(data.valor_teto_diaria_nacional) || 'Não informado'}</p>
-        <p><strong>Valor do Teto Meia Diária Nacional:</strong> {formatFloatValue(data.valor_teto_meia_diaria_nacional) || 'Não informado'}</p>
-        <p><strong>Valor Unitário para desconto do Auxilío ALimentação:</strong> {formatFloatValue(data.valor_desconto_auxilio_alimentacao) || 'Não informado'}</p>
+        <p><strong>Valor do Teto Diária Nacional:</strong> {formatFloatValue(data.valorTetoDiariaNacionalAuxilioAlimentacao) || 'Não informado'}</p>
+        <p><strong>Valor do Teto Meia Diária Nacional:</strong> {formatFloatValue(data.valorTetoMeiaDiariaNacionalAuxilioAlimentacao) || 'Não informado'}</p>
+        <p><strong>Valor Unitário para desconto do Auxilío ALimentação:</strong> {formatFloatValue(data.valorUnitarioDoAuxilioAlimentacao) || 'Não informado'}</p>
 
       </div>
     )
