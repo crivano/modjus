@@ -73,13 +73,6 @@ const auxiliosOptions = [
   { id: '2', name: 'Não' }
 ]
 
-
-
-
-const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
-const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
-const valorUnitarioDoAuxilioAlimentacao = 66.38;
-
 export default function CalculoDeDiarias() {
 
   interface FormData {
@@ -202,6 +195,8 @@ export default function CalculoDeDiarias() {
 
   const avd = fetchedDataAVD ? fetchedDataAVD[0] : "";
 
+  const processo = avd.modjusData?.processo || ""; // Obtém o número do processo
+
   const membro_exterior = avd.modjusData?.membro_diaria_exterior.toFixed(2);
   const membro_nacional = avd.modjusData?.membro_diaria_nacional.toFixed(2);
   const membro_meia = avd.modjusData?.membro_meia_diaria.toFixed(2);
@@ -222,12 +217,10 @@ export default function CalculoDeDiarias() {
   const tecnico_nacional = avd.modjusData?.tecnico_diaria_nacional.toFixed(2);
   const tecnico_meia = avd.modjusData?.tecnico_meia_diaria.toFixed(2);
 
-  const processo = avd.modjusData?.processo || "";
-
-  // OUTROS VALORES
-  const valor_teto_diaria_nacional = avd.modjusData?.valor_teto_diaria_nacional || 0;
-  const valor_teto_meia_diaria_nacional = avd.modjusData?.valor_teto_meia_diaria_nacional || 0;
-  const valor_teto_diaria_exterior = avd.modjusData?.valor_teto_diaria_exterior || 0;
+  // Outros valores
+  const valorTetoDiariaNacionalAuxilioAlimentacao = avd.modjusData?.valorTetoDiariaNacionalAuxilioAlimentacao || 0;
+  const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = avd.modjusData?.valorTetoMeiaDiariaNacionalAuxilioAlimentacao || 0;
+  const valorUnitarioDoAuxilioAlimentacao = avd.modjusData?.valorUnitarioDoAuxilioAlimentacao || 0;
 
   const tabelaDeDiariasAuxilioAlimentacao = {
     "Membro do Conselho": { "exterior": membro_exterior, "nacional": membro_nacional, "meia": membro_meia },
