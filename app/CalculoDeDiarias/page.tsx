@@ -229,14 +229,6 @@ export default function CalculoDeDiarias() {
   const valor_teto_meia_diaria_nacional = avd.modjusData?.valor_teto_meia_diaria_nacional || 0;
   const valor_teto_diaria_exterior = avd.modjusData?.valor_teto_diaria_exterior || 0;
 
-  const tabelaDeDiariasAuxilioAlimentacaoteste = {
-    "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
-    "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
-    "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
-    "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
-    "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
-  }
-
   const tabelaDeDiariasAuxilioAlimentacao = {
     "Membro do Conselho": { "exterior": membro_exterior, "nacional": membro_nacional, "meia": membro_meia },
     "Desembargador Federal": { "exterior": desembargador_exterior, "nacional": desembargador_nacional, "meia": desembargador_meia },
