@@ -186,8 +186,8 @@ export default function SolicitacaoDeslocamento() {
         <Frm.dateInput label="Data da Solicitação" name="dataAtual"  width={6} />
         <Pessoa Frm={Frm} name="proponente" label1="Matrícula" label2="Nome" onChange={(proponente) => handleProponenteChange(proponente, Frm)} />
         <div className="row">
-          <Frm.Input label="Função" name="funcaoProponente" width={6} />
-          <Frm.Input label="Cargo" name="cargoProponente" width={6} />
+          <Frm.Input label="Função" name="funcaoProponente" width={6} disabled />
+          <Frm.Input label="Cargo" name="cargoProponente" width={6} disabled />
         </div>
 
         <div style={{ marginTop: '20px' }}></div> {/* Add spacing */}
@@ -213,7 +213,7 @@ export default function SolicitacaoDeslocamento() {
             <Pessoa Frm={Frm} name="pessoa" label1="Matrícula" label2="Nome" onChange={(pessoa) => handlePessoaChange(pessoa, Frm)} />
             <div className="row">
               {/* <Frm.Input label="Função" name="funcaoPessoa" width={6} /> */}
-              <Frm.Input label="Cargo" name="cargoPessoa" width={12} />
+              <Frm.Input label="Cargo" name="cargoPessoa" width={12} disabled />
             </div>
 
             <div className="row">
@@ -250,18 +250,19 @@ export default function SolicitacaoDeslocamento() {
               const dataInicial = Frm.get(`periodoDe`);
               const dataFinal = e.target.value;
 
-              if (dataInicial && dataFinal < dataInicial) {
+              if (dataFinal < dataInicial) {
                 throw new Error("Data Final do afastamento não pode ser menor que Data Inicial do afastamento");
               }
 
-
-              setError(""); // Clear any previous error
+             setError(""); // Clear any previous error
             } catch (error: any) {
               setError(error.message);
             }
 
           }} />
+
         </div>
+
         <Frm.TextArea label="Justificativa" name="justificativa" width={12} />
         <div className="row">
           <Frm.Select label="Tipo de Deslocamento" name="tipoDeslocamento" options={tipoDeslocamentoOptions} width={6} />
@@ -357,7 +358,7 @@ export default function SolicitacaoDeslocamento() {
 
         <div>
           <p><strong>Serviço ou atividade a ser desenvolvida, Órgão e Local:</strong></p>
-          <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0 }}>
+          <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>
             {data.servicoAtividade || 'Não informado'}
           </p>
         </div>
@@ -367,7 +368,7 @@ export default function SolicitacaoDeslocamento() {
  
         <div>
           <p><strong>Justificativa:</strong></p>
-          <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0 }}>
+          <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>
             {data.justificativa || 'Não informado'}
           </p>
         </div>
