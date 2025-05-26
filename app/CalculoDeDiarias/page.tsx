@@ -80,7 +80,7 @@ const tabelaDeDiariasAuxilioAlimentacao = {
 
 const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
 const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
-const valorUnitarioDoAuxilioAlimentacao = 66.38;
+const valorUnitarioDoAuxilioAlimentacao = 81.11;
 
 export default function CalculoDeDiarias() {
   interface FormData {
