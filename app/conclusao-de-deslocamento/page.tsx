@@ -191,7 +191,7 @@ export default function ConclusaoDeslocamento() {
                 Frm.set('valorDescontoAlimentacao', solicitacaoData?.totalDescontoAlimentacao || '');
                 Frm.set('valorDescontoTransporte', solicitacaoData?.totalDescontoTransporte || '');
                 Frm.set('totalDeDescontoDeTeto', solicitacaoData?.totalDescontoTeto || '');
-                Frm.set('valorLiquidoDiarias', solicitacaoData?.totalSubtotal || '');
+                Frm.set('valorLiquidoDiarias', solicitacaoData?.total || '');
             }
             setError('');
         } catch (error) {
