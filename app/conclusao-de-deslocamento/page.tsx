@@ -5,6 +5,7 @@ import { FormHelper } from "@/libs/form-support"
 import { useState, useEffect, ChangeEvent, useMemo } from "react"
 import Pessoa from "@/components/sei/Pessoa"
 import axios from 'axios'
+import ErrorPopup from "@/components/ErrorPopup"
 
 const options = {
     tipoBeneficiarioOptions: [
@@ -36,6 +37,7 @@ const getOptionName = (options: { id: string, name: string }[], id: string) => {
 export default function ConclusaoDeslocamento() {
     //const Frm = new FormHelper();
     const [error, setError] = useState("");
+    const [errorProcessData, setErrorProcessData] = useState("");
     const Frm = useMemo(() => new FormHelper(), []);
 
     const [fetchedData, setFetchedData] = useState(null);
@@ -85,9 +87,13 @@ export default function ConclusaoDeslocamento() {
                     data: item.modjusData,
                 })),
             ]);
-        } catch (error) {
-            console.error("Erro ao buscar os dados:", error);
-            alert('Não foi possível encontrar os dados adicionais');
+        } catch (errorProcessData) {
+            console.error("Erro ao buscar os dados:", errorProcessData);
+            typeDocument == "CAL"
+                ? setErrorProcessData('Não foi possível encontrar os dados dos Cálculos de Diárias')
+                : typeDocument == "CAL"
+                    ? setErrorProcessData('Não foi possível encontrar os dados das Requisições de Passagens') 
+                    : ""
         }
     }
 
@@ -110,7 +116,7 @@ export default function ConclusaoDeslocamento() {
                 setSelectedCalculoDiarias(null);
                 new Error('Documento "Cálculo de Diárias" não encontrado');
             }
-          setError('');
+            setError('');
         } catch (error) {
             setError(error.message);
             return
@@ -123,7 +129,7 @@ export default function ConclusaoDeslocamento() {
             if (selected && selected.id !== '') {
                 const calculoDiariasData = selected.data;
 
-                Frm.set('codigoCalculoDiarias', calculoDiariasData?.codigoCalculoDiarias || selectedId ||'');
+                Frm.set('codigoCalculoDiarias', calculoDiariasData?.codigoCalculoDiarias || selectedId || '');
                 Frm.set('data_calculoDiarias', calculoDiariasData.dataAtual || '');
 
                 // PROPONENTE
@@ -368,6 +374,8 @@ export default function ConclusaoDeslocamento() {
                     <Frm.MoneyInputFloat label="Valor Total das Passagens" name="valor_passagens" width={6} />
                 </div>
             </div>
+            {console.log(error)}
+            {errorProcessData && <ErrorPopup message={errorProcessData} onClose={() => setErrorProcessData("")} />}
         </>
     }
 
@@ -442,7 +450,7 @@ export default function ConclusaoDeslocamento() {
             {formatForm("Finalidade:", selectedCalculoDiarias?.servicoAtividade || finalidade || 'Não informado')}
             {formatForm("Tipo de Viagem:", getOptionName(options.tipoDeslocamentoOptions, selectedCalculoDiarias?.tipoDeslocamento || tipoDeslocamento || 'Não informado'))}
             {formatForm("Itinerário:", selectedCalculoDiarias?.trajeto || origemDestino || 'Não informado')}
-            {formatForm("Retorno à Origem:", selectedCalculoDiarias?.return_to_origin === true ? 'Sim' : selectedCalculoDiarias?.return_to_origin === false? 'Não' : return_to_origin ? 'Sim' : 'Não informado')}
+            {formatForm("Retorno à Origem:", selectedCalculoDiarias?.return_to_origin === true ? 'Sim' : selectedCalculoDiarias?.return_to_origin === false ? 'Não' : return_to_origin ? 'Sim' : 'Não informado')}
             {formatForm("Período:", (selectedCalculoDiarias?.periodoDe || periodoDe || 'Não informado') + " a " + (selectedCalculoDiarias?.periodoAte || periodoAte || 'Não informado'))}
             {formatForm("Meio de Transporte:", getOptionName(options.meioTransporteOptions, selectedCalculoDiarias?.meioTransporte || meioTransporte || 'Não informado'))}
 
