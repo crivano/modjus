@@ -73,18 +73,6 @@ const auxiliosOptions = [
   { id: '2', name: 'Não' }
 ]
 
-const tabelaDeDiariasAuxilioAlimentacao = {
-  "Membro do Conselho": { "exterior": 727.00, "nacional": 1388.36, "meia": 694.18 },
-  "Desembargador Federal": { "exterior": 691.00, "nacional": 1318.95, "meia": 659.48 },
-  "Juiz Federal de 1º Grau/Juiz Federal Substituto": { "exterior": 656.00, "nacional": 1253.00, "meia": 626.50 },
-  "Analista Judiciário/Cargo em Comissão": { "exterior": 400.00, "nacional": 763.60, "meia": 381.80 },
-  "Técnico Judiciário/Auxiliar Judiciário/Função Comissionada": { "exterior": 327.00, "nacional": 624.76, "meia": 312.38 }
-};
-
-const valorTetoDiariaNacionalAuxilioAlimentacao = 1106.20;
-const valorTetoMeiaDiariaNacionalAuxilioAlimentacao = 1106.20;
-const valorUnitarioDoAuxilioAlimentacao = 81.11;
-
 export default function CalculoDeDiarias() {
 
   interface FormData {
@@ -185,7 +173,7 @@ export default function CalculoDeDiarias() {
         },
         headers: {
           Authorization: `Bearer ${process.env.API_AUTH}`,
-          "x-secret-key": process.env.NEXT_PUBLIC_INTERNAL_SECRET || '', // Certifique-se de que a variável está configurada
+          "x-secret-key": '123456', // Certifique-se de que a variável está configurada
         },
       }
       );
@@ -197,7 +185,7 @@ export default function CalculoDeDiarias() {
       //   data: item.modjusData // Store the entire data
       // }))]);
     } catch (error) {
-      setError('Não foi possível encontrar os dados adicionais');
+      setError('Não foi possível encontrar os dados da Atualização dos Valores das Diárias (AVD). Verifique se o documento existe e se ele está assinado.');
     }
   }
 
@@ -209,25 +197,25 @@ export default function CalculoDeDiarias() {
 
   const processo = avd.modjusData?.processo || ""; // Obtém o número do processo
 
-  const membro_exterior = avd.modjusData?.membro_diaria_exterior.toFixed(2);
-  const membro_nacional = avd.modjusData?.membro_diaria_nacional.toFixed(2);
-  const membro_meia = avd.modjusData?.membro_meia_diaria.toFixed(2);
+  const membro_exterior = avd.modjusData?.membro_diaria_exterior || 0;
+  const membro_nacional = avd.modjusData?.membro_diaria_nacional || 0;
+  const membro_meia = avd.modjusData?.membro_meia_diaria || 0;
 
-  const desembargador_exterior = avd.modjusData?.desembargador_diaria_exterior.toFixed(2);
-  const desembargador_nacional = avd.modjusData?.desembargador_diaria_nacional.toFixed(2);
-  const desembargador_meia = avd.modjusData?.desembargador_meia_diaria.toFixed(2);
+  const desembargador_exterior = avd.modjusData?.desembargador_diaria_exterior || 0;
+  const desembargador_nacional = avd.modjusData?.desembargador_diaria_nacional || 0;
+  const desembargador_meia = avd.modjusData?.desembargador_meia_diaria || 0;
 
-  const juiz_exterior = avd.modjusData?.juiz_diaria_exterior.toFixed(2);
-  const juiz_nacional = avd.modjusData?.juiz_diaria_nacional.toFixed(2);
-  const juiz_meia = avd.modjusData?.juiz_meia_diaria.toFixed(2);
+  const juiz_exterior = avd.modjusData?.juiz_diaria_exterior || 0;
+  const juiz_nacional = avd.modjusData?.juiz_diaria_nacional || 0;
+  const juiz_meia = avd.modjusData?.juiz_meia_diaria || 0;
 
-  const analista_exterior = avd.modjusData?.analista_diaria_exterior.toFixed(2);
-  const analista_nacional = avd.modjusData?.analista_diaria_nacional.toFixed(2);
-  const analista_meia = avd.modjusData?.analista_meia_diaria.toFixed(2);
+  const analista_exterior = avd.modjusData?.analista_diaria_exterior || 0;
+  const analista_nacional = avd.modjusData?.analista_diaria_nacional || 0;
+  const analista_meia = avd.modjusData?.analista_meia_diaria || 0;
 
-  const tecnico_exterior = avd.modjusData?.tecnico_diaria_exterior.toFixed(2);
-  const tecnico_nacional = avd.modjusData?.tecnico_diaria_nacional.toFixed(2);
-  const tecnico_meia = avd.modjusData?.tecnico_meia_diaria.toFixed(2);
+  const tecnico_exterior = avd.modjusData?.tecnico_diaria_exterior || 0;
+  const tecnico_nacional = avd.modjusData?.tecnico_diaria_nacional || 0;
+  const tecnico_meia = avd.modjusData?.tecnico_meia_diaria || 0;
 
   // Outros valores
   const valorTetoDiariaNacionalAuxilioAlimentacao = avd.modjusData?.valorTetoDiariaNacionalAuxilioAlimentacao || 0;
@@ -245,17 +233,17 @@ export default function CalculoDeDiarias() {
   async function fetchProcessData(numeroProcesso: string) {
     try {
       // 🔹 Faz a requisição para o backend Next.js
-        const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
-            '/api/getmodjus', {
-             params: { 
-                 num_processo: numeroProcesso,
-                 tipo_documento: "SOL" // Novo parâmetro
-                },
-                headers: {
-                    Authorization: `Bearer ${process.env.API_AUTH}`,
-                    "x-secret-key": '123456' , // Certifique-se de que a variável está configurada
-                },
-        }
+      const response = await axios.get<{ modjusData: any, numero_documento: string }[]>(
+        '/api/getmodjus', {
+        params: {
+          num_processo: numeroProcesso,
+          tipo_documento: "SOL" // Novo parâmetro
+        },
+        headers: {
+          Authorization: `Bearer ${process.env.API_AUTH}`,
+          "x-secret-key": '123456', // Certifique-se de que a variável está configurada
+        },
+      }
       );
       setFetchedData(response.data);
       setSolicitacaoOptions([{ id: '', name: '' }, ...response.data.map((item: { modjusData: any, numero_documento: string }) => ({
@@ -591,39 +579,49 @@ export default function CalculoDeDiarias() {
               <tbody>
                 <tr>
                   <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Membro do Conselho</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{membro_exterior}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{membro_nacional}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{membro_meia}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(membro_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(membro_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(membro_meia)}</td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Desembargador Federal</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{desembargador_exterior}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{desembargador_nacional}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{desembargador_meia}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(desembargador_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(desembargador_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(desembargador_meia)}</td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Juiz Federal de 1º Grau/Juiz Federal Substituto</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{juiz_exterior}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{juiz_nacional}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{juiz_meia}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(juiz_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(juiz_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(juiz_meia)}</td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Analista Judiciário/Cargo em Comissão</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{analista_exterior}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{analista_nacional}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{analista_meia}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(analista_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(analista_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(analista_meia)}</td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Técnico Judiciário/Auxiliar Judiciário/Função Comissionada</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{tecnico_exterior}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{tecnico_nacional}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>{tecnico_meia}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(tecnico_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(tecnico_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(tecnico_meia)}</td>
                 </tr>
               </tbody>
             </table>
+            <h6 className="pt-2">Outros Valores:</h6>
+            <div style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Valor do Teto Diária Nacional: {formatFloatValue(valorTetoDiariaNacionalAuxilioAlimentacao)}
+            </div>
+            <div style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Valor do Teto Meia Diária Nacional: {formatFloatValue(valorTetoMeiaDiariaNacionalAuxilioAlimentacao)}
+            </div>
+            <div style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Valor Unitário para desconto do Auxilío ALimentação: {formatFloatValue(valorUnitarioDoAuxilioAlimentacao)}
+            </div>
+
           </div>
         )}
-
 
         <h2>Cálculo de Diárias</h2>
 
@@ -968,10 +966,10 @@ export default function CalculoDeDiarias() {
             <h4>Informação manual de cálculo</h4>
 
             <p style={{ whiteSpace: 'pre-wrap', marginLeft: 0, fontWeight: 'bold' }}>
-               <strong>Justificativa para informar manualmente o resultado do cálculo:</strong> <br/>{data.justificativaManual || 'Não informado'}
+              <strong>Justificativa para informar manualmente o resultado do cálculo:</strong> <br />{data.justificativaManual || 'Não informado'}
             </p>
 
- 
+
             <p><strong>Valor bruto das diárias:</strong> {formatFloatValue(parseFloat(data.totalDiaria || 0.00))}</p>
             <p><strong>Valor adicional de deslocamento:</strong> {formatFloatValue(parseFloat(data.totalAdicionalDeslocamento || 0.00))}</p>
             <p><strong>Valor do desconto de auxílio alimentação:</strong> {formatFloatValue(parseFloat(data.totalDescontoAlimentacao || 0.00))}</p>
@@ -1058,6 +1056,11 @@ export default function CalculoDeDiarias() {
       </div>
     </>
   }
+
+  const formatFloatValue = (value: number): string => {
+    return value?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
 
   return Model(Interview, document, { saveButton: true, pdfButton: false, pdfFileName: 'CalculoDeDiarias' })
 }
