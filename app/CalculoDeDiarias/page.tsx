@@ -655,11 +655,12 @@ export default function CalculoDeDiarias() {
 
         {fetchedDataAVD && Frm.get('resultadoCalculo') === '1' && (
           <div style={{ margin: "16px 0" }}>
-            <h2 style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+            <h2 style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 9,width: "70%",margin: "0 auto" }}>
               Tabela de Valores referente ao processo: {processo}
             </h2>
             <table style={{
-              width: "100%",
+              width: "70%",
+              margin: "0 auto",
               borderCollapse: "collapse",
               background: "#fafafa",
               fontSize: "0.85rem",
@@ -708,17 +709,17 @@ export default function CalculoDeDiarias() {
               </tbody>
             </table>
 
-            <h2 className="pt-2" style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+            <h2 className="pt-2" style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 8,width: "70%",margin: "0 auto" }}>
               Outros Valores:
             </h2>
 
-            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+            <div className="pt-2" style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8,width: "70%",margin: "0 auto"  }}>
               Valor do Teto Diária Nacional: {formatFloatValue(valorTetoDiariaNacionalAuxilioAlimentacao)}
             </div>
-            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8,width: "70%",margin: "0 auto"  }}>
               Valor do Teto Meia Diária Nacional: {formatFloatValue(valorTetoMeiaDiariaNacionalAuxilioAlimentacao)}
             </div>
-            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8,width: "70%",margin: "0 auto"  }}>
               Valor Unitário para desconto do Auxilío ALimentação: {formatFloatValue(valorUnitarioDoAuxilioAlimentacao)}
             </div>
 
