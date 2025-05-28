@@ -252,7 +252,7 @@ export default function CalculoDeDiarias() {
         data: item.modjusData // Store the entire data
       }))]);
     } catch (error) {
-      setError('Não foi possível encontrar os dados adicionais');
+      setError('Não foi possível encontrar os dados da Solicitação de Deslocamento. Verifique se o documento existe e se ele está assinado.');
     }
   }
 
@@ -555,74 +555,6 @@ export default function CalculoDeDiarias() {
           // div hidden para não aparecer na tela de entrevista mas criar a estrutura do data
         }
 
-        {fetchedDataAVD && (
-          <div style={{ margin: "16px 0" }}>
-            <h4 style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
-              Tabela de Valores referente ao processo: {processo}
-            </h4>
-            <table style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              background: "#fafafa",
-              fontSize: "0.85rem",
-              color: "#666",
-              border: "1px solid #eee"
-            }}>
-              <thead>
-                <tr style={{ background: "#f5f5f5" }}>
-                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Cargo/Função</th>
-                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Diária Exterior</th>
-                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Diária Nacional</th>
-                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontWeight: 500 }}>Meia Diária</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Membro do Conselho</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(membro_exterior)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(membro_nacional)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(membro_meia)}</td>
-                </tr>
-                <tr>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Desembargador Federal</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(desembargador_exterior)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(desembargador_nacional)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(desembargador_meia)}</td>
-                </tr>
-                <tr>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Juiz Federal de 1º Grau/Juiz Federal Substituto</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(juiz_exterior)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(juiz_nacional)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(juiz_meia)}</td>
-                </tr>
-                <tr>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Analista Judiciário/Cargo em Comissão</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(analista_exterior)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(analista_nacional)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(analista_meia)}</td>
-                </tr>
-                <tr>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px" }}>Técnico Judiciário/Auxiliar Judiciário/Função Comissionada</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(tecnico_exterior)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(tecnico_nacional)}</td>
-                  <td style={{ border: "1px solid #eee", padding: "4px 6px", textAlign: "right" }}>{formatFloatValue(tecnico_meia)}</td>
-                </tr>
-              </tbody>
-            </table>
-            <h6 className="pt-2">Outros Valores:</h6>
-            <div style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
-              Valor do Teto Diária Nacional: {formatFloatValue(valorTetoDiariaNacionalAuxilioAlimentacao)}
-            </div>
-            <div style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
-              Valor do Teto Meia Diária Nacional: {formatFloatValue(valorTetoMeiaDiariaNacionalAuxilioAlimentacao)}
-            </div>
-            <div style={{ fontSize: "1rem", color: "#888", fontWeight: 400, marginBottom: 8 }}>
-              Valor Unitário para desconto do Auxilío ALimentação: {formatFloatValue(valorUnitarioDoAuxilioAlimentacao)}
-            </div>
-
-          </div>
-        )}
-
         <h2>Cálculo de Diárias</h2>
 
         {fetchedData && (
@@ -719,8 +651,82 @@ export default function CalculoDeDiarias() {
         )}
 
         {error && <ErrorPopup message={error} onClose={() => setError("")} />}
+
+
+        {fetchedDataAVD && Frm.get('resultadoCalculo') === '1' && (
+          <div style={{ margin: "16px 0" }}>
+            <h2 style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Tabela de Valores referente ao processo: {processo}
+            </h2>
+            <table style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              background: "#fafafa",
+              fontSize: "0.85rem",
+              color: "#666",
+              border: "1px solid #eee"
+            }}>
+              <thead>
+                <tr style={{ background: "#f5f5f5" }}>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", fontWeight: 500 }}>Cargo/Função</th>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", fontWeight: 500 }}>Diária Exterior</th>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", fontWeight: 500 }}>Diária Nacional</th>
+                  <th style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", fontWeight: 500 }}>Meia Diária</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em" }}>Membro do Conselho</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(membro_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(membro_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(membro_meia)}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em" }}>Desembargador Federal</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(desembargador_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(desembargador_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(desembargador_meia)}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em" }}>Juiz Federal de 1º Grau/Juiz Federal Substituto</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(juiz_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(juiz_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(juiz_meia)}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em" }}>Analista Judiciário/Cargo em Comissão</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(analista_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(analista_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(analista_meia)}</td>
+                </tr>
+                <tr>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em" }}>Técnico Judiciário/Auxiliar Judiciário/Função Comissionada</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(tecnico_exterior)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(tecnico_nacional)}</td>
+                  <td style={{ border: "1px solid #eee", padding: "4px 6px", fontSize: "0.8em", textAlign: "right" }}>{formatFloatValue(tecnico_meia)}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h2 className="pt-2" style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Outros Valores:
+            </h2>
+
+            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Valor do Teto Diária Nacional: {formatFloatValue(valorTetoDiariaNacionalAuxilioAlimentacao)}
+            </div>
+            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Valor do Teto Meia Diária Nacional: {formatFloatValue(valorTetoMeiaDiariaNacionalAuxilioAlimentacao)}
+            </div>
+            <div style={{ fontSize: "0.7em", color: "#888", fontWeight: 400, marginBottom: 8 }}>
+              Valor Unitário para desconto do Auxilío ALimentação: {formatFloatValue(valorUnitarioDoAuxilioAlimentacao)}
+            </div>
+
+          </div>
+        )}
       </div>
     </>
+
   }
 
   function document(data: any) {
