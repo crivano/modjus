@@ -91,7 +91,7 @@ export default function ConclusaoDeslocamento() {
             console.error("Erro ao buscar os dados:", errorProcessData);
             typeDocument == "CAL"
                 ? setErrorProcessData('Os dados dos Cálculos de Diárias não foram encontrados. Verifique se o documento foi devidamente criado e assinado.')
-                : typeDocument == "CAL"
+                : typeDocument == "REQ"
                     ? setErrorProcessData('Os dados da Requisição de Passagem não foram encontrados. Verifique se o documento foi devidamente criado e assinado.')
                     : ""
         }
