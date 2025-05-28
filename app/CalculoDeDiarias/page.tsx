@@ -643,7 +643,7 @@ export default function CalculoDeDiarias() {
                 )}
 
                 <div>
-                  <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2">Gerar Memória de cálculo</Button>
+                  <Button variant="primary" onClick={() => handleCalcularDiarias(Frm)} className="ms-2 mt-2">Gerar Memória de cálculo</Button>
                 </div>
               </>
             )}
@@ -655,8 +655,8 @@ export default function CalculoDeDiarias() {
 
         {fetchedDataAVD && Frm.get('resultadoCalculo') === '1' && (
           <div style={{ margin: "16px 0" }}>
-            <h2 style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, marginBottom: 9,width: "70%",margin: "0 auto" }}>
-              Tabela de Valores referente ao processo: {processo}
+            <h2 className="pb-2" style={{ fontSize: "0.8em", color: "#888", fontWeight: 400, margin: "0 auto" ,width: "70%"}}>
+              * Tabela de Valores referente ao processo: {processo}
             </h2>
             <table style={{
               width: "70%",
