@@ -450,7 +450,7 @@ export default function CalculoDeDiarias() {
       Frm.data.feriados?.map(parseDate) || [],
       Frm.data.diasSemDiaria?.map(parseDate) || []
     );
-
+    
     console.log('Resultado do cálculo:', result);
 
     Frm.set('resultadoCalculoDiarias', result || {});

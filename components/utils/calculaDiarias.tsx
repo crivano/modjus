@@ -180,7 +180,8 @@ function calcularDiarias(
                 const semDespesasDeHospedagem = trecho.semDespesasDeHospedagem;
                 const ultimoDia = d.getTime() === trechos[trechos.length - 1].dataTrechoFinal.getTime();
                 const meiaDiaria = semDespesasDeHospedagem || (!internacional && ultimoDia) || tipoDeDiaria === TipoDeDiariaEnum.MEIA_DIARIA_A_PEDIDO;
-                dia.diaria = meiaDiaria ? floor(diaria / 2) : diaria;
+
+                dia.diaria = meiaDiaria ? Math.round((diaria / 2) * 100) / 100 : Math.round(diaria * 100) / 100;
 
                 if (d.getDay() !== 0 && d.getDay() !== 6 && !feriados.some(feriado => feriado.getTime() === d.getTime())) {
                     dia.descontoDeAuxilioAlimentacao = valorUnitarioDoAuxilioAlimentacao;
