@@ -90,7 +90,7 @@ export default function SolicitacaoDeslocamento() {
     if (pessoa && pessoa.sigla) {
       Frm.set('funcaoPessoa', pessoa.funcao || '');
       Frm.set('cargoPessoa', pessoa.cargo || '');
-      // Frm.set('cpfPessoa', pessoa.cpf || '');
+      Frm.set('cpfPessoa', pessoa.cpf || '');
       if (Frm.get('processo')) {
         fetchDadosBancarios(pessoa.sigla, Frm);
       }
@@ -332,8 +332,8 @@ export default function SolicitacaoDeslocamento() {
         <p><strong>Tipo de Beneficiário:</strong> {getOptionName(tipoBeneficiarioOptions, data.tipoBeneficiario)}</p>
         {data.tipoBeneficiario === '1' && <>
           <p><strong>Beneficiário:</strong> {data.pessoa?.descricao || 'Não informado'}</p>
-          <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>
-          {/* <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> */}
+         {/*  <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'}</p>*/}
+          <p><strong>Matrícula:</strong> {data.pessoa?.sigla || 'Não informado'} - CPF: {data.cpfPessoa || 'Não informado'} </p> 
           {data.funcaoPessoa && <p><strong>Função:</strong> {data.funcaoPessoa || 'Não informado'}</p>} 
           <p><strong>Cargo:</strong> {data.cargoPessoa || 'Não informado'}</p>
           <p>Banco: {data.banco || 'Não informado'}  Agência: {data.agencia || 'Não informado'}   Conta: {data.conta || 'Não informado'}</p>

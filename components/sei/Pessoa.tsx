@@ -40,7 +40,7 @@ type Pessoa = {
     siglaUnidade: string
     idCargo: string
     funcao: string
-   // cpf: string - api do siga não retorna cpfpessoa atualmente
+    cpf: string 
 }
 
 export default function PessoaMany({ Frm, name, label1, label2, onChange}: PessoaProps) {
@@ -63,7 +63,7 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
     
 
             const lista: Pessoa[] =
-                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao, cargo: u.cargo.nome, siglaUnidade: u.lotacao.sigla, idCargo: u.cargo.idCargo, funcao: u.funcaoConfianca.nome} as Pessoa))
+                json.list.map((u: any) => ({ sigla: u.sigla, nome: u.nome, idOrgao: u.lotacao.orgao.idOrgao, cargo: u.cargo.nome, siglaUnidade: u.lotacao.sigla, idCargo: u.cargo.idCargo, funcao: u.funcaoConfianca.nome, cpf : u.cpf} as Pessoa))
                     .filter((item: Pessoa) => ['1', '2', '3'].includes(item.idOrgao));
 
             if (lista.length === 1) {
@@ -73,7 +73,7 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
                 Frm.set(`${name}.siglaUnidade`, lista[0].siglaUnidade);
                 Frm.set(`${name}.idCargo`, lista[0].idCargo);
                 Frm.set(`${name}.funcao`, lista[0].funcao);   
-          //      Frm.set(`${name}.cpf`, lista[0].cpf);             
+                Frm.set(`${name}.cpf`, lista[0].cpf);             
                 if (onChange) {
                     onChange(lista[0]);
                 }
@@ -96,7 +96,7 @@ export default function PessoaMany({ Frm, name, label1, label2, onChange}: Pesso
             Frm.set(`${name}.siglaUnidade`, selectedItem.siglaUnidade);
             Frm.set(`${name}.idCargo`, selectedItem.idCargo);
             Frm.set(`${name}.funcao`, selectedItem.funcao);
-          //  Frm.set(`${name}.cpf`, selectedItem.cpf);
+            Frm.set(`${name}.cpf`, selectedItem.cpf);
             if (onChange) {
                 onChange(selectedItem);
             }

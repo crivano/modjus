@@ -52,7 +52,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   },
     });
     } 
-    console.log(json.list[0].nome + ' ' + json.list[0].sigla);
+    console.log(json.list[0].nome + ' ' + json.list[0].sigla + ' ' + json.list[0].cpf + ' ' + json.list[0].lotacao.sigla + ' ' + json.list[0].cargo.nome);
     return new Response(JSON.stringify(json), { status: 200, headers: {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
