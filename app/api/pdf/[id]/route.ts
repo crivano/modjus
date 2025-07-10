@@ -109,27 +109,22 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
     // console.log('formated', formated)
 
-    const res = await fetch('https://siga.jfrj.jus.br/sigaex/public/app/util/html-pdf', {
+    const formData = new FormData();
+    formData.append('conv', '2');
+    formData.append('html', formated);
+    formData.append('skipTemplate', 'true');
+
+    const res = await fetch(`https://apoia.pdpj.jus.br/api/pdf/${id}`, {
         method: 'post',
-        body: JSON.stringify({
-            conv: '2',
-            html: formated
-        }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
+        body: formData,
         cache: 'no-store'
     })
-    // const data = await res.json()
-    const data = await res.json()
-
-    const pdf = Buffer.from(data.pdf, 'base64')
+    const pdf = await res.arrayBuffer();
 
     const headers = new Headers();
-    headers.append("Content-Disposition", `attachment; filename="${id}.pdf"`)
-    headers.append("Content-Type", "application/pdf")
-    headers.append("Content-Length", pdf.length.toString())
+    headers.append("Content-Disposition", `attachment; filename="${id}.pdf"`);
+    headers.append("Content-Type", "application/pdf");
+    headers.append("Content-Length", pdf.byteLength.toString());
 
     return new Response(pdf, { headers })
 }

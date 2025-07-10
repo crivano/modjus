@@ -41,7 +41,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
             </footer>
 
             <div className="row">
-                <div id="modjus-interview" className="col col-12 col-md-6">
+                <div id="modjus-interview" className="col col-12 col-md-6 d-print-none">
                     <h1 className="mt-3">Formulário</h1>
                     <div className="alert alert-info">
                         <div className="row">
@@ -53,13 +53,13 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
                     </div>
                 </div>
                 <div className="col col-12 col-md-6">
-                    <h1 className="mt-3">Previsão do Documento</h1>
+                    <h1 className="mt-3 d-print-none">Previsão do Documento</h1>
                     <div className="alert alert-warning">
                         <div id="modjus-document" modjus-data={JSON.stringify(data)} modjus-url={currentUrl}>
                             {document(data)}
                         </div>
                     </div>
-                    <div className="d-flex justify-content-end mt-2">
+                    <div className="d-flex justify-content-end mt-2 d-print-none">
                         {options?.pdfButton && <Print id={options?.pdfFileName} className="btn btn-primary" />}
                     </div>
                 </div>
