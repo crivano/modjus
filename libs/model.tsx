@@ -36,7 +36,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
 
     return (<div>
         <div className="container-fluid">
-            <footer style={{ marginTop: "20px", textAlign: "right", fontSize: "12px", color: "#888" }}>
+            <footer style={{ marginTop: "20px", textAlign: "right", fontSize: "12px", color: "#888" }} className="d-print-none">
                 Versão: {VERSION.version} | Commit: {VERSION.commit} | Build: {VERSION.buildTime}
             </footer>
 

@@ -9,17 +9,19 @@ export default function Print(params: { id: string, className: string, children?
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        const printDiv = document.querySelector('#modjus-document')
-        const innerHTML = printDiv ? printDiv.innerHTML : ''
-        const printHtml = document.querySelector('#printHtml')
-        if (printHtml) {
-            printHtml.setAttribute('value', innerHTML)
-        }
-        setHtml(document.documentElement.innerHTML)
-        const printForm = document.querySelector('#printForm') as HTMLFormElement
-        if (printForm) {
-            printForm.submit()
-        }
+        window.print()
+
+        // const printDiv = document.querySelector('#modjus-document')
+        // const innerHTML = printDiv ? printDiv.innerHTML : ''
+        // const printHtml = document.querySelector('#printHtml')
+        // if (printHtml) {
+        //     printHtml.setAttribute('value', innerHTML)
+        // }
+        // setHtml(document.documentElement.innerHTML)
+        // const printForm = document.querySelector('#printForm') as HTMLFormElement
+        // if (printForm) {
+        //     printForm.submit()
+        // }
     }
 
     return (
