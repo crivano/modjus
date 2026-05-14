@@ -10,6 +10,26 @@ let quesitoConclusivo = true
 function interview(Frm: FormHelper) {
   const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '0 ano'
 
+  const oNaoSim = [
+    '',
+    'Não',
+    'Sim',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oNaoNaoEhPossivelPrognosticarSim = [
+    '',
+    'Não',
+    'Não é possível prognosticar',
+    'Sim',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oNaoNaoEhPossivelPreverSim = [
+    '',
+    'Não',
+    'Não é possível prever, mas os efeitos podem se estender por dois anos ou mais.',
+    'Sim',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
   const oEscolaridade = [
     '',
     'Não Frequenta Creche (< 3 anos)',
@@ -45,7 +65,7 @@ function interview(Frm: FormHelper) {
     'Feminino'
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
 
-    const oJustificativa = [
+  const oJustificativa = [
     'Não foram observadas alterações ou as alterações no domínio como um todo são mínimas [de 0 a 4%]',
     'Ausência de elementos de convicção para qualificar'
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
@@ -170,14 +190,14 @@ function interview(Frm: FormHelper) {
     '107. Dificuldade para aprender a calcular e aplicar este conhecimento (calcular, compreendendo o significado de símbolos e operações matemáticas), de forma compatível com a faixa etária - d150 / d172 (> 6 anos)',
     '108. Dificuldade para adquirir e executar habilidades básicas (usar talheres, lápis, entre outras) e complexas (jogos, esportes, utilizar ferramentas, relógio, entre outras), de forma compatível com a faixa etária - d155 (> 2 anos)',
     '109.  Dificuldade para concentrar a atenção, encontrar solução para problemas simples e complexos e tomar decisões, de forma compatível com a faixa etária - d160 / d175 / d177 (> 7 anos)',
-    ' Qualificador do domínio d1',
+    ' Qualificador do domínio d1 (> 6 meses)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'aprendizagem')}` }))
 
   const oTarefasEDemandasGerais = [
     '110. Dificuldade para realizar uma única tarefa ou atender a um único comando (preensão palmar voluntária, pegar voluntariamente um objeto, entre outras), de forma compatível com a faixa etária - d210 (> 6 meses)',
     '111. Dificuldade para realizar tarefas múltiplas, atender a comandos múltiplos, realizar a rotina diária, de forma independente ou a comando de outros, de forma compatível com a faixa etária - d220/ d230 (> 7 anos)',
     '112. Dificuldade para gerenciar o próprio comportamento e emoções frente a determinadas demandas, de forma coerente e compatível com a faixa etária (considerar se a autorrepresentação da deficiência aumenta essa dificuldade) - d250 (> 7 anos)',
-    ' Qualificador do domínio d2',
+    ' Qualificador do domínio d2 (> 6 meses)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'tarefa')}` }))
 
   const oComunicacao = [
@@ -189,7 +209,7 @@ function interview(Frm: FormHelper) {
     '118. Dificuldade na produção de mensagens não verbais (usar gestos, símbolos ou desenhos para se comunicar), de forma compatível com a faixa etária - d335 (> 1 ano)',
     '119. Dificuldade na produção de mensagens na Língua Brasileira de Sinais (LIBRAS), de forma compatível com a faixa etária - d340 (> 7 anos)',
     '120. Dificuldade na conversação (iniciar, manter e finalizar uma troca de pensamentos e ideias, usando qualquer forma de linguagem), de forma compatível com a faixa etária - d350 (> 3 anos)',
-    ' Qualificador do domínio d3',
+    ' Qualificador do domínio d3 (> 1 ano)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'comunicacao')}` }))
 
   const oMobilidade = [
@@ -198,7 +218,7 @@ function interview(Frm: FormHelper) {
     '123. Dificuldade para manusear, mover, deslocar e/ou carregar objetos, realizando movimentos finos, de forma compatível com a faixa etária - d430 / d435 / d440 / d445 (> 6 meses)',
     '124. Dificuldade para andar (mover-se a pé, por curtas ou longas distâncias, sem auxílio de pessoas, equipamentos ou dispositivos), de forma compatível com a faixa etária - d450 (> 2 anos)',
     '125. Dificuldade para se deslocar utilizando equipamento ou dispositivo específico para facilitar a movimentação (andador, cadeira de rodas, muletas, bengala e outros), de forma compatível com a faixa etária - d465 (> 3 anos)',
-    ' Qualificador do domínio d4',
+    ' Qualificador do domínio d4 (> 6 meses)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'mobilidade')}` }))
 
   const oCuidadoPessoal = [
@@ -206,7 +226,7 @@ function interview(Frm: FormHelper) {
     '127. Dificuldade para se vestir (colocar, tirar e escolher roupas e calçados apropriados), de forma compatível com a faixa etária - d540 (> 3 anos)',
     '128. Dificuldade para coordenar os gestos para comer, beber alimentos e bebidas servidos, sem auxílio, de forma compatível com a faixa etária - d550/ d560 (> 3 anos)',
     '129. Dificuldade para evitar exposição a riscos ou situações perigosas, incluindo abusos e violência, de forma compatível com a faixa etária - d571 (> 7 anos)',
-    ' Qualificador do domínio d5',
+    ' Qualificador do domínio d5 (> 3 anos)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'cuidado')}` }))
 
   const oQualificador = "0;1;2;3;4".split(';').map((i) => ({ id: `${i}`, name: i }))
@@ -278,6 +298,12 @@ function interview(Frm: FormHelper) {
     labelAlfabetizacao = null
   }
 
+  const oEstruturaEPrognostico = "Estruturas do sistema nervoso;Estruturas do olho;Estruturas do ouvido;Estruturas relacionadas à voz e à fala;Estruturas do sistema cardiovascular;Estruturas do sistema imunológico;Estruturas do sistema respiratório;Estruturas do sistema digestivo;Estruturas do sistema metabólico e endócrino;Estruturas do sistema geniturinário e reprodutivo;Estruturas relacionadas ao movimento;Pele e estruturas relacionadas".split(';').map((i) => ({ label: i, name: `${labelToName(i)}` }))
+
+  const maxQualificador = (a: (string | null | undefined)[]) => {
+    return a?.filter(v => v != undefined && v != null && v !== '').reduce((a: string, b: string) => a === '—' ? b : (Number(b) > Number(a) ? b : a), '—')
+  }
+
   return <>
     <Frm.Input label="Nome" name="nome" width={8} />
     {/* <Frm.Input label="Idade" name="idade" width={3} /> */}
@@ -321,36 +347,44 @@ function interview(Frm: FormHelper) {
     </div>
 
     <Frm.RadioButtonsTable label="X - FUNÇÕES MENTAIS - b1: referem-se às funções do cérebro, que incluem funções mentais globais, como consciência, energia e impulso, e funções mentais específicas, como memória, linguagem e cálculo." labelsAndNames={oFuncoesMentais} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXb1 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXb1Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXb1 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXb1Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XI - FUNÇÕES SENSORIAIS DA VISÃO - b2: referem-se à percepção de luz, tamanho e cor de um estímulo visual. Indicadores = discriminados nas unidades de classificação abaixo, entre parênteses." labelsAndNames={oFuncoesSensoriaisDaVisao} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIb2Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIb2Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XII - FUNÇÕES SENSORIAIS DA AUDIÇÃO - b2: referem-se à percepção de sons e discriminação de localização, intensidade, ruído e qualidade." labelsAndNames={oFuncoesSensoriaisDaAudicao} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIb2Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIb2Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XIII - FUNÇÕES SENSORIAIS ADICIONAIS E DOR - b2: referem-se às funções gustativas, olfativas, proprioceptivas, táteis e a sensações relacionadas à temperatura e outros estímulos e sensação de dor." labelsAndNames={oFuncoesSensoriaisAdicionaisEDor} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXIIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIIb2Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXIIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIIb2Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XIV - FUNÇÕES DA VOZ E DA FALA - b3: referem-se à produção de sons e da fala." labelsAndNames={oFuncoesDaVozEDaFala} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXIVb3 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIVb3Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXIVb3 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIVb3Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XV - FUNÇÕES DO SISTEMA CARDIOVASCULAR - b4: referem-se às funções do coração, vasos sanguíneos e pressão sanguínea." labelsAndNames={oFuncoesDoSistemaCardiovascular} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXVb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVb4Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXVb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVb4Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XVI - FUNÇÕES DO SISTEMA HEMATOLÓGICO - b4:  referem-se à produção de sangue, transporte de oxigênio e metabólitos e à coagulação." labelsAndNames={oFuncoesDoSistemaHematologico} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXVIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIb4Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXVIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIb4Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XVII - FUNÇÕES DO SISTEMA IMUNOLÓGICO - b4: referem-se à imunidade celular e humoral e alterações na função do sistema linfático." labelsAndNames={oFuncoesDoSistemaImunologico} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXVIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIb4Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXVIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIb4Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XVIII - FUNÇÕES DO SISTEMA RESPIRATÓRIO - b4: referem-se à frequência, ritmo e profundidade da respiração e às funções dos músculos respiratórios." labelsAndNames={oFuncoesDoSistemaRespiratorio} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXVIIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIIb4Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXVIIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIIb4Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XIX - FUNÇÕES DO SISTEMA DIGESTIVO - b5: referem-se à ingestão, digestão e eliminação de substâncias líquidas e sólidas." labelsAndNames={oFuncoesDoSistemaDigestivo} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXIXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIXb5Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXIXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIXb5Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XX - FUNÇÕES DOS SISTEMAS METABÓLICO E ENDÓCRINO - b5: referem-se às funções metabólicas gerais e das glândulas endócrinas, inclusive as associadas à puberdade." labelsAndNames={oFuncoesDosSistemasMetabolicoEEndocrino} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXb5Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXb5Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XXI - FUNÇÕES GENITURINÁRIAS E REPRODUTIVAS - b6: referem-se às funções urinárias e reprodutivas, incluindo funções sexuais e de procriação." labelsAndNames={oFuncoesGeniturinariasEReprodutivas} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXXIb6 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIb6Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXXIb6 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIb6Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XXII - FUNÇÕES NEUROMUSCULOESQUELÉTICAS E RELACIONADAS AO MOVIMENTO - b7: referem-se à mobilidade, funções das articulações, ossos, reflexos e músculos." labelsAndNames={oFuncoesNeuromusculoesqueleticasERelacionadasAoMovimento} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXXIIb7 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIb7Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXXIIb7 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIb7Justificativa" options={oJustificativa} width={12} />}
     <Frm.RadioButtonsTable label="XXIII - FUNÇÕES DA PELE E ESTRUTURAS RELACIONADAS - b8: referem-se a funções da pele e seus anexos (pelos, cabelos e unhas)." labelsAndNames={oFuncoesDaPeleEEstruturasRelacionadas} options={oQualificador} width={12} />
-    {Frm.data.qualificadorDoDominioXXIIIb8 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIIb8Justificativa" options={oJustificativa} width={12} />}    
+    {Frm.data.qualificadorDoDominioXXIIIb8 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIIb8Justificativa" options={oJustificativa} width={12} />}
 
     <div className="col col-12 mt-3">
       <h4>Atividades e Participação</h4>
+    </div>
+
+    <div className="col col-12 mt-3">
+      <p>Considerar na análise o impacto/influência dos Fatores Ambientais (barreiras) e Pessoais (gênero, etnia, idade, condição física, estilo de vida, hábitos, nível de instrução, profissão e outros) e na avaliação do desempenho para a execução de atividades e participação social, em igualdade de condições com as demais pessoas.</p>
+      <p><strong>Desempenho</strong>: é um qualificador que descreve o que o indivíduo faz (grau de dificuldade) em seu ambiente de vida habitual, entendido como "envolvimento em uma situação vital" ou "a experiência vivida", no contexto real em que vive (a qualificação deve considerar, sobretudo, a frequência e extensão da dificuldade). </p>
+      <p><strong>Atividade</strong>: é a execução de uma tarefa ou ação por um indivíduo. Representa a perspectiva individual da funcionalidade. </p>
+      <p><strong>Participação</strong>: é o ato de se envolver em uma situação real de vida. Representa a perspectiva social da funcionalidade. </p>
+      <p>As colunas T e P, à direita dos qualificadores de cada domínio, destinam-se à sinalização de dependência Total ou Parcial de cuidados de terceiros, sempre que o avaliador julgar pertinente, com vistas a fornecer subsídios para políticas públicas de cuidados.  Não representam o foco principal da avaliação, que deve estar centrado no desempenho para o exercício de atividades e participação social, conforme o grau de dificuldade estabelecido pelos cortes percentuais acima.</p>
     </div>
 
     <Frm.RadioButtonsTable label="XXVI - APRENDIZAGEM E APLICAÇÃO DE CONHECIMENTO - d1: referem-se ao desempenho em aprender, aplicar o conhecimento aprendido, pensar, resolver problemas e tomar decisões." labelsAndNames={oAprendizagemEAplicacaoDoConhecimento} options={oQualificador} options2={oTotalParcial} width={12} />
@@ -358,6 +392,142 @@ function interview(Frm: FormHelper) {
     <Frm.RadioButtonsTable label="XXVIII - COMUNICAÇÃO - d3: refere-se às características gerais e específicas da comunicação, por meio da linguagem, sinais e símbolos, incluindo a recepção e produção de mensagens, manutenção da conversação e utilização de dispositivos e técnicas de comunicação." labelsAndNames={oComunicacao} options={oQualificador} width={12} />
     <Frm.RadioButtonsTable label="XXIX - MOBILIDADE - d4: refere-se ao movimento de mudar o corpo de posição ou de lugar, carregar, mover ou manipular objetos, ao andar ou deslocar-se." labelsAndNames={oMobilidade} options={oQualificador} width={12} />
     <Frm.RadioButtonsTable label="XXX - CUIDADO PESSOAL - d5: refere-se ao cuidado pessoal como lavar-se e secar-se, cuidar do próprio corpo e de parte do corpo, vestir-se, comer, beber e cuidar da própria saúde." labelsAndNames={oCuidadoPessoal} options={oQualificador} width={12} />
+
+    <div className="col col-12 mt-4">
+      <h5>Resumo dos Qualificadores de Domínio — Funções do Corpo</h5>
+      <div className="table-responsive">
+        <table className="table table-bordered table-sm text-center align-middle">
+          <thead className="table-light">
+            <tr>
+              <th>X-b1</th>
+              <th>XI-b2</th>
+              <th>XII-b2</th>
+              <th>XIII-b2</th>
+              <th>XIV-b3</th>
+              <th>XV-b4</th>
+              <th>XVI-b4</th>
+              <th>XVII-b4</th>
+              <th>XVIII-b4</th>
+              <th>XIX-b5</th>
+              <th>XX-b5</th>
+              <th>XXI-b6</th>
+              <th>XXII-b7</th>
+              <th>XXIII-b8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{Frm.data.qualificadorDoDominioXb1 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXIb2 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXIIb2 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXIIIb2 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXIVb3 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXVb4 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXVIb4 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXVIIb4 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXVIIIb4 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXIXb5 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXXb5 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXXIb6 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXXIIb7 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioXXIIIb8 ?? '—'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div className="col col-12 mt-3">
+      <h6>Resumo por Domínio (maior qualificador do grupo)</h6>
+      <div className="table-responsive">
+        <table className="table table-bordered text-center">
+          <thead className="table-light">
+            <tr>
+              <th>b1</th>
+              <th>b2</th>
+              <th>b3</th>
+              <th>b4</th>
+              <th>b5</th>
+              <th>b6</th>
+              <th>b7</th>
+              <th>b8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXb1])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXIb2, Frm.data.qualificadorDoDominioXIIb2, Frm.data.qualificadorDoDominioXIIIb2])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXIVb3])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXVb4, Frm.data.qualificadorDoDominioXVIb4, Frm.data.qualificadorDoDominioXVIIb4, Frm.data.qualificadorDoDominioXVIIIb4])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXIXb5, Frm.data.qualificadorDoDominioXXb5])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXXIb6])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXXIIb7])}</td>
+              <td>{maxQualificador([Frm.data.qualificadorDoDominioXXIIIb8])}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div className="col col-12 mt-4">
+      <h5>Resumo dos Qualificadores de Domínio — Atividades e Participação</h5>
+      <div className="table-responsive">
+        <table className="table table-bordered table-sm text-center align-middle">
+          <thead className="table-light">
+            <tr>
+              <th>d1</th>
+              <th>d2</th>
+              <th>d3</th>
+              <th>d4</th>
+              <th>d5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{Frm.data.qualificadorDoDominioD1 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioD2 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioD3 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioD4 ?? '—'}</td>
+              <td>{Frm.data.qualificadorDoDominioD5 ?? '—'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>  
+
+    <div className="col col-12 mt-3">
+      <h4>Estrutura e Prognóstico</h4>
+    </div>
+
+    <Frm.Select label="Existem alterações na estrutura do corpo que configuram maiores limitações e restrições ao avaliado do que as alterações observadas em funções do corpo? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C)." name="alteracoesEstruturaCorpo" options={oNaoSim} width={12} />
+    {Frm.data.alteracoesEstruturaCorpo === 'Sim' && <>
+      <Frm.CheckBoxes label="Assinale abaixo a(s) Estrutura(s) do Corpo que configura(m) tal condição" labelsAndNames={oEstruturaEPrognostico} width={12} />
+      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoEstruturaEPrognostico" width={12} />
+    </>}
+
+    <Frm.Select label="As alterações observadas em funções e/ou estruturas do corpo configuram prognóstico desfavorável? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C), de forma não cumulativa, caso já tenha havido elevação pelo quesito anterior." name="prognosticoDesfavoravel" options={oNaoNaoEhPossivelPrognosticarSim} width={12} />
+    {Frm.data.prognosticoDesfavoravel === 'Sim' && <>
+      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoPrognosticoDesfavoravel" width={12} />
+    </>}
+
+    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
+      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
+    </>}
+
+    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
+      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
+    </>}
+
+    <div className="col col-12 mt-3">
+      <h4>Risco e Proteção Social</h4>
+    </div>
+								
+    <Frm.Select label="Caso sejam observados indícios de risco social que demandem acompanhamento prioritário (violência física e/ou psicológica; abandono familiar; abusos e/ou exploração sexual; crianças e/ou adolescentes fora da escola; exploração de trabalho infantil; ausência de proteção social, familiar e/ou comunitária, entre outros), assinale" name="riscoSocial" options={oNaoSim} width={12} />
+    {Frm.data.riscoSocial === 'Sim' && <>
+      <Frm.TextArea label="Descreva abaixo, para posterior encaminhamento pelo assistente social" name="descricaoRiscoSocial" width={12} />
+    </>}
 
     {/*
         <Frm.RadioButtonsTable label="Atividade Física" labelsAndNames={oAtividadeFisica} options={oNivel} width={12} />
