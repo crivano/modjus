@@ -304,6 +304,70 @@ function interview(Frm: FormHelper) {
     return a?.filter(v => v != undefined && v != null && v !== '').reduce((a: string, b: string) => a === '—' ? b : (Number(b) > Number(a) ? b : a), '—')
   }
 
+  const numStrToLetter = (v: string | undefined): string => {
+    if (!v || v === '—') return '—'
+    const map: Record<string, string> = { '0': 'N', '1': 'L', '2': 'M', '3': 'G', '4': 'C' }
+    return map[v] ?? '—'
+  }
+
+  const letterToDesc: Record<string, string> = {
+    'N': 'Nenhuma', 'L': 'Leve', 'M': 'Moderada', 'G': 'Grave', 'C': 'Completa', '—': '—'
+  }
+
+  const elevateQualifierLetter = (letter: string): string => {
+    const order = ['N', 'L', 'M', 'G', 'C']
+    const idx = order.indexOf(letter)
+    if (idx === -1 || idx === 4) return letter
+    return order[idx + 1]
+  }
+
+  // Funções do Corpo: max across all body-function domains, elevated by structure/prognosis
+  const fcBase = maxQualificador([
+    Frm.data.qualificadorDoDominioXb1,
+    Frm.data.qualificadorDoDominioXIb2,
+    Frm.data.qualificadorDoDominioXIIb2,
+    Frm.data.qualificadorDoDominioXIIIb2,
+    Frm.data.qualificadorDoDominioXIVb3,
+    Frm.data.qualificadorDoDominioXVb4,
+    Frm.data.qualificadorDoDominioXVIb4,
+    Frm.data.qualificadorDoDominioXVIIb4,
+    Frm.data.qualificadorDoDominioXVIIIb4,
+    Frm.data.qualificadorDoDominioXIXb5,
+    Frm.data.qualificadorDoDominioXXb5,
+    Frm.data.qualificadorDoDominioXXIb6,
+    Frm.data.qualificadorDoDominioXXIIb7,
+    Frm.data.qualificadorDoDominioXXIIIb8,
+  ])
+  let fcLetter = numStrToLetter(fcBase)
+  // Non-cumulative elevation: structure OR unfavorable prognosis raises by one level
+  if (fcLetter !== '—' &&
+    (Frm.data.alteracoesEstruturaCorpo === 'Sim' || Frm.data.prognosticoDesfavoravel === 'Sim')) {
+    fcLetter = elevateQualifierLetter(fcLetter)
+  }
+
+  // Atividades e Participação (médico-pericial): d1–d5
+  // Formula per Annexo III adapted for 5 domains: (sum / (n×4)) × 100
+  const apRawValues = [
+    Frm.data.qualificadorDoDominioD1,
+    Frm.data.qualificadorDoDominioD2,
+    Frm.data.qualificadorDoDominioD3,
+    Frm.data.qualificadorDoDominioD4,
+    Frm.data.qualificadorDoDominioD5,
+  ]
+  const apValidValues = apRawValues
+    .filter(v => v !== undefined && v !== null && v !== '')
+    .map(Number)
+  let apLetter = '—'
+  if (apValidValues.length > 0) {
+    const sum = apValidValues.reduce((a, b) => a + b, 0)
+    const pct = (sum / (apValidValues.length * 4)) * 100
+    if (pct <= 4) apLetter = 'N'
+    else if (pct <= 24) apLetter = 'L'
+    else if (pct <= 49) apLetter = 'M'
+    else if (pct <= 95) apLetter = 'G'
+    else apLetter = 'C'
+  }
+
   return <>
     <Frm.Input label="Nome" name="nome" width={8} />
     {/* <Frm.Input label="Idade" name="idade" width={3} /> */}
@@ -320,10 +384,6 @@ function interview(Frm: FormHelper) {
     <Frm.TextArea label="Informações de exames e laudos apresentados" name="exemesELaudos" width={12} />
     <Frm.TextArea label="Exame físico: Considerar as alterações relevantes observadas ao exame físico, que darão subsídios para a avaliação e qualificação dos domínios abaixo relacionados" name="exameFisico" width={12} />
 
-    <Frm.TextArea label="Patologia(s) ou sequela(s) que acomete(m) a parte autora: Mencionar a(s) CID(s) indicando os documentos médicos que a comprovam" name="patologia" width={12} />
-    <Frm.TextArea label="Resumo da História Clínica / Anamnese" name="anamnese" width={12} />
-    <Frm.TextArea label="Informações de exames e laudos apresentados" name="examesELaudos" width={12} />
-
     <Frm.Input label="CID Principal (campo obrigatório)" name="cidPrincipal" width={8} />
     <Frm.Input label="Código CID" name="codigoCidPrincipal" width={4} />
     <Frm.Input label="CID Secundário (1)" name="cidSecundario" width={8} />
@@ -331,7 +391,7 @@ function interview(Frm: FormHelper) {
     <Frm.Input label="CID Secundário (2)" name="cidSecundario2" width={8} />
     <Frm.Input label="Código CID" name="codigoCidSecundario2" width={4} />
 
-    <div className="col col-12 mt-3">
+    <div className="col col-12 mt-5">
       <h4>Funções do Corpo</h4>
     </div>
 
@@ -375,7 +435,7 @@ function interview(Frm: FormHelper) {
     <Frm.RadioButtonsTable label="XXIII - FUNÇÕES DA PELE E ESTRUTURAS RELACIONADAS - b8: referem-se a funções da pele e seus anexos (pelos, cabelos e unhas)." labelsAndNames={oFuncoesDaPeleEEstruturasRelacionadas} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXXIIIb8 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIIb8Justificativa" options={oJustificativa} width={12} />}
 
-    <div className="col col-12 mt-3">
+    <div className="col col-12 mt-5">
       <h4>Atividades e Participação</h4>
     </div>
 
@@ -392,6 +452,44 @@ function interview(Frm: FormHelper) {
     <Frm.RadioButtonsTable label="XXVIII - COMUNICAÇÃO - d3: refere-se às características gerais e específicas da comunicação, por meio da linguagem, sinais e símbolos, incluindo a recepção e produção de mensagens, manutenção da conversação e utilização de dispositivos e técnicas de comunicação." labelsAndNames={oComunicacao} options={oQualificador} width={12} />
     <Frm.RadioButtonsTable label="XXIX - MOBILIDADE - d4: refere-se ao movimento de mudar o corpo de posição ou de lugar, carregar, mover ou manipular objetos, ao andar ou deslocar-se." labelsAndNames={oMobilidade} options={oQualificador} width={12} />
     <Frm.RadioButtonsTable label="XXX - CUIDADO PESSOAL - d5: refere-se ao cuidado pessoal como lavar-se e secar-se, cuidar do próprio corpo e de parte do corpo, vestir-se, comer, beber e cuidar da própria saúde." labelsAndNames={oCuidadoPessoal} options={oQualificador} width={12} />
+
+    <div className="col col-12 mt-5">
+      <h4>Estrutura e Prognóstico</h4>
+    </div>
+
+    <Frm.Select label="Existem alterações na estrutura do corpo que configuram maiores limitações e restrições ao avaliado do que as alterações observadas em funções do corpo? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C)." name="alteracoesEstruturaCorpo" options={oNaoSim} width={12} />
+    {Frm.data.alteracoesEstruturaCorpo === 'Sim' && <>
+      <Frm.CheckBoxes label="Assinale abaixo a(s) Estrutura(s) do Corpo que configura(m) tal condição" labelsAndNames={oEstruturaEPrognostico} width={12} />
+      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoEstruturaEPrognostico" width={12} />
+    </>}
+
+    <Frm.Select label="As alterações observadas em funções e/ou estruturas do corpo configuram prognóstico desfavorável? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C), de forma não cumulativa, caso já tenha havido elevação pelo quesito anterior." name="prognosticoDesfavoravel" options={oNaoNaoEhPossivelPrognosticarSim} width={12} />
+    {Frm.data.prognosticoDesfavoravel === 'Sim' && <>
+      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoPrognosticoDesfavoravel" width={12} />
+    </>}
+
+    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
+      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
+    </>}
+
+    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
+      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
+    </>}
+
+    <div className="col col-12 mt-5">
+      <h4>Risco e Proteção Social</h4>
+    </div>
+
+    <Frm.Select label="Caso sejam observados indícios de risco social que demandem acompanhamento prioritário (violência física e/ou psicológica; abandono familiar; abusos e/ou exploração sexual; crianças e/ou adolescentes fora da escola; exploração de trabalho infantil; ausência de proteção social, familiar e/ou comunitária, entre outros), assinale" name="riscoSocial" options={oNaoSim} width={12} />
+    {Frm.data.riscoSocial === 'Sim' && <>
+      <Frm.TextArea label="Descreva abaixo, para posterior encaminhamento pelo assistente social" name="descricaoRiscoSocial" width={12} />
+    </>}
+
+    <div className="col col-12 mt-5">
+      <h4>Avaliação Médico Pericial</h4>
+    </div>
 
     <div className="col col-12 mt-4">
       <h5>Resumo dos Qualificadores de Domínio — Funções do Corpo</h5>
@@ -437,7 +535,7 @@ function interview(Frm: FormHelper) {
       </div>
     </div>
 
-    <div className="col col-12 mt-3">
+    <div className="col col-12 mt-5">
       <h6>Resumo por Domínio (maior qualificador do grupo)</h6>
       <div className="table-responsive">
         <table className="table table-bordered text-center">
@@ -493,48 +591,38 @@ function interview(Frm: FormHelper) {
           </tbody>
         </table>
       </div>
-    </div>  
-
-    <div className="col col-12 mt-3">
-      <h4>Estrutura e Prognóstico</h4>
     </div>
 
-    <Frm.Select label="Existem alterações na estrutura do corpo que configuram maiores limitações e restrições ao avaliado do que as alterações observadas em funções do corpo? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C)." name="alteracoesEstruturaCorpo" options={oNaoSim} width={12} />
-    {Frm.data.alteracoesEstruturaCorpo === 'Sim' && <>
-      <Frm.CheckBoxes label="Assinale abaixo a(s) Estrutura(s) do Corpo que configura(m) tal condição" labelsAndNames={oEstruturaEPrognostico} width={12} />
-      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoEstruturaEPrognostico" width={12} />
-    </>}
 
-    <Frm.Select label="As alterações observadas em funções e/ou estruturas do corpo configuram prognóstico desfavorável? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C), de forma não cumulativa, caso já tenha havido elevação pelo quesito anterior." name="prognosticoDesfavoravel" options={oNaoNaoEhPossivelPrognosticarSim} width={12} />
-    {Frm.data.prognosticoDesfavoravel === 'Sim' && <>
-      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoPrognosticoDesfavoravel" width={12} />
-    </>}
 
-    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
-    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
-      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
-    </>}
+    <div className="col col-12 mt-4">
+      <h5>Resultado Final</h5>
 
-    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
-    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
-      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
-    </>}
-
-    <div className="col col-12 mt-3">
-      <h4>Risco e Proteção Social</h4>
+      <div className="border rounded">
+        <div className="bg-light text-center fw-bold py-2 border-bottom">Resultado Parcial</div>
+        <div className="p-3 d-flex flex-column align-items-center gap-2 bg-light">
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <strong>Funções do Corpo:</strong>
+            <span className="border border-dark px-2 py-1 fw-bold text-center">{fcLetter}</span>
+            <span>= Alteração</span>
+            <span className="border border-dark px-3 py-1">{letterToDesc[fcLetter] ?? '—'}</span>
+          </div>
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <strong>Qualificador Parcial de Atividades e Participação:</strong>
+            <span className="border border-dark px-2 py-1 fw-bold text-center">{apLetter}</span>
+            <span>= Dificuldade</span>
+            <span className="border border-dark px-3 py-1">{letterToDesc[apLetter] ?? '—'}</span>
+          </div>
+        </div>
+      </div>
     </div>
-								
-    <Frm.Select label="Caso sejam observados indícios de risco social que demandem acompanhamento prioritário (violência física e/ou psicológica; abandono familiar; abusos e/ou exploração sexual; crianças e/ou adolescentes fora da escola; exploração de trabalho infantil; ausência de proteção social, familiar e/ou comunitária, entre outros), assinale" name="riscoSocial" options={oNaoSim} width={12} />
-    {Frm.data.riscoSocial === 'Sim' && <>
-      <Frm.TextArea label="Descreva abaixo, para posterior encaminhamento pelo assistente social" name="descricaoRiscoSocial" width={12} />
-    </>}
 
     {/*
         <Frm.RadioButtonsTable label="Atividade Física" labelsAndNames={oAtividadeFisica} options={oNivel} width={12} />
     <Frm.RadioButtonsTable label={formatTextBasedOnAge(age, "{Desenvolvimento (< 7 anos)}{Auto Cuidado e Âmbito Doméstico (> 7 anos)}")} labelsAndNames={oAutoCuidado} options={oNivel} width={12} />
     <Frm.RadioButtonsTable label={formatTextBasedOnAge(age, "Relações Interpessoais e Sociais. Aprendizagem. Cognição. {Inserção Profissional. (> 7 anos)}")} labelsAndNames={oRelacoes} options={oNivel} width={12} />
 
-    <div className="col col-12 mt-3">
+    <div className="col col-12 mt-5">
       <h4>Quesitos Complementares</h4>
     </div>
     <Frm.TextArea label="Caso sejam constatadas limitações (graus B, C ou D) para atividades relacionadas no quadro acima, qual a data de início ou época aproximada em que a obstrução / impedimento / dificuldade passou a interferir na vida do(a) periciando(a)?" name="inicio" width={12} />
