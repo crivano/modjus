@@ -406,32 +406,46 @@ function interview(Frm: FormHelper) {
       </ul>
     </div>
 
+    <div id="sec-xb1" />
     <Frm.RadioButtonsTable label="X - FUNÇÕES MENTAIS - b1: referem-se às funções do cérebro, que incluem funções mentais globais, como consciência, energia e impulso, e funções mentais específicas, como memória, linguagem e cálculo." labelsAndNames={oFuncoesMentais} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXb1 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXb1Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xib2" />
     <Frm.RadioButtonsTable label="XI - FUNÇÕES SENSORIAIS DA VISÃO - b2: referem-se à percepção de luz, tamanho e cor de um estímulo visual. Indicadores = discriminados nas unidades de classificação abaixo, entre parênteses." labelsAndNames={oFuncoesSensoriaisDaVisao} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIb2Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xiib2" />
     <Frm.RadioButtonsTable label="XII - FUNÇÕES SENSORIAIS DA AUDIÇÃO - b2: referem-se à percepção de sons e discriminação de localização, intensidade, ruído e qualidade." labelsAndNames={oFuncoesSensoriaisDaAudicao} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIb2Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xiiib2" />
     <Frm.RadioButtonsTable label="XIII - FUNÇÕES SENSORIAIS ADICIONAIS E DOR - b2: referem-se às funções gustativas, olfativas, proprioceptivas, táteis e a sensações relacionadas à temperatura e outros estímulos e sensação de dor." labelsAndNames={oFuncoesSensoriaisAdicionaisEDor} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXIIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIIb2Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xivb3" />
     <Frm.RadioButtonsTable label="XIV - FUNÇÕES DA VOZ E DA FALA - b3: referem-se à produção de sons e da fala." labelsAndNames={oFuncoesDaVozEDaFala} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXIVb3 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIVb3Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xvb4" />
     <Frm.RadioButtonsTable label="XV - FUNÇÕES DO SISTEMA CARDIOVASCULAR - b4: referem-se às funções do coração, vasos sanguíneos e pressão sanguínea." labelsAndNames={oFuncoesDoSistemaCardiovascular} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXVb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xvib4" />
     <Frm.RadioButtonsTable label="XVI - FUNÇÕES DO SISTEMA HEMATOLÓGICO - b4:  referem-se à produção de sangue, transporte de oxigênio e metabólitos e à coagulação." labelsAndNames={oFuncoesDoSistemaHematologico} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXVIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xviib4" />
     <Frm.RadioButtonsTable label="XVII - FUNÇÕES DO SISTEMA IMUNOLÓGICO - b4: referem-se à imunidade celular e humoral e alterações na função do sistema linfático." labelsAndNames={oFuncoesDoSistemaImunologico} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXVIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xviiib4" />
     <Frm.RadioButtonsTable label="XVIII - FUNÇÕES DO SISTEMA RESPIRATÓRIO - b4: referem-se à frequência, ritmo e profundidade da respiração e às funções dos músculos respiratórios." labelsAndNames={oFuncoesDoSistemaRespiratorio} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXVIIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIIb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xixb5" />
     <Frm.RadioButtonsTable label="XIX - FUNÇÕES DO SISTEMA DIGESTIVO - b5: referem-se à ingestão, digestão e eliminação de substâncias líquidas e sólidas." labelsAndNames={oFuncoesDoSistemaDigestivo} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXIXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIXb5Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxb5" />
     <Frm.RadioButtonsTable label="XX - FUNÇÕES DOS SISTEMAS METABÓLICO E ENDÓCRINO - b5: referem-se às funções metabólicas gerais e das glândulas endócrinas, inclusive as associadas à puberdade." labelsAndNames={oFuncoesDosSistemasMetabolicoEEndocrino} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXb5Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxib6" />
     <Frm.RadioButtonsTable label="XXI - FUNÇÕES GENITURINÁRIAS E REPRODUTIVAS - b6: referem-se às funções urinárias e reprodutivas, incluindo funções sexuais e de procriação." labelsAndNames={oFuncoesGeniturinariasEReprodutivas} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXXIb6 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIb6Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxiib7" />
     <Frm.RadioButtonsTable label="XXII - FUNÇÕES NEUROMUSCULOESQUELÉTICAS E RELACIONADAS AO MOVIMENTO - b7: referem-se à mobilidade, funções das articulações, ossos, reflexos e músculos." labelsAndNames={oFuncoesNeuromusculoesqueleticasERelacionadasAoMovimento} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXXIIb7 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIb7Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxiiib8" />
     <Frm.RadioButtonsTable label="XXIII - FUNÇÕES DA PELE E ESTRUTURAS RELACIONADAS - b8: referem-se a funções da pele e seus anexos (pelos, cabelos e unhas)." labelsAndNames={oFuncoesDaPeleEEstruturasRelacionadas} options={oQualificador} width={12} />
     {Frm.data.qualificadorDoDominioXXIIIb8 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIIb8Justificativa" options={oJustificativa} width={12} />}
 
@@ -447,10 +461,15 @@ function interview(Frm: FormHelper) {
       <p>As colunas T e P, à direita dos qualificadores de cada domínio, destinam-se à sinalização de dependência Total ou Parcial de cuidados de terceiros, sempre que o avaliador julgar pertinente, com vistas a fornecer subsídios para políticas públicas de cuidados.  Não representam o foco principal da avaliação, que deve estar centrado no desempenho para o exercício de atividades e participação social, conforme o grau de dificuldade estabelecido pelos cortes percentuais acima.</p>
     </div>
 
+    <div id="sec-d1" />
     <Frm.RadioButtonsTable label="XXVI - APRENDIZAGEM E APLICAÇÃO DE CONHECIMENTO - d1: referem-se ao desempenho em aprender, aplicar o conhecimento aprendido, pensar, resolver problemas e tomar decisões." labelsAndNames={oAprendizagemEAplicacaoDoConhecimento} options={oQualificador} options2={oTotalParcial} width={12} />
+    <div id="sec-d2" />
     <Frm.RadioButtonsTable label="XXVII - TAREFAS E DEMANDAS GERAIS - d2: referem-se aos aspectos gerais da execução de uma única tarefa ou de várias tarefas, organização de rotinas e superação do estresse." labelsAndNames={oTarefasEDemandasGerais} options={oQualificador} width={12} />
+    <div id="sec-d3" />
     <Frm.RadioButtonsTable label="XXVIII - COMUNICAÇÃO - d3: refere-se às características gerais e específicas da comunicação, por meio da linguagem, sinais e símbolos, incluindo a recepção e produção de mensagens, manutenção da conversação e utilização de dispositivos e técnicas de comunicação." labelsAndNames={oComunicacao} options={oQualificador} width={12} />
+    <div id="sec-d4" />
     <Frm.RadioButtonsTable label="XXIX - MOBILIDADE - d4: refere-se ao movimento de mudar o corpo de posição ou de lugar, carregar, mover ou manipular objetos, ao andar ou deslocar-se." labelsAndNames={oMobilidade} options={oQualificador} width={12} />
+    <div id="sec-d5" />
     <Frm.RadioButtonsTable label="XXX - CUIDADO PESSOAL - d5: refere-se ao cuidado pessoal como lavar-se e secar-se, cuidar do próprio corpo e de parte do corpo, vestir-se, comer, beber e cuidar da própria saúde." labelsAndNames={oCuidadoPessoal} options={oQualificador} width={12} />
 
     <div className="col col-12 mt-5">
@@ -515,20 +534,20 @@ function interview(Frm: FormHelper) {
           </thead>
           <tbody>
             <tr>
-              <td>{Frm.data.qualificadorDoDominioXb1 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXIb2 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXIIb2 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXIIIb2 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXIVb3 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXVb4 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXVIb4 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXVIIb4 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXVIIIb4 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXIXb5 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXXb5 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXXIb6 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXXIIb7 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioXXIIIb8 ?? '—'}</td>
+              <td><a className="text-decoration-none" href="#sec-xb1">{Frm.data.qualificadorDoDominioXb1 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xib2">{Frm.data.qualificadorDoDominioXIb2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xiib2">{Frm.data.qualificadorDoDominioXIIb2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xiiib2">{Frm.data.qualificadorDoDominioXIIIb2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xivb3">{Frm.data.qualificadorDoDominioXIVb3 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xvb4">{Frm.data.qualificadorDoDominioXVb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xvib4">{Frm.data.qualificadorDoDominioXVIb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xviib4">{Frm.data.qualificadorDoDominioXVIIb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xviiib4">{Frm.data.qualificadorDoDominioXVIIIb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xixb5">{Frm.data.qualificadorDoDominioXIXb5 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxb5">{Frm.data.qualificadorDoDominioXXb5 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxib6">{Frm.data.qualificadorDoDominioXXIb6 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiib7">{Frm.data.qualificadorDoDominioXXIIb7 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiiib8">{Frm.data.qualificadorDoDominioXXIIIb8 ?? '—'}</a></td>
             </tr>
           </tbody>
         </table>
@@ -553,14 +572,14 @@ function interview(Frm: FormHelper) {
           </thead>
           <tbody>
             <tr>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXb1])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXIb2, Frm.data.qualificadorDoDominioXIIb2, Frm.data.qualificadorDoDominioXIIIb2])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXIVb3])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXVb4, Frm.data.qualificadorDoDominioXVIb4, Frm.data.qualificadorDoDominioXVIIb4, Frm.data.qualificadorDoDominioXVIIIb4])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXIXb5, Frm.data.qualificadorDoDominioXXb5])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXXIb6])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXXIIb7])}</td>
-              <td>{maxQualificador([Frm.data.qualificadorDoDominioXXIIIb8])}</td>
+              <td><a className="text-decoration-none" href="#sec-xb1">{maxQualificador([Frm.data.qualificadorDoDominioXb1])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xib2">{maxQualificador([Frm.data.qualificadorDoDominioXIb2, Frm.data.qualificadorDoDominioXIIb2, Frm.data.qualificadorDoDominioXIIIb2])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xivb3">{maxQualificador([Frm.data.qualificadorDoDominioXIVb3])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xvb4">{maxQualificador([Frm.data.qualificadorDoDominioXVb4, Frm.data.qualificadorDoDominioXVIb4, Frm.data.qualificadorDoDominioXVIIb4, Frm.data.qualificadorDoDominioXVIIIb4])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xixb5">{maxQualificador([Frm.data.qualificadorDoDominioXIXb5, Frm.data.qualificadorDoDominioXXb5])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxib6">{maxQualificador([Frm.data.qualificadorDoDominioXXIb6])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiib7">{maxQualificador([Frm.data.qualificadorDoDominioXXIIb7])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiiib8">{maxQualificador([Frm.data.qualificadorDoDominioXXIIIb8])}</a></td>
             </tr>
           </tbody>
         </table>
@@ -582,11 +601,11 @@ function interview(Frm: FormHelper) {
           </thead>
           <tbody>
             <tr>
-              <td>{Frm.data.qualificadorDoDominioD1 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioD2 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioD3 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioD4 ?? '—'}</td>
-              <td>{Frm.data.qualificadorDoDominioD5 ?? '—'}</td>
+              <td><a className="text-decoration-none" href="#sec-d1">{Frm.data.qualificadorDoDominioD1 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d2">{Frm.data.qualificadorDoDominioD2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d3">{Frm.data.qualificadorDoDominioD3 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d4">{Frm.data.qualificadorDoDominioD4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d5">{Frm.data.qualificadorDoDominioD5 ?? '—'}</a></td>
             </tr>
           </tbody>
         </table>
