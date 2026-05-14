@@ -136,12 +136,12 @@ export class FormHelper {
 
     public colClass = (width?: string | number) => `mt-3 col ${typeof width === 'string' ? width : `col-12 col-md-${width || 12}`}`
 
-public Input = ({ label, name, width, readOnly = false, disabled = false, }: { label: string, name: string, width?: number | string, readOnly?: boolean, disabled?: boolean, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
+    public Input = ({ label, name, width, readOnly = false, disabled = false, }: { label: string, name: string, width?: number | string, readOnly?: boolean, disabled?: boolean, onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) => {
         if (label === null) return null
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
-                <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} readOnly={readOnly} disabled={disabled}/>
+                <Form.Control name={name} type="text" value={this.get(name)} onChange={e => this.set(name, e.target.value)} placeholder="" key={name} readOnly={readOnly} disabled={disabled} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group>
         ) : (
@@ -192,13 +192,13 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
         const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newValue = formatDate(e.target.value);
             this.set(name, newValue);
-    
+
             if (name === 'dataEncerramento') {
                 const dataAbertura = this.get('dataAbertura');
                 if (dataAbertura) {
                     const dataAberturaDate = new Date(parseDate(dataAbertura));
                     const dataEncerramentoDate = new Date(parseDate(newValue));
-    
+
                     if (dataEncerramentoDate < dataAberturaDate) {
                         alert('A Data de Encerramento não pode ser menor que a Data de Abertura.');
                         //this.set(name, ''); // Limpa o campo de Data de Encerramento
@@ -212,7 +212,7 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
                 if (dataAbertura) {
                     const dataAberturaDate = new Date(parseDate(dataAbertura));
                     const dataInstalacaoDate = new Date(parseDate(newValue));
-    
+
                     if (dataInstalacaoDate > dataAberturaDate) {
                         alert('A Data de Instalacao não pode ser maior que a Data de Abertura.');
                         //this.set(name, ''); // Limpa o campo de Data de Encerramento
@@ -222,7 +222,7 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
             }
 
         };
-        
+
 
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
@@ -259,7 +259,7 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
 
         const value = this.get(name) || '';
 
-                return this.setData ? (
+        return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
                 <Form.Control
@@ -400,7 +400,7 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
         )
     }
 
-    public RadioButtonsTable = ({ label, labelsAndNames, options, width }: { label: string, labelsAndNames: { label: string, name: string }[], options: { id: string, name: string }[], width?: number | string }) => {
+    public RadioButtonsTable = ({ label, labelsAndNames, options, options2, width }: { label: string, labelsAndNames: { label: string, name: string }[], options: { id: string, name: string }[], options2?: { id: string, name: string }[], width?: number | string }) => {
         if (!labelsAndNames || labelsAndNames.length === 0) return null
         return this.setData ? (
             <div className={this.colClass(width)}>
@@ -409,18 +409,29 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
                     <thead>
                         <tr>
                             <th></th>
-                            {options.map((o, idx) => <th key={o.id}>{o.name}</th>)}
+                            {options.map((o, idx) => <th key={`optionheader-${o.id}`}>{o.name}</th>)}
+                            {options2 && options2.map((o, idx) => <th key={`option2header-${o.id}`}>{o.name}</th>)}
                         </tr>
                     </thead>
                     <tbody>
                         {labelsAndNames.map((c, idx) => {
                             return (
                                 <tr key={c.name}>
-                                    <td>{c.label}</td>
+                                    <td style={{
+                                        textAlign: c.label?.startsWith(' ') ? 'right' : 'left',
+                                        fontWeight: c.label?.startsWith(' ') ? 'bold' : 'normal',
+                                    }}>{c.label}</td>
                                     {options.map((o, idx) => {
                                         return (
-                                            <td key={o.id}>
+                                            <td key={`optiontd-${o.id}`}>
                                                 <Form.Check type="radio" name={c.name} value={o.id} checked={this.get(c.name) === o.id} onChange={e => this.set(c.name, e.target.value)} />
+                                            </td>
+                                        )
+                                    })}
+                                    {options2 && options2.map((o, idx) => {
+                                        return (
+                                            <td key={`optiontd2-${o.id}`}>
+                                                <Form.Check type="radio" name={`${c.name}_2`} value={o.id} checked={this.get(`${c.name}_2`) === o.id} onChange={e => { }} onClick={e => this.set(`${c.name}_2`, this.get(`${c.name}_2`) == o.id ? undefined : o.id)} />
                                             </td>
                                         )
                                     })}
@@ -437,7 +448,8 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
                     <thead>
                         <tr>
                             <th></th>
-                            {options.map((o, idx) => <th key={o.id} className="text-center">{o.name}</th>)}
+                            {options.map((o, idx) => <th key={`optionheaderprev-${o.id}`} className="text-center">{o.name}</th>)}
+                            {options2 && options2.map((o, idx) => <th key={`option2headerprev-${o.id}`} className="text-center">{o.name}</th>)}
                         </tr>
                     </thead>
                     <tbody>
@@ -447,8 +459,15 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
                                     <td>{c.label}</td>
                                     {options.map((o, idx) => {
                                         return (
-                                            <td key={o.id} className="text-center">
+                                            <td key={`optiontdprev-${o.id}`} className="text-center">
                                                 {this.get(c.name) === o.id ? 'X' : ''}
+                                            </td>
+                                        )
+                                    })}
+                                    {options2 && options2.map((o, idx) => {
+                                        return (
+                                            <td key={`optiontd2prev-${o.id}`} className="text-center">
+                                                {this.get(`${c.name}_2`) === o.id ? 'X' : ''}
                                             </td>
                                         )
                                     })}
@@ -470,13 +489,13 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
                 .replace(/\.(\d{3})(\d)/, '.$1-$2') // Adiciona o hífen
                 .slice(0, 14); // Limita o tamanho ao formato de CPF
         };
-    
+
         const parseCPF = (value: string) => {
             return value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
         };
-    
+
         const value = this.get(name) || ''; // Obtém o valor atual do campo
-    
+
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
@@ -502,13 +521,13 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
         const formatName = (value: string) => {
             return value.toUpperCase(); // Converte todo o texto para maiúsculas
         };
-    
+
         const parseName = (value: string) => {
             return value.replace(/[^a-zA-ZÀ-ÿ\s]/g, ''); // Remove caracteres inválidos (apenas letras e espaços)
         };
-    
+
         const value = this.get(name) || ''; // Obtém o valor atual do campo
-    
+
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name} key={name}>
                 {label && <Form.Label>{label}</Form.Label>}
@@ -1000,12 +1019,12 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
                     <Form.Label><strong>{label}</strong></Form.Label>
                     <Button variant="success" onClick={addItem} className="ms-2">Adicionar percurso</Button>
                     <div hidden>
-                    <Form.Check
-                        type="checkbox"
-                        label="Retorno à origem"
-                        onChange={e => handleReturnToOrigin(e.target.checked)}
-                        className="ms-2"
-                    />
+                        <Form.Check
+                            type="checkbox"
+                            label="Retorno à origem"
+                            onChange={e => handleReturnToOrigin(e.target.checked)}
+                            className="ms-2"
+                        />
                     </div>
                 </div>
                 {items.map((_: any, index: number) => (
@@ -1149,7 +1168,18 @@ public Input = ({ label, name, width, readOnly = false, disabled = false, }: { l
 }
 
 // Remove accents, remove spaces, to camelcase, first letter lowercase
-export const labelToName = (label: string) => {
+export const labelToName = (label: string, prefix?: string) => {
+
+    // if label starts with \d+ followed by "." remove the rest
+    const match = label.match(/^\d+\./);
+    if (match) {
+        label = label.substring(0, match[0].length);
+    }
+
+    if (!label?.startsWith(' ') && prefix) {
+        label = prefix + label;
+    }
+
     return label
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, "")

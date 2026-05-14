@@ -50,7 +50,6 @@ function interview(Frm: FormHelper) {
     'Erguer peso (> 3 anos)',
     'Atividades com esforço físico e cardiorrespiratório (> 3 anos)',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName('atividades ' + i)}` }))
-  console.log('oAtividadeFisica', oAtividadeFisica)
 
   const oAutoCuidado = [
     'Desenvolvimento neuropsicomotor (< 7 anos)',
