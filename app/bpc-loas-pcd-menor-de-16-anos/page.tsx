@@ -482,15 +482,15 @@ function interview(Frm: FormHelper) {
       <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoEstruturaEPrognostico" width={12} />
     </>}
 
-    {/* <Frm.Select label="As alterações observadas em funções e/ou estruturas do corpo configuram prognóstico desfavorável? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C), de forma não cumulativa, caso já tenha havido elevação pelo quesito anterior." name="prognosticoDesfavoravel" options={oNaoNaoEhPossivelPrognosticarSim} width={12} />
+    <Frm.Select label="As alterações observadas em funções e/ou estruturas do corpo configuram prognóstico desfavorável? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C), de forma não cumulativa, caso já tenha havido elevação pelo quesito anterior." name="prognosticoDesfavoravel" options={oNaoNaoEhPossivelPrognosticarSim} width={12} />
     {Frm.data.prognosticoDesfavoravel === 'Sim' && <>
       <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoPrognosticoDesfavoravel" width={12} />
-    </>} */}
+    </>}
 
-    <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {/* <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
     {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
       <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
-    </>}
+    </>} */}
 
     <Frm.Select label="As alterações em funções e/ou estruturas do corpo podem ser resolvidas em menos de dois anos? 
 Caso afirmativa a resposta, qual o prazo estimado (prognóstico) para sua reversão? 
