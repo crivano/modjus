@@ -494,19 +494,19 @@ function interview(Frm: FormHelper) {
 
     <Frm.Select label="As alterações em funções e/ou estruturas do corpo podem ser resolvidas em menos de dois anos? 
 Caso afirmativa a resposta, qual o prazo estimado (prognóstico) para sua reversão? 
-Considerar os seguintes aspectos para as respostas: i. o tempo pregresso já vivenciado com tal quadro, ii. as possibilidades de acesso ao tratamento necessário; iii. a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas; iv. possível barreiras apontadas em laudo de avaliação social já anexado aos autos ou informadas durante a perícia médica." name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+Considerar os seguintes aspectos para as respostas: i. o tempo pregresso já vivenciado com tal quadro, ii. as possibilidades de acesso ao tratamento necessário; iii. a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas; iv. possíveis barreiras apontadas em laudo de avaliação social já anexado aos autos ou informadas durante a perícia médica." name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
     {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
       <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
     </>}
 
-    <div className="col col-12 mt-5">
+    {/* <div className="col col-12 mt-5">
       <h4>Risco e Proteção Social</h4>
     </div>
 
     <Frm.Select label="Caso sejam observados indícios de risco social que demandem acompanhamento prioritário (violência física e/ou psicológica; abandono familiar; abusos e/ou exploração sexual; crianças e/ou adolescentes fora da escola; exploração de trabalho infantil; ausência de proteção social, familiar e/ou comunitária, entre outros), assinale" name="riscoSocial" options={oNaoSim} width={12} />
     {Frm.data.riscoSocial === 'Sim' && <>
       <Frm.TextArea label="Descreva abaixo, para posterior encaminhamento pelo assistente social" name="descricaoRiscoSocial" width={12} />
-    </>}
+    </>} */}
 
     <div className="col col-12 mt-5">
       <h4>Avaliação Médico Pericial</h4>
@@ -680,5 +680,5 @@ export default function BpcLoasPcd() {
   const searchParams = useSearchParams()
   quesitoConclusivo = searchParams.get('quesito-conclusivo') === 'false' ? false : true
 
-  return Model(interview, document, { saveButton: false, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17' })
+  return Model(interview, document, { saveButton: false, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17', showPreview: false })
 }

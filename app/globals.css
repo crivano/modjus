@@ -7,6 +7,16 @@
     }
 }
 
+.d-screen-none {
+    display: none;
+}
+
+@media print {
+    .d-screen-none {
+        display: block;
+    }
+}
+
 .error-popup {
     position: fixed;
     width: 800px;

@@ -9,7 +9,7 @@ import { VERSION } from "@/version"; // Ajuste o caminho conforme necessário
 
 const Frm = new FormHelper()
 
-export default function Model(interview: (Frm: FormHelper) => JSX.Element, document: (data: any) => JSX.Element, options?: { saveButton?: boolean, pdfButton?: boolean, pdfFileName: string }) {
+export default function Model(interview: (Frm: FormHelper) => JSX.Element, document: (data: any) => JSX.Element, options?: { saveButton?: boolean, pdfButton?: boolean, pdfFileName: string, showPreview?: boolean }) {
     const searchParams = useSearchParams()
     console.log('searchParams', JSON.stringify(searchParams))
     const currentUrl = searchParams.get('url') ? searchParams.get('url') as string : (process.env.NEXT_PUBLIC_URL || process.env.NEXT_PUBLIC_VERCEL_URL) + usePathname()
@@ -32,7 +32,7 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
         }
     }, [dataKey])
 
-    Build: {new Date(VERSION.buildTime).toLocaleString('pt-BR')}
+    Build: { new Date(VERSION.buildTime).toLocaleString('pt-BR') }
 
     return (<div>
         <div className="container-fluid">
@@ -41,18 +41,20 @@ export default function Model(interview: (Frm: FormHelper) => JSX.Element, docum
             </footer>
 
             <div className="row">
-                <div id="modjus-interview" className="col col-12 col-md-6 d-print-none">
+                <div id="modjus-interview" className={`col col-12 d-print-none ${options?.showPreview === false ? '' : 'col-md-6'}`}>
                     <h1 className="mt-3">Formulário</h1>
                     <div className="alert alert-info">
                         <div className="row">
                             {interview(Frm)}
                         </div>
                     </div>
-                    <div className="d-flex justify-content-end mt-2">
+                    <div className="d-flex justify-content-end mt-2 mb-3">
                         {(!options || options.saveButton !== false) && <button className="btn btn-primary" onClick={handleSave}>Transportar</button>}
+                        {options?.pdfButton && options?.showPreview === false && options?.pdfButton &&
+                            <Print id={options?.pdfFileName} className="btn btn-primary ml-2 mb-3" />}
                     </div>
                 </div>
-                <div className="col col-12 col-md-6">
+                <div className={`col col-12 col-md-6 ${options?.showPreview === false ? 'd-screen-none' : ''}`}>
                     <h1 className="mt-3 d-print-none">Previsão do Documento</h1>
                     <div className="alert alert-warning">
                         <div id="modjus-document" modjus-data={JSON.stringify(data)} modjus-url={currentUrl}>
