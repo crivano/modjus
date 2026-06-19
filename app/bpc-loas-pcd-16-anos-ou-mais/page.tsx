@@ -1,0 +1,680 @@
+'use client'
+
+import Model from "@/libs/model"
+import { FormHelper, labelToName } from "@/libs/form-support"
+import { calculateAge, formatTextBasedOnAge, parseDescriptionWithCondition } from "@/libs/age"
+import { useSearchParams } from 'next/navigation'
+
+let quesitoConclusivo = true
+
+function interview(Frm: FormHelper) {
+  const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '0 ano'
+
+  const oNaoSim = [
+    '',
+    'Não',
+    'Sim',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oNaoNaoEhPossivelPrognosticarSim = [
+    '',
+    'Não',
+    'Não é possível prognosticar',
+    'Sim',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oNaoNaoEhPossivelPreverSim = [
+    '',
+    'Não',
+    'Não é possível prever, mas os efeitos podem se estender por dois anos ou mais.',
+    'Sim',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oEscolaridade = [
+    '',
+    'Não Frequenta Creche (< 3 anos)',
+    'Frequenta Creche (< 3 anos)',
+    'Não Frequenta a Escola (> 3 e < 17 anos)',
+    'Educação Infantil (> 3 e < 7 anos)',
+    'Ensino Fundamental - 1º ano (> 6 anos)',
+    'Ensino Fundamental - 2º ano (> 6 anos)',
+    'Ensino Fundamental - 3º ano (> 6 anos)',
+    'Ensino Fundamental - 4º ano (> 6 anos)',
+    'Ensino Fundamental - 5º ano (> 6 anos)',
+    'Ensino Fundamental - 6º ano (> 10 anos)',
+    'Ensino Fundamental - 7º ano (> 10 anos)',
+    'Ensino Fundamental - 8º ano (> 10 anos)',
+    'Ensino Fundamental - 9º ano (> 10 anos)',
+    'Ensino Médio - 1ª série (> 14 anos)',
+    'Ensino Médio - 2ª série (> 14 anos)',
+    'Ensino Médio - 3ª série (> 14 anos)',
+    'Curso Técnico (> 14 anos)',
+    'Ensino Superior (> 17 anos)',
+    'Mestrado (> 17 anos)',
+    'Doutorado (> 17 anos)',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+  const oAlfabetizacao = [
+    '',
+    'Não É Alfabetizado(a)',
+    'É Alfabetizado(a)'
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oSexo = [
+    '',
+    'Masculino',
+    'Feminino'
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oJustificativa = [
+    'Não foram observadas alterações ou as alterações no domínio como um todo são mínimas [de 0 a 4%]',
+    'Ausência de elementos de convicção para qualificar'
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oFuncoesMentais = [
+    '49. Funções da consciência (vigília, obnubilação, coma, estado vegetativo, estado de alerta, delírio, entre outros, entre outras) – b110',
+    '50. Funções da orientação (conhecimento e determinação da relação da pessoa consigo própria, com outras pessoas, objetos, espaço, tempo e/ou ambiente, entre outras) – b114',
+    '51. Funções intelectuais (várias funções mentais integradas, incluindo as funções cognitivas e seu desenvolvimento ao longo da vida. Verificar: deficiência intelectual, transtorno mental, demência, entre outras) – b117',
+    '52. Funções psicossociais globais (habilidades interpessoais necessárias para o estabelecimento de interações sociais recíprocas, em termos de significado e finalidade, interações interpessoais, entre outras) – b122',
+    '53. Funções do temperamento e personalidade (extroversão, introversão, amabilidade, responsabilidade, estabilidade psíquica e emocional, abertura e busca para novas experiências, otimismo, confiança, confiabilidade, entre outras) – b126',
+    '54. Funções da energia e de impulsos (nível de energia, motivação, apetite, desejo intenso/dependência, controle de impulsos, entre outras) – b130',
+    '55. Funções do sono (início, manutenção, quantidade e qualidade do sono) – b134',
+    '56. Funções da atenção (concentração, distração e distúrbios da atenção) – b140',
+    '57. Funções da memória (distúrbios da memória recente, remota e amnésica) – b144',
+    '58. Funções psicomotoras (atraso psicomotor, controle e coordenação de partes do corpo, marcha, postura, ecolalia, ecopraxia, excitação, agitação, catatonia, negativismo, ambivalência, convulsão epiléptica, entre outras) – b147',
+    '59. Funções da emoção (funções mentais específicas relacionadas com a adequação, regulação e amplitude da emoção, tristeza, medo, raiva, ódio, tensão, ansiedade, apatia afetiva, labilidade emocional, depressão, entre outras) – b152',
+    '60. Funções da percepção (reconhecimento e interpretação de estímulos sensoriais envolvendo a audição, visão, olfato, paladar e/ou tato e posição de objetos em relação a si e ao ambiente, como em alucinações ou ilusões, entre outras) – b156',
+    '61. Funções do pensamento (delírios, obsessões, compulsões, bloqueio, incoerência, fuga de ideias, entre outras) – b160',
+    '62. Funções cognitivas superiores (pensamento abstrato, organização de ideias, tomada de decisão, planejamento e execução, julgamento, flexibilidade mental, autoconhecimento, entre outras) – b164',
+    '63. Funções mentais da linguagem (recepção e expressão de linguagem gestual, decodificação e produção de mensagens de gestos feitos pelas mãos e outros movimentos, entre outras) – b167',
+    '64. Funções de cálculo (funções de operações matemáticas simples - adição, subtração, multiplicação e divisão e complexas, procedimentos aritméticos, com fórmulas matemáticas, entre outras) – b172',
+    '65. Funções da experiência pessoal e de tempo (consciência da própria identidade, representação e consciência do corpo, duração e passagem do tempo, entre outras) – b180',
+    ' Qualificador do domínio X-b1',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'mentais')}` }))
+
+  const oFuncoesSensoriaisDaVisao = [
+    '66. Funções da visão (qualidade, acuidade, percepção de luz e cor, visão monocular e binocular, miopia, hipermetropia, astigmatismo, hemianopsia, presbiopia, cegueira de cores, visão em túnel, escotoma central e periférico, diplopia, cegueira noturna e adaptabilidade à luz, entre outras)  – b210',
+    '67. Funções das estruturas adjacentes ao olho (funções da acomodação, reflexo pupilar, funções da pálpebra, nistagmo, movimentos voluntários, movimentos de rastreamento, fixação do olho, estrabismo, funções das glândulas e canal lacrimonasal, entre outras) – b215',
+    '68. Sensações associadas ao olho e estruturas adjacentes (pressão, cansaço, ressecamento, prurido, irritação, queimação, entre outras) – b220',
+    ' Qualificador do domínio XI-b2',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'visao')}` }))
+
+  const oFuncoesSensoriaisDaAudicao = [
+    '69. Funções auditivas (detecção, discriminação e localização do som e da fala, insuficiência e perda da audição, entre outras) – b230',
+    '70. Funções vestibulares (determinação da posição, equilíbrio e movimentação do corpo, entre outras) – b235',
+    '71. Sensações associadas à audição e à função vestibular (tontura, sensação de queda, vibração, vertigem, zumbido, irritação e pressão auricular, entre outras) – b240',
+    ' Qualificador do domínio XII-b2',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'audicao')}` }))
+
+  const oFuncoesSensoriaisAdicionaisEDor = [
+    '72. Funções gustativas e olfativas – b250 / b255',
+    '73. Funções proprioceptivas (percepção da posição relativa de partes do corpo) – b260',
+    '74. Função tátil (anestesia, parestesia, formigamento, hipoestesia, hiperestesia, entre outras) e funções sensoriais relacionadas à temperatura e outros estímulos (sensibilidade à temperatura, vibração, tremor ou oscilação, pressão superficial ou profunda, ardor, entre outras) – b265 / b270',
+    '75.  Sensação de dor (dor generalizada ou localizada em uma ou mais parte do corpo, analgesia, hipoalgesia, hiperalgesia, entre outras) – b280',
+    ' Qualificador do domínio XIII-b2',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'adicionais')}` }))
+
+  const oFuncoesDaVozEDaFala = [
+    '76. Funções da voz (produção e qualidade da voz, disfonia, afonia, rouquidão, hiponasalidade, hipernasalidade, entre outras) – b310',
+    '77. Funções da articulação (produção de sons da fala, disartria, anartria, articulação de fonemas, entre outras) – b320',
+    '78.  Funções da fluência e ritmo da fala (alterações na fluência, gagueira, verborreia, dislalia – taquilalia, bradilalia, entre outras) – b330',
+    ' Qualificador do domínio XIV-b3',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'voz')}` }))
+
+  const oFuncoesDoSistemaCardiovascular = [
+    '79. Funções do coração (ritmo, frequência, contratilidade, insuficiência, isquemia, bloqueio, valvulopatias, miocardiopatias) – b410',
+    '80. Funções dos vasos sanguíneos (valvulares, arteriais, venosas e capilares; inclui alterações decorrentes de varizes, aterosclerose, aneurismas, entre outras) – b415',
+    '81. Funções da pressão sanguínea (hipotensão, hipertensão) – b420',
+    ' Qualificador do domínio XV-b4',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'cardiovascular')}` }))
+
+  const oFuncoesDoSistemaHematologico = [
+    '82. Funções da produção de sangue, da medula óssea, do baço, do transporte de oxigênio e metabólitos (anemias, linfomas, leucemias, mielodisplasias, aplasia medular, mieloma múltiplo, trombastenia,  hemoglobinúrias, doença falciforme, talassemias, coagulopatias, entre outras) – b430',
+    ' Qualificador do domínio XVI-b4',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'hematologico')}` }))
+
+  const oFuncoesDoSistemaImunologico = [
+    '83. Funções do sistema imunológico (alterações imunológicas mediadas por células ou por anticorpos, doença autoimune, imunossupressão medicamentosa e/ou em decorrência de outras morbidades, incluindo  CÂNCER, reações alérgicas, respostas a imunizações, alterações no sistema linfático, linfadenites, linfedema, entre outras) – b435',
+    ' Qualificador do domínio XVII-b4',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'imunologico')}` }))
+
+  const oFuncoesDoSistemaRespiratorio = [
+    '84. Funções respiratórias - frequência, ritmo, profundidade e dificuldades (dispneia, taquipneia, respiração irregular, espasmo brônquico, enfisema pulmonar, entre outras) – b440',
+    ' Qualificador do domínio XVIII-b4',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'respiratorio')}` }))
+
+  const oFuncoesDoSistemaDigestivo = [
+    '85. Funções de ingestão (sucção, mordedura, mastigação, mobilização de alimentos na boca, salivação, deglutição, regurgitação, vômito, entre outras) – b510',
+    '86. Funções digestivas (peristalse, degradação dos alimentos, absorção dos nutrientes, tolerância aos alimentos, entre outras) – b515',
+    '87. Funções da defecação (consistência, frequência e continência fecal, flatulência, entre outras) – b525',
+    '88. Funções de manutenção de peso (baixo peso, caquexia, emaciação, obesidade, entre outras) –  b530',
+    ' Qualificador do domínio XIX-b5',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'digestivo')}` }))
+
+  const oFuncoesDosSistemasMetabolicoEEndocrino = [
+    '89. Funções metabólicas gerais (metabolismo basal, metabolismo de carboidratos, de proteínas ou gorduras, incluindo lipodistrofia, entre outras) – b540',
+    '90. Funções de equilíbrio hídrico, mineral e eletrolítico – b545',
+    '91. Funções das glândulas endócrinas, inclusive as associadas à puberdade (hipo ou hiperpituitarismo, hipo ou hipertireoidismo, hipo ou hiperparatireoidismo, hipo ou hipergonadismo, nanismo, gigantismo, entre outras) – b555 / b560',
+    ' Qualificador do domínio XX-b5',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'metabolico')}` }))
+
+  const oFuncoesGeniturinariasEReprodutivas = [
+    '92. Funções relacionadas à filtração ou eliminação da urina (insuficiência renal, anúria, oligúria, hidronefrose, bexiga hipotônica, obstrução do ureter, entre outras) – b610',
+    '93. Funções urinárias (frequência de micção, continência, urgência, retenção, fluxo excessivo, poliúria, entre outras) – b620',
+    '94. Função reprodutiva (funções sexuais, funções da menstruação, incluindo endometriose, funções de procriação, entre outras) – b640 / b650 / b660',
+    ' Qualificador do domínio XXI-b6',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'geniturinarias')}` }))
+
+  const oFuncoesNeuromusculoesqueleticasERelacionadasAoMovimento = [
+    '95. Funções das articulações e/ou dos ossos (mobilidade das articulações e dos ossos) – b710 / b715 / b720',
+    '96. Funções musculares (relacionadas à força, ao tônus e à resistência muscular) – b730 / b735 / b740',
+    '97. Funções dos movimentos (relacionadas aos reflexos motores e dos movimentos involuntários, controle voluntário e involuntário) – b750 / b755 / b760 / b765',
+    '98. Funções relacionadas ao padrão da marcha (deficiências como marcha espástica, hemiplégica, paraplégica, entre outras) – b770',
+    ' Qualificador do domínio XXII-b7',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'neuromusculoesqueleticas')}` }))
+
+  const oFuncoesDaPeleEEstruturasRelacionadas = [
+    '99. Funções protetoras, reparadoras e outras funções da pele e fâneros (pênfigo, psoríase, hanseníase, neurofibromatose, dermatite de contato, albinismo, vitiligo, escalpelamento, queimaduras, entre outras) – b810 / b820 / b830 / b840 / b850',
+    ' Qualificador do domínio XXIII-b8',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'pele')}` }))
+
+  const oAprendizagemEAplicacaoDoConhecimento = [
+    '100. Dificuldade para utilizar intencionalmente o sentido da visão (seguir objeto visualmente, observar pessoas, assistir a evento esportivo, observar pessoas, entre outras) – d110',
+    '101. Dificuldade para utilizar intencionalmente o sentido da audição (ouvir rádio, música, voz humana, entre outras) – d115',
+    '102. Dificuldade em percepções sensoriais intencionais de tato, paladar e olfato (tocar ou sentir texturas, saborear e sentir cheiros, entre outras) – d120',
+    '103. Dificuldade para imitar ou copiar algo que configure aprendizagem básica (imitar um gesto ou um som, copiar números ou letras do alfabeto, entre outras situações simples) – d130',
+    '104. Dificuldade para aprender a ler e utilizar este conhecimento (ler, compreendendo o significado de vocábulos, frases e textos, inclusive em Braille, quando for o caso) – d140 / d166',
+    '105. Dificuldade para aprender a escrever e utilizar este conhecimento (escrever, compreendendo o significado de vocábulos, frases e textos, inclusive em Braille, quando for o caso) – d145 / d170',
+    '106. Dificuldade para aprender a calcular e aplicar este conhecimento (calcular, compreendendo o significado de símbolos e operações matemáticas) – d150 / d172',
+    '107. Dificuldade para adquirir e executar habilidades básicas (usar talheres, lápis, entre outras) e complexas (jogos, esportes, utilizar ferramentas, relógio, entre outras) – d155',
+    '108.  Dificuldade para concentrar a atenção, encontrar solução para problemas simples e complexos e tomar decisões   – d160 / d175 / d177',
+    ' Qualificador do domínio d1',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'aprendizagem')}` }))
+
+  const oTarefasEDemandasGerais = [
+    '109. Dificuldade para realizar tarefas múltiplas, atender a comandos múltiplos, realizar a rotina diária, de forma independente ou a comando de outros – d220/ d230',
+    '110. Dificuldade para lidar com o estresse e outras demandas psicológicas, tais como lidar com responsabilidades, gerenciar e controlar crises (considerar se a autorrepresentação da deficiência aumenta essa dificuldade) – d240',
+    ' Qualificador do domínio d2',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'tarefa')}` }))
+
+  const oComunicacao = [
+    '111. Dificuldade na recepção de mensagens orais (compreender o significado de uma frase) – d310',
+    '112. Dificuldade na recepção de mensagens não verbais (transmitidas por gestos, símbolos, fotos, desenhos e expressões faciais, leitura labial) – d315',
+    '113. Dificuldade na recepção e compreensão de mensagens na Língua Brasileira de Sinais (LIBRAS) – d320 *',
+    '114. Dificuldade na recepção e compreensão de mensagens escritas ou mensagens em braile (revistas, livros, jornais e outros) – d325',
+    '115. Dificuldade na fala (produção de sílabas, palavras, frases ou mensagens compreensíveis) – d330',
+    '116. Dificuldade na produção de mensagens não verbais (usar gestos, símbolos ou desenhos para se comunicar) – d335',
+    '117. Dificuldade na produção de mensagens na Língua Brasileira de Sinais (LIBRAS) – d340 *',
+    '118. Dificuldade na conversação (iniciar, manter e finalizar uma troca de pensamentos e ideias, usando qualquer forma de linguagem) – d350',
+    ' Qualificador do domínio d3',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'comunicacao')}` }))
+
+  const oMobilidade = [
+    '119. Dificuldade para mudar a posição básica do corpo (levantar, ajoelhar, agachar, deitar e/ou rolar) – d410',
+    '120. Dificuldade para se mover na mesma superfície ou de uma superfície para outra, sem mudar a posição do corpo (ex. de deitado para deitado, de sentado para sentado) – d420',
+    '121. Dificuldade para manusear, mover, deslocar e/ou carregar objetos, realizando movimentos finos – d430 / d435 / d440 / d445',
+    '122. Dificuldade para andar (mover-se a pé, por curtas ou longas distâncias, sem auxílio de pessoas, equipamentos ou dispositivos) – d450',
+    '123. Dificuldade para se deslocar utilizando equipamento ou dispositivo específico para facilitar a movimentação (andador, cadeira de rodas, muletas, bengala e outros) – d465',
+    ' Qualificador do domínio d4',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'mobilidade')}` }))
+
+  const oCuidadoPessoal = [
+    '124. Dificuldade nos cuidados com o próprio corpo (lavar, secar, cuidar das mãos, dentes, unhas, nariz, cabelos e/ou higiene após excreção) – d510/ d520/ d530 ',
+    '125. Dificuldade para se vestir (colocar, tirar e escolher roupas e calçados apropriados) – d540 ',
+    '126. Dificuldade para coordenar os gestos para comer, beber alimentos e bebidas servidos, sem auxílio – d550/ d560 ',
+    '127. Dificuldade para cuidar da própria saúde (conforto físico, dieta, prevenção de doenças e busca de assistência, exposição a riscos ou situações perigosas, incluindo abusos e violência) – d570 / d598 ',
+    ' Qualificador do domínio d5',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'cuidado')}` }))
+
+  const oQualificador = "0;1;2;3;4".split(';').map((i) => ({ id: `${i}`, name: i }))
+  const oTotalParcial = "T;P".split(';').map((i) => ({ id: `${i}`, name: i }))
+  const oNivel = "Grau A;Grau B;Grau C;Grau D".split(';').map((i) => ({ id: `${i.split(' ')[1]}`, name: i }))
+  const oAtividadeFisica = [
+    'Mudar e manter a posição do corpo (> 6 meses e < 7 anos)',
+    'Ficar em pé e andar (> 1 e < 7 anos)',
+    'Fazer caminhadas (> 7 anos)',
+    'Permanecer em pé (> 7 anos)',
+    'Subir e descer escadas (> 3 anos)',
+    'Abaixar ou agachar (> 3 anos)',
+    'Erguer peso (> 3 anos)',
+    'Atividades com esforço físico e cardiorrespiratório (> 3 anos)',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'atividades')}` }))
+
+  const oAutoCuidado = [
+    'Desenvolvimento neuropsicomotor (< 7 anos)',
+    'Levar alimento à boca (> 10 meses e < 3 anos)',
+    'Reconhecer e reagir a sons (< 7 anos)',
+    'Orientação e percepção sensorial (> 3 e < 7 anos)',
+    'Aceitar e negar o que lhe é oferecido (< 7 anos)',
+    'Higiene pessoal (> 3 anos)',
+    'Alimentar-se e beber (> 3 anos)',
+    'Preparar alimentos simples (> 12 anos e < 17 anos)',
+    'Preparar as próprias refeições (> 17 anos)',
+    'Limpar a casa e/ou cômodo onde dorme (> 12 anos)',
+    'Ficar sozinho(a) sem produzir riscos para si (> 12 anos)',
+    'Organizar atividades domésticas, cuidado da casa, compras e pagamento de contas (> 17 anos)',
+    'Cuidar de terceiros (> 17 anos)',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'cuidados')}` }))
+
+  const oRelacoes = [
+    'Expectativa de aprendizagem futura (< 3 anos)',
+    'Possibilidade de frequentar creche sem AEE - atendimento educacional especializado (< 3 anos)',
+    'Atenção/Concentração em objetos e pessoas (> 6 meses e < 3 anos)',
+    'Desenvolvimento da fala e linguagem (> 1 ano e < 3 anos)',
+    'Interação com crianças e adultos no âmbito familiar e espaços sociais (> 1 e < 7 anos)',
+    'Fala/Comunicação/Desenvolvimento da linguagem (> 3 e < 7 anos)',
+    'Aprendizagem e aquisição de conceitos esperados para sua faixa etária (> 3 e < 7 anos)',
+    'Frequentar educação infantil (> 3 e < 7 anos)',
+    'Participar de atividades recreativas, esportivas e pedagógicas em grupo (> 3 e < 7 anos)',
+    'Atenção/Concentração em objetos e pessoas (> 3 e < 7 anos)',
+    'Ouvir (> 7 anos)',
+    'Falar (> 7 anos)',
+    'Orientar-se espacialmente e no tempo (> 7 anos)',
+    'Juízo Crítico e capacidade de tomar decisões, inclusive sob estresse (> 7 anos)',
+    'Frequentar estabelecimento de ensino e aprendizagem (> 7 e < 17 anos)',
+    'Ler, escrever, fazer operações matemáticas e envolvendo raciocínio abstrato (> 7 e < 17 anos)',
+    'Atenção e concentração nos estudos (> 7 e < 17 anos)',
+    'Estabelecer interações interpessoais familiares, sociais (> 7 e < 17 anos)',
+    'Utilizar transporte público (> 12 anos)',
+    'Possibilidade de ingressar em estágio ou programas destinados a menor aprendiz (> 14 e < 17 anos)',
+    'Compreender e ser compreendido (> 17 anos)',
+    'Concentrar-se para a execução de tarefas (> 17 anos)',
+    'Estabelecer interações interpessoais familiares, sociais e profissionais (> 17 anos)',
+    'Possibilidade de se colocar no mercado de trabalho (> 17 anos)',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ label: i, name: `${labelToName(i, 'relacoes')}` }))
+
+  let labelAlfabetizacao = parseDescriptionWithCondition(age, 'Alfabetização (> 6 anos)').textOrNull
+  if (['Ensino Médio - 1ª série',
+    'Ensino Médio - 2ª série',
+    'Ensino Médio - 3ª série',
+    'Curso Técnico',
+    'Ensino Superior',
+    'Mestrado',
+    'Doutorado',
+  ].includes(Frm.data.escolaridade)) {
+    labelAlfabetizacao = null
+  }
+
+  const oEstruturaEPrognostico = "Estruturas do sistema nervoso;Estruturas do olho;Estruturas do ouvido;Estruturas relacionadas à voz e à fala;Estruturas do sistema cardiovascular;Estruturas do sistema imunológico;Estruturas do sistema respiratório;Estruturas do sistema digestivo;Estruturas do sistema metabólico e endócrino;Estruturas do sistema geniturinário e reprodutivo;Estruturas relacionadas ao movimento;Pele e estruturas relacionadas".split(';').map((i) => ({ label: i, name: `${labelToName(i)}` }))
+
+  const maxQualificador = (a: (string | null | undefined)[]) => {
+    return a?.filter(v => v != undefined && v != null && v !== '').reduce((a: string, b: string) => a === '—' ? b : (Number(b) > Number(a) ? b : a), '—')
+  }
+
+  const numStrToLetter = (v: string | undefined): string => {
+    if (!v || v === '—') return '—'
+    const map: Record<string, string> = { '0': 'N', '1': 'L', '2': 'M', '3': 'G', '4': 'C' }
+    return map[v] ?? '—'
+  }
+
+  const letterToDesc: Record<string, string> = {
+    'N': 'Nenhuma', 'L': 'Leve', 'M': 'Moderada', 'G': 'Grave', 'C': 'Completa', '—': '—'
+  }
+
+  const elevateQualifierLetter = (letter: string): string => {
+    const order = ['N', 'L', 'M', 'G', 'C']
+    const idx = order.indexOf(letter)
+    if (idx === -1 || idx === 4) return letter
+    return order[idx + 1]
+  }
+
+  // Funções do Corpo: max across all body-function domains, elevated by structure/prognosis
+  const fcBase = maxQualificador([
+    Frm.data.qualificadorDoDominioXb1,
+    Frm.data.qualificadorDoDominioXIb2,
+    Frm.data.qualificadorDoDominioXIIb2,
+    Frm.data.qualificadorDoDominioXIIIb2,
+    Frm.data.qualificadorDoDominioXIVb3,
+    Frm.data.qualificadorDoDominioXVb4,
+    Frm.data.qualificadorDoDominioXVIb4,
+    Frm.data.qualificadorDoDominioXVIIb4,
+    Frm.data.qualificadorDoDominioXVIIIb4,
+    Frm.data.qualificadorDoDominioXIXb5,
+    Frm.data.qualificadorDoDominioXXb5,
+    Frm.data.qualificadorDoDominioXXIb6,
+    Frm.data.qualificadorDoDominioXXIIb7,
+    Frm.data.qualificadorDoDominioXXIIIb8,
+  ])
+  let fcLetter = numStrToLetter(fcBase)
+  // Non-cumulative elevation: structure OR unfavorable prognosis raises by one level
+  if (fcLetter !== '—' &&
+    (Frm.data.alteracoesEstruturaCorpo === 'Sim' || Frm.data.prognosticoDesfavoravel === 'Sim')) {
+    fcLetter = elevateQualifierLetter(fcLetter)
+  }
+
+  // Atividades e Participação (médico-pericial): d1–d5
+  // Formula per Annexo III adapted for 5 domains: (sum / (n×4)) × 100
+  const apRawValues = [
+    Frm.data.qualificadorDoDominioD1,
+    Frm.data.qualificadorDoDominioD2,
+    Frm.data.qualificadorDoDominioD3,
+    Frm.data.qualificadorDoDominioD4,
+    Frm.data.qualificadorDoDominioD5,
+  ]
+  const apValidValues = apRawValues
+    .filter(v => v !== undefined && v !== null && v !== '')
+    .map(Number)
+  let apLetter = '—'
+  if (apValidValues.length > 0) {
+    const sum = apValidValues.reduce((a, b) => a + b, 0)
+    const pct = (sum / (apValidValues.length * 4)) * 100 - 0.1
+    if (pct <= 4) apLetter = 'N'
+    else if (pct <= 24) apLetter = 'L'
+    else if (pct <= 49) apLetter = 'M'
+    else if (pct <= 95) apLetter = 'G'
+    else apLetter = 'C'
+  }
+
+  return <>
+    <Frm.Input label="Nome" name="nome" width={8} />
+    {/* <Frm.Input label="Idade" name="idade" width={3} /> */}
+    <Frm.DatePicker label="Data de Nascimento" name="dataDeNascimento" addAge={true} width={4} />
+    <Frm.CPFInput label="CPF" name="cpf" width={4} />
+    <Frm.Select label="Sexo" name="sexo" options={oSexo} width={4} />
+    <Frm.Input label="Peso" name="peso" width={4} />
+    <Frm.Input label="Altura" name="altura" width={4} />
+    <Frm.Select label="Escolaridade" name="escolaridade" options={oEscolaridade} width={4} />
+    <Frm.Select label={labelAlfabetizacao} name="alfabetizacao" options={oAlfabetizacao} width={4} />
+    <Frm.Input label={parseDescriptionWithCondition(age, 'Outras informações sobre Escolaridade que o perito(a) considerar relevantes (> 7 anos)').textOrNull} name="outrasInformacoesSobreEscolaridade" width={12} />
+
+    <Frm.TextArea label="História Clínica: Considerar todos os elementos relevantes da história clínica atual e pregressa, que darão subsídios para a avaliação e qualificação dos domínios abaixo relacionados, incluindo relatórios e laudos técnicos, prontuários e resultados de exames complementares, quando houver" name="historicoClinico" width={12} />
+    <Frm.TextArea label="Informações de exames e laudos apresentados" name="exemesELaudos" width={12} />
+    <Frm.TextArea label="Exame físico: Considerar as alterações relevantes observadas ao exame físico, que darão subsídios para a avaliação e qualificação dos domínios abaixo relacionados" name="exameFisico" width={12} />
+
+    <Frm.Input label="CID Principal (campo obrigatório)" name="cidPrincipal" width={8} />
+    <Frm.Input label="Código CID" name="codigoCidPrincipal" width={4} />
+    <Frm.Input label="CID Secundário (1)" name="cidSecundario" width={8} />
+    <Frm.Input label="Código CID" name="codigoCidSecundario" width={4} />
+    <Frm.Input label="CID Secundário (2)" name="cidSecundario2" width={8} />
+    <Frm.Input label="Código CID" name="codigoCidSecundario2" width={4} />
+
+    <div className="col col-12 mt-5">
+      <h4>Funções do Corpo</h4>
+    </div>
+
+    <div className="col col-12 mt-3">
+      <p>Qualificadores a serem utilizados: </p>
+      <ul>
+        <li>0 - Nenhuma: alteração de 0% a 4%;</li>
+        <li>1 - Leve: alteração de 5% a 24%;</li>
+        <li>2 - Moderada: alteração de 25% a 49%;</li>
+        <li>3 - Grave: alteração de 50% a 95%;</li>
+        <li>4 - Completa: alteração de 96% a 100%;</li>
+      </ul>
+    </div>
+
+    <div id="sec-xb1" />
+    <Frm.RadioButtonsTable label="X - FUNÇÕES MENTAIS - b1: referem-se às funções do cérebro, que incluem funções mentais globais, como consciência, energia e impulso, e funções mentais específicas, como memória, linguagem e cálculo." labelsAndNames={oFuncoesMentais} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXb1 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXb1Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xib2" />
+    <Frm.RadioButtonsTable label="XI - FUNÇÕES SENSORIAIS DA VISÃO - b2: referem-se à percepção de luz, tamanho e cor de um estímulo visual. Indicadores = discriminados nas unidades de classificação abaixo, entre parênteses." labelsAndNames={oFuncoesSensoriaisDaVisao} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIb2Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xiib2" />
+    <Frm.RadioButtonsTable label="XII - FUNÇÕES SENSORIAIS DA AUDIÇÃO - b2: referem-se à percepção de sons e discriminação de localização, intensidade, ruído e qualidade." labelsAndNames={oFuncoesSensoriaisDaAudicao} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIb2Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xiiib2" />
+    <Frm.RadioButtonsTable label="XIII - FUNÇÕES SENSORIAIS ADICIONAIS E DOR - b2: referem-se às funções gustativas, olfativas, proprioceptivas, táteis e a sensações relacionadas à temperatura e outros estímulos e sensação de dor." labelsAndNames={oFuncoesSensoriaisAdicionaisEDor} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXIIIb2 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIIIb2Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xivb3" />
+    <Frm.RadioButtonsTable label="XIV - FUNÇÕES DA VOZ E DA FALA - b3: referem-se à produção de sons e da fala." labelsAndNames={oFuncoesDaVozEDaFala} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXIVb3 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIVb3Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xvb4" />
+    <Frm.RadioButtonsTable label="XV - FUNÇÕES DO SISTEMA CARDIOVASCULAR - b4: referem-se às funções do coração, vasos sanguíneos e pressão sanguínea." labelsAndNames={oFuncoesDoSistemaCardiovascular} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXVb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xvib4" />
+    <Frm.RadioButtonsTable label="XVI - FUNÇÕES DO SISTEMA HEMATOLÓGICO - b4:  referem-se à produção de sangue, transporte de oxigênio e metabólitos e à coagulação." labelsAndNames={oFuncoesDoSistemaHematologico} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXVIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xviib4" />
+    <Frm.RadioButtonsTable label="XVII - FUNÇÕES DO SISTEMA IMUNOLÓGICO - b4: referem-se à imunidade celular e humoral e alterações na função do sistema linfático." labelsAndNames={oFuncoesDoSistemaImunologico} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXVIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xviiib4" />
+    <Frm.RadioButtonsTable label="XVIII - FUNÇÕES DO SISTEMA RESPIRATÓRIO - b4: referem-se à frequência, ritmo e profundidade da respiração e às funções dos músculos respiratórios." labelsAndNames={oFuncoesDoSistemaRespiratorio} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXVIIIb4 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXVIIIb4Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xixb5" />
+    <Frm.RadioButtonsTable label="XIX - FUNÇÕES DO SISTEMA DIGESTIVO - b5: referem-se à ingestão, digestão e eliminação de substâncias líquidas e sólidas." labelsAndNames={oFuncoesDoSistemaDigestivo} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXIXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXIXb5Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxb5" />
+    <Frm.RadioButtonsTable label="XX - FUNÇÕES DOS SISTEMAS METABÓLICO E ENDÓCRINO - b5: referem-se às funções metabólicas gerais e das glândulas endócrinas, inclusive as associadas à puberdade." labelsAndNames={oFuncoesDosSistemasMetabolicoEEndocrino} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXXb5 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXb5Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxib6" />
+    <Frm.RadioButtonsTable label="XXI - FUNÇÕES GENITURINÁRIAS E REPRODUTIVAS - b6: referem-se às funções urinárias e reprodutivas, incluindo funções sexuais e de procriação." labelsAndNames={oFuncoesGeniturinariasEReprodutivas} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXXIb6 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIb6Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxiib7" />
+    <Frm.RadioButtonsTable label="XXII - FUNÇÕES NEUROMUSCULOESQUELÉTICAS E RELACIONADAS AO MOVIMENTO - b7: referem-se à mobilidade, funções das articulações, ossos, reflexos e músculos." labelsAndNames={oFuncoesNeuromusculoesqueleticasERelacionadasAoMovimento} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXXIIb7 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIb7Justificativa" options={oJustificativa} width={12} />}
+    <div id="sec-xxiiib8" />
+    <Frm.RadioButtonsTable label="XXIII - FUNÇÕES DA PELE E ESTRUTURAS RELACIONADAS - b8: referem-se a funções da pele e seus anexos (pelos, cabelos e unhas)." labelsAndNames={oFuncoesDaPeleEEstruturasRelacionadas} options={oQualificador} width={12} />
+    {Frm.data.qualificadorDoDominioXXIIIb8 === '0' && <Frm.Select label="Justifique a atribuição de qualificador '0' para esse domínio" name="qualificadorDoDominioXXIIIb8Justificativa" options={oJustificativa} width={12} />}
+
+    <div className="col col-12 mt-5">
+      <h4>Atividades e Participação</h4>
+    </div>
+
+    <div className="col col-12 mt-3">
+      <p>Considerar na análise o impacto/influência dos Fatores Ambientais (barreiras) e Pessoais (gênero, etnia, idade, condição física, estilo de vida, hábitos, nível de instrução, profissão e outros) e na avaliação do desempenho para a execução de atividades e participação social, em igualdade de condições com as demais pessoas.</p>
+      <p><strong>Desempenho</strong>: é um qualificador que descreve o que o indivíduo faz (grau de dificuldade) em seu ambiente de vida habitual, entendido como "envolvimento em uma situação vital" ou "a experiência vivida", no contexto real em que vive (a qualificação deve considerar, sobretudo, a frequência e extensão da dificuldade). </p>
+      <p><strong>Atividade</strong>: é a execução de uma tarefa ou ação por um indivíduo. Representa a perspectiva individual da funcionalidade. </p>
+      <p><strong>Participação</strong>: é o ato de se envolver em uma situação real de vida. Representa a perspectiva social da funcionalidade. </p>
+      <p>As colunas T e P, à direita dos qualificadores de cada domínio, destinam-se à sinalização de dependência Total ou Parcial de cuidados de terceiros, sempre que o avaliador julgar pertinente, com vistas a fornecer subsídios para políticas públicas de cuidados.  Não representam o foco principal da avaliação, que deve estar centrado no desempenho para o exercício de atividades e participação social, conforme o grau de dificuldade estabelecido pelos cortes percentuais acima.</p>
+    </div>
+
+    <div id="sec-d1" />
+    <Frm.RadioButtonsTable label="XXVI - APRENDIZAGEM E APLICAÇÃO DE CONHECIMENTO - d1: referem-se ao desempenho em aprender, aplicar o conhecimento aprendido, pensar, resolver problemas e tomar decisões." labelsAndNames={oAprendizagemEAplicacaoDoConhecimento} options={oQualificador} options2={oTotalParcial} width={12} />
+    <div id="sec-d2" />
+    <Frm.RadioButtonsTable label="XXVII - TAREFAS E DEMANDAS GERAIS - d2: referem-se aos aspectos gerais da execução de uma única tarefa ou de várias tarefas, organização de rotinas e superação do estresse." labelsAndNames={oTarefasEDemandasGerais} options={oQualificador} width={12} />
+    <div id="sec-d3" />
+    <Frm.RadioButtonsTable label="XXVIII - COMUNICAÇÃO - d3: refere-se às características gerais e específicas da comunicação, por meio da linguagem, sinais e símbolos, incluindo a recepção e produção de mensagens, manutenção da conversação e utilização de dispositivos e técnicas de comunicação." labelsAndNames={oComunicacao} options={oQualificador} width={12} />
+    <div id="sec-d4" />
+    <Frm.RadioButtonsTable label="XXIX - MOBILIDADE - d4: refere-se ao movimento de mudar o corpo de posição ou de lugar, carregar, mover ou manipular objetos, ao andar ou deslocar-se." labelsAndNames={oMobilidade} options={oQualificador} width={12} />
+    <div id="sec-d5" />
+    <Frm.RadioButtonsTable label="XXX - CUIDADO PESSOAL - d5: refere-se ao cuidado pessoal como lavar-se e secar-se, cuidar do próprio corpo e de parte do corpo, vestir-se, comer, beber e cuidar da própria saúde." labelsAndNames={oCuidadoPessoal} options={oQualificador} width={12} />
+
+    <div className="col col-12 mt-5">
+      <h4>Estrutura e Prognóstico</h4>
+    </div>
+
+    <Frm.Select label="Existem alterações na estrutura do corpo que configuram maiores limitações e restrições ao avaliado do que as alterações observadas em funções do corpo? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C)." name="alteracoesEstruturaCorpo" options={oNaoSim} width={12} />
+    {Frm.data.alteracoesEstruturaCorpo === 'Sim' && <>
+      <Frm.CheckBoxes label="Assinale abaixo a(s) Estrutura(s) do Corpo que configura(m) tal condição" labelsAndNames={oEstruturaEPrognostico} width={12} />
+      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoEstruturaEPrognostico" width={12} />
+    </>}
+
+    <Frm.Select label="As alterações observadas em funções e/ou estruturas do corpo configuram prognóstico desfavorável? A resposta afirmativa a este quesito implicará a elevação do qualificador final de Funções do Corpo em um nível (de N para L, de L para M, de M para G, de G para C e C permanece como C), de forma não cumulativa, caso já tenha havido elevação pelo quesito anterior." name="prognosticoDesfavoravel" options={oNaoNaoEhPossivelPrognosticarSim} width={12} />
+    {Frm.data.prognosticoDesfavoravel === 'Sim' && <>
+      <Frm.TextArea label="Descreva, caso já não o tenha feito na história clínica ou no exame físico" name="descricaoPrognosticoDesfavoravel" width={12} />
+    </>}
+
+    {/* <Frm.Select label="Considerando as barreiras apontadas na avaliação social e os aspectos clínicos avaliados, é possível afirmar que as alterações em funções e/ou estruturas do corpo serão resolvidas em menos de dois anos? (Considerar também o tempo pregresso já vivenciado com tal quadro, as possibilidades de acesso ao tratamento necessário e a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas)" name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
+      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
+    </>} */}
+
+    <Frm.Select label="As alterações em funções e/ou estruturas do corpo podem ser resolvidas em menos de dois anos? 
+Caso afirmativa a resposta, qual o prazo estimado (prognóstico) para sua reversão? 
+Considerar os seguintes aspectos para as respostas: i. o tempo pregresso já vivenciado com tal quadro, ii. as possibilidades de acesso ao tratamento necessário; iii. a participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas; iv. possíveis barreiras apontadas em laudo de avaliação social já anexado aos autos ou informadas durante a perícia médica." name="resolucaoMenosDeDoisAnos" options={oNaoNaoEhPossivelPreverSim} width={12} />
+    {Frm.data.resolucaoMenosDeDoisAnos === 'Sim' && <>
+      <Frm.TextArea label="Neste caso, justifique" name="descricaoResolucaoMenosDeDoisAnos" width={12} />
+    </>}
+
+    {/* <div className="col col-12 mt-5">
+      <h4>Risco e Proteção Social</h4>
+    </div>
+
+    <Frm.Select label="Caso sejam observados indícios de risco social que demandem acompanhamento prioritário (violência física e/ou psicológica; abandono familiar; abusos e/ou exploração sexual; crianças e/ou adolescentes fora da escola; exploração de trabalho infantil; ausência de proteção social, familiar e/ou comunitária, entre outros), assinale" name="riscoSocial" options={oNaoSim} width={12} />
+    {Frm.data.riscoSocial === 'Sim' && <>
+      <Frm.TextArea label="Descreva abaixo, para posterior encaminhamento pelo assistente social" name="descricaoRiscoSocial" width={12} />
+    </>} */}
+
+    <div className="col col-12 mt-5">
+      <h4>Avaliação Médico Pericial</h4>
+    </div>
+
+    <div className="col col-12 mt-4">
+      <h5>Resumo dos Qualificadores de Domínio — Funções do Corpo</h5>
+      <div className="table-responsive">
+        <table className="table table-bordered table-sm text-center align-middle">
+          <thead className="table-light">
+            <tr>
+              <th>X-b1</th>
+              <th>XI-b2</th>
+              <th>XII-b2</th>
+              <th>XIII-b2</th>
+              <th>XIV-b3</th>
+              <th>XV-b4</th>
+              <th>XVI-b4</th>
+              <th>XVII-b4</th>
+              <th>XVIII-b4</th>
+              <th>XIX-b5</th>
+              <th>XX-b5</th>
+              <th>XXI-b6</th>
+              <th>XXII-b7</th>
+              <th>XXIII-b8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a className="text-decoration-none" href="#sec-xb1">{Frm.data.qualificadorDoDominioXb1 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xib2">{Frm.data.qualificadorDoDominioXIb2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xiib2">{Frm.data.qualificadorDoDominioXIIb2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xiiib2">{Frm.data.qualificadorDoDominioXIIIb2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xivb3">{Frm.data.qualificadorDoDominioXIVb3 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xvb4">{Frm.data.qualificadorDoDominioXVb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xvib4">{Frm.data.qualificadorDoDominioXVIb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xviib4">{Frm.data.qualificadorDoDominioXVIIb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xviiib4">{Frm.data.qualificadorDoDominioXVIIIb4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xixb5">{Frm.data.qualificadorDoDominioXIXb5 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxb5">{Frm.data.qualificadorDoDominioXXb5 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxib6">{Frm.data.qualificadorDoDominioXXIb6 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiib7">{Frm.data.qualificadorDoDominioXXIIb7 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiiib8">{Frm.data.qualificadorDoDominioXXIIIb8 ?? '—'}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div className="col col-12 mt-5">
+      <h6>Resumo por Domínio (maior qualificador do grupo)</h6>
+      <div className="table-responsive">
+        <table className="table table-bordered text-center">
+          <thead className="table-light">
+            <tr>
+              <th>b1</th>
+              <th>b2</th>
+              <th>b3</th>
+              <th>b4</th>
+              <th>b5</th>
+              <th>b6</th>
+              <th>b7</th>
+              <th>b8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a className="text-decoration-none" href="#sec-xb1">{maxQualificador([Frm.data.qualificadorDoDominioXb1])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xib2">{maxQualificador([Frm.data.qualificadorDoDominioXIb2, Frm.data.qualificadorDoDominioXIIb2, Frm.data.qualificadorDoDominioXIIIb2])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xivb3">{maxQualificador([Frm.data.qualificadorDoDominioXIVb3])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xvb4">{maxQualificador([Frm.data.qualificadorDoDominioXVb4, Frm.data.qualificadorDoDominioXVIb4, Frm.data.qualificadorDoDominioXVIIb4, Frm.data.qualificadorDoDominioXVIIIb4])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xixb5">{maxQualificador([Frm.data.qualificadorDoDominioXIXb5, Frm.data.qualificadorDoDominioXXb5])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxib6">{maxQualificador([Frm.data.qualificadorDoDominioXXIb6])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiib7">{maxQualificador([Frm.data.qualificadorDoDominioXXIIb7])}</a></td>
+              <td><a className="text-decoration-none" href="#sec-xxiiib8">{maxQualificador([Frm.data.qualificadorDoDominioXXIIIb8])}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div className="col col-12 mt-4">
+      <h5>Resumo dos Qualificadores de Domínio — Atividades e Participação</h5>
+      <div className="table-responsive">
+        <table className="table table-bordered table-sm text-center align-middle">
+          <thead className="table-light">
+            <tr>
+              <th>d1</th>
+              <th>d2</th>
+              <th>d3</th>
+              <th>d4</th>
+              <th>d5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a className="text-decoration-none" href="#sec-d1">{Frm.data.qualificadorDoDominioD1 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d2">{Frm.data.qualificadorDoDominioD2 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d3">{Frm.data.qualificadorDoDominioD3 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d4">{Frm.data.qualificadorDoDominioD4 ?? '—'}</a></td>
+              <td><a className="text-decoration-none" href="#sec-d5">{Frm.data.qualificadorDoDominioD5 ?? '—'}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+    <div className="col col-12 mt-4">
+      <h5>Resultado Parcial Apenas da Avaliação Médica</h5>
+      <p>Segundo a Portaria Conjunta MDS/INSS nº 2, de 30 de março de 2015, há necessidade de complementação para análise biopsicossocial completa, pelo(a) magistrado(a), com base também na Avaliação Social, que não é abrangida por este formulário.</p>
+
+      <div className="border rounded">
+        <div className="bg-light text-center fw-bold py-2 border-bottom">Resultado Parcial</div>
+        <div className="p-3 d-flex flex-column align-items-center gap-2 bg-light">
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <strong>Funções do Corpo:</strong>
+            <span className="border border-dark px-2 py-1 fw-bold text-center">{fcLetter}</span>
+            <span>= Alteração</span>
+            <span className="border border-dark px-3 py-1">{letterToDesc[fcLetter] ?? '—'}</span>
+          </div>
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <strong>Qualificador Parcial de Atividades e Participação:</strong>
+            <span className="border border-dark px-2 py-1 fw-bold text-center">{apLetter}</span>
+            <span>= Dificuldade</span>
+            <span className="border border-dark px-3 py-1">{letterToDesc[apLetter] ?? '—'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/*
+        <Frm.RadioButtonsTable label="Atividade Física" labelsAndNames={oAtividadeFisica} options={oNivel} width={12} />
+    <Frm.RadioButtonsTable label={formatTextBasedOnAge(age, "{Desenvolvimento (< 7 anos)}{Auto Cuidado e Âmbito Doméstico (> 7 anos)}")} labelsAndNames={oAutoCuidado} options={oNivel} width={12} />
+    <Frm.RadioButtonsTable label={formatTextBasedOnAge(age, "Relações Interpessoais e Sociais. Aprendizagem. Cognição. {Inserção Profissional. (> 7 anos)}")} labelsAndNames={oRelacoes} options={oNivel} width={12} />
+
+    <div className="col col-12 mt-5">
+      <h4>Quesitos Complementares</h4>
+    </div>
+    <Frm.TextArea label="Caso sejam constatadas limitações (graus B, C ou D) para atividades relacionadas no quadro acima, qual a data de início ou época aproximada em que a obstrução / impedimento / dificuldade passou a interferir na vida do(a) periciando(a)?" name="inicio" width={12} />
+    <Frm.TextArea label="Caso sejam constatadas limitações (graus B, C ou D) para atividades relacionadas no quadro acima, é possível afirmar que a obstrução / impedimento / dificuldade irá perdurar por mais de 2 anos? Se menos de 2 anos, qual prognóstico de tempo para reversão?" name="prognosticoReversao" width={12} />
+    <Frm.TextArea label="Há outras atividades individuais ou de participação social cotidianas (não elencadas no quadro acima) impactadas por limitações de natureza física, mental, intelectual ou sensorial da parte autora? Caso positivo, especifique e indique os graus (B, C ou D), bem como data de início ou época aproximada em que a obstrução / impedimento / dificuldade passou a interferir na vida do(a) periciando(a). É possível afirmar que irá perdurar por mais de 2 anos? Se menos de 2 anos, qual prognóstico de tempo para reversão?" name="outras" width={12} />
+    <Frm.TextArea label="Sobre facilitadores - As alterações em funções e/ou estruturas do corpo podem ser solucionadas / compensadas, em tese, em menos de 2 anos? Como? A parte autora tem efetivo acesso a tecnologias / insumos de saúde facilitadores, que eliminam ou compensem as limitações de natureza física, mental, intelectual ou sensorial impostas pela patologia?" name="facilitadores" width={12} />
+    <Frm.TextArea label={formatTextBasedOnAge(age, "{Há necessidade de medicações de uso contínuo e/ou alimentação especial? Há necessidade de comparecimento constante a estabelecimentos de saúde, terapia multidisciplinar, internações? Em caso positivo, tais medicações e/ou tratamentos/internações influenciam de forma significativa sua rotina ou a do(a) adulto(a) responsável pelo cuidado ou apoio? (< 17 anos)}{Há necessidade de medicações de uso contínuo? Em caso positivo, tais medicações influenciam de forma significativa a interação com as demais pessoas e/ou ambiente? (> 17 anos)}{ Há necessidade de assistência especial do cuidador na rotina diária da criança? (> 3 e < 7 anos)}{ Há necessidade de uso de fraldas? (> 7 anos)}")} name="medicacoesDeUsoContinuo" width={12} />
+    <Frm.TextArea label={parseDescriptionWithCondition(age, "Caso seja possível à parte executar atividades (trabalhos formais ou informais) que lhe garantam sustento, há necessidade de afastamento periódico do trabalho para rotinas de tratamento ou internações? Em caso positivo, quantas vezes por dia (ou semana, ou mês) e respectiva duração. (> 17 anos)").textOrNull} name="afastamentoPeriodico" width={12} />
+    <Frm.TextArea label={parseDescriptionWithCondition(age, "O(A) periciando(a) depende de supervisão ou acompanhamento permanente de terceiros em sua vida diária? (> 7 anos)").textOrNull} name="supervisao" width={12} />
+    <Frm.TextArea label={quesitoConclusivo ? "A pessoa periciada apresenta impedimento de longo prazo de natureza física, mental, intelectual ou sensorial que, em interação com barreiras, obstrua sua participação plena e efetiva na sociedade em igualdade de condições com as demais pessoas da mesma faixa etária, que produza efeitos pelo prazo mínimo de 2 (dois) anos?" : null} name="impedimentoMinimoDoisAnos" width={12} />
+    <Frm.TextArea label="Informações Adicionais que o(a) perito(a) entenda que possam ajudar no julgamento da lide." name="informacoesAdicionais" width={12} />
+ */}
+    {/* <div className="col col-12">
+      <h4 className="mt-5">JSON</h4>
+      <pre>
+        {JSON.stringify(Frm.data, null, 2)}
+      </pre>
+  </div > */}
+  </>
+}
+
+function document(data: any) {
+  const Frm = new FormHelper()
+  Frm.update(data)
+  return <div className="row">
+    <h1 className="text-center">Laudo Médico</h1>
+    {interview(Frm)}
+    <div className="assinatura text-center">__________________________________<br />Assinatura do Perito(a)</div>
+  </div>
+}
+
+export default function BpcLoasPcd() {
+  const searchParams = useSearchParams()
+  quesitoConclusivo = searchParams.get('quesito-conclusivo') === 'false' ? false : true
+
+  return Model(interview, document, { saveButton: false, pdfButton: true, pdfFileName: 'bpc-loas-pcd-mais-17', showPreview: false })
+}
