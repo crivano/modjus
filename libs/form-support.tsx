@@ -155,7 +155,7 @@ export class FormHelper {
     public DatePicker = ({ label, name, width, addAge }: { label: string, name: string, addAge?: boolean, width?: number | string }) => {
         return this.setData ? (
             <Form.Group className={this.colClass(width)} controlId={name}>
-                <Form.Label>{label}</Form.Label>
+                <Form.Label className="w-100">{label}</Form.Label>
                 <DatePicker selected={this.get(name)} onChange={(date) => this.set(name, date)} className="form-control" dateFormat="dd/MM/yyyy" selectsMultiple={false as true} />
                 <FieldError formState={this.formState} name={name} />
             </Form.Group>
