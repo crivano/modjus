@@ -106,7 +106,7 @@ export function isAgeValid(ageStr: string, restriction: string): boolean {
 
 export function parseDescriptionWithCondition(ageStr: string, input: string): { text: string; valid: boolean, textOrNull: string | null } {
     const ageInMonths = parseAge(ageStr);
-    if (ageInMonths < 0)
+    if (ageStr === '0 ano' || ageInMonths < 0)
         return { text: input, valid: true, textOrNull: input };
 
     const regex = /(.*)\s*\s\(([^)]+)\)\s*$/;

@@ -13,10 +13,116 @@ function interview(Frm: FormHelper) {
     'Sim',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
 
+  const oEscolaridade = [
+    '',
+    'Não Frequenta Creche (< 3 anos)',
+    'Frequenta Creche (< 3 anos)',
+    'Não Frequenta a Escola (> 3 e < 17 anos)',
+    'Educação Infantil (> 3 e < 7 anos)',
+    'Ensino Fundamental - 1º ano (> 6 anos)',
+    'Ensino Fundamental - 2º ano (> 6 anos)',
+    'Ensino Fundamental - 3º ano (> 6 anos)',
+    'Ensino Fundamental - 4º ano (> 6 anos)',
+    'Ensino Fundamental - 5º ano (> 6 anos)',
+    'Ensino Fundamental - 6º ano (> 10 anos)',
+    'Ensino Fundamental - 7º ano (> 10 anos)',
+    'Ensino Fundamental - 8º ano (> 10 anos)',
+    'Ensino Fundamental - 9º ano (> 10 anos)',
+    'Ensino Médio - 1ª série (> 14 anos)',
+    'Ensino Médio - 2ª série (> 14 anos)',
+    'Ensino Médio - 3ª série (> 14 anos)',
+    'Curso Técnico (> 14 anos)',
+    'Ensino Superior (> 17 anos)',
+    'Mestrado (> 17 anos)',
+    'Doutorado (> 17 anos)',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+  const oAlfabetizacao = [
+    '',
+    'Não É Alfabetizado(a)',
+    'É Alfabetizado(a)'
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  let labelAlfabetizacao = parseDescriptionWithCondition(age, 'Alfabetização (> 6 anos)').textOrNull
+  if (['Ensino Médio - 1ª série',
+    'Ensino Médio - 2ª série',
+    'Ensino Médio - 3ª série',
+    'Curso Técnico',
+    'Ensino Superior',
+    'Mestrado',
+    'Doutorado',
+  ].includes(Frm.data.escolaridade)) {
+    labelAlfabetizacao = null
+  }
+
+  const oEstadoCivil = [
+    '',
+    'Solteiro',
+    'Casado',
+    'União Estável',
+    'Divorciado',
+    'Separado de Fato',
+    'Viúvo',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oResponsavel = [
+    '',
+    'Mãe/Pai',
+    'Tutor',
+    'Curador',
+    'Procurador',
+    'Outro',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oOndeVive = [
+    '',
+    'Residência',
+    'Em Situação de Rua',
+    'Instituição',
+    'Instituição Carcerária - Regime Aberto',
+    'Instituição Carcerária - Regime Fechado',
+    'Instituição para Cumprimento de Medida Socioeducativa - Regime de Semiliberdade',
+    'Instituição para Cumprimento de Medida Socioeducativa - Regime de Fechado',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
   const oSexo = [
     '',
     'Masculino',
     'Feminino'
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oDeficiencia = [
+    '',
+    'Visual - Sensorial',
+    'Auditiva - Sensorial',
+    'Intelectual',
+    'Transtorno Mental',
+    'Neuromusculoesquelética - Física',
+    'Doença Crônica',
+    'Múltipla',
+    'Não Informada',
+    'Outra',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oResponsavelPelasInformacoes = [
+    '',
+    'Avaliado',
+    'Acompanhante',
+    'Representante Legal',
+    'Avaliado Não Sabe Informar',
+    'Avaliado Não Tem Condições de Informar',
+    'Acompanhante ou Representante Legal Não Sabe Informar',
+  ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
+
+  const oCobertura = [
+    '',
+    'Já foi beneficiário do BPC',
+    'Nunca foi segurado',
+    'Segurado sem carência',
+    'Teve vinculo empregatício após ter sido beneficiário do BPC',
+    'Perdeu a qualidade de segurado',
+    'Dependente de segurado',
+    'Tem qualidade de segurado',
+    'Outra',
   ].filter(i => parseDescriptionWithCondition(age, i).valid).map(i => parseDescriptionWithCondition(age, i).text).map((i) => ({ id: `${i}`, name: i }))
 
   const oProdutosETecnologia = [
@@ -143,10 +249,28 @@ function interview(Frm: FormHelper) {
   ])
 
   return <>
-    <Frm.Input label="Nome do Avaliado(a)" name="nome" width={8} />
-    <Frm.DatePicker label="Data de Nascimento" name="dataDeNascimento" addAge={true} width={4} />
-    <Frm.CPFInput label="CPF" name="cpf" width={4} />
-    <Frm.Select label="Sexo" name="sexo" options={oSexo} width={4} />
+    <Frm.Input label="Nome do Avaliado(a)" name="nome" width={6} />
+    <Frm.DatePicker label="Data de Nascimento" name="dataDeNascimento" addAge={true} width={2} />
+    <Frm.CPFInput label="CPF" name="cpf" width={2} />
+    <Frm.Select label="Sexo" name="sexo" options={oSexo} width={2} />
+    <Frm.Select label="Escolaridade" name="escolaridade" options={oEscolaridade} width={4} />
+    <Frm.Select label={labelAlfabetizacao} name="alfabetizacao" options={oAlfabetizacao} width={4} />
+    <Frm.Select label="Estado Civil" name="estadoCivil" options={oEstadoCivil} width={4} />
+    <Frm.Select label="Responsável" name="responsavel" options={oResponsavel} width={4} />
+    {Frm.data.responsavel === 'Outro' && <>
+      <Frm.Input label="Especifique o Responsável" name="outroResponsavel" width={4} />
+    </>}
+    <Frm.Select label="Onde o Avaliado Vive" name="ondeVive" options={oOndeVive} width={4} />
+    <Frm.Select label="Deficiência Informada" name="deficiencia" options={oDeficiencia} width={4} />
+    {Frm.data.deficiencia === 'Outra' && <>
+      <Frm.Input label="Especifique o Deficiência" name="outraDeficiencia" width={4} />
+    </>}
+    <Frm.Select label="Responsável pelas Informações" name="responsavelPelasInformacoes" options={oResponsavelPelasInformacoes} width={4} />
+    {(Frm.data.responsavelPelasInformacoes === 'Acompanhante' || Frm.data.responsavelPelasInformacoes === 'Representante Legal') && <>
+      <Frm.Input label="Identifique o Responsável pelas Informações" name="identificacaoDoResponsavelPelasInformacoes" width={4} />
+    </>}
+    <Frm.Select label="Cobertura previdenciária e/ou assistencial" name="cobertura" options={oCobertura} width={4} />
+    <Frm.TextArea label="História Social - Constitui-se na síntese do estudo social, com registro de elementos relevantes que possibilitem conhecer, analisar e interpretar situações vivenciadas pela pessoa em seu cotidiano, para avaliar a participação plena e efetiva da pessoa na sociedade, em igualdade de condições com as demais pessoas, conforme previsto na legislação. Deve conter informações relevantes, que respaldem os qualificadores atribuídos às unidades de classificação e respectivos domínios, subsidiem a avaliação médico-pericial e avaliações subsequentes em fase recursal e judicial." name="historiaSocial" width={12} />
 
     <div className="col col-12 mt-5">
       <h4>Fatores Ambientais</h4>
