@@ -3,6 +3,7 @@
 import Model from "@/libs/model"
 import { FormHelper, labelToName } from "@/libs/form-support"
 import { calculateAge, parseDescriptionWithCondition } from "@/libs/age"
+import { qualificadorFinalLetter } from "@/libs/bpc"
 
 function interview(Frm: FormHelper) {
   const age = Frm.data.dataDeNascimento ? calculateAge(Frm.data.dataDeNascimento) : '0 ano'
@@ -214,21 +215,6 @@ function interview(Frm: FormHelper) {
 
   const letterToDesc: Record<string, string> = {
     'N': 'Nenhuma', 'L': 'Leve', 'M': 'Moderada', 'G': 'Grave', 'C': 'Completa', '—': '—'
-  }
-
-  // Formula per Annexo: (sum / (n×4)) × 100 - 0.1
-  const qualificadorFinalLetter = (values: (string | null | undefined)[]): string => {
-    const validValues = values
-      .filter(v => v !== undefined && v !== null && v !== '')
-      .map(Number)
-    if (validValues.length === 0) return '—'
-    const sum = validValues.reduce((a, b) => a + b, 0)
-    const pct = (sum / (validValues.length * 4)) * 100 - 0.1
-    if (pct <= 4) return 'N'
-    else if (pct <= 24) return 'L'
-    else if (pct <= 49) return 'M'
-    else if (pct <= 95) return 'G'
-    else return 'C'
   }
 
   // Fatores Ambientais (barreira): e1–e5

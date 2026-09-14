@@ -357,10 +357,10 @@ function interview(Frm: FormHelper) {
   if (apValidValues.length > 0) {
     const sum = apValidValues.reduce((a, b) => a + b, 0)
     const pct = (sum / (apValidValues.length * 4)) * 100 - 0.1
-    if (pct <= 4) apLetter = 'N'
-    else if (pct <= 24) apLetter = 'L'
-    else if (pct <= 49) apLetter = 'M'
-    else if (pct <= 95) apLetter = 'G'
+    if (pct <= 5) apLetter = 'N'
+    else if (pct <= 25) apLetter = 'L'
+    else if (pct <= 50) apLetter = 'M'
+    else if (pct <= 96) apLetter = 'G'
     else apLetter = 'C'
   }
 
